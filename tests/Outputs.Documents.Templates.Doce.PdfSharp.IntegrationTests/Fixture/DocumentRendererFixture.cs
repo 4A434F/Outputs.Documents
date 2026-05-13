@@ -4,7 +4,7 @@ using Outputs.Documents.Rendering;
 using Outputs.Documents.Rendering.PdfSharp;
 using Outputs.Documents.Templates.Doce;
 
-namespace Outputs.Documents.Templates.Doce.IntegrationTests.Fixture;
+namespace Outputs.Documents.Templates.Doce.PdfSharp.IntegrationTests.Fixture;
 
 public sealed class DocumentRendererFixture : IAsyncDisposable
 {
@@ -19,7 +19,7 @@ public sealed class DocumentRendererFixture : IAsyncDisposable
 
         services
             .AddRazorDocumentRendering()
-            .WithDoceTemplates()
+            .WithDocumentsFromAssembly(typeof(CourtesyLetterTemplate).Assembly)
             .WithPdfSharpPdfGenerator();
 
         var doceProjectRoot = FindProjectRoot("src", "Outputs.Documents.Templates.Doce");

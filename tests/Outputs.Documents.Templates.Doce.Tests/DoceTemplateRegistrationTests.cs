@@ -9,13 +9,13 @@ namespace Outputs.Documents.Templates.Doce.Tests;
 public sealed class DoceTemplateRegistrationTests
 {
     [Fact]
-    public void WithDoceTemplates_RegistersMigratedDocumentTemplates()
+    public void WithDocumentsFromAssembly_RegistersMigratedDocumentTemplates()
     {
         var services = new ServiceCollection();
 
         services
             .AddRazorDocumentRendering()
-            .WithDoceTemplates();
+            .WithDocumentsFromAssembly(typeof(CourtesyLetterTemplate).Assembly);
 
         using var provider = services.BuildServiceProvider();
         var registry = provider.GetRequiredService<IDocumentTemplateRegistry>();
@@ -29,13 +29,13 @@ public sealed class DoceTemplateRegistrationTests
     }
 
     [Fact]
-    public void WithDoceTemplates_RegistersLayoutMetadataForLetterTemplates()
+    public void WithDocumentsFromAssembly_RegistersLayoutMetadataForLetterTemplates()
     {
         var services = new ServiceCollection();
 
         services
             .AddRazorDocumentRendering()
-            .WithDoceTemplates();
+            .WithDocumentsFromAssembly(typeof(CourtesyLetterTemplate).Assembly);
 
         using var provider = services.BuildServiceProvider();
         var registry = provider.GetRequiredService<IDocumentTemplateRegistry>();
@@ -48,13 +48,13 @@ public sealed class DoceTemplateRegistrationTests
     }
 
     [Fact]
-    public void WithDoceTemplates_RegistersCustomSizeForRegTicketPage()
+    public void WithDocumentsFromAssembly_RegistersCustomSizeForRegTicketPage()
     {
         var services = new ServiceCollection();
 
         services
             .AddRazorDocumentRendering()
-            .WithDoceTemplates();
+            .WithDocumentsFromAssembly(typeof(CourtesyLetterTemplate).Assembly);
 
         using var provider = services.BuildServiceProvider();
         var registry = provider.GetRequiredService<IDocumentTemplateRegistry>();

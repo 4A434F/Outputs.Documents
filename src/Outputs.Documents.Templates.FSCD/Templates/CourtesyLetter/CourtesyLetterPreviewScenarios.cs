@@ -2,16 +2,10 @@ using Outputs.Documents.Preview.Abstractions;
 
 namespace Outputs.Documents.Templates.FSCD;
 
-public sealed class FscdPreviewScenarios : IDocumentPreviewScenarioProvider
+public sealed class CourtesyLetterPreviewScenarios : IDocumentPreviewScenarioProvider
 {
     public IEnumerable<DocumentPreviewScenario> GetScenarios()
     {
-        yield return new DocumentPreviewScenario(
-            "default",
-            "Default",
-            typeof(FscdDocumentModel),
-            new FscdDocumentModel { Title = "FSCD document preview" });
-
         yield return new DocumentPreviewScenario(
             "standard-letter",
             "Standard letter",

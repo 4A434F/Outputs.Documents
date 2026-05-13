@@ -94,40 +94,6 @@ public sealed class DependencyInjectionTests
         Assert.Contains(rules, rule => rule.GetType() == typeof(CourtesyLetterPreviewTemplateRule));
     }
 
-    [Fact]
-    public void WithFscdTemplates_RegistersFscdTemplatesAndRulesOnBuilderChain()
-    {
-        var services = new ServiceCollection();
-
-        services
-            .AddRazorDocumentRendering()
-            .WithFscdTemplates();
-
-        using var provider = services.BuildServiceProvider();
-        var registry = provider.GetRequiredService<IDocumentTemplateRegistry>();
-        var rules = provider.GetServices<IDocumentTemplateSelectionRule>().ToArray();
-
-        Assert.Equal(typeof(FscdDocumentTemplate), registry.GetDefault(typeof(FscdDocumentModel)).BodyTemplateType);
-        Assert.Contains(rules, rule => rule.GetType() == typeof(FscdDummyTemplateRule));
-    }
-
-    [Fact]
-    public void AddFscdTemplates_RegistersFscdTemplatesAndRulesOnServiceCollection()
-    {
-        var services = new ServiceCollection();
-
-        services
-            .AddRazorDocumentRendering();
-        services.AddFscdTemplates();
-
-        using var provider = services.BuildServiceProvider();
-        var registry = provider.GetRequiredService<IDocumentTemplateRegistry>();
-        var rules = provider.GetServices<IDocumentTemplateSelectionRule>().ToArray();
-
-        Assert.Equal(typeof(FscdDocumentTemplate), registry.GetDefault(typeof(FscdDocumentModel)).BodyTemplateType);
-        Assert.Contains(rules, rule => rule.GetType() == typeof(FscdDummyTemplateRule));
-    }
-
     private sealed class DummyPdfGenerator : IPdfGenerator
     {
         public Task<byte[]> GenerateAsync(

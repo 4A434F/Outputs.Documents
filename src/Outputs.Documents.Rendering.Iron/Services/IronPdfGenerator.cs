@@ -25,6 +25,8 @@ public sealed class IronPdfGenerator(IOptions<IronPdfGeneratorOptions> options) 
             throw new ArgumentException("HTML must not be null or empty.", nameof(bodyHtml));
         }
 
+        ApplyLicense(_options);
+
         var renderer = new ChromePdfRenderer();
         ApplyDefaults(renderer.RenderingOptions, _options);
 
@@ -46,6 +48,14 @@ public sealed class IronPdfGenerator(IOptions<IronPdfGeneratorOptions> options) 
 
         using var pdf = renderer.RenderHtmlAsPdf(bodyHtml);
         return Task.FromResult(pdf.BinaryData);
+    }
+
+    private static void ApplyLicense(IronPdfGeneratorOptions options)
+    {
+        if (!string.IsNullOrWhiteSpace(options.LicenseKey))
+        {
+            License.LicenseKey = options.LicenseKey;
+        }
     }
 
     private static void ApplyDefaults(ChromePdfRenderOptions renderingOptions, IronPdfGeneratorOptions options)

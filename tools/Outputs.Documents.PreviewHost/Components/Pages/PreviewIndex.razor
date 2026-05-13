@@ -1,5 +1,7 @@
 @page "/"
 @page "/preview"
+@using System.Linq
+@using Outputs.Documents.Abstractions
 @using Outputs.Documents.Preview.Abstractions
 @inject IDocumentPreviewCatalog Catalog
 
@@ -31,10 +33,9 @@
                     <div class="template-list">
                         @foreach (var template in group)
                         {
-                            var scenarios = Catalog.GetScenariosForTemplate(template);
-                            <a class="template-row" href="@PreviewUrl(template.Key, scenarios.FirstOrDefault()?.Key)">
+                            <a class="template-row" href="@PreviewUrl(template)">
                                 <span>@template.Name</span>
-                                <small>@template.ModelType.Name · @scenarios.Count scenario(s)</small>
+                                <small>@template.ModelType.Name · @GetScenarioCount(template) scenario(s)</small>
                             </a>
                         }
                     </div>
@@ -45,6 +46,21 @@
 </main>
 
 @code {
+    private string PreviewUrl(DocumentTemplateDescriptor template)
+    {
+        return PreviewUrl(template.Key, GetFirstScenarioKey(template));
+    }
+
+    private int GetScenarioCount(DocumentTemplateDescriptor template)
+    {
+        return Catalog.GetScenariosForTemplate(template).Count;
+    }
+
+    private string? GetFirstScenarioKey(DocumentTemplateDescriptor template)
+    {
+        return Catalog.GetScenariosForTemplate(template).FirstOrDefault()?.Key;
+    }
+
     private static string PreviewUrl(string templateKey, string? scenarioKey)
     {
         return string.IsNullOrWhiteSpace(scenarioKey)

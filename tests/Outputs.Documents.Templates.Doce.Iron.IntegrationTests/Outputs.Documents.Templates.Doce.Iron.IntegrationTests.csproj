@@ -25,8 +25,16 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Outputs.Documents.Abstractions\Outputs.Documents.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\Outputs.Documents.Domain\Outputs.Documents.Domain.csproj" />
     <ProjectReference Include="..\..\src\Outputs.Documents.Rendering\Outputs.Documents.Rendering.csproj" />
     <ProjectReference Include="..\..\src\Outputs.Documents.Rendering.Iron\Outputs.Documents.Rendering.Iron.csproj" />
+    <ProjectReference Include="..\..\src\Outputs.Documents.Templates\Outputs.Documents.Templates.csproj" />
+    <ProjectReference Include="..\..\src\Outputs.Documents.Templates.Doce\Outputs.Documents.Templates.Doce.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Outputs.Documents.Templates.Doce.PdfSharp.IntegrationTests\Support\DoceDocumentSamples.cs" Link="Support\DoceDocumentSamples.cs" />
+    <Compile Include="..\Outputs.Documents.Templates.Doce.PdfSharp.IntegrationTests\Support\PdfOutput.cs" Link="Support\PdfOutput.cs" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-namespace Outputs.Documents.Templates.Doce.IntegrationTests.Support;
+namespace Outputs.Documents.Templates.Doce.PdfSharp.IntegrationTests.Support;
 
 internal static class PdfOutput
 {

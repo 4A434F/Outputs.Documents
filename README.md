@@ -45,7 +45,8 @@ tests/
   Outputs.Documents.Rendering.Iron.Tests/
   Outputs.Documents.Rendering.PdfSharp.Tests/
   Outputs.Documents.Templates.Doce.Tests/
-  Outputs.Documents.Templates.Doce.IntegrationTests/
+  Outputs.Documents.Templates.Doce.PdfSharp.IntegrationTests/
+  Outputs.Documents.Templates.Doce.Iron.IntegrationTests/
 
 tools/
   Outputs.Documents.PreviewHost/
@@ -184,45 +185,53 @@ Rules:
 
 ### Outputs.Documents.Templates.FSCD
 
-Purpose: FSCD-specific document templates, FSCD sample models, selection rules, registration, and preview scenarios.
+Purpose: FSCD-specific document templates, FSCD sample models, selection rules, and preview scenarios.
 
 Contains:
 
-- FSCD Razor templates.
+- FSCD Razor templates under per-template folders.
 - FSCD sample document models.
 - FSCD selection rules.
-- `FscdTemplateServiceCollectionExtensions`
-- `FscdPreviewScenarios`
+- `Templates/FscdDocument/FscdDocumentPreviewScenarios.cs`
+- `Templates/CourtesyLetter/CourtesyLetterPreviewScenarios.cs`
 
 Rules:
 
 - FSCD-specific template components go here.
 - FSCD-specific rules go here.
-- FSCD preview scenario providers go here.
+- FSCD preview scenario providers live beside the template they preview.
+- Do not add FSCD-specific DI extension methods when generic assembly scanning is enough.
 - If a model is a real API/domain contract, move it to `Outputs.Documents.Domain`.
 - If a component becomes reusable by another template family, move it to `Outputs.Documents.Templates`.
 
 ### Outputs.Documents.Templates.Doce
 
-Purpose: DOCE-specific concrete templates, rules, registration, assets, and preview scenarios.
+Purpose: DOCE-specific concrete templates, rules, assets, and preview scenarios.
 
 Contains:
 
-- `CourtesyLetterTemplate.razor`
-- `CoverPageTemplate.razor`
-- `CTTDispatchSheetTemplate.razor`
-- `DeliveryNoteTemplate.razor`
-- `DividerTemplate.razor`
-- `RegTicketPageTemplate.razor`
-- `DoceTemplateServiceCollectionExtensions`
-- `DocePreviewScenarios`
+- `Templates/CourtesyLetter/CourtesyLetterTemplate.razor`
+- `Templates/CourtesyLetter/CourtesyLetterPreviewScenarios.cs`
+- `Templates/CoverPage/CoverPageTemplate.razor`
+- `Templates/CoverPage/CoverPagePreviewScenarios.cs`
+- `Templates/CTTDispatchSheet/CTTDispatchSheetTemplate.razor`
+- `Templates/CTTDispatchSheet/CTTDispatchSheetPreviewScenarios.cs`
+- `Templates/DeliveryNote/DeliveryNoteTemplate.razor`
+- `Templates/DeliveryNote/DeliveryNotePreviewScenarios.cs`
+- `Templates/Divider/DividerTemplate.razor`
+- `Templates/Divider/DividerPreviewScenarios.cs`
+- `Templates/RegTicketPage/RegTicketPageTemplate.razor`
+- `Templates/RegTicketPage/RegTicketPagePreviewScenarios.cs`
 - DOCE static assets in `wwwroot`
 
 Rules:
 
 - Concrete DOCE templates go here.
-- DOCE template registration goes here.
-- DOCE preview scenarios go here.
+- Each concrete template gets its own folder under `Templates/`.
+- A template folder contains the Razor template and any preview scenario providers for that template.
+- Do not add DOCE-specific DI extension methods when generic assembly scanning is enough.
+- Register DOCE templates with `.WithDocumentsFromAssembly(typeof(CourtesyLetterTemplate).Assembly)`.
+- Register DOCE preview scenarios with `.WithDocumentPreviewAssembly(typeof(CourtesyLetterTemplate).Assembly)`.
 - DOCE reusable components belong in `Outputs.Documents.Templates`.
 - DOCE domain models belong in `Outputs.Documents.Domain`.
 
@@ -488,14 +497,14 @@ Provider-specific examples:
 ```csharp
 services
     .AddRazorDocumentRendering()
-    .WithDoceTemplates()
+    .WithDocumentsFromAssembly(typeof(CourtesyLetterTemplate).Assembly)
     .WithIronPdfGenerator();
 ```
 
 ```csharp
 services
     .AddRazorDocumentRendering()
-    .WithDoceTemplates()
+    .WithDocumentsFromAssembly(typeof(CourtesyLetterTemplate).Assembly)
     .WithPdfSharpPdfGenerator();
 ```
 
@@ -748,7 +757,7 @@ Rules:
 Example:
 
 ```csharp
-public sealed class DocePreviewScenarios : IDocumentPreviewScenarioProvider
+public sealed class CourtesyLetterPreviewScenarios : IDocumentPreviewScenarioProvider
 {
     public IEnumerable<DocumentPreviewScenario> GetScenarios()
     {
@@ -868,13 +877,22 @@ Current known note:
 
 ### Integration Tests
 
-`Outputs.Documents.Templates.Doce.IntegrationTests`:
+`Outputs.Documents.Templates.Doce.PdfSharp.IntegrationTests`:
 
 - renders DOCE document models through DI.
 - generates real PDF bytes using PdfSharp.
 - saves PDF files under test output for inspection.
 
-Current integration scenarios:
+`Outputs.Documents.Templates.Doce.Iron.IntegrationTests`:
+
+- renders the same DOCE document models through DI.
+- generates real PDF bytes using IronPDF when an IronPDF license is configured.
+- reads the license from `IronPdf:LicenseKey` user-secrets or `IRONPDF_LICENSE_KEY`.
+- saves Iron-generated PDF files under test output for inspection.
+
+The two integration projects intentionally share the same document sample builders. This keeps the provider coverage aligned while still allowing each PDF library to have its own fixture, dependencies, and output files.
+
+Current integration scenarios in both provider projects:
 
 - cover page with destination
 - cover page summary only
@@ -1167,7 +1185,7 @@ Rendering:
 
 ```csharp
 services.AddRazorDocumentRendering()
-    .WithDoceTemplates()
+    .WithDocumentsFromAssembly(typeof(CourtesyLetterTemplate).Assembly)
     .WithPdfSharpPdfGenerator();
 ```
 
@@ -1194,13 +1212,20 @@ Reason:
 - It should not affect production hosts.
 - It can reference template assemblies and sample data freely.
 
-### Integration Tests Use PdfSharp
+### Integration Tests Are Provider-Specific
 
 Reason:
 
-- IronPDF may require a production license locally.
-- PdfSharp can generate PDF bytes in CI/local tests without external licensing.
-- Integration tests are meant to verify system flow, not final visual fidelity.
+- PdfSharp integration tests provide a license-free end-to-end smoke path for document rendering.
+- IronPDF integration tests verify the production-style Iron provider path when a license is available.
+- Keeping one integration project per provider avoids conditional provider setup inside a single fixture.
+- Both provider projects render the same DOCE scenarios, so differences are caused by the PDF implementation rather than sample data.
+
+Iron integration behavior:
+
+- If `IronPdf:LicenseKey` or `IRONPDF_LICENSE_KEY` is configured, the tests generate real PDFs.
+- If no license is configured, the Iron integration tests return without rendering so unlicensed environments stay buildable.
+- The repository must not contain committed license keys; use user-secrets or environment variables.
 
 ## Current Commands
 
@@ -1244,7 +1269,8 @@ Implemented:
 - Shared template project.
 - FSCD templates, rules, and preview scenarios.
 - DOCE templates, assets, and preview scenarios.
-- DOCE integration tests that generate PDFs.
+- DOCE PdfSharp integration tests that generate PDFs.
+- DOCE IronPDF integration tests that generate PDFs when licensed.
 - Preview abstractions.
 - Preview catalog/discovery.
 - PreviewHost with automatic navigation and raw HTML.
@@ -1258,4 +1284,3 @@ Not implemented yet:
 - Screenshot comparison.
 - Editable scenario models in UI.
 - Database/sample data storage.
-

@@ -2,6 +2,8 @@ namespace Outputs.Documents.Rendering.Iron;
 
 public sealed class IronPdfGeneratorOptions
 {
+    public string? LicenseKey { get; set; }
+
     public string PaperSize { get; set; } = "A4";
 
     public string CssMediaType { get; set; } = "Print";

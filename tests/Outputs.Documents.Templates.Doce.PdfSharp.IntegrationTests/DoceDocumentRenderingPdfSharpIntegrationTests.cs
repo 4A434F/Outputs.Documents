@@ -1,9 +1,9 @@
-using Outputs.Documents.Templates.Doce.IntegrationTests.Fixture;
-using Outputs.Documents.Templates.Doce.IntegrationTests.Support;
+using Outputs.Documents.Templates.Doce.PdfSharp.IntegrationTests.Fixture;
+using Outputs.Documents.Templates.Doce.PdfSharp.IntegrationTests.Support;
 
-namespace Outputs.Documents.Templates.Doce.IntegrationTests;
+namespace Outputs.Documents.Templates.Doce.PdfSharp.IntegrationTests;
 
-public sealed class DoceDocumentRenderingIntegrationTests(DocumentRendererFixture fixture)
+public sealed class DoceDocumentRenderingPdfSharpIntegrationTests(DocumentRendererFixture fixture)
     : IClassFixture<DocumentRendererFixture>
 {
     [Fact]
