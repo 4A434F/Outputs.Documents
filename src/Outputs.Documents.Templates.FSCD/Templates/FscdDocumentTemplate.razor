@@ -1,0 +1,12 @@
+@namespace Outputs.Documents.Templates.FSCD
+@using Outputs.Documents.Abstractions
+@attribute [DocumentTemplate(isDefault: true, Key = "fscd-document", Name = "FSCD Document", Group = "FSCD")]
+
+<article>
+    <h1>@Model.Title</h1>
+</article>
+
+@code {
+    [Parameter]
+    public FscdDocumentModel Model { get; set; } = default!;
+}

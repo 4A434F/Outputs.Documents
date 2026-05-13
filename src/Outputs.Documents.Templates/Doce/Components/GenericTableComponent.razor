@@ -1,0 +1,306 @@
+@namespace Outputs.Documents.Templates.Doce.Components
+@using System.Globalization
+@using Outputs.Documents.Domain.Doce
+
+<table class="generic-table @GridClass" style="@CssVars">
+    <colgroup>
+        @for (var i = 0; i < Data.Columns.Count; i++)
+        {
+            <col style="width:@(Data.Columns[i].Width ?? "auto")" />
+        }
+    </colgroup>
+
+    <thead>
+        <tr>
+            @foreach (var col in Data.Columns)
+            {
+                <th class="@AlignClass(col.HeaderAlign)">@col.Header</th>
+            }
+        </tr>
+    </thead>
+
+    <tbody class="pb-3">
+        @for (int r = 0; r < Data.Rows.Count - 1; r++)
+        {
+            <tr class="@(Data.Format.Zebra && r % 2 == 1 ? "zebra" : "")">
+                @for (int c = 0; c < Data.Columns.Count; c++)
+                {
+                    var col = Data.Columns[c];
+                    var value = c < Data.Rows[r].Cells.Count ? Data.Rows[r].Cells[c] : null;
+
+                    <td class="@AlignClass(col.CellAlign)">
+                        @RenderCell(value, col)
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+
+    @if (HasTotals)
+    {
+        var valueColCount = Data.Format.TotalsValueColumns <= 0
+        ? 2
+        : Data.Format.TotalsValueColumns;
+
+        var descColSpan = Math.Max(1, Data.Columns.Count - valueColCount);
+
+        <tfoot class="keep-block">
+
+            @if (KeepLastWithTotals)
+            {
+                var lastIndex = Data.Rows.Count - 1;
+                <tr class="keep-row">
+                    @for (int c = 0; c < Data.Columns.Count; c++)
+                    {
+                        var col = Data.Columns[c];
+                        var value = c < Data.Rows[lastIndex].Cells.Count ? Data.Rows[lastIndex].Cells[c] : null;
+
+                        <td class="@AlignClass(col.CellAlign)">
+                            @RenderCell(value, col)
+                        </td>
+                    }
+                </tr>
+            }
+
+            <tr class="totals-gap">
+                <td colspan="@Data.Columns.Count"></td>
+            </tr>
+
+            @foreach (var row in Data.TotalsLabel)
+            {
+                <tr class="total-row">
+                    <!-- Description spans all non-value columns -->
+                    <td class="left total-desc" colspan="@descColSpan">
+                        @(row.Cells.Count > 0 ? row.Cells[0] : "")
+                    </td>
+
+                    <!-- Only render the last N columns as values -->
+                    @for (int c = Data.Columns.Count - valueColCount; c < Data.Columns.Count; c++)
+                    {
+                        var col = Data.Columns[c];
+                        var value = c < row.Cells.Count ? row.Cells[c] : null;
+
+                        <td class="@AlignClass(col.CellAlign) total-val">
+                            @RenderCell(value, col)
+                        </td>
+                    }
+                </tr>
+            }
+        </tfoot>
+    }
+</table>
+
+@code {
+    [Parameter] public GenericTable Data { get; set; } = default!;
+
+    // --- paging helpers (last row + totals as one non-breakable block) ---
+    private bool HasTotals => (Data?.TotalsLabel?.Count ?? 0) > 0;
+
+    private bool KeepLastWithTotals =>
+        HasTotals && (Data?.Rows?.Count ?? 0) > 0;
+
+    private string GridClass => Data.Format.GridStyle switch
+    {
+        GenericTableGridStyle.FullGrid => "gt-grid",
+        GenericTableGridStyle.None => "gt-none",
+        _ => "gt-lines" // default = HorizontalLines
+    };
+
+    private string CssVars =>
+        $"--gt-font-size:{Data.Format.FontSize};" +
+        $"--gt-header-font-size:{(Data.Format.HeaderFontSize ?? Data.Format.FontSize)};" +
+        $"--gt-font-family:{Data.Format.FontFamily};" +
+        $"--gt-cell-padding:{Data.Format.CellPadding};" +
+        $"--gt-header-padding:{Data.Format.HeaderPadding};" +
+        $"--gt-row-height:{Data.Format.RowHeight};" +
+        $"--gt-line-height:{Data.Format.LineHeight};" +
+        $"--gt-row-rule:{Data.Format.RowRule};" +
+        $"--gt-header-rule:{Data.Format.HeaderRule};" +
+        $"--gt-outer-border:{Data.Format.OuterBorder};" +
+        $"--gt-cell-border:{Data.Format.CellBorder};" +
+        $"--gt-header-bg:{Data.Format.HeaderBackground};" +
+        $"--gt-rule-inset:{Data.Format.RuleInset};";
+
+    private string AlignClass(ColumnAlign a) => a switch
+    {
+        ColumnAlign.Right => "right",
+        ColumnAlign.Center => "center",
+        _ => "left"
+    };
+
+    private RenderFragment RenderCell(object? value, CustomTableColumn col) => builder =>
+    {
+        if (value is null) return;
+
+        if (value is decimal d) builder.AddContent(0, FormatNumber(d, col.Format));
+        else if (value is double db) builder.AddContent(1, FormatNumber((decimal)db, col.Format));
+        else if (value is float f) builder.AddContent(2, FormatNumber((decimal)f, col.Format));
+        else builder.AddContent(3, value.ToString());
+    };
+
+    private static string FormatNumber(decimal v, string? fmt)
+        => v.ToString(string.IsNullOrWhiteSpace(fmt) ? "N2" : fmt, CultureInfo.GetCultureInfo("pt-PT"));
+}
+
+<style>
+    .pb-3 {
+        padding-bottom: 1rem;
+    }
+
+    .generic-table {
+        width: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
+        font-size: var(--gt-font-size);
+        font-family: var(--gt-font-family);
+        border: var(--gt-outer-border);
+    }
+
+        .generic-table th,
+        .generic-table td {
+            position: relative; /* needed for inset lines (::after / ::before) */
+            padding: var(--gt-cell-padding);
+            vertical-align: middle;
+            height: var(--gt-row-height);
+            line-height: var(--gt-line-height);
+            word-break: break-word;
+            background: transparent;
+        }
+
+        .generic-table th {
+            padding: var(--gt-header-padding);
+            background: var(--gt-header-bg);
+            font-weight: 700;
+            font-size: var(--gt-header-font-size);
+        }
+
+        /* alignment */
+        .generic-table .left {
+            text-align: left;
+        }
+
+        .generic-table .right {
+            text-align: right;
+        }
+
+        .generic-table .center {
+            text-align: center;
+        }
+
+        /* space between tbody and totals */
+        .generic-table tfoot .totals-gap td {
+            height: 16px; /* adjust spacing */
+            padding: 0;
+        }
+
+        /* don't draw inset rule lines on the gap row */
+        .generic-table.gt-lines tfoot .totals-gap td::after,
+        .generic-table.gt-lines tfoot .totals-gap td::before {
+            content: none !important;
+        }
+
+        /* =========================================================
+       Default: clean style with inset horizontal rules
+       - no vertical borders
+       - no bold lines
+       - lines are shorter than the cell (inset)
+       ========================================================= */
+        .generic-table.gt-lines th,
+        .generic-table.gt-lines td {
+            border: none; /* remove real borders */
+        }
+
+        /* Row separators (tbody) */
+        .generic-table.gt-lines tbody td::after {
+            content: "";
+            position: absolute;
+            left: var(--gt-rule-inset);
+            right: var(--gt-rule-inset);
+            bottom: 0;
+            border-bottom: var(--gt-row-rule);
+        }
+
+        /* Header underline (thin, inset) */
+        .generic-table.gt-lines thead th::after {
+            content: "";
+            position: absolute;
+            left: var(--gt-rule-inset);
+            right: var(--gt-rule-inset);
+            bottom: 0;
+            border-bottom: var(--gt-header-rule);
+        }
+
+        /* Totals separators (tfoot) */
+        .generic-table.gt-lines tfoot td::after {
+            content: "";
+            position: absolute;
+            left: var(--gt-rule-inset);
+            right: var(--gt-rule-inset);
+            bottom: 0;
+            border-bottom: var(--gt-row-rule);
+        }
+
+        /* Optional: thin top rule before totals block */
+        .generic-table.gt-lines tfoot tr:first-child td::before {
+            content: "";
+            position: absolute;
+            left: var(--gt-rule-inset);
+            right: var(--gt-rule-inset);
+            top: 0;
+            border-top: var(--gt-row-rule);
+        }
+
+        /* totals text styling (keep as you like) */
+        .generic-table tfoot .total-row td {
+            font-weight: 700;
+            text-transform: uppercase;
+            background: transparent; /* no grey fill */
+        }
+
+        /* =========================================================
+       Full grid (dotted like old style)
+       ========================================================= */
+        .generic-table.gt-grid th,
+        .generic-table.gt-grid td {
+            border: var(--gt-cell-border);
+        }
+
+        /* =========================================================
+       No borders
+       ========================================================= */
+        .generic-table.gt-none th,
+        .generic-table.gt-none td {
+            border: none;
+        }
+
+        /* optional zebra */
+        .generic-table tbody tr.zebra td {
+            background: #fafafa;
+        }
+
+    @@media print {
+        .generic-table thead
+
+    {
+        display: table-header-group;
+    }
+
+    /* não repetir footer */
+    .generic-table tfoot {
+        display: table-row-group;
+    }
+
+        /* BLOCO: última linha + totais */
+        .generic-table tfoot.keep-block {
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+
+            .generic-table tfoot.keep-block tr,
+            .generic-table tfoot.keep-block td {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+    }
+</style>

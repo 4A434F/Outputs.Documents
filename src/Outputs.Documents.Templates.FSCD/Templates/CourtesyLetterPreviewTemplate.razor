@@ -1,0 +1,19 @@
+@namespace Outputs.Documents.Templates.FSCD
+@using Outputs.Documents.Abstractions
+@attribute [DocumentTemplate(Key = "fscd-courtesy-letter-preview", Name = "Courtesy Letter Preview", Group = "FSCD")]
+@attribute [DocumentLayout(
+    headerTemplate: typeof(CourtesyLetterHeaderComponent),
+    footerTemplate: typeof(CourtesyLetterFooterComponent),
+    headerPropertyName: nameof(CourtesyLetter.Header),
+    footerPropertyName: nameof(CourtesyLetter.Footer))]
+
+<article>
+    <strong>Preview</strong>
+    <h1>@Model.Title</h1>
+    <p>@Model.Body</p>
+</article>
+
+@code {
+    [Parameter]
+    public CourtesyLetter Model { get; set; } = default!;
+}

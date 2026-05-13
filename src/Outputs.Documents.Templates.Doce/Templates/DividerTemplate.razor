@@ -1,0 +1,70 @@
+@namespace Outputs.Documents.Templates.Doce
+@attribute [DocumentTemplate(isDefault: true, Key = "doce-divider", Name = "Divider", Group = "DOCE")]
+
+<div class="divider-page">
+    <div class="vertical-label">
+        <div class="small-label">Separador</div>
+        <div class="main-label">@Model?.Label</div>
+    </div>
+
+    <div class="box box-horizontal"></div>
+    <div class="box box-vertical"></div>
+
+    <TestOverlayComponent></TestOverlayComponent>
+</div>
+
+@code {
+    [Parameter] public Divider? Model { get; set; } 
+}
+
+<style>
+
+    .divider-page {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        font-family: Arial, sans-serif;
+    }
+
+    /* Vertical rotated label on left */
+    .vertical-label {
+        position: fixed;
+        top: 80%;
+        left: 30%;
+        transform: rotate(-90deg) translateY(-50%);
+        transform-origin: left center;
+        text-align: start;
+    }
+
+    .vertical-label .small-label {
+        font-size: 14px;
+        font-weight: normal;
+    }
+
+    .vertical-label .main-label {
+        font-size: 40px;
+        font-weight: bold;
+    }
+
+    /* Gray blocks */
+    .box {
+        position: fixed;
+        background-color: #bbb;
+        border: 1px solid #000;
+    }
+
+    .box-horizontal {
+        bottom: 0;
+        right: 5px;
+        width: 400px;
+        height: 90px;
+    }
+
+    .box-vertical {
+        bottom: 91px;
+        right: 5px;
+        width: 90px;
+        height: 300px;
+    }
+    
+</style>
