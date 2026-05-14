@@ -1,4 +1,5 @@
 using Outputs.Documents.Domain.VectorStore.Alignment;
+using Outputs.Documents.Domain.VectorStore.Descriptors;
 using Outputs.Documents.Domain.VectorStore.Records;
 using Outputs.Documents.Domain.VectorStore.Tests.Support;
 
@@ -9,26 +10,43 @@ public sealed class DomainVectorStoreTests
     private const string Model = "test-embedding-model";
 
     [Fact]
-    public async Task UpsertAndGetAsync_RoundTripsRecord()
+    public void Describe_ReturnsDescriptorsFromDomainSearchAttributes()
     {
         using var scope = StoreScope.Create();
-        var record = CreateRecord(
-            "property:User.UserName",
-            EmbeddingRecordKinds.Property,
-            "User.UserName",
-            "UserName",
-            [1, 0, 0],
-            aliases: ["user name", "login"]);
 
-        await scope.Store.UpsertAsync(Model, record);
+        var descriptors = scope.Store.Describe(typeof(User));
 
-        var stored = await scope.Store.GetAsync(Model, record.Id);
+        Assert.Contains(descriptors, descriptor =>
+            descriptor.Id == EntityId<User>() &&
+            descriptor.Kind == EmbeddingRecordKinds.Entity &&
+            descriptor.Name == "User");
+        Assert.Contains(descriptors, descriptor =>
+            descriptor.Id == PropertyId<User>(nameof(User.UserName)) &&
+            descriptor.Kind == EmbeddingRecordKinds.Property &&
+            descriptor.Name == "User name" &&
+            descriptor.Aliases.Contains("login"));
+    }
+
+    [Fact]
+    public async Task UpsertAndGetAsync_RoundTripsRecordBuiltFromDomainType()
+    {
+        using var scope = StoreScope.Create();
+        var embeddings = CreateEmbeddings<User>(descriptor => descriptor.Id switch
+        {
+            var id when id == PropertyId<User>(nameof(User.UserName)) => [1, 0, 0],
+            var id when id == PropertyId<User>(nameof(User.Email)) => [0, 1, 0],
+            _ => [0, 0, 1]
+        });
+
+        await scope.Store.UpsertAsync(Model, typeof(User), embeddings);
+
+        var stored = await scope.Store.GetAsync(Model, PropertyId<User>(nameof(User.UserName)));
 
         Assert.NotNull(stored);
-        Assert.Equal(record.Id, stored.Id);
-        Assert.Equal(record.Name, stored.Name);
-        Assert.Equal(record.Aliases, stored.Aliases);
-        Assert.Equal(record.Embedding, stored.Embedding);
+        Assert.Equal("User name", stored.Name);
+        Assert.Contains("login", stored.Aliases);
+        Assert.Contains("Domain Property: User name.", stored.Text);
+        Assert.Equal([1, 0, 0], stored.Embedding);
     }
 
     [Fact]
@@ -63,13 +81,8 @@ public sealed class DomainVectorStoreTests
     {
         using var scope = StoreScope.Create();
 
-        await scope.Store.UpsertAsync(
-            Model,
-            CreateRecord("entity:User", EmbeddingRecordKinds.Entity, "User", "User", [1, 0]));
-
-        await scope.Store.UpsertAsync(
-            "another-model",
-            CreateRecord("entity:Address", EmbeddingRecordKinds.Entity, "Address", "Address", [0, 1], model: "another-model"));
+        await scope.Store.UpsertAsync(Model, typeof(User), CreateEmbeddings<User>(_ => [1, 0]));
+        await scope.Store.UpsertAsync("another-model", typeof(Address), CreateEmbeddings<Address>(_ => [0, 1]));
 
         var models = await scope.Store.ListModelsAsync();
 
@@ -81,67 +94,41 @@ public sealed class DomainVectorStoreTests
     {
         using var scope = StoreScope.Create();
 
-        await scope.Store.UpsertManyAsync(
-            Model,
-            [
-                CreateRecord("entity:User", EmbeddingRecordKinds.Entity, "User", "User", [1, 0]),
-                CreateRecord("property:User.UserName", EmbeddingRecordKinds.Property, "User.UserName", "UserName", [1, 0])
-            ]);
+        await scope.Store.UpsertAsync(Model, typeof(User), CreateEmbeddings<User>(_ => [1, 0]));
 
         var properties = await scope.Store.ListAsync(Model, EmbeddingRecordKinds.Property);
 
-        var property = Assert.Single(properties);
-        Assert.Equal("property:User.UserName", property.Id);
+        Assert.Equal(2, properties.Count);
+        Assert.All(properties, record => Assert.Equal(EmbeddingRecordKinds.Property, record.Kind));
     }
 
     [Fact]
     public async Task DeleteByDeclarationAsync_RemovesMatchingRecords()
     {
         using var scope = StoreScope.Create();
+        await scope.Store.UpsertAsync(Model, typeof(User), CreateEmbeddings<User>(_ => [1, 0]));
 
-        await scope.Store.UpsertManyAsync(
+        await scope.Store.DeleteByDeclarationAsync(
             Model,
-            [
-                CreateRecord("property:User.UserName", EmbeddingRecordKinds.Property, "User.UserName", "UserName", [1, 0]),
-                CreateRecord("property:User.Email", EmbeddingRecordKinds.Property, "User.Email", "Email", [0, 1])
-            ]);
+            EmbeddingRecordKinds.Property,
+            Declaration<User>(nameof(User.UserName)));
 
-        await scope.Store.DeleteByDeclarationAsync(Model, EmbeddingRecordKinds.Property, "User.UserName");
-
-        var records = await scope.Store.ListAsync(Model);
+        var records = await scope.Store.ListAsync(Model, EmbeddingRecordKinds.Property);
 
         var record = Assert.Single(records);
-        Assert.Equal("property:User.Email", record.Id);
+        Assert.Equal(PropertyId<User>(nameof(User.Email)), record.Id);
     }
 
     [Fact]
     public async Task ExactSearchAsync_MatchesNameAndAlias()
     {
         using var scope = StoreScope.Create();
+        await scope.Store.UpsertAsync(Model, typeof(User), CreateEmbeddings<User>(_ => [1, 0]));
 
-        await scope.Store.UpsertManyAsync(
-            Model,
-            [
-                CreateRecord(
-                    "property:User.UserName",
-                    EmbeddingRecordKinds.Property,
-                    "User.UserName",
-                    "UserName",
-                    [1, 0],
-                    aliases: ["user name", "login"]),
-                CreateRecord(
-                    "property:User.Email",
-                    EmbeddingRecordKinds.Property,
-                    "User.Email",
-                    "Email",
-                    [0, 1],
-                    aliases: ["electronic mail"])
-            ]);
-
-        var results = await scope.Store.ExactSearchAsync(Model, "user name");
+        var results = await scope.Store.ExactSearchAsync(Model, "login");
 
         var result = Assert.Single(results);
-        Assert.Equal("property:User.UserName", result.Record.Id);
+        Assert.Equal(PropertyId<User>(nameof(User.UserName)), result.Record.Id);
         Assert.Contains("Alias", result.MatchKind);
     }
 
@@ -153,13 +140,13 @@ public sealed class DomainVectorStoreTests
         await scope.Store.UpsertManyAsync(
             Model,
             [
-                CreateRecord("entity:Address", EmbeddingRecordKinds.Entity, "Address", "Address", [1, 0]),
-                CreateRecord("entity:Payment", EmbeddingRecordKinds.Entity, "Payment", "Payment", [0, 1])
+                new DomainEmbeddingRegistration(typeof(Address), CreateEmbeddings<Address>(_ => [1, 0])),
+                new DomainEmbeddingRegistration(typeof(Payment), CreateEmbeddings<Payment>(_ => [0, 1]))
             ]);
 
         var results = await scope.Store.VectorSearchAsync(Model, [0.95f, 0.05f], limit: 2);
 
-        Assert.Equal("entity:Address", results[0].Record.Id);
+        Assert.Equal(EntityId<Address>(), results[0].Record.Id);
         Assert.True(results[0].Similarity > results[1].Similarity);
     }
 
@@ -168,20 +155,21 @@ public sealed class DomainVectorStoreTests
     {
         using var scope = StoreScope.Create();
 
-        await scope.Store.UpsertManyAsync(
+        await scope.Store.UpsertAsync(
             Model,
-            [
-                CreateRecord("entity:User", EmbeddingRecordKinds.Entity, "User", "User", [1, 0]),
-                CreateRecord("property:User.UserName", EmbeddingRecordKinds.Property, "User.UserName", "UserName", [1, 0])
-            ]);
+            typeof(User),
+            CreateEmbeddings<User>(descriptor => descriptor.Id == PropertyId<User>(nameof(User.UserName))
+                ? [1, 0]
+                : [0, 1]));
 
         var results = await scope.Store.VectorSearchAsync(
             Model,
             [1, 0],
+            limit: 1,
             kind: EmbeddingRecordKinds.Property);
 
         var result = Assert.Single(results);
-        Assert.Equal("property:User.UserName", result.Record.Id);
+        Assert.Equal(PropertyId<User>(nameof(User.UserName)), result.Record.Id);
     }
 
     [Fact]
@@ -189,27 +177,16 @@ public sealed class DomainVectorStoreTests
     {
         using var scope = StoreScope.Create();
 
-        await scope.Store.UpsertManyAsync(
+        await scope.Store.UpsertAsync(
             Model,
-            [
-                CreateRecord(
-                    "property:User.UserName",
-                    EmbeddingRecordKinds.Property,
-                    "User.UserName",
-                    "UserName",
-                    [0, 1],
-                    aliases: ["user name"]),
-                CreateRecord(
-                    "property:Account.Login",
-                    EmbeddingRecordKinds.Property,
-                    "Account.Login",
-                    "Login",
-                    [1, 0])
-            ]);
+            typeof(User),
+            CreateEmbeddings<User>(descriptor => descriptor.Id == PropertyId<User>(nameof(User.UserName))
+                ? [0, 1]
+                : [1, 0]));
 
-        var results = await scope.Store.HybridSearchAsync(Model, "user name", [1, 0], limit: 2);
+        var results = await scope.Store.HybridSearchAsync(Model, "login", [1, 0], limit: 2);
 
-        Assert.Equal("property:User.UserName", results[0].Record.Id);
+        Assert.Equal(PropertyId<User>(nameof(User.UserName)), results[0].Record.Id);
         Assert.Contains("Alias", results[0].MatchKinds);
         Assert.Contains(results, result => result.MatchKinds.Contains("Vector"));
     }
@@ -267,21 +244,42 @@ public sealed class DomainVectorStoreTests
     }
 
     [Fact]
-    public async Task UpsertAsync_ThrowsWhenRecordModelDoesNotMatchDatabaseModel()
+    public async Task UpsertAsync_ThrowsWhenDomainTypeHasNoSearchMetadata()
     {
         using var scope = StoreScope.Create();
-        var record = CreateRecord(
-            "entity:User",
-            EmbeddingRecordKinds.Entity,
-            "User",
-            "User",
-            [1, 0],
-            model: "other-model");
+
+        var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            scope.Store.UpsertAsync(Model, typeof(UnannotatedDomainType), []));
+
+        Assert.Contains("does not declare any", exception.Message);
+    }
+
+    [Fact]
+    public async Task UpsertAsync_ThrowsWhenDescriptorEmbeddingIsMissing()
+    {
+        using var scope = StoreScope.Create();
+        var embeddings = CreateEmbeddings<User>(_ => [1, 0])
+            .Where(embedding => embedding.DescriptorId != PropertyId<User>(nameof(User.Email)))
+            .ToArray();
 
         var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
-            scope.Store.UpsertAsync(Model, record));
+            scope.Store.UpsertAsync(Model, typeof(User), embeddings));
 
-        Assert.Contains("must match target model", exception.Message);
+        Assert.Contains("missing embeddings", exception.Message);
+    }
+
+    [Fact]
+    public async Task UpsertAsync_ThrowsWhenDescriptorEmbeddingIsUnknown()
+    {
+        using var scope = StoreScope.Create();
+        var embeddings = CreateEmbeddings<User>(_ => [1, 0])
+            .Append(new DomainEmbeddingValue("property:Unknown.Property", [1, 0]))
+            .ToArray();
+
+        var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
+            scope.Store.UpsertAsync(Model, typeof(User), embeddings));
+
+        Assert.Contains("unknown descriptors", exception.Message);
     }
 
     [Fact]
@@ -289,44 +287,20 @@ public sealed class DomainVectorStoreTests
     {
         using var scope = StoreScope.Create();
 
-        await scope.Store.UpsertAsync(
-            Model,
-            CreateRecord("entity:User", EmbeddingRecordKinds.Entity, "User", "User", [1, 0]));
+        await scope.Store.UpsertAsync(Model, typeof(Address), CreateEmbeddings<Address>(_ => [1, 0]));
 
         var exception = await Assert.ThrowsAsync<InvalidOperationException>(() =>
-            scope.Store.UpsertAsync(
-                Model,
-                CreateRecord("entity:Address", EmbeddingRecordKinds.Entity, "Address", "Address", [1, 0, 0])));
+            scope.Store.UpsertAsync(Model, typeof(Payment), CreateEmbeddings<Payment>(_ => [1, 0, 0])));
 
         Assert.Contains("Embedding dimension mismatch", exception.Message);
     }
 
-    private static EmbeddingRecord CreateRecord(
-        string id,
-        string kind,
-        string declaration,
-        string name,
-        float[] embedding,
-        IReadOnlyList<string>? aliases = null,
-        IReadOnlyList<string>? tags = null,
-        string model = Model)
+    private static IReadOnlyList<DomainEmbeddingValue> CreateEmbeddings<TDomain>(
+        Func<DomainEmbeddingDescriptor, float[]> createEmbedding)
     {
-        return new EmbeddingRecord
-        {
-            Id = id,
-            Kind = kind,
-            Declaration = declaration,
-            Name = name,
-            Text = $"Domain {kind}: {name}. Aliases: {string.Join(", ", aliases ?? [])}.",
-            EmbeddingModel = model,
-            Embedding = embedding,
-            Aliases = aliases ?? [],
-            Tags = tags ?? [],
-            Metadata = new Dictionary<string, string>
-            {
-                ["declaration"] = declaration
-            }
-        };
+        return DomainEmbeddingDescriptorReader.Describe(typeof(TDomain))
+            .Select(descriptor => new DomainEmbeddingValue(descriptor.Id, createEmbedding(descriptor)))
+            .ToArray();
     }
 
     private static IReadOnlyList<AlignmentEmbedding> CreateAlignmentSet()
@@ -343,4 +317,54 @@ public sealed class DomainVectorStoreTests
             }))
             .ToArray();
     }
+
+    private static string EntityId<TDomain>()
+    {
+        return $"entity:{typeof(TDomain).FullName}";
+    }
+
+    private static string PropertyId<TDomain>(string propertyName)
+    {
+        return $"property:{Declaration<TDomain>(propertyName)}";
+    }
+
+    private static string Declaration<TDomain>(string propertyName)
+    {
+        return $"{typeof(TDomain).FullName}.{propertyName}";
+    }
+
+    [DomainSearch(
+        "User",
+        "Application user or customer account.",
+        Aliases = ["customer"],
+        Tags = ["party"])]
+    private sealed record User(
+        [property: DomainSearch(
+            "User name",
+            "Login name used to identify an account.",
+            Aliases = ["login", "user name"],
+            Tags = ["identifier"])]
+        string UserName,
+        [property: DomainSearch(
+            "Email",
+            "Electronic mail contact address.",
+            Aliases = ["electronic mail"],
+            Tags = ["contact"])]
+        string Email);
+
+    [DomainSearch(
+        "Address",
+        "Postal address block for a recipient or business entity.",
+        Aliases = ["morada"],
+        Tags = ["location"])]
+    private sealed record Address;
+
+    [DomainSearch(
+        "Payment",
+        "Payment details used to settle a document.",
+        Aliases = ["settlement"],
+        Tags = ["finance"])]
+    private sealed record Payment;
+
+    private sealed record UnannotatedDomainType;
 }

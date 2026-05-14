@@ -1,0 +1,564 @@
+      *----------------------------------------------------------------*
+      *                      MAINTENANCE  LOG
+      *                         A T E N C A O                          *
+      *                         =============                          *
+      *                                                                *
+      *      ALTERACOES NO NY44WU01 DEVERAO SER REPLICADAS:            *
+      *             BGOW9037 - PARA APLICAÇÕES DE OUTPUTS (UGEN)       *
+      *
+      * PROGRAMMER  PCR     DATE        COMMENTS
+      *----------------------------------------------------------------*
+      *
+      * RIS         M41866  2005-08-17  VERSÃO ORIGINAL.
+      *
+      * IAC         M42087  OUT.2006    INCLUSÕ DO FRACIONAMENTO.
+      *             M42099  JAN.2007    ALTERAÇÕES PARA FROTAS.
+      *
+3P0434* WALMIRA 3P0434 OUT/2008  200800172 -NOVO RJCS - CONDIÇÕES GERAIS
+      *
+      * CCR         3P0433  2008-11-25  200800164 PROJECTO ACTIVATION
+      *                                 AUMENTO DO AUTOMATISMO POSTAL.
+      *
+3P1274* DDS     3P1274 FEV/2012         CORRECÇÃO ORDENAÇÃO
+      *
+3P1556* RJF     3P1556 JUL/2014         20120094
+3P1556*
+      *----------------------------------------------------------------*
+       03  NY44AU01-PRINT-RECORD.
+      *----------------------------------------------------------------*
+      *    SORT KEY
+      *----------------------------------------------------------------*
+           05  NY44AU01-SORT-KEY.
+               07  NY44AU01-COMPANY                PIC X(03).
+               07  NY44AU01-AGENT                  PIC X(10).
+               07  NY44AU01-PH-POST-CODE           PIC X(09).
+               07  NY44AU01-PH-CLIENT-REFERENCE    PIC X(10).
+               07  NY44AU01-PRODUCT-CODE           PIC X(05).
+               07  NY44AU01-POLICY-NUMBER          PIC X(16).
+               07  NY44AU01-D-H-SISTEMA            PIC X(14).
+               07  NY44AU01-POLICY-TRANSACTION     PIC X(10).
+3P1274*        07  NY44AU01-SEQUENCE-NUMBER        PIC 9(08).
+3P1274         07  NY44AU01-NUM-UAR                PIC X(08).
+               07  NY44AU01-RECORD-TYPE            PIC X(01).
+                   88  NY44AU01-POLICY-BASIC-DATA  VALUE 'A'.
+                   88  NY44AU01-POLICY-EXTRA-DATA  VALUE 'B'.
+                   88  NY44AU01-UAR-NUMBER         VALUE 'C'.
+                   88  NY44AU01-VERBIAGE-DATA      VALUE 'D'.
+                   88  NY44AU01-OUTRO-SEGURADO     VALUE 'E'.
+                   88  NY44AU01-SEGURADO-ADICIONAL VALUE 'F'.
+                   88  NY44AU01-ENTIDADE-INTERESS  VALUE 'G'.
+                   88  NY44AU01-UAR-DATA-AERON     VALUE 'H'.
+                   88  NY44AU01-UAR-DATA-EMBRE     VALUE 'I'.
+                   88  NY44AU01-UAR-DATA-EMBCO     VALUE 'J'.
+                   88  NY44AU01-UAR-MOTOR          VALUE 'K'.
+                   88  NY44AU01-CAPITAIS-SEGUROS   VALUE 'L'.
+                   88  NY44AU01-OBJECTOS-SEGUROS   VALUE 'M'.
+                   88  NY44AU01-POLICY-COVER-DATA  VALUE 'N'.
+                   88  NY44AU01-COVERAGE-DATA      VALUE 'O'.
+                   88  NY44AU01-UAR-EXTENSOES      VALUE 'P'.
+                   88  NY44AU01-UAR-TEXT-DATA      VALUE 'Q'.
+                   88  NY44AU01-POLICY-TEXT-DATA   VALUE 'R'.
+                   88  NY44AU01-END-OF-DOCUMENT    VALUE 'Z'.
+
+3P1556*    05  NY44AU01-PRINT-DATA                 PIC X(414).
+3P1556     05  NY44AU01-PRINT-DATA                 PIC X(413).
+
+      *-------
+      *A   DADOS BÁSICOS DA APÓLICE - POLICY-BASIC-DATA
+      *-------
+
+           05  REDEFINES NY44AU01-PRINT-DATA.
+      *--- CÓDIGO DO DOCUMENTO
+               07  NY44AU01-DOCUMENT-CODE          PIC X(04).
+      *--- INDICADOR DE IMPRESSAO
+               07  NY44AU01-INDICADOR-IMPRESSAO    PIC X(01).
+                   88  NY44AU01-PRIMEIRA-IMPRESSAO VALUE '1'.
+                   88  NY44AU01-SEGUNDA-VIA        VALUE '2'.
+      *--- INDICADOR DO TIPO DE APOLICE
+               07  NY44AU01-POLICY-TYPE            PIC X(02).
+                   88  NY44AU01-APOLICE-FROTA      VALUE 'FR'.
+                   88  NY44AU01-APOLICE-INDIVIDUAL VALUE 'IN'.
+      *--- Nº DO CERTIFICADO DE SEGURO
+               07  NY44AU01-REFERENCIA             PIC X(15).
+      *--- DESCRIÇÃO DO PRODUTO
+               07  NY44AU01-PRODUCT-CODE-DESC      PIC X(30).
+      *--- TOMADOR DO SEGURO
+               07  NY44AU01-PH-ADDRESSEE           PIC X(40).
+               07  NY44AU01-PH-ADDRESS1            PIC X(40).
+               07  NY44AU01-PH-ADDRESS2            PIC X(40).
+3P0433*        07  NY44AU01-PH-TOWN-SUBURB         PIC X(30).
+3P0433         07  NY44AU01-PH-TOWN-SUBURB         PIC X(40).
+               07  NY44AU01-PH-POSTCODE-DESC       PIC X(41).
+      *--- SEGURADO
+               07  NY44AU01-BC-CLIENT-REFERENCE    PIC X(10).
+               07  NY44AU01-BC-ADDRESSEE           PIC X(40).
+               07  NY44AU01-BC-ADDRESS1            PIC X(40).
+3P0433*        07  NY44AU01-BC-TOWN-SUBURB         PIC X(30).
+               07  NY44AU01-BC-POST-CODE           PIC X(09).
+               07  NY44AU01-BC-POSTCODE-DESC       PIC X(41).
+      *--- NUMERO DE UNIDADES EM RISCO
+      *        07  NY44AU01-UAR-NUM                PIC 9(04).
+3P1556*        07  FILLER                          PIC X(31).
+3P1556         07  FILLER                          PIC X(20).
+
+      *-------
+      *B   DADOS EXTRA DA APÓLICE  - POLICY-EXTRA-DATA
+      *-------
+           05  REDEFINES NY44AU01-PRINT-DATA.
+               07  NY44AU01-TRANSACTION-TYPE       PIC X(02).
+                   88  NY44AU01-NEW-BUSINESS       VALUE '01'.
+                   88  NY44AU01-RENEWAL            VALUE '02' '12'.
+                   88  NY44AU01-ENDORSEMENT        VALUE '03' '04' '05'.
+                   88  NY44AU01-REVIVE             VALUE '06' '07'.
+                   88  NY44AU01-CANCELLATION       VALUE '08' '09'.
+                   88  NY44AU01-LAPSE              VALUE '10'.
+                   88  NY44AU01-CANCEL-TERM-DATES  VALUE '13'.
+                   88  NY44AU01-REWRITE            VALUE '14'.
+                   88  NY44AU01-ANNIV-RATING-DATE  VALUE '15'.
+                   88  NY44AU01-STATE-RATE-CHANGE  VALUE '16'.
+
+               07  NY44AU01-ANN-NETT-PREM-TOT      PIC 9(10)V9(02).
+               07  NY44AU01-PLAN-CODE              PIC X(30).
+               07  NY44AU01-TERM-EFFECT-DATE       PIC X(10).
+               07  NY44AU01-TERM-EXPIRY-DATE       PIC X(10).
+               07  NY44AU01-EFFECTIVE-DATE         PIC X(10).
+               07  NY44AU01-END-DATE               PIC X(05).
+               07  NY44AU01-RENEWAL-INDICATOR      PIC X(01).
+                   88  NY44AU01-AUTOMATIC-RENEWAL      VALUE 'A'.
+                   88  NY44AU01-MANUAL-RENEWAL-ONLY    VALUE 'M'.
+                   88  NY44AU01-NON-RENEW              VALUE 'Z'.
+                   88  NY44AU01-SEMI-AUTOMATIC         VALUE 'P'.
+               07  NY44AU01-ORIG-DATE-PRINTED      PIC X(10).
+               07  NY44AU01-REF-DOC                PIC X(15).
+      *--- PREMIO PROVISORIO
+               07  NY44AU01-PREMIO-PROVISORIO      PIC 9(10)V9(2).
+      *--- Nº DA CONDIÇÃO GERAL
+               07  NY44AU01-C-TIPO-CNDZ-GERL       PIC X(03).
+      *--- DESC. DA CONDIÇÃO GERAL
+               07  NY44AU01-C-TIPO-CNDZ-GERL-DESC  PIC X(30).
+3P0434*--- Nº DA CONDIÇÃO GERAL  UNICA
+3P0434         07  NY44AU01-C-CNDZ-GERL-CTTO       PIC X(05).
+3P0434*--- DESC. DA CONDIÇÃO GERAL UNICA
+3P0434         07  NY44AU01-D-CNDZ-GERL-CTTO       PIC X(30).
+3P0433         07  NY44AU01-PH-NUM-TYPE            PIC X(01).
+3P0433         07  NY44AU01-PH-NUM                 PIC X(04).
+3P0433         07  NY44AU01-BC-ADDRESS2            PIC X(40).
+3P0433         07  NY44AU01-BC-TOWN-SUBURB         PIC X(40).
+3P0433         07  NY44AU01-BC-NUM-TYPE            PIC X(01).
+3P0433         07  NY44AU01-BC-NUM                 PIC X(04).
+3P0434*3P0433  07  FILLER                          PIC X(229).
+3P0434*        07  FILLER                          PIC X(264).
+3P1556*3P0433  07  FILLER                          PIC X(179).
+3P1556         07  FILLER                          PIC X(138).
+
+      *-------
+      *C   NUMERO DA UNIDADE EM RISCO - NY44AU01-UAR-NUMBER
+      *-------
+
+           05  REDEFINES NY44AU01-PRINT-DATA.
+               07  NY44AU01-UAR-NUM                PIC X(08).
+M42099         07  NY44AU01-NEW-UAR                PIC X(01).
+M42099         07  NY44AU01-UAR-EFFECT-DATE        PIC X(10).
+M42099*        07                                  PIC X(320).
+3P1556*M42099  07                                  PIC X(309).
+3P1556         07                                  PIC X(308).
+
+      *-------
+      *D   TEXTO LIVRE AO NÍVEL DA APÓLICE
+      *-------
+
+           05  REDEFINES NY44AU01-PRINT-DATA.
+               07  NY44AU01-VERBIAGE-SCRIPT-1      PIC X(75).
+               07  NY44AU01-VERBIAGE-SCRIPT-2      PIC X(75).
+3P1556*        07                                  PIC X(264).
+3P1556         07                                  PIC X(263).
+
+      *-------
+      *E   SEGURADO ADICIONAL  - LINHA E
+      *-------
+
+           05  REDEFINES NY44AU01-PRINT-DATA.
+               07  NY44AU01-AS-CLIENT-REFERENCE    PIC X(10).
+               07  NY44AU01-AS-ADDRESSEE           PIC X(40).
+               07  NY44AU01-AS-ADDRESS1            PIC X(40).
+3P0433*        07  NY44AU01-AS-TOWN-SUBURB         PIC X(30).
+3P0433         07  NY44AU01-AS-TOWN-SUBURB         PIC X(40).
+               07  NY44AU01-AS-POST-CODE           PIC X(09).
+               07  NY44AU01-AS-POSTCODE-DESC       PIC X(41).
+3P0433         07  NY44AU01-AS-NUM-TYPE            PIC X(01).
+3P0433         07  NY44AU01-AS-NUM                 PIC X(04).
+3P0433*        07                                  PIC X(244).
+3P1556*3P0433  07                                  PIC X(229).
+3P1556         07                                  PIC X(228).
+
+      *-------
+      *F   ENTIDADE INTERESSADA - REL 4L
+      *-------
+
+           05  REDEFINES NY44AU01-PRINT-DATA.
+               07  NY44AU01-IP-CLIENT-REFERENCE    PIC X(10).
+               07  NY44AU01-IP-ADDRESSEE           PIC X(40).
+               07  NY44AU01-IP-ADDRESS1            PIC X(40).
+               07  NY44AU01-IP-ADDRESS2            PIC X(40).
+3P0433*        07  NY44AU01-IP-TOWN-SUBURB         PIC X(30).
+3P0433         07  NY44AU01-IP-TOWN-SUBURB         PIC X(40).
+               07  NY44AU01-IP-POST-CODE           PIC X(09).
+               07  NY44AU01-IP-POSTCODE-DESC       PIC X(41).
+3P0433         07  NY44AU01-IP-NUM-TYPE            PIC X(01).
+3P0433         07  NY44AU01-IP-NUM                 PIC X(04).
+3P0433*        07                                  PIC X(204).
+3P1556*3P0433  07                                  PIC X(189).
+3P1556         07                                  PIC X(188).
+
+      *-------
+      *G   OUTRO SEGURADO - REL 4S
+      *-------
+
+           05  REDEFINES NY44AU01-PRINT-DATA.
+               07  NY44AU01-4S-CLIENT-REFERENCE    PIC X(10).
+               07  NY44AU01-4S-ADDRESSEE           PIC X(40).
+               07  NY44AU01-4S-ADDRESS1            PIC X(40).
+3P0433*        07  NY44AU01-4S-TOWN-SUBURB         PIC X(30).
+3P0433         07  NY44AU01-4S-TOWN-SUBURB         PIC X(40).
+               07  NY44AU01-4S-POST-CODE           PIC X(09).
+               07  NY44AU01-4S-POSTCODE-DESC       PIC X(41).
+3P0433         07  NY44AU01-4S-NUM-TYPE            PIC X(01).
+3P0433         07  NY44AU01-4S-NUM                 PIC X(04).
+3P0433*        07                                  PIC X(244).
+3P1556*3P0433  07                                  PIC X(229).
+3P1556         07                                  PIC X(228).
+
+      *-------
+      *H   DADOS DA AERONAVE  -UAR-DATA-AERON
+      *-------
+           05  REDEFINES NY44AU01-PRINT-DATA.
+               07  NY44AU01-LINE-OF-BUSINESS   PIC X(30).
+               07  NY44AU01-UNIT-AT-RISK-CODE  PIC X(02).
+      *-TIPO AERONAVE
+               07  NY44AU01-VEHICLE-TYPE       PIC X(03).
+               07  NY44AU01-VEHICLE-TYPE-DESC  PIC X(30).
+      *-LIMITE GEOGRAFICO DE VOO
+               07  NY44AU01-LIM-GEO-CODE       PIC X(03).
+               07  NY44AU01-LIM-GEO-CODE-DESC  PIC X(30).
+      *-MATRICULA
+               07  NY44AU01-VEH-REG-NUMBER     PIC X(15).
+      *-NR SERIE
+               07  NY44AU01-VEH-SERIES-NUM     PIC X(15).
+      *-ACTIVIDADE
+               07  NY44AU01-UAR-ACTIVITY-CODE  PIC X(02).
+               07  NY44AU01-ACTIVITY-CODE-DESC PIC X(30).
+      *-LOTACAO
+               07  NY44AU01-UAR-NR-PASS        PIC X(04).
+      *-LOTACAO MAXIMA
+               07  NY44AU01-UAR-NR-MAX-PASS    PIC X(04).
+      *-CAPITAL SEGURO
+               07  NY44AU01-AMOUNT-CAPITAL     PIC 9(11)V9(2).
+      *-LIMITE POR PASSAGEIRO
+               07  NY44AU01-AMOUNT-PASS        PIC 9(11)V9(2).
+      *-ANO DA AERONAVE
+               07  NY44AU01-VEH-YEAR           PIC 9(04).
+      *-MARCA-MODELO
+               07  NY44AU01-VEH-BRAND          PIC X(30).
+3P1556*        07  FILLER                      PIC X(186).
+3P1556         07  FILLER                      PIC X(185).
+
+      *-------
+      *I   DADOS DA EMBARCACAO-UAR-DATA-EMBRE - RECREIO
+      *-------
+           05  REDEFINES NY44AU01-PRINT-DATA.
+               07  NY44AU01-ER-LINE-OF-BUSS    PIC X(30).
+               07  NY44AU01-ER-UNIT-AT-RISK    PIC X(02).
+      *-TIPO EMBARCACAO
+               07  NY44AU01-ER-VEH-TYPE        PIC X(03).
+               07  NY44AU01-ER-VEH-TYPE-DESC   PIC X(30).
+      *-AREA NAVEGACAO
+               07  NY44AU01-ER-AREA-NAV-CODE   PIC X(03).
+               07  NY44AU01-ER-AREA-NAV-DESC   PIC X(30).
+      *-ACTIVIDADE
+               07  NY44AU01-ER-ACTIVITY-CODE   PIC X(02).
+               07  NY44AU01-ER-ACTIVITY-DESC   PIC X(30).
+      *-CLASSE
+               07  NY44AU01-ER-CLASS-CODE      PIC X(02).
+               07  NY44AU01-ER-CLASS-DESC      PIC X(25).
+      *-MATRICULA
+               07  NY44AU01-ER-VEH-REG-NUM     PIC X(15).
+      *-BANDEIRA
+               07  NY44AU01-ER-FLAG-CODE       PIC X(03).
+               07  NY44AU01-ER-FLAG-DESC       PIC X(25).
+      *-NOME
+               07  NY44AU01-ER-NAME            PIC X(30).
+      *-MARCA-MODELO
+               07  NY44AU01-ER-MARCA           PIC X(25).
+      *-CAPITANIA
+               07  NY44AU01-ER-CAPITANIA-CODE  PIC X(02).
+               07  NY44AU01-ER-CAPITANIA-DESC  PIC X(25).
+      *-ANO CONSTRUCAO
+               07  NY44AU01-ER-VEH-YEAR        PIC 9(04).
+      *-ANO RECONSTRUCAO
+               07  NY44AU01-ER-VEH-RE-BUILT    PIC 9(04).
+      *-MATERIAL CONSTRUCAO
+               07  NY44AU01-ER-MATERIAL-CODE   PIC X(02).
+               07  NY44AU01-ER-MATERIAL-DESC   PIC X(25).
+      *-CONCELHO DO ANCORADOURO
+               07  NY44AU01-ER-ANC-CONC-CODE   PIC X(03).
+               07  NY44AU01-ER-ANC-CONC-DESC   PIC X(25).
+      *-ANCORADOURO
+               07  NY44AU01-ER-ANC-ANC-CODE    PIC X(03).
+               07  NY44AU01-ER-ANC-ANC-DESC    PIC X(30).
+      *-LOTACAO
+               07  NY44AU01-ER-LOTACAO         PIC 9(04).
+      *-TOTAL CAPITAL SEGURO
+               07  NY44AU01-ER-AMOUNT-CAPITAL  PIC 9(11)V9(2).
+      *-TOTAL CAPITAL DE OCUPANTES (CAPITAL COBERTURA X LOTACAO)
+               07  NY44AU01-ER-AMOUNT-LOTACAO  PIC 9(11)V9(2).
+      *-INDICADOR DE COMPETICAO DESPORTIVA
+               07  NY44AU01-ER-IND-COMP-DESP   PIC X(01).
+      *-INDICADOR DE SUBSTITUICAO EM NOVO
+               07  NY44AU01-ER-IND-REP-NEW     PIC X(01).
+3P1556*        07  FILLER                      PIC X(04).
+3P1556         07  FILLER                      PIC X(03).
+
+      *-------
+      *J   DADOS DA EMBARCACAO-UAR-DATA-EMBCO - COMERCIO
+      *-------
+           05  REDEFINES NY44AU01-PRINT-DATA.
+               07  NY44AU01-EC-LINE-OF-BUSS    PIC X(30).
+               07  NY44AU01-EC-UNIT-AT-RISK    PIC X(02).
+      *-TIPO EMBARCACAO
+               07  NY44AU01-EC-VEH-TYPE        PIC X(03).
+               07  NY44AU01-EC-VEH-TYPE-DESC   PIC X(30).
+      *-AREA NAVEGACAO
+               07  NY44AU01-EC-AREA-NAV-CODE   PIC X(03).
+               07  NY44AU01-EC-AREA-NAV-DESC   PIC X(30).
+      *-ACTIVIDADE
+               07  NY44AU01-EC-ACTIVITY-CODE   PIC X(02).
+               07  NY44AU01-EC-ACTIVITY-DESC   PIC X(30).
+      *-CLASSE
+      *        07  NY44AU01-EC-CLASS-CODE      PIC X(02).
+      *        07  NY44AU01-EC-CLASS-DESC      PIC X(25).
+      *-NºIDENTIFICACAO/REGISTO
+               07  NY44AU01-EC-VEH-REG-NUM     PIC X(15).
+      *-NOME
+               07  NY44AU01-EC-NAME            PIC X(30).
+      *-MARCA-MODELO
+               07  NY44AU01-EC-MARCA           PIC X(25).
+      *-PORTO DE REGISTO
+               07  NY44AU01-EC-CAPITANIA-CODE  PIC X(02).
+               07  NY44AU01-EC-CAPITANIA-DESC  PIC X(25).
+      *-ANO CONSTRUCAO
+               07  NY44AU01-EC-VEH-YEAR        PIC 9(04).
+      *-ANO RECONSTRUCAO
+               07  NY44AU01-EC-VEH-RE-BUILT    PIC 9(04).
+      *-MATERIAL CONSTRUCAO
+               07  NY44AU01-EC-MATERIAL-CODE   PIC X(02).
+               07  NY44AU01-EC-MATERIAL-DESC   PIC X(25).
+      *-CONCELHO - ANCORADOURO
+               07  NY44AU01-EC-ANC-CONC-CODE   PIC X(03).
+               07  NY44AU01-EC-ANC-CONC-DESC   PIC X(25).
+      *-ANCORADOURO
+               07  NY44AU01-EC-ANC-ANC-CODE    PIC X(03).
+               07  NY44AU01-EC-ANC-ANC-DESC    PIC X(30).
+      *-TOTAL CAPITAL SEGURO
+               07  NY44AU01-EC-AMOUNT-CAPITAL  PIC 9(11)V9(2).
+      *-Nº PASSAGEIROS
+               07  NY44AU01-EC-LOTACAO         PIC X(03).
+      *-LIMITE POR PASSAGEIRO
+               07  NY44AU01-EC-AMOUNT-LOTACAO  PIC 9(11)V9(2).
+      *-Nº TRIPULANTES
+               07  NY44AU01-EC-TRIPULANTE      PIC X(03).
+      *-LIMITE POR TRIPULANTE
+               07  NY44AU01-EC-AMOUNT-TRIP     PIC 9(11)V9(2).
+      *-LIMITE MAXIMO POR MILHA
+               07  NY44AU01-EC-AMOUNT-MILE     PIC 9(11)V9(2).
+      *-LIMITE OPERACAO REBOQUE
+               07  NY44AU01-EC-AMOUNT-REB      PIC 9(11)V9(2).
+3P1556*        07  FILLER                      PIC X(10).
+3P1556         07  FILLER                      PIC X(09).
+
+
+      *-------
+      *K-  CAPITAIS SEGUROS - EMBARCACOES DE RECREIO/COMERCIO
+      *-------
+
+           05  REDEFINES NY44AU01-PRINT-DATA.
+      *-TIPO CAPITAL
+               07  NY44AU01-CS-MOTOR-TYPE          PIC X(02).
+               07  NY44AU01-CS-MOTOR-TYPE-DESC     PIC X(50).
+      *-DATA INICIO
+               07  NY44AU01-CS-EFFECT-DATE         PIC X(10).
+      *-DATA FIM
+               07  NY44AU01-CS-EXPIRY-DATE         PIC X(10).
+      *-VALOR SEGURO
+               07  NY44AU01-CS-AMOUNT-INSURED      PIC 9(11)V9(2).
+3P1556*        07                                  PIC X(329).
+3P1556         07                                  PIC X(328).
+
+      *-------
+      *M-  DADOS DO MOTOR   -UAR-MOTOR /AERONAVES/RECREIO/COMERCIO
+      *-------
+
+           05  REDEFINES NY44AU01-PRINT-DATA.
+      *-TIPO MOTOR
+               07  NY44AU01-UAR-MOTOR-TYPE         PIC X(02).
+               07  NY44AU01-MOTOR-TYPE-DESC        PIC X(30).
+      *-POTENCIA
+               07  NY44AU01-HORSEPOWER             PIC X(07).
+      *-TIPO DE POTENCIA
+               07  NY44AU01-C-UNIM-PTCA            PIC X(03).
+      *-MARCA-MODELO
+               07  NY44AU01-UAR-BRAND              PIC X(30).
+      *-VALOR SEGURO
+               07  NY44AU01-MT-AMOUNT-INSURED      PIC 9(11)V9(2).
+      *-ANO MOTOR
+               07  NY44AU01-MOTOR-YEAR             PIC X(04).
+      *-QUANTIDADE
+               07  NY44AU01-QUANTITY               PIC 9(03).
+3P1556*        07                                  PIC X(322).
+3P1556         07                                  PIC X(321).
+
+      *-------
+      *L-  OBJECTOS SEGUROS - EMBARCACOES DE RECREIO
+      *-------
+
+           05  REDEFINES NY44AU01-PRINT-DATA.
+      *-TIPO OBJECTO
+               07  NY44AU01-OS-MOTOR-TYPE          PIC X(02).
+               07  NY44AU01-OS-MOTOR-TYPE-DESC     PIC X(50).
+      *-DATA INICIO
+               07  NY44AU01-OS-EFFECT-DATE         PIC X(10).
+      *-DATA FIM
+               07  NY44AU01-OS-EXPIRY-DATE         PIC X(10).
+      *-VALOR SEGURO
+               07  NY44AU01-OS-AMOUNT-INSURED      PIC 9(11)V9(2).
+3P1556*        07                                  PIC X(329).
+3P1556         07                                  PIC X(328).
+
+      *-------
+      *N-  POLICY COVER LEVEL DATA  - POLICY-COVER-DATA
+      *-------
+
+           05  REDEFINES NY44AU01-PRINT-DATA.
+               07  NY44AU01-COVER-POLICY-CODE      PIC X(05).
+               07  NY44AU01-COVER-INC-GROSS-PREM   PIC 9(11)V9(02).
+               07  NY44AU01-COVER-BASE-PREMIUM     PIC 9(11)V9(02).
+               07  NY44AU01-COVER-COMM-PREMIUM     PIC 9(10)V9(02).
+               07  NY44AU01-COVER-INEM             PIC 9(10)V9(02).
+               07  NY44AU01-COVER-STAMP-DUTY       PIC 9(10)V9(02).
+3P1556*        07                                  PIC X(347).
+3P1556         07                                  PIC X(346).
+
+      *-------
+      *O-  CONDIÇÕES PARTICULARES - CLAUSULAS -POLICY-TEXT-DATA
+      *-------
+
+           05  REDEFINES NY44AU01-PRINT-DATA.
+               07  NY44AU01-POLICY-FORM-NUMBER     PIC X(10).
+               07  NY44AU01-POLICY-SCREEN-LINE     PIC X(79).
+3P1556*        07  FILLER                          PIC X(325).
+3P1556         07  FILLER                          PIC X(324).
+
+      *-------
+      *O-  COVERAGE-DATA
+      *-------
+
+           05  REDEFINES NY44AU01-PRINT-DATA.
+               07  NY44AU01-COVERAGE-CODE          PIC X(05).
+                   88  NY44AU01-SYSTEM-COV-CODE    VALUE '00000'
+                                                    THRU '99999'.
+               07                                  PIC X(01).
+                   88  NY44AU01-COVER-DATA         VALUE 'C'.
+                   88  NY44AU01-DEDUCTIBLE-DATA    VALUE 'D'.
+
+3P1556*        07  NY44AU01-COVER-DEDUCTIBLE-DATA  PIC X(408).
+3P1556         07  NY44AU01-COVER-DEDUCTIBLE-DATA  PIC X(407).
+               07  REDEFINES NY44AU01-COVER-DEDUCTIBLE-DATA.
+                   09  NY44AU01-SUM-INSURED        PIC 9(11).
+                   09  NY44AU01-BASE-PREMIUM       PIC 9(09)V9(02).
+                   09  NY44AU01-COMMERCIAL-PREMIUM PIC 9(09)V9(02).
+                   09  NY44AU01-INEM               PIC 9(09)V9(02).
+                   09  NY44AU01-STAMP-DUTY         PIC 9(09)V9(02).
+M42087             09  NY44AU01-FRACIONAMENTO      PIC 9(09)V9(02).
+M42087*            09                              PIC X(353).
+3P1556*M42087      09                              PIC X(337).
+3P1556             09                              PIC X(326).
+
+               07  REDEFINES NY44AU01-COVER-DEDUCTIBLE-DATA.
+                   09  NY44AU01-COVER-TYPE         PIC X(04).
+                   09  NY44AU01-LIMIT-AMT          PIC 9(13).
+                   09  NY44AU01-DEDUCTIBLE-TYPE    PIC X(02).
+                       88  NY44AU01-DEDUCTIBLE-IS-AMOUNT
+                                                   VALUE 'A'.
+                       88  NY44AU01-DEDUCTIBLE-IS-DAYS
+                                                   VALUE 'D'.
+                       88  NY44AU01-DEDUCTIBLE-IS-KM
+                                                   VALUE 'K'.
+                       88  NY44AU01-DEDUCTIBLE-IS-PERCENT
+                                                   VALUE 'P'.
+                   09  NY44AU01-DEDUCTIBLE-AMT     PIC 9(09)V9(02).
+                   09  NY44AU01-DEDUCTIBLE-PCT     PIC 9(03)V9(02).
+3P1556*            09                              PIC X(373).
+3P1556             09                              PIC X(372).
+
+      *-------
+      *Q-  UAR TEXT LEVEL DATA
+      *-------
+
+           05  REDEFINES NY44AU01-PRINT-DATA.
+               07  NY44AU01-UAR-FORM-NUMBER        PIC X(10).
+               07  NY44AU01-UAR-SCREEN-LINE        PIC X(79).
+3P1556*        07                                  PIC X(325).
+3P1556         07                                  PIC X(324).
+
+      *-------
+      *R-  COBERTURAS DE EXTENSAO - RECREIO / AERONAVES
+      *-------
+
+           05  REDEFINES NY44AU01-PRINT-DATA.
+      *-TIPO EXTENSAO
+               07  NY44AU01-EX-TIPO                PIC X(01).
+               07  NY44AU01-EX-TIPO-DESC           PIC X(50).
+      *-AREA NAVEGACAO / LIMITE GEOGRAFICO
+               07  NY44AU01-EX-PAIS                PIC X(03).
+               07  NY44AU01-EX-PAIS-DESC           PIC X(30).
+      *-DATA INICIO
+               07  NY44AU01-EX-EFFECT-DATE         PIC X(10).
+      *-DATA FIM
+               07  NY44AU01-EX-EXPIRY-DATE         PIC X(10).
+      *-PREMIO
+               07  NY44AU01-EX-PREMIO-FIXO         PIC 9(11)V9(2).
+      *-TAXA
+               07  NY44AU01-EX-TAXA-FIXA           PIC 9(03)V9(4).
+      *-VALOR SEGURO
+               07  NY44AU01-EX-AMOUNT-INSURED      PIC 9(11)V9(2).
+      *-INDICADOR DE RENOVAVEL
+               07  NY44AU01-EX-IND-RENEW           PIC X(01).
+3P1556*        07                                  PIC X(275).
+3P1556         07                                  PIC X(274).
+
+
+      *-------
+      *    MOTIVO DE ALTERAÇÃO ?????
+      *-------
+
+           05  REDEFINES NY44AU01-PRINT-DATA.
+               07  NY44AU01-POLICY-ENDORS-REASON   PIC X(99).
+3P1556*        07  FILLER                          PIC X(315).
+3P1556         07  FILLER                          PIC X(314).
+      *-------
+      *    UAR ENDORSEMENT LEVEL DATA -???
+      *-------
+           05  REDEFINES NY44AU01-PRINT-DATA.
+               07  NY44AU01-UAR-ENDORS-REASON      PIC X(99).
+3P1556*        07                                  PIC X(315).
+3P1556         07                                  PIC X(314).
+
+      *-------
+      *    IDENTIFICA QUE O DOCUMENTO PARA A APÓLICE CHEGOU AO FIM
+      *-------
+
+           05  REDEFINES NY44AU01-PRINT-DATA.
+3P1556*        07                                  PIC X(414).
+3P1556         07                                  PIC X(413).
+
+3P1556     05  NY44AU01-TIPO-IMPRESSAO             PIC X(001).
+

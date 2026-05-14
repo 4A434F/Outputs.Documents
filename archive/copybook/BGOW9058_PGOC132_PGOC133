@@ -1,0 +1,91 @@
+      *----------------------------------------------------------------*
+      *                      MAINTENANCE  LOG                          *
+      *                                                                *
+      *PROGRAMMER  PCR    DATE                COMMENTS                 *
+      *----------------------------------------------------------------*
+      *                                                                *
+      * ALTERAÇÕES NO COPYBOOK FZ4ITS05 DEVERÃO SER REPLICADAS NESTE   *
+      * COPYBOOK (BGOW9058) UTILIZADO NAS APLICAÇÕES DE OUTPUTS (UGEN) *
+      * E INFORMAR A EQUIPA                                            *
+      *                                                                *
+      * ACTIVIDADE 201900481 - EMISSÃO CARTAS SELECÇÃO DE CARTEIRA:    *
+      *    ESTE COPYBOOK SERVE PARA IMPRESSÃO DAS CARTAS DE SELECÇÃO   *
+      *    DE CARTEIRA DE PATRIMONIAIS (E PETS)                        *
+      *    - 3 CARTAS DE SANEAMENTO DE CARTEIRA PATRIMONIAIS (DNP)     *
+      *                                                                *
+      *----------------------------------------------------------------*
+      *                                                                *
+      * NJF  201900481  2020-06-23  ORIGINAL VERSION.                  *
+      *                             REGISTO LRECL = 500                *
+      *                                                                *
+      *----------------------------------------------------------------*
+      /
+       05  :PREFIX:-PRINT-RECORD.
+      * ------------------------------------------------------------- *
+      *    SORT KEY                                                   *
+      * ------------------------------------------------------------- *
+           07  :PREFIX:-SORT-KEY.
+               09  :PREFIX:-COMPANY                 PIC X(03).
+               09  :PREFIX:-MARCA                   PIC X(03).
+               09  :PREFIX:-CANAL-DISTRIBUICAO      PIC X(03).
+               09  :PREFIX:-CLIENT-REFERENCE        PIC X(10).
+               09  :PREFIX:-POST-CODE               PIC X(08).
+               09  :PREFIX:-AGENTE-COBRADOR         PIC X(10).
+               09  :PREFIX:-AG-POST-CODE            PIC X(08).
+               09  :PREFIX:-PRODUTO                 PIC X(05).
+               09  :PREFIX:-POLICY-NUMBER           PIC X(16).
+               09  :PREFIX:-RECORD-TYPE             PIC X(02).
+                   88  :PREFIX:-APOL-DADOS-GERAIS VALUE 'A1'.
+                   88  :PREFIX:-TEXTO-ALTERACAO   VALUE 'T1'.
+                   88  :PREFIX:-FIM-CARTA         VALUE 'ZA'.
+               09  :PREFIX:-DOCUMENT-CODE           PIC X(04).
+                   88  :PREFIX:-ANULACAO-PATRIM   VALUE 'SCI1'.
+                   88  :PREFIX:-ALTERACAO-PATRIM  VALUE 'SCI2'.
+                   88  :PREFIX:-ANULACAO-PETS     VALUE 'SCI3'.
+                   88  :PREFIX:-ALTERACAO-AP      VALUE 'SCI4'.
+                   88  :PREFIX:-ANULACAO-AP       VALUE 'SCI5'.
+                   88  :PREFIX:-ANULACAO-AC       VALUE 'SCI6'.
+                   88  :PREFIX:-ANULACAO-AT       VALUE 'SCI7'.
+      *
+           07  :PREFIX:-PRINT-DATA                  PIC X(427).
+      *
+      * ------------------------------------------------------------- *
+      *    DADOS GERAIS DA APOLICE                                    *
+      * ------------------------------------------------------------- *
+           07  REDEFINES :PREFIX:-PRINT-DATA.
+               09  :PREFIX:-PS-ADDRESSEE            PIC X(40).          00580000
+               09  :PREFIX:-PS-ADDRESS1             PIC X(40).          00590000
+               09  :PREFIX:-PS-ADDRESS2             PIC X(40).          00590000
+               09  :PREFIX:-PS-ADDRESS3             PIC X(40).          00590000
+               09  :PREFIX:-PS-ADDRESS4             PIC X(40).          00590000
+               09  :PREFIX:-PS-TNUM-PORTA           PIC X(01).          00590000
+               09  :PREFIX:-PS-NUM-PORTA            PIC X(04).          00590000
+               09  :PREFIX:-TIPO-DE-CARTA           PIC X(02).          00590000
+               09  :PREFIX:-DATA-PROCESSAMENTO      PIC X(10).          00590000
+               09  :PREFIX:-PRODUTO-DESC            PIC X(30).          00590000
+               09  :PREFIX:-DT-INIC-ANUIDADE        PIC X(10).          00590000
+               09  :PREFIX:-DATA-CANCELAMENTO       PIC X(10).          00600000
+               09  :PREFIX:-TIPO-TRANSACCAO         PIC X(02).          00610000
+               09  :PREFIX:-PESSOA-SEGURA           PIC X(60).          00620000
+               09                                   PIC X(98).          00721000
+      *
+      * ------------------------------------------------------------- *
+      *    TEXTO DO COMENTARIO (PARA A CARTA ALTERACAO SCI2)          *
+      * ------------------------------------------------------------- *
+           07  REDEFINES :PREFIX:-PRINT-DATA.                           00760000
+               09  :PREFIX:-COMENTARIO-1            PIC X(427).         00770000
+      *
+      * ------------------------------------------------------------- *
+      *    FIM DO DOCUMENTO                                           *
+      * ------------------------------------------------------------- *
+           07  REDEFINES :PREFIX:-PRINT-DATA.                           01030000
+               09  FILLER                           PIC X(427).         01072000
+      *
+           07  :PREFIX:-TIPO-IMPRESSAO              PIC X(01).          02240000
+               88  :PREFIX:-IMP-ONLINE            VALUE 'I'.
+               88  :PREFIX:-IMP-BATCH             VALUE 'O'.
+      /                                                                 02280000
+      * ------------------------------------------------------------- *
+      *                 END OF BGOW9058 COPYBOOK                      *
+      * ------------------------------------------------------------- *
+

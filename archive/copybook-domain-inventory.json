@@ -1,0 +1,1375 @@
+{
+  "BGOW0015": {
+    "origin": "FGS",
+    "fieldCount": 121,
+    "fields": [
+      {
+        "field": "BGOW0015-COD-COMPANHIA",
+        "description": "Código de identificação da Companhia",
+        "values": "111 - Via Directa\n128 - Fidelidade Mundial\n138 - Império Bonança\n148 - Multicare\n158 - Caixa Poupança",
+        "observations": "",
+        "required": "O"
+      },
+      {
+        "field": "BGOW0015-COD-MARCA",
+        "description": "Código de identificação da Marca",
+        "values": "001 - OK Teleseguro\n002 - Fidelidade Mundial\nL02 - FM Leve\n003 - Império Bonança\nL03 - IB Leve\n004 - ICI\n005 - Continente\n006 - Multicare\nL09 - CP Leve",
+        "observations": "",
+        "required": "O"
+      },
+      {
+        "field": "BGOW0015-COD-ORIGEM",
+        "description": "Código de identificação do Sistema Origem",
+        "values": "C22 - Cogen 22\nC33 - Cogen 33\nC41 - Cogen 41\nP41 - PRIC 41\nCLA - Clássico\nGIS - GIS\nTAG - TAG\nCLH - Colheitas\nFGS - Vida Grupo\nRVI - Vida Individual",
+        "observations": "",
+        "required": "O"
+      },
+      {
+        "field": "BGOW0015-COD-POSTALM",
+        "description": "Código Postal do Mediador\n-este campo só deve vir preenchido se o documento for passivel de ser entregue ao mediador.",
+        "values": "caso o documento seja endereçado ao Mediador",
+        "observations": "",
+        "required": "F"
+      },
+      {
+        "field": "BGOW0015-NR-MEDIADOR",
+        "description": "Número do Mediador\n-este campo só deve vir preenchido se o documento for passivel de ser entregue ao mediador.",
+        "values": "caso o documento seja endereçado ao Mediador",
+        "observations": "",
+        "required": "F"
+      },
+      {
+        "field": "BGOW0015-COD-POSTALC",
+        "description": "Código Postal do Cliente\n-este campo deve ser preenchido com o valor do codigo postal da entidade a quem o documento vai endereçado.",
+        "values": "",
+        "observations": "",
+        "required": "O"
+      },
+      {
+        "field": "BGOW0015-NR-CLIENTE",
+        "description": "Número do Cliente\n-este campo deve ser preenchido com o valor do numero da entidade a quem o documento vai endereçado.",
+        "values": "",
+        "observations": "",
+        "required": "O"
+      },
+      {
+        "field": "BGOW0015-NR-APOLICE",
+        "description": "Número da Apólice\nATENÇÃO: Quando o documento refere mais do que uma apólice o campo \nNR-APOLICE deve vir do SO preenchido a espaços.",
+        "values": "",
+        "observations": "",
+        "required": "F"
+      },
+      {
+        "field": "BGOW0015-COD-PRODUTO",
+        "description": "Código de Produto",
+        "values": "",
+        "observations": "",
+        "required": "F"
+      },
+      {
+        "field": "BGOW0015-DATA-HORA",
+        "description": "Data e Hora de emissão do documento",
+        "values": "",
+        "observations": "",
+        "required": "O"
+      }
+    ]
+  },
+  "BGOW0019": {
+    "origin": "GIS",
+    "fieldCount": 65,
+    "fields": [
+      {
+        "field": "BGOW0019-COD-COMPANHIA",
+        "description": "Código de identificação da Companhia (deve ser repetido em todas as linhas do documento)",
+        "values": "111 - Via Directa\n128 - Fidelidade Mundial\n138 - Império Bonança\n148 - Multicare\n158 - Caixa Poupança",
+        "observations": "",
+        "required": "O"
+      },
+      {
+        "field": "BGOW0019-COD-MARCA",
+        "description": "Código de identificação da Marca(deve ser repetido em todas as linhas do documento)",
+        "values": "001 - OK Teleseguro\n002 - Fidelidade Mundial\nL02 - FM Leve\n003 - Império Bonança\nL03 - IB Leve\n004 - ICI\n005 - Continente\n006 - Multicare\nL09 - CP Leve",
+        "observations": "",
+        "required": "O"
+      },
+      {
+        "field": "BGOW0019-COD-ORIGEM",
+        "description": "Código de identificação do Sistema Origem(deve ser repetido em todas as linhas do documento)",
+        "values": "C22 - Cogen 22\nC33 - Cogen 33\nC41 - Cogen 41\nP41 - PRIC 41\nCLA - Clássico\nGIS - GIS\nTAG - TAG\nCLH - Colheitas\nFGS - Vida Grupo\nRVI - Vida individual",
+        "observations": "",
+        "required": "O"
+      },
+      {
+        "field": "BGOW0019-COD-POSTALM",
+        "description": "Código Postal do Mediador\n-este campo só deve vir preenchido se o documento for passivel de ser entregue ao mediador.(deve ser repetido em todas as linhas do documento)",
+        "values": "caso o documento seja endereçado ao Mediador",
+        "observations": "",
+        "required": "F"
+      },
+      {
+        "field": "BGOW0019-NR-MEDIADOR",
+        "description": "Número do Mediador\n-este campo só deve vir preenchido se o documento for passivel de ser entregue ao mediador.(deve ser repetido em todas as linhas do documento)",
+        "values": "caso o documento seja endereçado ao Mediador",
+        "observations": "",
+        "required": "F"
+      },
+      {
+        "field": "BGOW0019-COD-POSTALC",
+        "description": "Código Postal do Cliente\n-este campo deve ser preenchido com o valor do codigo postal da entidade a quem o documento vai endereçado.(deve ser repetido em todas as linhas do documento)",
+        "values": "",
+        "observations": "",
+        "required": "O"
+      },
+      {
+        "field": "BGOW0019-NR-CLIENTE",
+        "description": "Número do Cliente\n-este campo deve ser preenchido com o valor do numero da entidade a quem o documento vai endereçado.(deve ser repetido em todas as linhas do documento)",
+        "values": "",
+        "observations": "",
+        "required": "O"
+      },
+      {
+        "field": "BGOW0019-NR-APOLICE",
+        "description": "Número da Apólice\nATENÇÃO: Quando o documento refere mais do que uma apólice o campo \nNR-APOLICE deve vir do SO preenchido a espaços. Nos casos das propostas (quando ainda não existe numero de apólice) o campo deve vir a todo a espaços - o ramo e a apólice  (deve ser repetido em todas as linhas do documento)",
+        "values": "",
+        "observations": "",
+        "required": "F"
+      },
+      {
+        "field": "BGOW0019-COD-PRODUTO",
+        "description": "Código de Produto(deve ser repetido em todas as linhas do documento)",
+        "values": "",
+        "observations": "",
+        "required": "F"
+      },
+      {
+        "field": "BGOW0019-DATA-HORA",
+        "description": "Data e Hora de emissão do documento(deve ser repetido em todas as linhas do documento)",
+        "values": "",
+        "observations": "",
+        "required": "O"
+      }
+    ]
+  },
+  "BGOW0046": {
+    "origin": "GIS",
+    "fieldCount": 84,
+    "fields": [
+      {
+        "field": "BGOW0046-COD-COMPANHIA",
+        "description": "Código de identificação da Companhia",
+        "values": "111 - Via Directa\n128 - Fidelidade Mundial\n138 - Império Bonança\n148 - Multicare\n158 - Caixa Poupança",
+        "observations": "",
+        "required": "O"
+      },
+      {
+        "field": "BGOW0046-COD-MARCA",
+        "description": "Código de identificação da Marca",
+        "values": "001 - OK Teleseguro\n002 - Fidelidade Mundial\nL02 - FM Leve\n003 - Império Bonança\nL03 - IB Leve\n004 - ICI\n005 - Continente\n006 - Multicare\nL09 - CP Leve",
+        "observations": "",
+        "required": "O"
+      },
+      {
+        "field": "BGOW0046-COD-ORIGEM",
+        "description": "Código de identificação do Sistema Origem",
+        "values": "C22 - Cogen 22\nC33 - Cogen 33\nC41 - Cogen 41\nP41 - PRIC 41\nCLA - Clássico\nGIS - GIS\nTAG - TAG\nCLH - Colheitas\nFGS - Vida Grupo\nRVI - Vida individual",
+        "observations": "",
+        "required": "O"
+      },
+      {
+        "field": "BGOW0046-COD-POSTALM",
+        "description": "Código Postal do Mediador",
+        "values": "Espaços",
+        "observations": "",
+        "required": "F"
+      },
+      {
+        "field": "BGOW0046-NR-MEDIADOR",
+        "description": "Número do Mediador",
+        "values": "Espaços",
+        "observations": "",
+        "required": "F"
+      },
+      {
+        "field": "BGOW0046-COD-POSTALC",
+        "description": "Código Postal do Cliente",
+        "values": "",
+        "observations": "",
+        "required": "O"
+      },
+      {
+        "field": "BGOW0046-NR-CLIENTE",
+        "description": "Número do Cliente",
+        "values": "",
+        "observations": "",
+        "required": "O"
+      },
+      {
+        "field": "BGOW0046-NR-APOLICE",
+        "description": "Número da Apólice",
+        "values": "Espaços",
+        "observations": "",
+        "required": "F"
+      },
+      {
+        "field": "BGOW0046-COD-PRODUTO",
+        "description": "Código de Produto",
+        "values": "Espaços",
+        "observations": "",
+        "required": "F"
+      },
+      {
+        "field": "BGOW0046-DATA-HORA",
+        "description": "Data e Hora de emissão do documento",
+        "values": "",
+        "observations": "",
+        "required": "O"
+      }
+    ]
+  },
+  "BGOW0060": {
+    "origin": "FSCD",
+    "fieldCount": 56,
+    "fields": [
+      {
+        "field": "BGOW0060-COD-DOCUMENTO",
+        "description": "Código de documento",
+        "values": "Código de documento",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0060-TIPO-REGISTO",
+        "description": "Tipo de registo",
+        "values": "Tipo de registo",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0060-TIPO-IMPRESSAO",
+        "description": "Tipo de impressão",
+        "values": "Tipo de impressão",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0060-USERID",
+        "description": "User Id da impressão OnLine",
+        "values": "User Id da impressão OnLine",
+        "observations": "Condicional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0060-COD-COMPANHIA",
+        "description": "Código de identificação da Companhia",
+        "values": "Código de identificação da Companhia",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0060-COD-MARCA",
+        "description": "Código de identificação da Marca",
+        "values": "Código de identificação da Marca",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0060-AUX-MARCA",
+        "description": "BGOW0060-AUX-MARCA",
+        "values": "",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0060-NR-AGENTE",
+        "description": "Número do Mediador",
+        "values": "Número do Mediador",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0060-NR-CLIENTE",
+        "description": "Número do Cliente: Preencher a espaços, uma vez que é sempre para mediador",
+        "values": "Número do Cliente: Preencher a espaços, uma vez que é sempre para mediador",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0060-NR-APOLICE",
+        "description": "Número da Apólice: Preencher a espaços, uma vez que poderá existir várias apólices associadas",
+        "values": "Número da Apólice: Preencher a espaços, uma vez que poderá existir várias apólices associadas",
+        "observations": "Opcional",
+        "required": ""
+      }
+    ]
+  },
+  "BGOW0062": {
+    "origin": "FSCD",
+    "fieldCount": 43,
+    "fields": [
+      {
+        "field": "BGOW0062-COD-DOCUMENTO",
+        "description": "Código de documento",
+        "values": "Código de documento",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0062-TIPO-REGISTO",
+        "description": "Tipo de registo",
+        "values": "Tipo de registo",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0062-TIPO-IMPRESSAO",
+        "description": "Tipo de impressão",
+        "values": "Tipo de impressão",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0062-USERID",
+        "description": "User Id da impressão OnLine",
+        "values": "User Id da impressão OnLine",
+        "observations": "Condicional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0062-COD-COMPANHIA",
+        "description": "Código de identificação da Companhia",
+        "values": "Código de identificação da Companhia",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0062-COD-MARCA",
+        "description": "Código de identificação da Marca",
+        "values": "Código de identificação da Marca",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0062-AUX-MARCA",
+        "description": "BGOW0062-AUX-MARCA",
+        "values": "",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0062-NR-AGENTE",
+        "description": "Número do Mediador",
+        "values": "Número do Mediador",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0062-NR-CLIENTE",
+        "description": "Número do Cliente: Preencher a espaços, uma vez que é sempre para mediador",
+        "values": "Número do Cliente: Preencher a espaços, uma vez que é sempre para mediador",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0062-NR-APOLICE",
+        "description": "Número da Apólice: Preencher a espaços, uma vez que poderá existir várias apólices associadas",
+        "values": "Número da Apólice: Preencher a espaços, uma vez que poderá existir várias apólices associadas",
+        "observations": "Opcional",
+        "required": ""
+      }
+    ]
+  },
+  "BGOW0068": {
+    "origin": "GIS",
+    "fieldCount": 47,
+    "fields": [
+      {
+        "field": "BGOW0068-COD-COMPANHIA",
+        "description": "Código de identificação da Companhia",
+        "values": "Código de identificação da Companhia",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0068-COD-MARCA",
+        "description": "Código de identificação da Marca",
+        "values": "Código de identificação da Marca",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0068-COD-ORIGEM",
+        "description": "Código de identificação do Sistema Origem",
+        "values": "Código de identificação do Sistema Origem",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0068-COD-POSTALM",
+        "description": "Código postal do Mediador (Se estrangeiro deverá vir a zeros) [9999-999]",
+        "values": "Código postal do Mediador (Se estrangeiro deverá vir a zeros) [9999-999]",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0068-NR-MEDIADOR",
+        "description": "Número do Mediador",
+        "values": "Número do Mediador",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0068-COD-POSTALC",
+        "description": "Código postal do Cliente (Se estrangeiro deverá vir a zeros) [9999-999]",
+        "values": "Código postal do Cliente (Se estrangeiro deverá vir a zeros) [9999-999]",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0068-NR-CLIENTE",
+        "description": "Número do Cliente",
+        "values": "Número do Cliente",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0068-NR-APOLICE",
+        "description": "Número da Apólice",
+        "values": "Número da Apólice",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0068-COD-PRODUTO",
+        "description": "Código do Produto",
+        "values": "Código do Produto",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0068-DATA-HORA",
+        "description": "Data e hora da emissão do documento  [AAAAMMDDhhmmss]",
+        "values": "Data e hora da emissão do documento  [AAAAMMDDhhmmss]",
+        "observations": "Obrigatório",
+        "required": ""
+      }
+    ]
+  },
+  "BGOW9062": {
+    "origin": "GIS",
+    "fieldCount": 115,
+    "fields": [
+      {
+        "field": "BGOW9062-COD-COMPANHIA",
+        "description": "Código de identificação da Companhia",
+        "values": "Código de identificação da Companhia",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9062-COD-MARCA",
+        "description": "Código de identificação da Marca",
+        "values": "Código de identificação da Marca",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9062-COD-ORIGEM",
+        "description": "Código de identificação do Sistema Origem",
+        "values": "Código de identificação do Sistema Origem",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9062-COD-POSTALM",
+        "description": "Código postal do Mediador (Se estrangeiro deverá vir a zeros) [99990999]",
+        "values": "Código postal do Mediador (Se estrangeiro deverá vir a zeros) [99990999]",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW9062-NR-MEDIADOR",
+        "description": "Número do Mediador (se existir Mediador, espaços para restantes casos)",
+        "values": "Número do Mediador (se existir Mediador, espaços para restantes casos)",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW9062-COD-POSTALC",
+        "description": "Código postal do Cliente (Se estrangeiro deverá vir a zeros) [99990999]",
+        "values": "Código postal do Cliente (Se estrangeiro deverá vir a zeros) [99990999]",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9062-NR-CLIENTE",
+        "description": "Número do Cliente",
+        "values": "Número do Cliente",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9062-NR-APOLICE",
+        "description": "Número da Apólice",
+        "values": "Número da Apólice",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9062-COD-PRODUTO",
+        "description": "Código do Produto (modalidade 2, versão 2, spaces 2)",
+        "values": "Código do Produto (modalidade 2, versão 2, spaces 2)",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9062-DATA-HORA",
+        "description": "Data e hora da emissão do documento",
+        "values": "Data e hora da emissão do documento",
+        "observations": "Obrigatório",
+        "required": ""
+      }
+    ]
+  },
+  "BGOW9064": {
+    "origin": "COGEN22",
+    "fieldCount": 87,
+    "fields": [
+      {
+        "field": "BGOW9064-COD-DOCUMENTO",
+        "description": "Código de documento",
+        "values": "Código de documento",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9064-TIPO-REGISTO",
+        "description": "Tipo de registo",
+        "values": "Tipo de registo",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9064-TIPO-IMPRESSAO",
+        "description": "Tipo de impressão",
+        "values": "Tipo de impressão",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9064-USERID",
+        "description": "User Id da impressão OnLine",
+        "values": "User Id da impressão OnLine",
+        "observations": "Condicional",
+        "required": ""
+      },
+      {
+        "field": "BGOW9064-COD-COMPANHIA",
+        "description": "Código de identificação da Companhia",
+        "values": "Código de identificação da Companhia",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9064-COD-MARCA",
+        "description": "Código de identificação da Marca",
+        "values": "Código de identificação da Marca",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9064-NR-AGENTE",
+        "description": "Número do Mediador",
+        "values": "Número do Mediador",
+        "observations": "Condicional",
+        "required": ""
+      },
+      {
+        "field": "BGOW9064-NR-CLIENTE",
+        "description": "Número do Cliente",
+        "values": "Número do Cliente",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9064-NR-APOLICE",
+        "description": "Número da Apólice",
+        "values": "Número da Apólice",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9064-DOC-NR",
+        "description": "Ordenação do Sistema Origem - Número do documento",
+        "values": "Ordenação do Sistema Origem - Número do documento",
+        "observations": "Obrigatório",
+        "required": ""
+      }
+    ]
+  },
+  "BGOW9067": {
+    "origin": "GIS",
+    "fieldCount": 107,
+    "fields": [
+      {
+        "field": "BGOW9067-COD-COMPANHIA",
+        "description": "Código de identificação da Companhia",
+        "values": "Código de identificação da Companhia",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9067-COD-MARCA",
+        "description": "Código de identificação da Marca",
+        "values": "Código de identificação da Marca",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9067-COD-ORIGEM",
+        "description": "Código de identificação do Sistema Origem",
+        "values": "Código de identificação do Sistema Origem",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9067-COD-POSTALM",
+        "description": "Código postal do Mediador (Se estrangeiro deverá vir a zeros) [99990999]",
+        "values": "Código postal do Mediador (Se estrangeiro deverá vir a zeros) [99990999]",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW9067-NR-MEDIADOR",
+        "description": "Número do Mediador (se existir Mediador, espaços para restantes casos)",
+        "values": "Número do Mediador (se existir Mediador, espaços para restantes casos)",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW9067-COD-POSTALC",
+        "description": "Código postal do Cliente (Se estrangeiro deverá vir a zeros) [99990999]",
+        "values": "Código postal do Cliente (Se estrangeiro deverá vir a zeros) [99990999]",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9067-NR-CLIENTE",
+        "description": "Número do Cliente",
+        "values": "Número do Cliente",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9067-NR-APOLICE",
+        "description": "Número da Apólice",
+        "values": "Número da Apólice",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW9067-COD-PRODUTO",
+        "description": "Código do Produto (modalidade 2, versão 2, spaces 2)",
+        "values": "Código do Produto (modalidade 2, versão 2, spaces 2)",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW9067-DATA-HORA",
+        "description": "Data e hora da emissão do documento",
+        "values": "Data e hora da emissão do documento",
+        "observations": "Obrigatório",
+        "required": ""
+      }
+    ]
+  },
+  "BGOW9068": {
+    "origin": "COGEN22",
+    "fieldCount": 25,
+    "fields": [
+      {
+        "field": "BGOW9068-COMPANY",
+        "description": "Código de identificação da Companhia",
+        "values": "Código de identificação da Companhia",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9068-MARCA",
+        "description": "Código de identificação da Marca",
+        "values": "Código de identificação da Marca",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9068-CLIENT-REFERENCE",
+        "description": "Número do Cliente",
+        "values": "Número do Cliente",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9068-POST-CODE",
+        "description": "Código postal do Cliente (Se estrangeiro deverá vir a zeros) [99990999]",
+        "values": "Código postal do Cliente (Se estrangeiro deverá vir a zeros) [99990999]",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9068-AGENTE-COBRADOR",
+        "description": "Número do Mediador (se existir Mediador, espaços para restantes casos)",
+        "values": "Número do Mediador (se existir Mediador, espaços para restantes casos)",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW9068-AG-POST-CODE",
+        "description": "Código postal do Mediador (Se estrangeiro deverá vir a zeros) [99990999]",
+        "values": "Código postal do Mediador (Se estrangeiro deverá vir a zeros) [99990999]",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW9068-PRODUTO",
+        "description": "Código do Produto",
+        "values": "Código do Produto",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9068-POLICY-NUMBER",
+        "description": "Número da Apólice",
+        "values": "Número da Apólice",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW9068-POLICY-TRANSACTION",
+        "description": "Policy Transaction",
+        "values": "Policy Transaction",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW9068-TIPO-DOC",
+        "description": "Tipo de Documento",
+        "values": "Tipo de Documento",
+        "observations": "Obrigatório",
+        "required": ""
+      }
+    ]
+  },
+  "BGOW0010": {
+    "origin": "FSCD",
+    "fieldCount": 228,
+    "fields": [
+      {
+        "field": "BGOW0010-COD-DOCUMENTO",
+        "description": "Código de documento",
+        "values": "Código de documento",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0010-TIPO-REGISTO",
+        "description": "Tipo de registo",
+        "values": "Tipo de registo",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0010-TIPO-IMPRESSAO",
+        "description": "Tipo de impressão",
+        "values": "Tipo de impressão",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0010-USERID",
+        "description": "User Id da impressão OnLine",
+        "values": "User Id da impressão OnLine",
+        "observations": "Condicional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0010-COD-COMPANHIA",
+        "description": "Código de identificação da Companhia",
+        "values": "Código de identificação da Companhia",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0010-COD-MARCA",
+        "description": "Código de identificação da Marca",
+        "values": "Código de identificação da Marca",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0010-AUX-MARCA",
+        "description": "BGOW0010-AUX-MARCA",
+        "values": "",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0010-NR-AGENTE",
+        "description": "Número do Mediador",
+        "values": "Número do Mediador",
+        "observations": "Condicional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0010-NR-CLIENTE",
+        "description": "Número do Cliente",
+        "values": "Número do Cliente",
+        "observations": "Condicional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0010-NR-APOLICE",
+        "description": "Número da Apólice",
+        "values": "Número da Apólice",
+        "observations": "Obrigatório",
+        "required": ""
+      }
+    ]
+  },
+  "BGOW0054": {
+    "origin": "FSCD",
+    "fieldCount": 61,
+    "fields": [
+      {
+        "field": "BGOW0054-COD-DOCUMENTO",
+        "description": "Código de documento",
+        "values": "Código de documento",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0054-TIPO-REGISTO",
+        "description": "Tipo de registo",
+        "values": "Tipo de registo",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0054-TIPO-IMPRESSAO",
+        "description": "Tipo de impressão",
+        "values": "Tipo de impressão",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0054-USERID",
+        "description": "User Id da impressão OnLine",
+        "values": "User Id da impressão OnLine",
+        "observations": "Condicional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0054-COD-COMPANHIA",
+        "description": "Código de identificação da Companhia",
+        "values": "Código de identificação da Companhia",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0054-COD-MARCA",
+        "description": "Código de identificação da Marca",
+        "values": "Código de identificação da Marca",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0054-AUX-MARCA",
+        "description": "BGOW0054-AUX-MARCA",
+        "values": "",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0054-NR-AGENTE",
+        "description": "Número do Mediador",
+        "values": "Número do Mediador",
+        "observations": "Condicional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0054-NR-CLIENTE",
+        "description": "Número do Cliente",
+        "values": "Número do Cliente",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0054-NR-APOLICE",
+        "description": "Número da Apólice: Preencher a espaços, uma vez que poderá existir várias apólices associadas",
+        "values": "Número da Apólice: Preencher a espaços, uma vez que poderá existir várias apólices associadas",
+        "observations": "",
+        "required": ""
+      }
+    ]
+  },
+  "BGOW0056": {
+    "origin": "FSCD",
+    "fieldCount": 32,
+    "fields": [
+      {
+        "field": "BGOW0056-COD-DOCUMENTO",
+        "description": "Código de documento",
+        "values": "Código de documento",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0056-TIPO-REGISTO",
+        "description": "Tipo de registo",
+        "values": "Tipo de registo",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0056-TIPO-IMPRESSAO",
+        "description": "Tipo de impressão",
+        "values": "Tipo de impressão",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0056-USERID",
+        "description": "User Id da impressão OnLine",
+        "values": "User Id da impressão OnLine",
+        "observations": "Condicional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0056-COD-COMPANHIA",
+        "description": "Código de identificação da Companhia",
+        "values": "Código de identificação da Companhia",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0056-COD-MARCA",
+        "description": "Código de identificação da Marca",
+        "values": "Código de identificação da Marca",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0056-AUX-MARCA",
+        "description": "BGOW0056-AUX-MARCA",
+        "values": "",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0056-NR-AGENTE",
+        "description": "Número do Mediador",
+        "values": "Número do Mediador",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0056-NR-CLIENTE",
+        "description": "Número do Cliente",
+        "values": "Número do Cliente",
+        "observations": "Não é utilizado",
+        "required": ""
+      },
+      {
+        "field": "BGOW0056-NR-APOLICE",
+        "description": "Número da Apólice",
+        "values": "Número da Apólice",
+        "observations": "Não é utilizado",
+        "required": ""
+      }
+    ]
+  },
+  "BGOW0044": {
+    "origin": "FSCD",
+    "fieldCount": 0,
+    "fields": []
+  },
+  "BGOW0055": {
+    "origin": "FSCD",
+    "fieldCount": 46,
+    "fields": [
+      {
+        "field": "BGOW0055-COD-DOCUMENTO",
+        "description": "Código de documento",
+        "values": "Código de documento",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0055-TIPO-REGISTO",
+        "description": "Tipo de registo",
+        "values": "Tipo de registo",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0055-TIPO-IMPRESSAO",
+        "description": "Tipo de impressão",
+        "values": "Tipo de impressão",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0055-USERID",
+        "description": "User Id da impressão OnLine",
+        "values": "User Id da impressão OnLine",
+        "observations": "Condicional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0055-COD-COMPANHIA",
+        "description": "Código de identificação da Companhia",
+        "values": "Código de identificação da Companhia",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0055-COD-MARCA",
+        "description": "Código de identificação da Marca",
+        "values": "Código de identificação da Marca",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0055-AUX-MARCA",
+        "description": "BGOW0055-AUX-MARCA",
+        "values": "",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0055-NR-AGENTE",
+        "description": "Número do Mediador",
+        "values": "Número do Mediador",
+        "observations": "Não utilizado",
+        "required": ""
+      },
+      {
+        "field": "BGOW0055-NR-CLIENTE",
+        "description": "Número do Cliente",
+        "values": "Número do Cliente",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0055-NR-APOLICE",
+        "description": "Número da Apólice",
+        "values": "Número da Apólice",
+        "observations": "Obrigatório",
+        "required": ""
+      }
+    ]
+  },
+  "BGOW0070": {
+    "origin": "FSCD",
+    "fieldCount": 161,
+    "fields": [
+      {
+        "field": "BGOW0070-COD-DOCUMENTO",
+        "description": "Código de documento",
+        "values": "Código de documento",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0070-TIPO-REGISTO",
+        "description": "Tipo de registo",
+        "values": "Tipo de registo",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0070-TIPO-IMPRESSAO",
+        "description": "Tipo de impressão",
+        "values": "Tipo de impressão",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0070-USERID",
+        "description": "User Id da impressão OnLine",
+        "values": "User Id da impressão OnLine",
+        "observations": "Condicional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0070-COD-COMPANHIA",
+        "description": "Código de identificação da Companhia",
+        "values": "Código de identificação da Companhia",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0070-COD-MARCA",
+        "description": "Código de identificação da Marca",
+        "values": "Código de identificação da Marca",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0070-AUX-MARCA",
+        "description": "BGOW0070-AUX-MARCA",
+        "values": "",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0070-NR-AGENTE",
+        "description": "Número do Mediador",
+        "values": "Número do Mediador",
+        "observations": "Condicional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0070-NR-CLIENTE",
+        "description": "Número do Cliente",
+        "values": "Número do Cliente",
+        "observations": "Condicional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0070-NR-APOLICE",
+        "description": "Número da Apólice",
+        "values": "Número da Apólice",
+        "observations": "Obrigatório",
+        "required": ""
+      }
+    ]
+  },
+  "BGOW0078": {
+    "origin": "FSCD",
+    "fieldCount": 45,
+    "fields": [
+      {
+        "field": "BGOW0078-COD-DOCUMENTO",
+        "description": "Código de documento",
+        "values": "Código de documento",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0078-TIPO-REGISTO",
+        "description": "Tipo de registo",
+        "values": "Tipo de registo",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0078-TIPO-IMPRESSAO",
+        "description": "Tipo de impressão",
+        "values": "Tipo de impressão",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0078-USERID",
+        "description": "User Id da impressão OnLine",
+        "values": "User Id da impressão OnLine",
+        "observations": "Condicional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0078-COD-COMPANHIA",
+        "description": "Código de identificação da Companhia",
+        "values": "Código de identificação da Companhia",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0078-COD-MARCA",
+        "description": "Código de identificação da Marca",
+        "values": "Código de identificação da Marca",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0078-AUX-MARCA",
+        "description": "BGOW0078-AUX-MARCA",
+        "values": "",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0078-NR-AGENTE",
+        "description": "Número do Mediador",
+        "values": "Número do Mediador",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0078-NR-CLIENTE",
+        "description": "Número do Cliente",
+        "values": "Número do Cliente",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0078-NR-APOLICE",
+        "description": "Número da Apólice",
+        "values": "Número da Apólice",
+        "observations": "Obrigatório",
+        "required": ""
+      }
+    ]
+  },
+  "BGOW0059": {
+    "origin": "FSCD",
+    "fieldCount": 50,
+    "fields": [
+      {
+        "field": "BGOW0059-COD-DOCUMENTO",
+        "description": "Código de documento",
+        "values": "Código de documento",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0059-TIPO-REGISTO",
+        "description": "Tipo de registo",
+        "values": "Tipo de registo",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0059-TIPO-IMPRESSAO",
+        "description": "Tipo de impressão",
+        "values": "Tipo de impressão",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0059-USERID",
+        "description": "User Id da impressão OnLine",
+        "values": "User Id da impressão OnLine",
+        "observations": "Condicional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0059-COD-COMPANHIA",
+        "description": "Código de identificação da Companhia",
+        "values": "Código de identificação da Companhia",
+        "observations": "Obrigatório",
+        "required": ""
+      },
+      {
+        "field": "BGOW0059-COD-MARCA",
+        "description": "Código de identificação da Marca",
+        "values": "Código de identificação da Marca",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0059-AUX-MARCA",
+        "description": "'028' - Eurobic",
+        "values": "'028' - Eurobic",
+        "observations": "Opcional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0059-NR-AGENTE",
+        "description": "Número do Mediador",
+        "values": "Número do Mediador",
+        "observations": "Condicional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0059-NR-CLIENTE",
+        "description": "Número do Cliente",
+        "values": "Número do Cliente",
+        "observations": "Condicional",
+        "required": ""
+      },
+      {
+        "field": "BGOW0059-NR-APOLICE",
+        "description": "Número da Apólice",
+        "values": "Número da Apólice",
+        "observations": "Condicional",
+        "required": ""
+      }
+    ]
+  },
+  "BGOW0045": {
+    "origin": "FSCD",
+    "fieldCount": 71,
+    "fields": [
+      {
+        "field": "BGOW0045-COD-DOCUMENTO",
+        "description": "Código de documento",
+        "values": "Código de documento",
+        "observations": "",
+        "required": ""
+      },
+      {
+        "field": "BGOW0045-TIPO-REGISTO",
+        "description": "Tipo de registo",
+        "values": "Tipo de registo",
+        "observations": "",
+        "required": ""
+      },
+      {
+        "field": "BGOW0045-TIPO-IMPRESSAO",
+        "description": "Tipo de impressão",
+        "values": "Tipo de impressão",
+        "observations": "",
+        "required": ""
+      },
+      {
+        "field": "BGOW0045-USERID",
+        "description": "User Id da impressão OnLine",
+        "values": "User Id da impressão OnLine",
+        "observations": "",
+        "required": ""
+      },
+      {
+        "field": "BGOW0045-COD-COMPANHIA",
+        "description": "Código de identificação da Companhia",
+        "values": "Código de identificação da Companhia",
+        "observations": "",
+        "required": ""
+      },
+      {
+        "field": "BGOW0045-COD-MARCA",
+        "description": "Código de identificação da Marca",
+        "values": "Código de identificação da Marca",
+        "observations": "",
+        "required": ""
+      },
+      {
+        "field": "BGOW0045-AUX-MARCA",
+        "description": "BGOW0045-AUX-MARCA",
+        "values": "",
+        "observations": "",
+        "required": ""
+      },
+      {
+        "field": "BGOW0045-NR-AGENTE",
+        "description": "Número do Mediador",
+        "values": "Número do Mediador",
+        "observations": "",
+        "required": ""
+      },
+      {
+        "field": "BGOW0045-NR-CLIENTE",
+        "description": "Número do Cliente",
+        "values": "Número do Cliente",
+        "observations": "",
+        "required": ""
+      },
+      {
+        "field": "BGOW0045-NR-APOLICE",
+        "description": "Número da Apólice",
+        "values": "Número da Apólice",
+        "observations": "",
+        "required": ""
+      }
+    ]
+  }
+}

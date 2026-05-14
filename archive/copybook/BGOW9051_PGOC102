@@ -1,0 +1,58 @@
+      *----------------------------------------------------------------*
+      *----------------------------------------------------------------*00000001
+      *        -----------------------------------------------         *00000002
+      *        ---------   ATENÇÃO  --------------------------         *00000003
+      *        -----------------------------------------------         *00000004
+      *                                                                *00000005
+      * ALTERAÇÕES NESTE COPYBOOK (NY5D1U01) DEVERÃO SER REPLICADAS NO *00000006
+      * COPYBOOK BGOW9051 UTILIZADO NAS APLICAÇÕES DE OUTPUTS (UGEN) E *00000007
+      * INFORMAR A EQUIPA                                              *00000008
+      *                                                                *00000009
+      *                      MAINTENANCE  LOG                          *
+      *                                                                *
+      * PROG   CCID     DATA         COMENTARIOS                       *
+      *----------------------------------------------------------------*
+      * AMLM  M40801   15-12-2000    NOVO
+      *
+      * IAC   M51578   JAN.2007      MULTIMARCA, MULTICOMPANHIA.
+      *
+      * JC    M51885   DEZ.2008      ACT200800164 - AUTOMATISMO POSTAL.
+      *
+      * PCS   3P1568   JUL.2014      201200094 - PDS - INTEGRAR OUTPUTS
+      *                              C22 E C33 EM SGO
+      *
+      *----------------------------------------------------------------*
+           02 NY5D1U01-PRINT-RECORD.
+              03 NY5DU01-SORT-KEY.
+                 05 NY5D1U01-POST-CODE           PIC X(09).
+                 05 NY5D1U01-NOTICE              PIC X(10).
+                 05 NY5D1U01-RECORD-TYPE         PIC X(01).
+                    88 NY5D1U01-DOC-PC01             VALUE '1'.
+                    88 NY5D1U01-DOC-PC02             VALUE '2'.
+M51578           05 NY5D1U01-C-COMP-SGRA         PIC X(03).
+M51578           05 NY5D1U01-C-MARC-SGRA         PIC X(03).
+              03 NY5D1U01-CLIENT-NUMBER          PIC X(10).
+              03 NY5D1U01-ADDRESSEE-NAME         PIC X(40).
+              03 NY5D1U01-ADDRESSEE-ADDRESS      PIC X(40).
+              03 NY5D1U01-ADDRESSEE-ADDRESS-2    PIC X(40).
+M51885*       03 NY5D1U01-ADDRESSEE-CITY         PIC X(30).
+M51885        03 NY5D1U01-ADDRESSEE-CITY         PIC X(40).
+M51885*       03 NY5D1U01-POST-CODE-DESCR        PIC X(41).
+M51885        03 NY5D1U01-POST-CODE-DESCR        PIC X(40).
+              03 NY5D1U01-POLICY-NUMBER          PIC X(16).
+              03 NY5D1U01-PRODUCT-CODE           PIC X(05).
+              03 NY5D1U01-PRODUCT-CODE-DESC      PIC X(30).
+              03 NY5D1U01-CANC-REV-EFF-DATE      PIC X(10).
+              03 NY5D1U01-CANC-LAPSE-REASON      PIC X(02).
+                 88 NY5D1U01-FALTA-PAGAMENTO         VALUE '01'.
+              03 NY5D1U01-DOC-NUMBER             PIC X(10).
+              03 NY5D1U01-DATA-EMISSAO           PIC X(10).
+              03 NY5D1U01-DUE-DATE               PIC X(10).
+              03 NY5D1U01-TOTAL-AMOUNT           PIC S9(11)V9(2).
+              03 NY5D1U01-INTEREST-AMOUNT        PIC S9(13)V9(2).
+              03 NY5D1U01-PEN-AMOUNT             PIC S9(13)V9(2).
+M51885        03 NY5D1U01-ADDRESSEE-NUM-TYPE     PIC X(01).
+M51885        03 NY5D1U01-ADDRESSEE-NUM          PIC X(04).
+3P1568        03 FILLER                          PIC X(122).
+3P1568        03 NY5D1U01-TIPO-IMPRESSAO         PIC X(01).
+

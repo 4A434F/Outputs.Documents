@@ -1,0 +1,288 @@
+      *****************************************************************
+      *----------------------------------------------------------------*00010000
+      **                     MAINTENANCE  LOG                           00020000
+      *                        FZ4RCS03                                 00040000
+      *                                                                 00050000
+      *PROGRAMMER  PCR    DATE      COMMENTS                            00060000
+      *----------------------------------------------------------------*00060100
+      *        ---------   ATENÇÃO  --------------------------          00060400
+      *                                                                 00060500
+      *      ALTERACOES NO FZ4RCS03 DEVERAO SER REPLICADAS:             00060600
+      *             BGOW9032 - PARA APLICAÇÕES DE OUTPUTS (UGEN)        00060700
+      *                                                                 00060800
+      *                                                                 00060900
+      *----------------------------------------------------------------*00070000
+      *---------------------------------------------------------------*
+      *  COPYBOOK PARA IMPRESSAO:                                     *
+      *  MAPA DE AJUSTAMENTO DE PRODUTOS DE RESPONSABILIDADE CIVIL    *
+      *  MAPA DE APLICAÇÕES DAS APÓLICES FLUTUANTES DE ROUBO          *
+      *                                                               *
+2P2440* RJF  2P2440  2014-06-04 201200094                             *
+      *                                                               *
+      * MJE  MJE#1   2014-08-28 MAPA DE APLICAÇÕES DAS APÓLICES       *
+      *                         FLUTUANTES DE ROUBO                   *
+      *                                                               *
+      * MJE  MJE#2   2014-08-28 INCLUSÃO DO NÚMERO DE DOCUMENTO       *
+      *                         NO SORT KEY                           *
+      *                         INCLUSÃO DO TIPO DE REGISTO UA        *
+      *                         PARA TRATAMENTO DE CO-SEGURO          *
+      *---------------------------------------------------------------*
+
+         03  FZ4RCS3-PRINT-RECORD.
+      *--- SORT KEY
+           05  FZ4RCS3-SORT-KEY.
+      *     CODIGO DE COMPANHIA
+             07  FZ4RCS3-COMPANY                 PIC X(03).
+      *     CODIGO DE MARCA
+             07  FZ4RCS3-MARCA                   PIC X(03).
+      *     CANAL DE DISTRIBUIÇÃO
+             07  FZ4RCS3-CANAL-DISTRIBUICAO      PIC X(03).
+      *     Nº DE CLIENTE DO TOMADOR DO SEGURO
+             07  FZ4RCS3-TM-CLIENT-REFERENCE     PIC X(10).
+      *     CODIGO POSTAL DO TOMADOR DO SEGURO
+             07  FZ4RCS3-TM-POST-CODE            PIC X(08).
+      *     CODIGO DE MEDIADOR
+             07  FZ4RCS3-AGENTE-COBRADOR         PIC X(10).
+      *     CODIGO POSTAL DO MEDIADOR
+             07  FZ4RCS3-AG-POST-CODE            PIC X(08).
+      *     CÓDIGO DO PRODUTO
+             07  FZ4RCS3-PRODUTO                 PIC X(05).
+      *     Nº APOLICE
+             07  FZ4RCS3-POLICY-NUMBER           PIC X(16).
+      *     TRANSACÇÃO
+      *     NO COGEN22 - DOCUMENT-NUMBER
+             07  FZ4RCS3-POLICY-TRANSACTION      PIC X(10).
+MJE#2 *     NÚMERO DE DOCUMENTO
+MJE#2        07  FZ4RCS3-NUM-DOCUMENTO           PIC 9(05).
+      *     NºINFDOC CAMPO INFORMAÇÃO DOS SUB-DOCUMENTOS
+             07  FZ4RCS3-NUM-INFDOC              PIC 9(02).
+      *     UNIDADE EM RISCO
+             07  FZ4RCS3-UNIT-RISK-NUM           PIC X(06).
+      *     CAMPO AGRGADOR
+             07  FZ4RCS3-NUM-AGREGADOR           PIC 9(03).
+      *     OBJECTO
+             07  FZ4RCS3-OBJECT-NUM              PIC X(06).
+      *     NºSEQUENCIAL
+             07  FZ4RCS3-NUM-SEQ-1               PIC 9(05).
+      *     TIPO DE REGISTO DENTRO DOS SUB-DOCUMENTOS
+             07  FZ4RCS3-TYPE-1-2.
+                09  FZ4RCS3-RECORD-TYPE-1           PIC X(02).
+                  88  FZ4RCS3-DADOS-GERAIS       VALUE 'AA'.
+                  88  FZ4RCS3-DADOS-VLR-APOL     VALUE 'BA'.
+                  88  FZ4RCS3-DADOS-OBJ-MAPA-EA  VALUE 'EA'.
+                  88  FZ4RCS3-DADOS-OBJ-MAPA-EB  VALUE 'EB'.
+                  88  FZ4RCS3-AJUSTE-PREMIO      VALUE 'GA'.
+                  88  FZ4RCS3-PREMIO-COBRAR      VALUE 'JA'.
+MJE#2             88  FZ4RCS3-CO-SEGURO          VALUE 'UA'.
+                  88  FZ4RCS3-FIM-DOCUMENTO      VALUE 'ZA'.
+      *        TIPO DE LAYOUTS POR REGISTO
+                09  FZ4RCS3-RECORD-TYPE-2           PIC X(01).
+                  88  FZ4RCS3-TYPE-A             VALUE 'A'.
+                  88  FZ4RCS3-TYPE-B             VALUE 'B'.
+                  88  FZ4RCS3-TYPE-C             VALUE 'C'.
+                  88  FZ4RCS3-TYPE-D             VALUE 'D'.
+                  88  FZ4RCS3-TYPE-E             VALUE 'E'.
+      * ********************************************************
+      * TIPOS DE REGISTOS PARA O MAPA DE AJUSTAMENTO DOS
+      * PRODUTOS RESPONSABILIDADE CIVIL
+      * ********************************************************
+      * DADOS GERAIS APOLICE
+      *      'AAA'
+      * DADOS DE VALORES DE RECIBO SUPLEMENTAR
+      *      'BAA'
+      * DADOS DO OBJETO
+      *      'EAA'
+MJE#2 * DADOS DO CO-SEGURO
+MJE#2 *      'UAA'
+      * FIM DO DOCUMENTO
+      *      'ZAA'
+      * ********************************************************
+      * ********************************************************
+      * TIPOS DE REGISTOS PARA O MAPA DE AJUSTAMENTO DOS
+      * PRODUTOS RESPONSABILIDADE CIVIL - PRODUTO PO1
+      * ********************************************************
+      * DADOS GERAIS APOLICE
+      *      'AAA'
+      * DADOS DE VALORES DE RECIBO SUPLEMENTAR
+      *      'BAA'
+      * DADOS DO OBJETO
+      *      'EAB'
+MJE#2 * DADOS DO CO-SEGURO
+MJE#2 *      'UAA'
+      * FIM DO DOCUMENTO
+      *      'ZAA'
+      * ********************************************************
+      * ********************************************************
+      * TIPOS DE REGISTOS PARA O MAPA DE APLICAÇÕES DOS PRODUTOS
+      * ROUBO
+      * ********************************************************
+      * DADOS GERAIS APOLICE
+      *      'AAA'
+      * DADOS DE VALORES DE RECIBO SUPLEMENTAR
+      *      'BAA'
+      * DADOS DO OBJETO
+      *      'EBA'
+      * DADOS AJUSTE DE PREMIO
+      *      'GAA'
+      * DADOS DE PREMIOS A COBRAR
+      *      'JAA'
+MJE#2 * DADOS DO CO-SEGURO
+MJE#2 *      'UAA'
+      * FIM DO DOCUMENTO
+      *      'ZAA'
+      * ********************************************************
+             07  FILLER REDEFINES FZ4RCS3-TYPE-1-2 PIC X(3).
+                  88  FZ4RCS3-VALID-TYPE-1-2     VALUE 'AAA'
+                                                       'BAA'
+                                                       'EAA'
+                                                       'EAB'
+                                                       'EBA'
+                                                       'GAA'
+                                                       'JAA'
+MJE#2                                                  'UAA'
+                                                       'ZAA'.
+      *
+2P2440*    05  FZ4RCS3-PRINT-DATA                PIC X(399).
+2P2440*    05  FZ4RCS3-PRINT-DATA                PIC X(398).
+MJE#2      05  FZ4RCS3-PRINT-DATA                PIC X(393).
+      *
+      *--- LINHA AA (ANTIGA LINHA A)
+      *--- DADOS GERAIS  DA APÓLICE
+           05  FZ4RCS3-LINHA-AA REDEFINES FZ4RCS3-PRINT-DATA.
+      *--- TOMADOR DO SEGURO
+      *    NOME
+             07  FZ4RCS3-TM-ADDRESSEE            PIC X(40).
+      *    LINHA DE MORADA-1
+             07  FZ4RCS3-TM-ADDRESS1             PIC X(40).
+      *    LINHA DE MORADA-2
+             07  FZ4RCS3-TM-ADDRESS2             PIC X(40).
+      *    LOCALIDADE
+             07  FZ4RCS3-TM-ADDRESS3             PIC X(40).
+      *    CODIGO POSTAL DESC
+             07  FZ4RCS3-TM-ADDRESS4             PIC X(40).
+      *    TIPO NUM DE PORTA
+             07  FZ4RCS3-TM-TNUM-PORTA           PIC X(01).
+      *    NUM DE PORTA
+             07  FZ4RCS3-TM-NUM-PORTA            PIC X(04).
+      *    PRODUTO DESC
+             07  FZ4RCS3-PRODUTO-DESC            PIC X(30).
+      *    PLANO DE PAGAMENTO
+      *    ÚNICO - NAS TEMPORÁRIAS
+      *    ANUAL
+      *    FRACIONADA - MENSAL,TRIMESTRAL, SEMESTRAL
+             07  FZ4RCS3-FORMA-PAGAMENTO-DESC    PIC X(30).
+      *    CÓDIGO CONDIÇÃO GERAL
+             07  FZ4RCS3-TIPO-COND-GERAL         PIC X(03).
+      *    TIPO DE TRANSACÇÃO
+             07  FZ4RCS3-TRANSACTION-TYPE        PIC X(02).
+               88  FZ4RCS3-NEW-BUSINESS     VALUE '01'.
+               88  FZ4RCS3-RENEWAL          VALUE '02' '12'.
+               88  FZ4RCS3-ENDORSEMENT      VALUE '03' '04' '05'.
+               88  FZ4RCS3-REVIVE           VALUE '06' '07'.
+      *    DATA ORIGINAL DE 1 PRINT
+             07  FZ4RCS3-ORIG-DATE-PRINTED       PIC X(10).
+      *    DATA DE VENCIMENTO (DDMM)
+             07  FZ4RCS3-DATA-VENC               PIC X(04).
+      *    DATA INICIO DO TERMO (AAAA-MM-DD)
+             07  FZ4RCS3-EFFECT-DATE             PIC X(10).
+      *    DATA FIM DO TERMO (AAAA-MM-DDA)
+             07  FZ4RCS3-EXPIRY-DATE        PIC X(10).
+      *    TEMPO DE APÓLICE(ANO E SEGUINTES)
+             07  FZ4RCS3-TIPO-APOLICE            PIC X(02).
+               88  FZ4RCS3-APOL-TEMPORARIA     VALUE 'TE'.
+               88  FZ4RCS3-APOL-ANUAL          VALUE 'AN'.
+      *    INDICADOR DE PRIMEIRA IMPRESSÃO
+             07  FZ4RCS3-N-IMPRESSAO             PIC X(01).
+               88  FZ4RCS3-PRIMEIRA-IMP       VALUE '1'.
+               88  FZ4RCS3-SEGUNDA-VIA        VALUE '2'.
+             07  FZ4RCS3-NUM-COPIAS              PIC 9(01).
+2P2440*      07  FILLER                          PIC X(91).
+2P2440*      07  FILLER                          PIC X(90).
+MJE#1 *      07  FILLER                          PIC X(86).
+MJE#2        07  FILLER                          PIC X(81).
+      *     CODIGO DE DOCUMENTO
+MJE#1        07  FZ4RCS3-CODIGO-DOCUMENTO        PIC X(04).
+      *
+      *--- LINHA BA(ANTIGA LINHA B)
+      *--- DADOS DE VALORES DE RECIBO SUPLEMENTAR
+           05 FZ4RCS3-LINHA-BA REDEFINES FZ4RCS3-PRINT-DATA.
+      *    VALORES ANUAL
+             07  FZ4RCS3-PR-COMERCIAL            PIC S9(11)V9(02).
+             07  FZ4RCS3-CUSTO-APOL              PIC S9(11)V9(02).
+             07  FZ4RCS3-IMPOSTO                 PIC S9(11)V9(02).
+             07  FZ4RCS3-PR-TOTAL                PIC S9(11)V9(02).
+2P2440*      07  FILLER                          PIC X(347).
+2P2440*      07  FILLER                          PIC X(346).
+MJE#2        07  FILLER                          PIC X(341).
+
+      *
+      *--- LINHA EA
+      *--- DADOS DO OBJETO
+           05 FZ4RCS3-LINHA-EA REDEFINES FZ4RCS3-PRINT-DATA.
+             07  FZ4RCS3-OBJ-DESC                PIC X(30).
+             07  FZ4RCS3-OBJ-ATIVID              PIC X(60).
+             07  FZ4RCS3-OBJ-T-AJUST-DESC        PIC X(30).
+             07  FZ4RCS3-OBJ-VLR-AJUST           PIC S9(15)V9(2).
+             07  FZ4RCS3-OBJ-TX-COMERC-AJ        PIC S9(3)V9(6).
+             07  FZ4RCS3-OBJ-PR-COMERC           PIC S9(11)V9(2).
+             07  FZ4RCS3-OBJ-PR-PROV             PIC S9(11)V9(2).
+             07  FZ4RCS3-OBJ-PR-COMERC-COBR      PIC S9(11)V9(2).
+             07  FZ4RCS3-OBJ-INVOICE-NO          PIC X(10).
+             07  FZ4RCS3-OBJ-QUANT-AJUST         PIC S9(9).
+             07  FZ4RCS3-OBJ-VLR-UNIT            PIC S9(13)V9(2).
+2P2440*      07  FILLER                          PIC X(180).
+2P2440*      07  FILLER                          PIC X(179).
+MJE#2        07  FILLER                          PIC X(174).
+
+      *
+      *--- LINHA EB
+      *--- DADOS DO OBJETO
+           05 FZ4RCS3-LINHA-EB REDEFINES FZ4RCS3-PRINT-DATA.
+             07  FZ4RCS3-OBJ-DESC-EB             PIC X(30).
+             07  FZ4RCS3-OBJ-ATIVID-EB           PIC X(60).
+             07  FZ4RCS3-OBJ-CAPITAL-EB          PIC S9(13)V9(2).
+MJE#2 *      07  FILLER                          PIC X(293).
+MJE#2        07  FILLER                          PIC X(288).
+      *
+      *--- LINHA GA
+      *--- AJUSTE DE PREMIO
+           05 FZ4RCS3-LINHA-GA REDEFINES FZ4RCS3-PRINT-DATA.
+             07  FZ4RCS3-DT-INIC-AJUS-GA         PIC X(10).
+             07  FZ4RCS3-DT-FIM-AJUS-GA          PIC X(10).
+             07  FZ4RCS3-EXIST-AJUS-GA           PIC S9(15)V9(2).
+             07  FZ4RCS3-NOTA-AJUS-GA            PIC X(01).
+             07  FZ4RCS3-PR-COMRC-AJUS-GA        PIC S9(11)V9(2).
+             07  FZ4RCS3-FLG-T-PR-COMRC-AJUS-GA  PIC X(01).
+             07  FZ4RCS3-T-PR-COMRC-AJUS-GA      PIC S9(11)V9(2).
+MJE#2 *      07  FILLER                          PIC X(333).
+MJE#2        07  FILLER                          PIC X(328).
+      *
+      *--- LINHA JA
+      *--- PREMIOS A COBRAR
+           05 FZ4RCS3-LINHA-JA REDEFINES FZ4RCS3-PRINT-DATA.
+             07  FZ4RCS3-PR-PRV-COMERC-JA        PIC S9(11)V9(2).
+             07  FZ4RCS3-PR-COMERC-PERIODO-JA    PIC S9(11)V9(2).
+             07  FZ4RCS3-OBJ-PR-COMERC-COBR-JA   PIC S9(11)V9(2).
+             07  FZ4RCS3-OBJ-INVOICE-NO-JA       PIC X(10).
+MJE#2 *      07  FILLER                          PIC X(349).
+MJE#2        07  FILLER                          PIC X(344).
+      *
+MJE#2 *--- LINHA UA
+MJE#2 *--- LINHA DADOS DE CADA CO-SEGURADORA
+MJE#2      05 FZ4RCS3-LINHA-UA  REDEFINES FZ4RCS3-PRINT-DATA.
+MJE#2        07  FZ4RCS3-CO-SEG-COD              PIC X(10).
+MJE#2        07  FZ4RCS3-CO-SEG-NOME             PIC X(40).
+MJE#2        07  FZ4RCS3-CO-SEG-CAPITAL          PIC S9(13)V9(02).
+MJE#2        07  FZ4RCS3-CO-SEG-PARTICIP         PIC 9(03)V9(06).
+MJE#2        07  FZ4RCS3-CO-SEG-PREMIO           PIC S9(13)V9(02).
+MJE#2        07  FILLER                          PIC X(304).
+      *
+      *--- LINHA ZA (ANTIGA LINHA Z)
+      *--- FIM DE DOCUMENTO
+           05 FZ4RCS3-LINHA-ZA  REDEFINES FZ4RCS3-PRINT-DATA.
+2P2440*      07  FILLER                          PIC X(399).
+2P2440*      07  FILLER                          PIC X(398).
+MJE#2        07  FILLER                          PIC X(393).
+
+2P2440     05  FZ4RCS3-TIPO-IMPRESSAO          PIC X(001).
+

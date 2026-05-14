@@ -1,0 +1,123 @@
+      *****************************************************************
+      *----------------------------------------------------------------*00010000
+      *                      MAINTENANCE  LOG                           00020000
+      *                                                                 00030000
+      *                        FZ4ATS02                                 00040000
+      *                                                                 00050000
+      *PROGRAMMER  PCR    DATE      COMMENTS                            00060000
+      *----------------------------------------------------------------*00060100
+      *        ---------   ATENÇÃO  --------------------------          00060400
+      *                                                                 00060500
+      *      ALTERACOES NO FZ4ATS02 DEVERAO SER REPLICADAS:             00060600
+      *             BGOW9027 - PARA APLICAÇÕES DE OUTPUTS (UGEN)        00060700
+      *             BUSK400V - PARA APLICAÇÃO DO CLÁSSICO               00060800
+      *                                                                 00060900
+      *----------------------------------------------------------------*00070000
+      *---------------------------------------------------------------*
+      *  COPYBOOK PARA IMPRESSAO DE FOLHAS DE FÉRIAS COM AGRAVAMENTO  *
+      *  DO RAMO AT                                                   *
+      *                                                               *
+      *------------------------ ALTERACOES ---------------------------*
+      *                                                               *
+      *  POR    ASIM       DATA     DESCRICAO                         *
+      *                                                               *
+      *  BROD  2P0763   2011-11-30  NOVO COPYBOOK.                    *
+      *                                                               *
+MJE#1 *  MJE            2016-01-18  ALTERAÇÃO NA CARTA PARA           *
+      *                             INSERIR O CAMPO TAXA              *
+      *---------------------------------------------------------------*
+
+         02  FZ4ATS2-PRINT-RECORD.
+      *
+      *     LINHA DE REPORT
+           03 FZ4ATS2-REPORT-LINE1.
+      *     CODIGO DE COMPANHIA
+             05  FZ4ATS2-COMPANY                 PIC X(03).
+      *     CODIGO DE MARCA
+             05  FZ4ATS2-MARCA                   PIC X(03).
+      *     CANAL DE DISTRIBUIÇÃO
+             05  FZ4ATS2-CANAL-DISTRIBUICAO      PIC X(03).
+      *     Nº DE CLIENTE DO TOMADOR DO SEGURO
+             05  FZ4ATS2-TM-CLIENT-REFERENCE     PIC X(10).
+      *     CODIGO POSTAL DO TOMADOR DO SEGURO
+             05  FZ4ATS2-TM-POST-CODE            PIC X(08).
+      *     CODIGO DE MEDIADOR
+             05  FZ4ATS2-AG-CLIENT-REFERENCE     PIC X(10).
+      *     CODIGO POSTAL DO MEDIADOR
+             05  FZ4ATS2-AG-POST-CODE            PIC X(08).
+      *     CÓDIGO DO PRODUTO
+             05  FZ4ATS2-PRODUTO                 PIC X(05).
+      *--- SORT KEY
+             05  FZ4ATS2-SORT-KEY.
+      *     Nº APOLICE
+               07  FZ4ATS2-POLICY-NUMBER         PIC X(16).
+      *     TIPO DE REGISTO DENTRO DOS SUB-DOCUMENTOS
+               07  FZ4ATS2-RECORD-TYPE-1         PIC X(02).
+                   88  FZ4ATS2-DADOS-FICH-EXT        VALUE 'AA'.
+                   88  FZ4ATS2-DADOS-TOMADOR         VALUE 'BA'.
+                   88  FZ4ATS2-DADOS-MEDIADOR        VALUE 'CA'.
+                   88  FZ4ATS2-FIM-DOCUMENTO         VALUE 'ZA'.
+      *     SEQUÊNCIA
+               07  FZ4ATS2-NUM-SEQ-1             PIC 9(05).
+      *     DADOS POR LINHA
+             05  FZ4ATS2-PRINT-DATA              PIC X(427).
+
+      *--- LINHA AA
+      *--- DADOS OBTIDOS FICHEIRO EXTERNO
+           05 FZ4ATS2-LINHA-AA REDEFINES FZ4ATS2-PRINT-DATA.
+      *    MESES EM FALTA
+             07  FZ4ATS2-MESES-FALTA             PIC X(100).
+      *    PREMIO DE AGRAVAMENTO
+             07  FZ4ATS2-PREM-AGRV               PIC 9(11)V9(02).
+      *    ANO ACEITE
+             07  FZ4ATS2-ANO-ACEITE              PIC 9(04).
+MJE#1        07  FZ4ATS2-TAXA                    PIC 9(3)V9(2).
+MJE#1        07  FILLER                          PIC X(305).
+MJE#1 *      07  FILLER                          PIC X(310).
+      *
+      *--- LINHA BA
+      *--- DADOS DO TOMADOR
+           05  FZ4ATS2-LINHA-BA REDEFINES FZ4ATS2-PRINT-DATA.
+      *--- TOMADOR DO SEGURO
+      *    NOME
+             07  FZ4ATS2-ADDRESSEE               PIC X(40).
+      *    LINHA DE MORADA-1
+             07  FZ4ATS2-ADDRESS1                PIC X(40).
+      *    LINHA DE MORADA-2
+             07  FZ4ATS2-ADDRESS2                PIC X(40).
+      *    LOCALIDADE
+             07  FZ4ATS2-ADDRESS3                PIC X(40).
+      *    CODIGO POSTAL DESC
+             07  FZ4ATS2-ADDRESS4                PIC X(40).
+      *    TIPO NUM DE PORTA
+             07  FZ4ATS2-TNUM-PORTA              PIC X(01).
+      *    NUM DE PORTA
+             07  FZ4ATS2-NUM-PORTA               PIC X(04).
+             07  FILLER                          PIC X(222).
+      *
+      *--- LINHA CA
+      *--- DADOS DO MEDIADOR
+           05 FZ4ATS2-LINHA-CA REDEFINES FZ4ATS2-PRINT-DATA.
+      *--- MEDIADOR
+      *    NOME
+             07  FZ4ATS2-ADDRESSEE-MED           PIC X(40).
+      *    LINHA DE MORADA-1
+             07  FZ4ATS2-ADDRESS1-MED            PIC X(40).
+      *    LINHA DE MORADA-2
+             07  FZ4ATS2-ADDRESS2-MED            PIC X(40).
+      *    LOCALIDADE
+             07  FZ4ATS2-ADDRESS3-MED            PIC X(40).
+      *    CODIGO POSTAL DESC
+             07  FZ4ATS2-ADDRESS4-MED            PIC X(40).
+      *    TIPO NUM DE PORTA
+             07  FZ4ATS2-TNUM-PORTA-MED          PIC X(01).
+      *    NUM DE PORTA
+             07  FZ4ATS2-NUM-PORTA-MED           PIC X(04).
+             07  FILLER                          PIC X(222).
+
+      *
+      *--- LINHA ZA
+      *--- FIM DE DOCUMENTO
+           05 FZ4ATS2-LINHA-ZA REDEFINES FZ4ATS2-PRINT-DATA.
+             07  FILLER                          PIC X(427).
+

@@ -1,6 +1,5 @@
 using Outputs.Documents.Abstractions;
 using Outputs.Documents.Abstractions.Rendering;
-using Outputs.Documents.Domain;
 
 namespace Outputs.Documents.Rendering;
 

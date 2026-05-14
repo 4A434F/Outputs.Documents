@@ -1,0 +1,225 @@
+      *****************************************************************
+      *----------------------------------------------------------------*00010000
+      **                     MAINTENANCE  LOG                           00020000
+      *                        FZ4CP001                                 00040000
+      *                                                                 00050000
+      *PROGRAMMER  PCR    DATE      COMMENTS                            00060000
+      *----------------------------------------------------------------*00060100
+      *        ---------   ATENÇÃO  --------------------------          00060400
+      *                                                                 00060500
+      *      ALTERACOES NO FZ4CP001 DEVERAO SER REPLICADAS:             00060600
+      *             BGOW9040 - PARA APLICAÇÕES DE OUTPUTS (UGEN)        00060700
+      *                                                                 00060800
+      *                                                                 00060900
+      *----------------------------------------------------------------*00070000
+      *---------------------------------------------------------------*
+      *  COPYBOOK PARA IMPRESSAO DE CONDICOES PARTICULARES            *
+      *                                                               *
+      *------------------------ ALTERACOES ---------------------------*
+      *                                                               *
+      *  POR    FLCM       DATA     DESCRICAO                         *
+      *                    20150224                                   *
+      *  JM    2P3737   2022-02-28  REQ2018001-2005 ATAP201901-477 -  *
+      *                             NOVO CAMPO DE HORA INICIO DAS     *
+      *                             ALTERACOES                        *
+      *---------------------------------------------------------------*
+
+         03  FZ4CP001-PRINT-RECORD.
+      *--- SORT KEY
+           05  FZ4CP001-SORT-KEY.
+      *     CODIGO DE COMPANHIA
+             07  FZ4CP001-COMPANY                PIC X(03).
+      *     CODIGO DE MARCA
+             07  FZ4CP001-MARCA                  PIC X(03).
+      *     Nº DE CLIENTE DO TOMADOR DO SEGURO
+             07  FZ4CP001-TM-CLIENT-REFERENCE    PIC X(10).
+      *     CODIGO POSTAL DO TOMADOR DO SEGURO
+             07  FZ4CP001-TM-POST-CODE           PIC X(08).
+      *     CODIGO DE MEDIADOR
+             07  FZ4CP001-AGENTE-COBRADOR        PIC X(10).
+      *     CODIGO POSTAL DO MEDIADOR
+             07  FZ4CP001-AG-POST-CODE           PIC X(08).
+      *     CÓDIGO DO PRODUTO
+             07  FZ4CP001-PRODUTO                PIC X(05).
+      *     Nº APOLICE
+             07  FZ4CP001-POLICY-NUMBER          PIC X(16).
+      *     TRANSACÇÃO
+      *     NO COGEN22 - DOCUMENT-NUMBER
+             07  FZ4CP001-POLICY-TRANSACTION     PIC X(10).
+      *     TIPO DOCUMENTO
+      *     COND - CONDIÇÕES PARTICULARES
+      *     MAPA - MAPA
+             07  FZ4CP001-TIPO-DOC               PIC X(05).
+               88  FZ4CP001-COND               VALUE 'COND '.
+               88  FZ4CP001-MAPA               VALUE 'MAPA '.
+
+      *     NUMERO DE SEQUÊNCIA 1
+             07  FZ4CP001-NUM-SEQ-1              PIC 9(05).
+      *     CODIGO DOCUMENTO SO
+             07  FZ4CP001-COD-DOC-SO             PIC X(04).
+      *     TIPO DE LINHA
+      *     A - DADOS DA APOLICE
+      *     B - DADOS DO MEDIADOR
+      *     C - VALORES
+      *     D - DADOS IMPRESSAO
+      *     E - DADOS IMPRESSAO DA NOTA DISCRIMINATIVA
+      *     F - DADOS IMPRESSAO DA NOTA ANEXA
+      *     G - DADOS IMPRESSAO DA CARTA VARIAVEL
+      *     H - DADOS IMPRESSAO DA CARTA FIXA (AJUSTAMENTO)
+      *     Z - FIM DOCUMENTO
+             07  FZ4CP001-TIPO-LINHA             PIC X(01).
+               88  FZ4CP001-DADOS-GERAIS       VALUE 'A'.
+               88  FZ4CP001-DADOS-MEDIADOR     VALUE 'B'.
+               88  FZ4CP001-VALORES            VALUE 'C'.
+               88  FZ4CP001-DADOS-IMPRESSAO    VALUE 'D'.
+               88  FZ4CP001-DADOS-ND           VALUE 'E'.
+               88  FZ4CP001-DADOS-NA           VALUE 'F'.
+               88  FZ4CP001-CRT-FIXA           VALUE 'G'.
+               88  FZ4CP001-CRT-VAR            VALUE 'H'.
+               88  FZ4CP001-BB31-DET           VALUE 'J'.
+               88  FZ4CP001-CRT-BB31           VALUE 'K'.
+               88  FZ4CP001-CRT-BB92           VALUE 'L'.
+               88  FZ4CP001-CP-MAPA            VALUE 'M'.
+               88  FZ4CP001-BB92-DET           VALUE 'N'.
+               88  FZ4CP001-FIM-DOCUMENTO      VALUE 'Z'.
+           05  FZ4CP001-PRINT-DATA               PIC X(411).
+      *
+      *--- LINHA A , E OU F
+      *--- DADOS GERAIS  DA APÓLICE
+           05  FZ4CP001-LINHA-A REDEFINES FZ4CP001-PRINT-DATA.
+      *--- TOMADOR DO SEGURO
+             07  FILLER                          PIC X(01).
+      *    NOME
+             07  FZ4CP001-TM-ADDRESSEE           PIC X(40).
+      *    LINHA DE MORADA-1
+             07  FZ4CP001-TM-ADDRESS1            PIC X(40).
+      *    LINHA DE MORADA-2
+             07  FZ4CP001-TM-ADDRESS2            PIC X(40).
+      *    LOCALIDADE
+             07  FZ4CP001-TM-ADDRESS3            PIC X(40).
+      *    CODIGO POSTAL DESC
+             07  FZ4CP001-TM-ADDRESS4            PIC X(40).
+      *    TIPO NUM DE PORTA
+             07  FZ4CP001-TM-TNUM-PORTA          PIC X(01).
+      *    NUM DE PORTA
+             07  FZ4CP001-TM-NUM-PORTA           PIC X(04).
+
+      *    PRODUTO DESC
+             07  FZ4CP001-PRODUTO-DESC           PIC X(30).
+      *    PLANO DE PAGAMENTO
+      *    ÚNICO - NAS TEMPORÁRIAS
+      *    ANUAL
+      *    FRACIONADA - MENSAL,TRIMESTRAL, SEMESTRAL
+             07  FZ4CP001-FORMA-PAGAMENTO-DESC   PIC X(30).
+      *    CÓDIGO CONDIÇÃO GERAL
+             07  FZ4CP001-TIPO-COND-GERAL        PIC X(03).
+      *    TIPO DE TRANSACÇÃO
+             07  FZ4CP001-TRANSACTION-TYPE       PIC X(02).
+                   88  FZ4CP001-NEW-BUSINESS    VALUE '01'.
+                   88  FZ4CP001-RENEWAL         VALUE '02' '12'.
+                   88  FZ4CP001-ENDORSEMENT     VALUE '03' '04' '05'.
+                   88  FZ4CP001-REVIVE          VALUE '06' '07'.
+      *    DATA ORIGINAL DE 1 PRINT
+             07  FZ4CP001-ORIG-DATE-PRINTED      PIC X(10).
+      *    DATA DE VENCIMENTO (DDMM)
+             07  FZ4CP001-DATA-VENC              PIC X(04).
+      *    DATA INICIO DO TERMO (AAAA-MM-DD)
+             07  FZ4CP001-TERM-EFFECT-DATE       PIC X(10).
+      *    DATA FIM DO TERMO (AAAA-MM-DDA)
+             07  FZ4CP001-TERM-EXPIRY-DATE       PIC X(10).
+      *    TEMPO DE APÓLICE(ANO E SEGUINTES)
+             07  FZ4CP001-TIPO-APOLICE           PIC X(02).
+               88  FZ4CP001-APOL-TEMPORARIA    VALUE 'TE'.
+               88  FZ4CP001-APOL-ANUAL         VALUE 'AN'.
+      *    INDICADOR DE PRIMEIRA IMPRESSÃO
+             07  FZ4CP001-N-IMPRESSAO            PIC X(01).
+               88  FZ4CP001-PRIMEIRA-IMP      VALUE '1'.
+               88  FZ4CP001-SEGUNDA-VIA       VALUE '2'.
+             07  FZ4CP001-NUM-COPIAS             PIC 9(01).
+             07  FZ4CP001-TM-COD-BARRAS          PIC X(22).
+      *    CANAL DE DISTRIBUIÇÃO
+             07  FZ4CP001-CANAL-DISTRIBUICAO     PIC X(03).
+      *    USER ID IMPRESSÕES ONLINE
+             07  FZ4CP001-USERID                 PIC X(08).
+      *    NUMERO RECIBO DISCRIMINATIVO
+             07  FZ4CP001-NUM-RECIBO             PIC X(10).
+      *    NUMERO DE CLIENTE PARA A NOTA ANEXA
+             07  FZ4CP001-NUM-CLINA              PIC X(10).
+      *    RAMO
+             07  FZ4CP001-RAMO                   PIC X(02).
+      *    DESCRITIVO DO RAMO
+             07  FZ4CP001-RAMO-DESC              PIC X(30).
+2P3737*    HORA-MINUTO TRANSAÇÃO (HH:MM)
+2P3737       07  FZ4CP001-HHMM-TRANSACAO         PIC X(05).
+2P3737*      07  FILLER                          PIC X(17).
+2P3737       07  FILLER                          PIC X(12).
+      *
+      *--- LINHA B
+      *--- DADOS DO MEDIADOR
+           05  FZ4CP001-LINHA-B REDEFINES FZ4CP001-PRINT-DATA.
+      *--- NOME MEDIADOR
+             07  FILLER                           PIC X(01).
+      *    NOME
+             07  FZ4CP001-TMM-ADDRESSEE           PIC X(40).
+      *    LINHA DE MORADA-1
+             07  FZ4CP001-TMM-ADDRESS1            PIC X(40).
+      *    LINHA DE MORADA-2
+             07  FZ4CP001-TMM-ADDRESS2            PIC X(40).
+      *    LOCALIDADE
+             07  FZ4CP001-TMM-ADDRESS3            PIC X(40).
+      *    CODIGO POSTAL DESC
+             07  FZ4CP001-TMM-ADDRESS4            PIC X(40).
+      *    TIPO NUM DE PORTA
+             07  FZ4CP001-TMM-TNUM-PORTA          PIC X(01).
+      *    NUM DE PORTA
+             07  FZ4CP001-TMM-NUM-PORTA           PIC X(04).
+      *    TIPO DE TRANSACÇÃO
+             07  FZ4CP001-TRANSACTION-TYPE-M     PIC X(02).
+                   88  FZ4CP001-NEW-BUSINESS-M  VALUE '01'.
+                   88  FZ4CP001-RENEWAL-M       VALUE '02' '12'.
+                   88  FZ4CP001-ENDORSEMENT-M   VALUE '03' '04' '05'.
+                   88  FZ4CP001-REVIVE-M        VALUE '06' '07'.
+             07  FILLER                          PIC X(203).
+      *
+      *--- LINHA C
+      *--- DADOS DE VALORES DA APÓLICE
+           05 FZ4CP001-LINHA-C REDEFINES FZ4CP001-PRINT-DATA.
+             07  FILLER                          PIC X(01).
+      *    VALORES ANUAL
+             07  FZ4CP001-ANUAL-PR-COMERCIAL     PIC S9(11)V9(02).
+             07  FZ4CP001-ANUAL-CUSTO-APOL       PIC S9(11)V9(02).
+             07  FZ4CP001-ANUAL-IMPOSTO          PIC S9(11)V9(02).
+             07  FZ4CP001-ANUAL-PR-TOTAL         PIC S9(11)V9(02).
+      *    VALORES 1ª FRACÇÃO
+             07  FZ4CP001-1F-PR-COMERCIAL        PIC S9(11)V9(02).
+             07  FZ4CP001-1F-CUSTO-APOL          PIC S9(11)V9(02).
+             07  FZ4CP001-1F-IMPOSTO             PIC S9(11)V9(02).
+             07  FZ4CP001-1F-PR-TOTAL            PIC S9(11)V9(02).
+      *    VALORES FRACÇÕES SEGUINTES
+             07  FZ4CP001-FS-PR-COMERCIAL        PIC S9(11)V9(02).
+             07  FZ4CP001-FS-CUSTO-APOL          PIC S9(11)V9(02).
+             07  FZ4CP001-FS-IMPOSTO             PIC S9(11)V9(02).
+             07  FZ4CP001-FS-PR-TOTAL            PIC S9(11)V9(02).
+      *    CDIGO CONDIÇÃO GERAL ÚNICA
+             07  FZ4CP001-COND-GERAL-UNICA       PIC X(05).
+      *    DESCRITIVO DO CÓDIGO CONDIÇÃO GERAL ÚNICO
+             07  FZ4CP001-COND-GERAL-UNICA-DESC  PIC X(40).
+      *    CUSTO DA CARTA VERDE - APENAS PARA AUTOMOVEL
+             07  FZ4CP001-ANUAL-CUSTO-CV         PIC S9(11)V9(02).
+             07  FZ4CP001-1F-CUSTO-CV            PIC S9(11)V9(02).
+             07  FZ4CP001-FS-CUSTO-CV            PIC S9(11)V9(02).
+             07  FILLER                          PIC X(170).
+      *--- LINHA D
+      *--- PARA DADOS DE IMPRESSAO - LINHA DE IMPRESSAO
+           05 FZ4CP001-LINHA-D REDEFINES FZ4CP001-PRINT-DATA.
+             07  FZ4CP001-CANAL                     PIC X(1).
+             07  FZ4CP001-LINHA                     PIC X(131).
+             07  FILLER                             PIC X(279).
+      *--- LINHA Z
+      *--- FIM DE DOCUMENTO
+           05 FZ4CP001-LINHA-Z REDEFINES FZ4CP001-PRINT-DATA.
+             07  FILLER                          PIC X(411).
+      *    TIPO IMPRESSAO
+      *    I - ONLINE
+      *    B - BATCH
+           05 FZ4CP001-TIPO-IMPRESSAO            PIC X(001).

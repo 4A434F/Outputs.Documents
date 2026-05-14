@@ -1,0 +1,81 @@
+      *---------------------------------------------------------------*
+      *  TRPR201901-2523 - CRIAÇÃO DE OUTPUT PVP                      *
+      *                                                               *
+      *  COPYBOOK PARA IMPRESSAO DE CERTIFICADOS DE SEGUROS PVP       *
+      *  (PROTECÇÃO VITAL DAS PESSOAS)                                *
+      *                                                               *
+      *  ALTERAÇÕES NO COPYBOOK FZ4AGS01 DEVERÃO SER REPLICADAS NESTE *
+      *  COPYBOOK (BGOW9059), UTILIZADO NAS APLICAÇÕES DE OUTPUTS     *
+      *  (UGEN) E INFORMAR A RESPECTIVA EQUIPA                        *
+      *                                                               *
+      *---------------------------------------------------------------*
+      *                      MAINTENANCE  LOG                         *
+      *                                                               *
+      *PROGRAMMER  PCR    DATE                COMMENTS                *
+      *---------------------------------------------------------------*
+      *                                                               *
+      *  NJF            2021-02-01  NOVO COPYBOOK.                    *
+      *                                                               *
+      *---------------------------------------------------------------*
+      /
+       05  :PREFIX:-PRINT-RECORD.
+      * ------------------------------------------------------------- *
+      *    SORT KEY                                                   *
+      * ------------------------------------------------------------- *
+         07  :PREFIX:-SORT-KEY.
+           09  :PREFIX:-COMPANHIA                 PIC X(03).
+           09  :PREFIX:-MARCA                     PIC X(03).
+           09  :PREFIX:-CANAL-DISTRIBUICAO        PIC X(03).
+           09  :PREFIX:-CLIENT-REFERENCE          PIC X(10).
+           09  :PREFIX:-CLIENT-POST-CODE          PIC X(08).
+           09  :PREFIX:-AGENTE-COBRADOR           PIC X(10).
+           09  :PREFIX:-AGENTE-POST-CODE          PIC X(08).
+           09  :PREFIX:-PRODUTO                   PIC X(05).
+           09  :PREFIX:-APOLICE                   PIC X(16).
+           09  :PREFIX:-RECORD-TYPE               PIC X(02).
+               88  :PREFIX:-ENDERECO-ASSUNTO    VALUE 'EA'.
+               88  :PREFIX:-LISTA-COBERTURAS    VALUE 'LC'.
+               88  :PREFIX:-FIM-DOCUMENTO       VALUE 'ZZ'.
+           09  :PREFIX:-DOCUMENT-CODE             PIC X(04).
+               88  :PREFIX:-CERTIF-PVP          VALUE 'CPVP'.
+         07  :PREFIX:-PRINT-DATA                  PIC X(427).
+      *
+      * LINHA EA - ENDEREÇAMENTO E ASSUNTO
+         07  REDEFINES :PREFIX:-PRINT-DATA.
+           09  :PREFIX:-EA-PESSOA-SEGURA.
+               11  :PREFIX:-EA-PS-ADDRESSEE       PIC X(40).
+               11  :PREFIX:-EA-PS-ADDRESSE1       PIC X(40).
+               11  :PREFIX:-EA-PS-ADDRESSE2       PIC X(40).
+               11  :PREFIX:-EA-PS-ADDRESSE3       PIC X(40).
+               11  :PREFIX:-EA-PS-ADDRESSE4       PIC X(40).
+               11  :PREFIX:-EA-PS-TNUM-PORTA      PIC X(01).
+               11  :PREFIX:-EA-PS-NUM-PORTA       PIC X(04).
+               11  :PREFIX:-EA-PS-DT-NASC         PIC X(08).
+               11  :PREFIX:-EA-PS-NIF             PIC X(22).
+               11  :PREFIX:-EA-PS-CAP-SEGURO      PIC 9(11)V99.
+           09  :PREFIX:-EA-DT-EMISSAO             PIC X(08).
+           09  :PREFIX:-EA-COND-GERAIS-COD        PIC X(03).
+           09  :PREFIX:-EA-COND-GERAIS-DESC       PIC X(30).
+           09  :PREFIX:-EA-PLANO-COB-COD          PIC X(03).
+           09  :PREFIX:-EA-NOME-TOMADOR           PIC X(40).
+           09  :PREFIX:-EA-DT-ADESAO-APOL         PIC X(08).
+           09  :PREFIX:-EA-DURACAO-CONTRATO       PIC X(20).
+           09  :PREFIX:-EA-AMBITO-APOLICE         PIC X(02).
+               88  :PREFIX:-EA-AMB-APOL-FM      VALUE 'FM'.
+           09  FILLER                             PIC X(65).
+
+      * LINHA LC - LISTA DE COBERTURAS
+         07  REDEFINES :PREFIX:-PRINT-DATA.
+           09  :PREFIX:-LC-COB-DESCRITIVO         PIC X(80).
+           09  :PREFIX:-LC-COB-SUBLIMITES         PIC 9(11)V99.
+           09  :PREFIX:-LC-COB-SUBLIM-COD         PIC X(02).
+           09  FILLER                             PIC X(332).
+
+      * LINHA ZZ - FIM DO DOCUMENTO
+         07  REDEFINES :PREFIX:-PRINT-DATA.
+           09  FILLER                             PIC X(427).
+
+         07  :PREFIX:-FD-TIPO-IMPRESSAO           PIC X(01).
+             88  :PREFIX:-FD-IMP-ONLINE         VALUE 'I'.
+             88  :PREFIX:-FD-IMP-BATCH          VALUE 'O'.
+

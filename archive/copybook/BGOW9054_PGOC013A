@@ -1,0 +1,76 @@
+      *****************************************************************
+      *---------------------------------------------------------------*
+      *  COPYBOOK PARA IMPRESSAO DE CONDICOES PARTICULARES DO         *
+      *  PRODUTOS AP
+      *                                                               *
+      *------------------------ ALTERACOES ---------------------------*
+      *                                                               *
+      *  POR    CCID       DATA     DESCRICAO                         *
+      *                                                               *
+      *  BV             2010-03-31  NOVO COPYBOOK.                    *
+      *                                                               *
+      *---------------------------------------------------------------*
+
+         03  XXXXXXX-PRINT-RECORD.
+           05  XXXXXXX-SORT-KEY.
+             07  XXXXXXX-COMPANHIA               PIC X(03).
+             07  XXXXXXX-MARCA                   PIC X(03).
+             07  XXXXXXX-CANAL-DISTRIBUICAO      PIC X(03).
+             07  XXXXXXX-COD-DOC                 PIC X(03).
+             07  XXXXXXX-ENTIDADE                PIC X(10).
+             07  XXXXXXX-ENT-POST-COD            PIC X(08).
+             07  XXXXXXX-AGENTE                  PIC X(10).
+             07  XXXXXXX-AG-POST-COD             PIC X(08).
+             07  XXXXXXX-PRODUTO                 PIC X(05).
+             07  XXXXXXX-APOLICE                 PIC X(16).
+             07  XXXXXXX-SEQUENCIA               PIC X(05).
+             07  XXXXXXX-TIPO-REGISTO            PIC X(02).
+               88  XXXXXXX-APOLICE-DADOS-GERAIS   VALUE 'AA'.
+               88  XXXXXXX-DADOS-SINISTRADO       VALUE 'AD'.
+               88  XXXXXXX-DETALHE-SINISTRO       VALUE 'DA'.
+               88  XXXXXXX-FIM-DOCUMENTO          VALUE 'ZA'.
+           05  XXXXXXX-PRINT-DATA                PIC X(423).
+      *
+      * LINHA AA - DADOS GERAIS DA APOLICE
+           05  XXXXXXX-LINHA-AA REDEFINES XXXXXXX-PRINT-DATA.
+             07  XXXXXXX-NOME                    PIC X(40).
+             07  XXXXXXX-LOCATION-REF            PIC X(04).
+             07  XXXXXXX-MORADA1                 PIC X(40).
+             07  XXXXXXX-MORADA2                 PIC X(40).
+             07  XXXXXXX-LOCALIDADE              PIC X(40).
+             07  XXXXXXX-CPOSTAL                 PIC X(08).
+             07  XXXXXXX-CPOSTAL-DESC            PIC X(40).
+             07  XXXXXXX-CPAIS                   PIC X(03).
+             07  XXXXXXX-CPAIS-DESC              PIC X(40).
+             07  XXXXXXX-IDP                     PIC X(04).
+             07  XXXXXXX-DATA-CARTA              PIC X(23).
+             07  XXXXXXX-DATA-PROCESSAMENTO      PIC X(08).
+             07  XXXXXXX-NRO-ASSISTENCIA         PIC X(12).
+             07  XXXXXXX-PROC-SINISTRO           PIC X(10).
+             07  XXXXXXX-NRO-EMPREGADO           PIC X(11).
+             07  XXXXXXX-NRO-SEG-SOCIAL          PIC X(11).
+             07  XXXXXXX-NIF-BENEFICIARIO        PIC X(09).
+             07  FILLER                          PIC X(080).
+
+      * LINHA AD - DADOS SINISTRADO
+           05  XXXXXXX-LINHA-AD REDEFINES XXXXXXX-PRINT-DATA.
+             07  XXXXXXX-NOME-SINISTRADO         PIC X(40).
+             07  XXXXXXX-DATA-SINISTRO           PIC X(08).
+             07  XXXXXXX-SALARIO-MENSAL          PIC X(14).
+             07  FILLER                          PIC X(361).
+
+      * LINHA DA - DETALHE SINISTRO
+           05  XXXXXXX-LINHA-DA REDEFINES XXXXXXX-PRINT-DATA.
+             07  XXXXXXX-TIPO-INCAP              PIC X(40).
+      *      07  XXXXXXX-PERCENTAGEM-INCAP       PIC 9(03)V9(02).
+             07  XXXXXXX-PERCENTAGEM-INCAP       PIC X(06).
+             07  XXXXXXX-DT-INI-IND              PIC X(08).
+             07  XXXXXXX-DT-FIM-IND              PIC X(08).
+             07  XXXXXXX-NRO-DIAS-IND            PIC X(03).
+             07  XXXXXXX-VALOR-IND               PIC X(14).
+             07  FILLER                          PIC X(344).
+
+      * LINHA ZZ - FIM DO DOCUMENTO
+           05 XXXXXXX-LINHA-ZA  REDEFINES XXXXXXX-PRINT-DATA.
+             07  FILLER                          PIC X(423).
+

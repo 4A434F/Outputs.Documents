@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Outputs.Documents.Domain.VectorStore\Outputs.Documents.Domain.VectorStore.csproj" />
+    <ProjectReference Include="..\..\tools\Outputs.Documents.Domain.VectorStore\Outputs.Documents.Domain.VectorStore.csproj" />
   </ItemGroup>
 
 </Project>

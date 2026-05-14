@@ -1,0 +1,70 @@
+      ***************************************************************
+      *                   ***********                               *
+      *                   * ATENCAO *                               *
+      *                   ***********                               *
+      *  = NOTA DISCRIMINATIVA DE SALÁRIOS =                        *
+      *                                                             *
+      *   ESTE COPY É UMA RÉPLICA DO FZ4ATS04.                      *
+      *   QUALQUER ALTERAÇÃO NESTE COPY DEVE SER REFLETIDA NO       *
+      *   FZ4ATS04.                                                 *
+      *                                                             *
+      ***************************************************************
+         03  FZ4ATS04-PRINT-RECORD.
+           05  FZ4ATS04-SORT-KEY.
+             07  FZ4ATS04-COMPANHIA              PIC X(03).
+             07  FZ4ATS04-MARCA                  PIC X(03).
+             07  FZ4ATS04-CANAL-DISTRIBUICAO     PIC X(03).
+             07  FZ4ATS04-CODIGO-DOCUMENTO       PIC X(04).
+               88  FZ4ATS04-ATND-DOC              VALUE 'ATND'.
+             07  FZ4ATS04-ENTIDADE               PIC X(10).
+             07  FZ4ATS04-ENT-POST-COD           PIC X(08).
+             07  FZ4ATS04-AGENTE                 PIC X(10).
+             07  FZ4ATS04-AG-POST-COD            PIC X(08).
+             07  FZ4ATS04-COD-PRODUTO            PIC X(05).
+             07  FZ4ATS04-APOLICE                PIC X(16).
+             07  FZ4ATS04-ANO                    PIC X(04).
+             07  FZ4ATS04-TIPO-REGISTO           PIC X(02).
+               88  FZ4ATS04-APOLICE-DADOS-GERAIS  VALUE 'A1'.
+               88  FZ4ATS04-APOLICE-DETALHE-MES   VALUE 'B1'.
+               88  FZ4ATS04-APOLICE-SALDOS        VALUE 'C1'.
+             07  FZ4ATS04-SEQUENCIA              PIC 9(05).
+           05  FZ4ATS04-PRINT-DATA               PIC X(410).
+      *
+      * LINHA A1 - DADOS GERAIS DA APOLICE
+           05  FZ4ATS04-LINHA-A1 REDEFINES FZ4ATS04-PRINT-DATA.
+             07  FZ4ATS04-ADDRESSEE              PIC X(40).
+             07  FZ4ATS04-ADDRESS1               PIC X(40).
+             07  FZ4ATS04-ADDRESS2               PIC X(40).
+             07  FZ4ATS04-ADDRESS3               PIC X(40).
+             07  FZ4ATS04-ADDRESS4               PIC X(40).
+             07  FZ4ATS04-TNUM-PORTA             PIC X(01).
+             07  FZ4ATS04-NUM-PORTA              PIC X(04).
+             07  FZ4ATS04-DATA-PROCESSAMENTO     PIC X(10).
+             07  FZ4ATS04-DESC-RAMO-SEGURO       PIC X(21).
+             07  FZ4ATS04-DESC-PRODUTO           PIC X(30).
+             07  FILLER                          PIC X(144).
+
+      * LINHA B1 - DADOS DETALHE MESES
+           05  FZ4ATS04-LINHA-B1 REDEFINES FZ4ATS04-PRINT-DATA.
+             07  FZ4ATS04-DESC-MES               PIC X(09).
+             07  FZ4ATS04-VLR-COMUNICADO         PIC S9(11)V99.
+             07  FZ4ATS04-VLR-CONSIDERADO        PIC S9(11)V99.
+             07  FZ4ATS04-VLR-COMERCIAL          PIC S9(11)V99.
+             07  FILLER                          PIC X(362).
+      *
+      * LINHA C1 - DADOS SALDOS
+           05  FZ4ATS04-LINHA-C1 REDEFINES FZ4ATS04-PRINT-DATA.
+             07  FZ4ATS04-SUBS-EXTRAP1           PIC S9(11)V99.
+             07  FZ4ATS04-SUBS-EXTRAP2           PIC S9(11)V99.
+             07  FZ4ATS04-VLR-TOT-COMUNI         PIC S9(11)V99.
+             07  FZ4ATS04-VLR-TOT-CONSID         PIC S9(11)V99.
+             07  FZ4ATS04-VLR-TOT-COMERC         PIC S9(11)V99.
+             07  FZ4ATS04-VLR-TOT-PR-COM-MIN     PIC S9(11)V99.
+             07  FZ4ATS04-VLR-TOT-PR-PROV        PIC S9(11)V99.
+             07  FZ4ATS04-VLR-TOT-PR-CALC        PIC S9(11)V99.
+             07  FZ4ATS04-VLR-TOT-PR-ACERTO      PIC S9(11)V99.
+             07  FZ4ATS04-VLR-TOT-PR-TOT-ACERTO  PIC S9(11)V99.
+             07  FILLER                          PIC X(280).
+           05  FZ4ATS04-USER-IMPRESSAO           PIC X(008).
+           05  FZ4ATS04-TIPO-IMPRESSAO           PIC X(001).
+

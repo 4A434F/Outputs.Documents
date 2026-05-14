@@ -1,0 +1,62 @@
+      *---------------------------------------------------------------*
+      *                                                               *
+      *  COPYBOOK PARA IMPRESSAO DE PEDIDOS DE ANULAÇÃO C22           *
+      *                                                               *
+      *                                                               *
+      *  ALTERAÇÕES NO COPYBOOK XXXXXXXX DEVERÃO SER REPLICADAS NESTE *
+      *  COPYBOOK (BGOW9063), UTILIZADO NAS APLICAÇÕES DE OUTPUTS     *
+      *  (UGEN) E INFORMAR A RESPECTIVA EQUIPA                        *
+      *                                                               *
+      *---------------------------------------------------------------*
+      *                      MAINTENANCE  LOG                         *
+      *                                                               *
+      *PROGRAMMER  PCR    DATE                COMMENTS                *
+      *---------------------------------------------------------------*
+      *                                                               *
+      *                                                               *
+      *                                                               *
+      *---------------------------------------------------------------*
+      /
+       05  :PREFIX:-PRINT-RECORD.
+      * ------------------------------------------------------------- *
+      *    SORT KEY                                                   *
+      * ------------------------------------------------------------- *
+         07  :PREFIX:-SORT-KEY.
+           09  :PREFIX:-COMPANHIA                 PIC X(03).
+           09  :PREFIX:-MARCA                     PIC X(03).
+           09  :PREFIX:-NUMERO-CLIENTE            PIC X(10).
+           09  :PREFIX:-CODPOSTAL-CLIENTE         PIC X(08).
+           09  :PREFIX:-PRODUTO                   PIC X(05).
+           09  :PREFIX:-APOLICE                   PIC X(16).
+           09  :PREFIX:-RECORD-TYPE               PIC X(02).
+               88  :PREFIX:-DADOS-CLIENTE       VALUE 'AA'.
+               88  :PREFIX:-DADOS-CARTA         VALUE 'BA'.
+               88  :PREFIX:-FIM-DOCUMENTO       VALUE 'ZZ'.
+         07  :PREFIX:-PRINT-DATA                  PIC X(452).
+      *
+      * LINHA AA - DADOS DO CLIENTE
+         07  REDEFINES :PREFIX:-PRINT-DATA.
+           09  :PREFIX:-AA-NOME                   PIC X(40).
+           09  :PREFIX:-AA-MORADA1                PIC X(40).
+           09  :PREFIX:-AA-MORADA2                PIC X(40).
+           09  :PREFIX:-AA-LOCALIDADE             PIC X(40).
+           09  :PREFIX:-AA-COD-POSTAL             PIC X(40).
+           09  :PREFIX:-AA-TNUM-PORTA             PIC X(01).
+           09  :PREFIX:-AA-NUM-PORTA              PIC X(04).
+           09  :PREFIX:-AA-NIF                    PIC X(22).
+           09  FILLER                             PIC X(225).
+
+      * LINHA BA - DADOS DA CARTA
+         07  REDEFINES :PREFIX:-PRINT-DATA.
+           09  :PREFIX:-BA-DATA-VENCIMENTO        PIC X(08).
+           09  :PREFIX:-BA-DESC-PRODUTO           PIC X(30).
+           09  FILLER                             PIC X(414).
+      *
+      * LINHA ZZ - FIM DO DOCUMENTO
+         07  REDEFINES :PREFIX:-PRINT-DATA.
+           09  FILLER                             PIC X(452).
+         07  :PREFIX:-TIPO-IMPRESSAO              PIC X(01).
+             88  :PREFIX:-IMP-ONLINE         VALUE 'I'.
+             88  :PREFIX:-IMP-BATCH          VALUE 'O'.
+
+

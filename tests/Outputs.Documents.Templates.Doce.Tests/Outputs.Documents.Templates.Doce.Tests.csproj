@@ -24,7 +24,7 @@
     <ProjectReference Include="..\..\src\Outputs.Documents.Domain\Outputs.Documents.Domain.csproj" />
     <ProjectReference Include="..\..\src\Outputs.Documents.Abstractions\Outputs.Documents.Abstractions.csproj" />
     <ProjectReference Include="..\..\src\Outputs.Documents.Rendering\Outputs.Documents.Rendering.csproj" />
-    <ProjectReference Include="..\..\src\Outputs.Documents.Templates.Doce\Outputs.Documents.Templates.Doce.csproj" />
+    <ProjectReference Include="..\..\src\Outputs.Documents.Templates.DOCE\Outputs.Documents.Templates.DOCE.csproj" />
   </ItemGroup>
 
 </Project>

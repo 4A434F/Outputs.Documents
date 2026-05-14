@@ -5,7 +5,7 @@ using Outputs.Documents.Abstractions;
 
 namespace Outputs.Documents.Rendering;
 
-internal static class DocumentScanner
+public static class DocumentScanner
 {
     public static IReadOnlyList<DocumentTemplateDescriptor> ScanTemplates(Assembly assembly)
     {
@@ -33,7 +33,7 @@ internal static class DocumentScanner
             .ToArray();
     }
 
-    internal static DocumentTemplateDescriptor? CreateDescriptor(Type componentType)
+    public static DocumentTemplateDescriptor? CreateDescriptor(Type componentType)
     {
         var template = componentType.GetCustomAttribute<DocumentTemplateAttribute>();
         if (template is null)

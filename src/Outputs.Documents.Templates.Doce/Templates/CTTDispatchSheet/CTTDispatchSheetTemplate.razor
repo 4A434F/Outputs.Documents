@@ -1,6 +1,6 @@
-@namespace Outputs.Documents.Templates.Doce
+@namespace Outputs.Documents.Templates.DOCE
 @attribute [DocumentTemplate(isDefault: true, Key = "doce-ctt-dispatch-sheet", Name = "CTT Dispatch Sheet", Group = "DOCE")]
-@attribute [DocumentLayout(headerTemplate: typeof(HeaderComponent), footerTemplate: typeof(FooterOnlyPagComponent), headerPropertyName: nameof(CttDispatchSheet.Header), footerPropertyName: nameof(CttDispatchSheet.Footer))]
+@attribute [DocumentLayout(headerTemplate: typeof(HeaderComponent), footerTemplate: typeof(FooterOnlyPagComponent), headerPropertyName: nameof(DC003CttDispatchSheet.Header), footerPropertyName: nameof(DC003CttDispatchSheet.Footer))]
 
 <A4Layout>
     <TestOverlayComponent></TestOverlayComponent>
@@ -178,5 +178,5 @@
 
 @code {
     [Parameter]
-    public CttDispatchSheet? Model { get; set; }
+    public DC003CttDispatchSheet? Model { get; set; }
 }

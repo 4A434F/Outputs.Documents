@@ -1,0 +1,1055 @@
+      *****************************************************************
+      *----------------------------------------------------------------*00010000
+      **                     MAINTENANCE  LOG                           00020000
+      *                        FZ4IPS04                                 00040000
+      *                                                                 00050000
+      *PROGRAMMER  PCR    DATE      COMMENTS                            00060000
+      *----------------------------------------------------------------*00060100
+      *        ---------   ATENÇÃO  --------------------------          00060400
+      *                                                                 00060500
+      *      ALTERACOES NO FZ4IPS04 DEVERAO SER REPLICADAS:             00060600
+      *             BGOW9010 - PARA APLICAÇÕES DE OUTPUTS (UGEN)        00060700
+      *                                                                 00060800
+      *                                                                 00060900
+      *---------------------------------------------------------------* 00070000
+      *---------------------------------------------------------------*
+      *  COPYBOOK PARA IMPRESSAO DE CONDICOES PARTICULARES            *
+      *                  MULTIRISCO CONDOMINIO                        *
+      *                  MULTIRISCO GRANDES EMPRESAS                  *
+      *                  MULTIRISCO NOVO PRODUTO NEGÓCIO MNI, MNC, MNS*
+      *                  MULTIRISCO MIGRAÇÃO PRODUTOS CLÁSSICO -> C22 *
+      *                  RESPONS CIVIL OBRZGATÓRIA/PROFISSIONAL/      *
+      *                                EXPLORAÇÃO                     *
+      *                  CAÇADORES                                    *
+      *   E                                                           *
+      *                  RECIBO DISCRIMINATIVO DOS PRODUTOS MRH       *
+      *                                                               *
+      *------------------------ ALTERACOES ---------------------------*
+      *                                                               *
+      *  POR    ASIM       DATA     DESCRICAO                         *
+      *                    20110321 CRIACAO DE UM NOVO TIPO DE REGISTO*
+      *                             BDA PARA A INFORMAÇÃO DE  DADOS DO*
+      *                             RECIBO DISCRIMINATIVO. PARA ESTE  *
+      *                             DOCUMENTO SÃO UTILIZADOS OS TIPOS *
+      *                             DE REGISTOS AAA CBA CJA COA ZAA.  *
+      * RJF  2P2440  2014-06-04  201200094                            *
+      *                                                               *
+      * MP   2P2642  2015-04-22  201400126 MIGRACAO DE RC             *
+      *                          DO CLÁSSICO PARA O C22               *
+      *                          CRIAÇÃO DOS TIPOS DE REGISTOS        *
+      *                          KDA, KBI, KBJ                        *
+      *                                                               *
+      * AM   2P2656  2015-05-13  201400173 MIGRACAO DE CAÇADORES      *
+      *                          -TIPOS LIA, LJA PARA A COBERTURA RPA *
+      *                          -CARTA DE MIGRAÇÃO                   *
+      *                                                               *
+      * MP   2P2708  2015-08-17  CHG-387464 - NOVOS TIPOS DE REGISTO  *
+      *                          CONDIÇÕES PARTICULARES PECUARIA E    *
+      *                                                 CAUÇÕES       *
+      *                          TIPO REGISTOS-PECUÁRIA IAJ KAL KBL   *
+      *                                        CAUÇÕES  IAK           *
+      *                                                               *
+      * AM   2P287B  2016-06-17  201400073 - Novos e Migração  Transp *
+      *                          e Engenharias C33 para C22           *
+      *                          - Novo tipo de registo ICB para      *
+      *                            tratamento de titulo a bold nos    *
+      *                            dados suplementares do objecto.    *
+      *                            Alteração ao comprimento do tipo de*
+      *                            registo ICA para texto normal      *
+      *                          - Criação de um tipo de registo BJA  *
+      *                            para tratamento de entidades a     *
+      *                            nível da apólice                   *
+      * MP   2P2921  2016-07-12  CHG-348247 - CONSIDERAR FRANQUIA 'CM'*
+      *                          IGUAL À 'CC' (CONFORME CLAUSULA).    *
+      *                          COLOCAR ESTE CÓDIGO COMO COMENTÁRIO  *
+      * EMA  2P2930  2016-07-16  CHG-448020 - CONSIDERAR FRANQUIA 'CT'*
+      * AM   2P3247  2018-07-24  CHG731176/CHG725735 - Inclusão de    *
+      *                          novo campo para indicar na CP da     *
+      *                          renovação que se inclua o texto das  *
+      *                          condições gerais                     *
+      * AM   2P3742  2022-07-25  202100416 - FUSÃO MARCAS IB/FM:      *
+      *                         CBC E COC EM SUBSTITUIÇAO DO CBA E COA*
+      *                         PARA MULTIRRISCOS CONDOMINIO          *
+      * NJF  CEL040  2022-12-23  202200249 - FUSÃO MARCAS IB/FM (RC E *
+      *                          CAÇADORES):                          *
+      *                         Implementação de Cartas a acompanharem*
+      *                          as Condições Particulares (devido a  *
+      *                          migração)                            *
+      * NJF  CEL049  2023-04-27  202200559 - CYBER SAFETY: PARCERIA   *
+      *                          NOS:                                 *
+      *                          Nova Carta de alteração de CG's a    *
+      *                          anexar às CP do atual produto Cyber  *
+      *                          Empresas (CYB)                       *
+CEL059* NJF  CEL059  2024-01-23  202300229 - Fusão Marcas IB-FM (MRE) * 00000105
+CEL059*                          Carta Alteração Condições Gerais MRE *
+CEL059*                          Carta Alteração de nº de Apólice MRE *
+      *                                                               * 00000105
+      *---------------------------------------------------------------*
+
+         03  FZ4IPS4-PRINT-RECORD.
+      *--- SORT KEY
+           05  FZ4IPS4-SORT-KEY.
+      *     CODIGO DE COMPANHIA
+             07  FZ4IPS4-COMPANY                 PIC X(03).
+      *     CODIGO DE MARCA
+             07  FZ4IPS4-MARCA                   PIC X(03).
+      *     Nº DE CLIENTE DO TOMADOR DO SEGURO
+             07  FZ4IPS4-TM-CLIENT-REFERENCE     PIC X(10).
+      *     CODIGO POSTAL DO TOMADOR DO SEGURO
+             07  FZ4IPS4-TM-POST-CODE            PIC X(08).
+      *     CODIGO DE MEDIADOR
+             07  FZ4IPS4-AGENTE-COBRADOR         PIC X(10).
+      *     CODIGO POSTAL DO MEDIADOR
+             07  FZ4IPS4-AG-POST-CODE            PIC X(08).
+      *     CÓDIGO DO PRODUTO
+             07  FZ4IPS4-PRODUTO                 PIC X(05).
+      *     Nº APOLICE
+             07  FZ4IPS4-POLICY-NUMBER           PIC X(16).
+      *     TRANSACÇÃO
+      *     NO COGEN22 - DOCUMENT-NUMBER
+             07  FZ4IPS4-POLICY-TRANSACTION      PIC X(10).
+      *     NºINFDOC CAMPO INFORMAÇÃO DOS SUB-DOCUMENTOS
+             07  FZ4IPS4-NUM-INFDOC              PIC 9(02).
+      *     UNIDADE EM RISCO
+      *     NO TIPO DE REGISTOS A,B,C,D = '000000'
+      *     NO TIPO DE REGISTOS Z = '999999'
+             07  FZ4IPS4-UNIT-RISK-NUM           PIC X(06).
+      *     NUMERO AGREGADOR PARA MRH CONDOMÍNIO
+      *
+      *     NUMERO SEQUENCIAL DO LOCAL DE RISCO
+      *        1ª POS IDNTIFICA O LOCAL DE RISCO
+      *        OUTRAS POS IDENTIFICAM OBJECTOS OU COBERTURAS
+             07  FZ4IPS4-NUM-AGREGADOR           PIC 9(03).
+      *     OBJECTO
+      *     NO TIPO DE REGISTO A,B,C,D = '000000'
+      *     NO TIPO DE REGISTO Z   = '999999'
+             07  FZ4IPS4-OBJECT-NUM              PIC X(06).
+      *     NºSEQUENCIAL
+             07  FZ4IPS4-NUM-SEQ-1               PIC 9(05).
+      *     TIPO DE REGISTO DENTRO DOS SUB-DOCUMENTOS
+             07  FZ4IPS4-TYPE-1-2.
+                09  FZ4IPS4-RECORD-TYPE-1           PIC X(02).
+                  88  FZ4IPS4-DADOS-GERAIS       VALUE 'AA'.
+                  88  FZ4IPS4-DADOS-VLR-APOL     VALUE 'BA'.
+                  88  FZ4IPS4-DADOS-RECIBO-DISC  VALUE 'BD'.
+2P287B            88  FZ4IPS4-ENTIDADES-APOL     VALUE 'BJ'.
+                  88  FZ4IPS4-RESUMO1-OBJ-APOL   VALUE 'CA'.
+                  88  FZ4IPS4-RESUMO2-COND-LR    VALUE 'CB'.
+                  88  FZ4IPS4-RESUMO3-COND-IMV   VALUE 'CF'.
+                  88  FZ4IPS4-RESUMO3-COND-DIV   VALUE 'CJ'.
+                  88  FZ4IPS4-RESUMO4-COND-FRC   VALUE 'CO'.
+                  88  FZ4IPS4-LIM-RESP-SIN-VIG   VALUE 'DA'.
+                  88  FZ4IPS4-CLAUSULAS-APOL     VALUE 'EA'.
+                  88  FZ4IPS4-OBJECTO-IA         VALUE 'IA'.
+                  88  FZ4IPS4-OBJECTO-IB         VALUE 'IB'.
+                  88  FZ4IPS4-OBJECTO-IC         VALUE 'IC'.
+                  88  FZ4IPS4-OBJECTO-ID         VALUE 'ID'.
+                  88  FZ4IPS4-COBERTURAS         VALUE 'KA'.
+                  88  FZ4IPS4-COBERTURAS-SFRAQ   VALUE 'KB'.
+                  88  FZ4IPS4-COBERTURAS-SLIMITE VALUE 'KC'.
+                  88  FZ4IPS4-COBERTURAS-DESC    VALUE 'KD'.
+                  88  FZ4IPS4-CLAUSULAS-COBERT   VALUE 'KE'.
+                  88  FZ4IPS4-LOC-RISCO-COBERT   VALUE 'KH'.
+                  88  FZ4IPS4-ARMAS              VALUE 'LI'.
+                  88  FZ4IPS4-ARMAS-CLASSE       VALUE 'LJ'.
+                  88  FZ4IPS4-PRM-OBJECTO        VALUE 'MA'.
+                  88  FZ4IPS4-CLAUSULAS-OBJECTO  VALUE 'PA'.
+                  88  FZ4IPS4-CLAUSULAS-HIPOTEC  VALUE 'PC'.
+                  88  FZ4IPS4-CONDICOES-ESPEC    VALUE 'PE'.
+                  88  FZ4IPS4-CONDICOES-PARTIC   VALUE 'PG'.
+                  88  FZ4IPS4-EXTENSOES-COBERT   VALUE 'RA'.
+                  88  FZ4IPS4-CO-SEGURO          VALUE 'UA'.
+                  88  FZ4IPS4-CARTA              VALUE 'VA'.
+                  88  FZ4IPS4-FIM-DOCUMENTO      VALUE 'ZA'.
+      *        TIPO DE LAYOUTS POR REGISTO
+                09  FZ4IPS4-RECORD-TYPE-2           PIC X(01).
+                  88  FZ4IPS4-TYPE-A             VALUE 'A'.
+                  88  FZ4IPS4-TYPE-B             VALUE 'B'.
+                  88  FZ4IPS4-TYPE-C             VALUE 'C'.
+                  88  FZ4IPS4-TYPE-D             VALUE 'D'.
+                  88  FZ4IPS4-TYPE-E             VALUE 'E'.
+                  88  FZ4IPS4-TYPE-F             VALUE 'F'.
+                  88  FZ4IPS4-TYPE-G             VALUE 'G'.
+                  88  FZ4IPS4-TYPE-H             VALUE 'H'.
+                  88  FZ4IPS4-TYPE-I             VALUE 'I'.
+                  88  FZ4IPS4-TYPE-J             VALUE 'J'.
+                  88  FZ4IPS4-TYPE-K             VALUE 'K'.
+                  88  FZ4IPS4-TYPE-L             VALUE 'L'.
+                  88  FZ4IPS4-TYPE-M             VALUE 'M'.
+                  88  FZ4IPS4-TYPE-N             VALUE 'N'.
+                  88  FZ4IPS4-TYPE-O             VALUE 'O'.
+                  88  FZ4IPS4-TYPE-P             VALUE 'P'.
+                  88  FZ4IPS4-TYPE-Q             VALUE 'Q'.
+                  88  FZ4IPS4-TYPE-R             VALUE 'R'.
+      * ********************************************************
+      * TIPOS DE REGISTOS DE APOLICES DO MRH CONDOMÍNIO
+      * CONDIÇÕES PARTICULARES
+      * ********************************************************
+      * DADOS GERAIS APOLICE
+      *      'AAA'
+      * DADOS GERAIS APOLICE COMPLEMENTARES - CONDOMINIO
+      *      'BAA'
+      * RESUMO OBJECTOS CONDOMÍNIO - LR - LOCAL DE RISCO
+      *      'CBA'
+2P3742*      'CBC'
+      * RESUMO CONDOMÍNIO - IMV - OBJECTOS CONDOMINIO
+      *      'CFA'
+      * RESUMO CONDOMÍNIO - BCS CTD PNS - OBJECTOS CONDOMINIO
+      *      'CJA'
+      * RESUMO CONDOMÍNIO - FRC - FRACÇÃO
+      *      'COA'
+2P3742*      'COC'
+      * CLAUSULAS A NÍVEL DA APÓLICE
+      *      'EAA'
+      * CONDOMÍNIO - IMÓVEL- CONTEÚDO - BENS COMUNS - SIST.MICR.ENERG
+      *      'IBA'
+      * CONDOMÍNIO - FRACÇÃO
+      *      'IBB'
+      * COBERTURAS
+      *      'KAA'
+      * OBJECTO - PRÉMIO
+      *      'MAA'
+      * CLAUSULAS A NÍVEL DO OBJECTO
+      *      'PAA'
+      * CO-SEGURO
+      *      'UAA'
+      * CARTA
+      *      'VAA'
+      * FIM FICHEIRO
+      *      'ZAA'.
+      * ********************************************************
+      * ********************************************************
+      * TIPOS DE REGISTOS DE APOLICES DO MRH CONDOMÍNIO
+      * RECIBO DISCRIMINATIVO
+      * ********************************************************
+      * DADOS GERAIS APOLICE
+      *      'AAA'
+      * DADOS GERAIS DO RECIBO DISCRIMINATIVO
+      *      'BDA'
+      * RESUMO OBJECTOS CONDOMÍNIO - LR - LOCAL DE RISCO
+      *      'CBA'
+      * RESUMO CONDOMÍNIO - IMV - OBJECTOS CONDOMINIO
+      *      'CFA'
+      * RESUMO CONDOMÍNIO - BCS CTD PNS - OBJECTOS CONDOMINIO
+      *      'CJA'
+      * RESUMO CONDOMÍNIO - FRC - FRACÇÃO
+      *      'COA'
+      * FIM FICHEIRO
+      *      'ZAA'.
+      * ********************************************************
+      * ********************************************************
+      * ********************************************************
+      * TIPOS DE REGISTOS DE APOLICES DO MRH GRANDES EMPRESAS
+      * CONDIÇÕES PARTICULARES
+      * ********************************************************
+      *
+      * DADOS GERAIS APOLICE
+      *      'AAA'
+      * DADOS GERAIS APOLICE COMPLEMENTARES
+      *      'BAB'
+      * RESUMO OBJECTOS
+      *      'CAB'
+      * DADOS DO OBJECTO
+      *      'IAC'
+      * DADOS DO LOCAL DE RISCO
+      *      'IDA'
+      * COBERTURA
+      *      'KAA'
+      * COBERTURA  BASE
+      *      'KAB'
+      * COBERTURA  FACULTATIVA
+      *      'KAC'
+      * COBERTURA  FACULTATIVA ASSOCIADAS À APÓLICE
+      *      'KAD'
+      * EXTENSÕES DE COBERTURAS
+      *      'KAE'
+      * CLAUSULAS A NÍVEL DO OBJECTO OU ASSOCIADAS AO LOCAL DE RISCO
+      *      'PAA'
+      * CLAUSULAS DE COBERTURAS FACULTATIVAS ASSOCIADAS À APÓLICE
+      *      'PAB'
+      * CLAUSULAS ASSOCIADAS ÀS EXTENSÕES DE COBERTURAS A NÍVEL DE
+      * APÓLICE
+      *      'PAC'
+      * CO-SEGURO
+      *      'UAA'
+      * FIM FICHEIRO
+      *      'ZAA'.
+      *
+      * ********************************************************
+      * TIPOS DE REGISTOS DE APOLICES DO MRH PRODUTOS MIGRAÇÃO
+      * CLÁSSICO --> C22  CONDIÇÕES PARTICULARES
+      * ********************************************************
+      *
+      * DADOS GERAIS APOLICE
+      *      'AAA'
+      * DADOS GERAIS APOLICE COMPLEMENTARES
+      *      'BAB'
+      * RESUMO OBJECTOS
+      *      'CAB'
+      * DADOS DO OBJECTO
+      *      'IAC'
+      * DADOS DO LOCAL DE RISCO
+      *      'IDA'
+      * COBERTURA
+      *      'KAA'
+      * COBERTURA  FACULTATIVA
+      *      'KAC'
+      * COBERTURA S/CAMPO DE FRANQUIA
+      *      'KBA'
+      * COBERTURA  FACULTATIVA S/CAMPO DE FRANQUIA
+      *      'KBC'
+      * CLAUSULAS A NÍVEL DO OBJECTO OU ASSOCIADAS AO LOCAL DE RISCO
+      *      'PAA'
+      * CLAUSULAS DE CREDOR HIPOTECÁRIO
+      *      'PCA'
+      * CONDIÇÕES ESPECIAIS A NÍVEL DO OBJECTO
+      *      'PEA'
+      * CONDIÇÕES PARTICULARES A NÍVEL DO OBJECTO
+      *      'PGA'
+      * CO-SEGURO
+      *      'UAA'
+      * CARTA DE MIGRAÇÃO
+      *      'VAA'
+      * FIM FICHEIRO
+      *      'ZAA'.
+      *
+      * ********************************************************
+      * ********************************************************
+      * TIPOS DE REGISTOS DE APOLICES DO MRH
+      * PRODUTOS MNI MNS MNC
+      * CONDIÇÕES PARTICULARES
+      * ********************************************************
+      *
+      * DADOS GERAIS APOLICE
+      *      'AAA'
+      * DADOS GERAIS APOLICE COMPLEMENTARES
+      *      'BAB'
+      * RESUMO OBJECTOS
+      *      'CAB'
+      * DADOS DO OBJECTO
+      *      'IAF'
+      * EXTENSÕES DE COBERTURAS
+      *      'KAE'
+      * OUTRAS COBERTURAS DA APÓLICE (TÍTULO)
+      * COBERTURAS DOS MÓDULOS (SUB-TÍTULO)
+      *      'KAF'
+      * COBERTURAS DOS MÓDULOS
+      *      'KAG'
+      * COBERTURAS ADICIONAIS
+      *      'KAH'
+      * CLAUSULAS A NÍVEL DO OBJECTO OU ASSOCIADAS AO LOCAL DE RISCO
+      *      'PAA'
+      * CLAUSULAS ASSOCIADAS ÀS EXTENSÕES DE COBERTURAS A NÍVEL DE
+      * APÓLICE
+      *      'PAC'
+      * CO-SEGURO
+      *      'UAA'
+      * FIM FICHEIRO
+      *      'ZAA'.
+      * ********************************************************
+      * TIPOS DE REGISTOS DE APOLICES DE
+      * PRODUTO  PO1
+      * PRODUTO RC - SEGURO OBRIGATÓRIO DE ENTIDADES DE COLHEITA
+      * DE SANGUE EM COGEN 2.2
+      * ********************************************************
+      *
+      * DADOS DO OBJECTO - NÃO TEM INFORMAÇÃO DE CAPITAL
+      *      'IAG'
+      * ********************************************************
+      * TIPOS DE REGISTOS DE APOLICES DE RESPONSABILIDADE CIVIL
+      * OBRIGATÓRIA/PROFISSIONAL/EXPLORAÇÃO
+      * CONDIÇÕES PARTICULARES
+      * ********************************************************
+      *
+      * DADOS GERAIS APOLICE
+      *      'AAA'
+      * DADOS GERAIS APOLICE COMPLEMENTARES
+      *      'BAA'
+      * RESUMO OBJECTOS
+      *      'CAC'
+      * LIMITE RESPONSABILIDADE SINISTRO/PERÍODO VIGÊNCIA NÍVEL APÓLICE
+      *      'DAA'
+      * DADOS DO OBJECTO
+      *      'IAG'
+      * DADOS DO OBJECTO - DADOS SUPLEMENTARES
+      *      'ICA'
+      * COBERTURA BASE COM FRANQUIA E
+      * COM INFORMAÇÃO LIM.RESP.POR SIN/PERIOD DE VIGÊNCIA
+      *      'KAI'
+      * COBERTURA FACULTATIVA COM FRANQUIA E
+      * COM INFORMAÇÃO LIM.RESP.POR SIN/PERIOD DE VIGÊNCIA
+      *      'KAJ'
+      * COBERTURA BASE SEM FRANQUIA E
+      * COM INFORMAÇÃO LIM.RESP.POR SIN/PERIOD DE VIGÊNCIA
+      *      'KBI'
+      * COBERTURA FACULTATIVA SEM FRANQUIA E
+      * COM INFORMAÇÃO LIM.RESP.POR SIN/PERIOD DE VIGÊNCIA
+      *      'KBJ'
+      * COBERTURA BASE COM FRANQUIA
+      * SEM INFORMAÇÃO LIM.RESP.POR SIN/PERIOD DE VIGÊNCIA
+      *      'KCA'
+      * COBERTURA BASE SEM FRANQUIA
+      * SEM INFORMAÇÃO LIM.RESP.POR SIN/PERIOD DE VIGÊNCIA
+      *      'KDA'
+      * CLAUSULAS DE COBERTURA
+      *      'KEA'
+      * LOCAL DE RISCO DE COBERTURA
+      *      'KHA'
+      * DECLARAÇÕES E CLÁUSULAS PARTICULARES APLICÁVEIS ÀS COBERTURAS
+      *      'PAB'
+      * DECLARAÇÕES E CLÁUSULAS PARTICULARES APLICÁVEIS À APOLICE
+      *      'PAC'
+      * DECLARAÇÕES E CLÁUSULAS PARTICULARES APLICÁVEIS À COBERTURA
+      *      'PAD'
+      * CO-SEGURO
+      *      'UAA'
+      * FIM FICHEIRO
+      *      'ZAA'.
+      * ********************************************************
+      * ********************************************************
+      *
+      * PRODUTOS COM UM SÓ CAMPO DE DESCRIÇÃO DO OBJETO
+      * NO DETALHE DE OBJETO
+      *      'IAH'
+      * ********************************************************
+      * ********************************************************
+      *
+      * PRODUTOS COM DOIS CAMPOS DE DESCRIÇÃO DO OBJETO
+      * NO DETALHE DO OBJETO
+      *      'IAI'
+      * ********************************************************
+      *
+      * TIPO DE REGISTO PARA COBERTURAS QUE TENHAM CAPITAL EM
+      * VEZ DE LIMITES DE INDEMNIZAÇÃO
+      * COBERTURAS    FRANQUIA      CAPITAL SEGURO
+      *      'KAK'
+      * ********************************************************
+      *
+      * TIPO DE REGISTOS CRIADO PARA O PRODUTO CAÇADORES
+      * DADOS RESPONSABILIDADE CIVIL PORTADORES DE ARMAS
+      *      'LIA'
+      * CLASSES
+      *      'LJA'
+      * ********************************************************
+      * ********************************************************
+      * TIPO DE REGISTOS CRIADO PARA O PRODUTO PECUÁRIA
+      * DADOS DO OBJECTO
+      * CAMPOS OBJETO/LOCAL DE RISCO/LIMITE ANUAL
+      *      'IAJ'
+      * DADOS DE COBERTURAS
+      * COBERTURA/FRANQUIA/LIMITE POR SINISTRO
+      *      'KAL'
+      * COBERTURA/SEM FRANQUIA/LIMITE POR SINISTRO
+      *      'KBL'
+      * ********************************************************
+      * ********************************************************
+      * TIPO DE REGISTOS CRIADO PARA O PRODUTO CAUÇÕES
+      * DADOS DO OBJECTO
+      * CAMPOS OBJETO/SEM LOCAL RISCSO/CAPITAL SEGURO/ATIVIDADE
+      *      'IAK'
+      * ********************************************************
+      * ********************************************************
+2P287B* TIPO DE REGISTO CRIADO PARA LAYOUT COM 75 DE COMPRIMENTO
+2P287B* E A BOLD
+2P287B*      'ICB
+      * ********************************************************
+      * ********************************************************
+2P287B* TIPO DE REGISTO CRIADO PARA TRATAMENTO DE ENTIDADES A
+2P287B* NÍVEL DA APÓLICE
+2P287B*      'BJA
+      * ********************************************************
+             07  FILLER REDEFINES FZ4IPS4-TYPE-1-2 PIC X(3).
+                  88  FZ4IPS4-VALID-TYPE-1-2     VALUE 'AAA'
+                                                       'BAA'
+                                                       'BAB'
+                                                       'BDA'
+2P287B                                                 'BJA'
+                                                       'CAB'
+                                                       'CAC'
+                                                       'CBA'
+2P3742                                                 'CBC'
+                                                       'CFA'
+                                                       'CJA'
+                                                       'COA'
+2P3742                                                 'COC'
+                                                       'DAA'
+                                                       'EAA'
+                                                       'IAA'
+                                                       'IAB'
+                                                       'IAC'
+                                                       'IAF'
+                                                       'IAG'
+                                                       'IAH'
+                                                       'IAI'
+                                                       'IAJ'
+                                                       'IAK'
+                                                       'IBA'
+                                                       'IBB'
+                                                       'ICA'
+2P287B                                                 'ICB'
+                                                       'IDA'
+                                                       'KAA'
+                                                       'KAB'
+                                                       'KAC'
+                                                       'KAD'
+                                                       'KAE'
+                                                       'KAF'
+                                                       'KAG'
+                                                       'KAH'
+                                                       'KAI'
+                                                       'KAJ'
+                                                       'KAK'
+                                                       'KAL'
+                                                       'KBA'
+                                                       'KBC'
+                                                       'KBI'
+                                                       'KBJ'
+                                                       'KBL'
+                                                       'KCA'
+                                                       'KDA'
+                                                       'KEA'
+                                                       'KHA'
+                                                       'LIA'
+                                                       'LJA'
+                                                       'MAA'
+                                                       'PAA'
+                                                       'PAB'
+                                                       'PAC'
+                                                       'PAD'
+                                                       'PCA'
+                                                       'PEA'
+                                                       'PGA'
+                                                       'UAA'
+                                                       'VAA'
+                                                       'ZAA'.
+2P2440     05  FZ4IPS4-PRINT-DATA                PIC X(401).
+      *
+      *--- LINHA AA (ANTIGA LINHA A)
+      *--- DADOS GERAIS  DA APÓLICE
+           05  FZ4IPS4-LINHA-AA REDEFINES FZ4IPS4-PRINT-DATA.
+      *--- TOMADOR DO SEGURO
+      *    NOME
+             07  FZ4IPS4-TM-ADDRESSEE            PIC X(40).
+      *    LINHA DE MORADA-1
+             07  FZ4IPS4-TM-ADDRESS1             PIC X(40).
+      *    LINHA DE MORADA-2
+             07  FZ4IPS4-TM-ADDRESS2             PIC X(40).
+      *    LOCALIDADE
+             07  FZ4IPS4-TM-ADDRESS3             PIC X(40).
+      *    CODIGO POSTAL DESC
+             07  FZ4IPS4-TM-ADDRESS4             PIC X(40).
+      *    TIPO NUM DE PORTA
+             07  FZ4IPS4-TM-TNUM-PORTA           PIC X(01).
+      *    NUM DE PORTA
+             07  FZ4IPS4-TM-NUM-PORTA            PIC X(04).
+      *    PRODUTO DESC
+             07  FZ4IPS4-PRODUTO-DESC            PIC X(30).
+      *    PLANO DE PAGAMENTO
+      *    ÚNICO - NAS TEMPORÁRIAS
+      *    ANUAL
+      *    FRACIONADA - MENSAL,TRIMESTRAL, SEMESTRAL
+             07  FZ4IPS4-FORMA-PAGAMENTO-DESC    PIC X(30).
+      *    CÓDIGO CONDIÇÃO GERAL
+             07  FZ4IPS4-TIPO-COND-GERAL         PIC X(03).
+      *    TIPO DE TRANSACÇÃO
+             07  FZ4IPS4-TRANSACTION-TYPE        PIC X(02).
+                   88  FZ4IPS4-NEW-BUSINESS     VALUE '01'.
+                   88  FZ4IPS4-RENEWAL          VALUE '02' '12'.
+                   88  FZ4IPS4-ENDORSEMENT      VALUE '03' '04' '05'.
+                   88  FZ4IPS4-REVIVE           VALUE '06' '07'.
+      *    DATA ORIGINAL DE 1 PRINT
+             07  FZ4IPS4-ORIG-DATE-PRINTED       PIC X(10).
+      *    DATA DE VENCIMENTO (DDMM)
+             07  FZ4IPS4-DATA-VENC               PIC X(04).
+      *    DATA INICIO DO TERMO (AAAA-MM-DD)
+             07  FZ4IPS4-TERM-EFFECT-DATE        PIC X(10).
+      *    DATA FIM DO TERMO (AAAA-MM-DDA)
+             07  FZ4IPS4-TERM-EXPIRY-DATE        PIC X(10).
+      *    TEMPO DE APÓLICE(ANO E SEGUINTES)
+             07  FZ4IPS4-TIPO-APOLICE            PIC X(02).
+               88  FZ4IPS4-APOL-TEMPORARIA     VALUE 'TE'.
+               88  FZ4IPS4-APOL-ANUAL          VALUE 'AN'.
+      *    INDICADOR DE PRIMEIRA IMPRESSÃO
+             07  FZ4IPS4-N-IMPRESSAO             PIC X(01).
+               88  FZ4IPS4-PRIMEIRA-IMP       VALUE '1'.
+               88  FZ4IPS4-SEGUNDA-VIA        VALUE '2'.
+             07  FZ4IPS4-NUM-COPIAS              PIC 9(01).
+             07  FZ4IPS4-TM-COD-BARRAS           PIC X(22).
+      *    INDICADOR PARA IMPRESSAO DE CARTA APOLICES MIGRADAS
+      *    SÓ UTILIZADO PARA O TIPO DE CARTA 01,02 E 05
+             07  FZ4IPS4-CARTA-MIGRACAO          PIC X(02).
+      *    CANAL DE DISTRIBUIÇÃO
+             07  FZ4IPS4-CANAL-DISTRIBUICAO      PIC X(03).
+      *    NÚMERO DE OBJETOS
+             07  FZ4IPS4-TOT-OBJ                 PIC 9(06).
+2P2440       07  FILLER                          PIC X(60).
+      *
+      *--- LINHA BA(ANTIGA LINHA B)
+      *--- DADOS DE VALORES DA APÓLICE
+           05 FZ4IPS4-LINHA-BA REDEFINES FZ4IPS4-PRINT-DATA.
+      *    VALORES ANUAL
+             07  FZ4IPS4-ANUAL-PR-COMERCIAL      PIC S9(11)V9(02).
+             07  FZ4IPS4-ANUAL-CUSTO-APOL        PIC S9(11)V9(02).
+             07  FZ4IPS4-ANUAL-IMPOSTO           PIC S9(11)V9(02).
+             07  FZ4IPS4-ANUAL-PR-TOTAL          PIC S9(11)V9(02).
+      *    VALORES 1ª FRACÇÃO
+             07  FZ4IPS4-1F-PR-COMERCIAL         PIC S9(11)V9(02).
+             07  FZ4IPS4-1F-CUSTO-APOL           PIC S9(11)V9(02).
+             07  FZ4IPS4-1F-IMPOSTO              PIC S9(11)V9(02).
+             07  FZ4IPS4-1F-PR-TOTAL             PIC S9(11)V9(02).
+      *    VALORES FRACÇÕES SEGUINTES
+             07  FZ4IPS4-FS-PR-COMERCIAL         PIC S9(11)V9(02).
+             07  FZ4IPS4-FS-CUSTO-APOL           PIC S9(11)V9(02).
+             07  FZ4IPS4-FS-IMPOSTO              PIC S9(11)V9(02).
+             07  FZ4IPS4-FS-PR-TOTAL             PIC S9(11)V9(02).
+      *    CDIGO CONDIÇÃO GERAL ÚNICA
+             07  FZ4IPS4-COND-GERAL-UNICA        PIC X(05).
+      *    DESCRITIVO DO CÓDIGO CONDIÇÃO GERAL ÚNICO
+             07  FZ4IPS4-COND-GERAL-UNICA-DESC   PIC X(115).
+2P3247*    INDICADOR PARA ESCREVER TEXTO DAS CONDIÇOES GERAIS
+2P3247       07  FZ4IPS4-IND-ESC-TEXTO-CG        PIC X(001).
+2P3247           88  FZ4IPS4-ESC-TEXTO-CG            VALUE 'S'.
+2P3247       07  FILLER                          PIC X(124).
+      *
+      *--- LINHA BD (NOVA LINHA)
+      *--- PARA DADOS DO RECIBO DISCRIMINATIVO
+           05 FZ4IPS4-LINHA-BD REDEFINES FZ4IPS4-PRINT-DATA.
+             07  FZ4IPS4-NUM-RECIBO                 PIC X(10).
+             07  FZ4IPS4-DATA-INIC-RECIBO           PIC X(10).
+             07  FZ4IPS4-DATA-FIM-RECIBO            PIC X(10).
+             07  FZ4IPS4-VALOR-RECIBO               PIC S9(11)V9(02).
+2P2440       07  FILLER                             PIC X(358).
+      *
+2P287B*---
+2P287B*--- LINHA BJ
+2P287B*--- LINHA DE ENDEREÇAMENTO DE ENTIDADES A NIVEL DA APÓLICE
+2P287B     05 FZ4IPS4-LINHA-BJ REDEFINES FZ4IPS4-PRINT-DATA.
+2P287B*    TIPO DE RELAÇÃO
+2P287B       07  FZ4IPS4-TIPO-RELACAO            PIC X(02).
+2P287B*    DESCRIÇÃO DO TIPO DE RELAÇÃO
+2P287B       07  FZ4IPS4-TIPO-RELACAO-DESC       PIC X(75).
+2P287B*    NOME
+2P287B       07  FZ4IPS4-ADDRESSEE               PIC X(40).
+2P287B*    LINHA DE MORADA-1
+2P287B       07  FZ4IPS4-ADDRESS1                PIC X(40).
+2P287B*    LINHA DE MORADA-2
+2P287B       07  FZ4IPS4-ADDRESS2                PIC X(40).
+2P287B*    LOCALIDADE
+2P287B       07  FZ4IPS4-ADDRESS3                PIC X(40).
+2P287B*    CODIGO POSTAL DESC
+2P287B       07  FZ4IPS4-ADDRESS4                PIC X(40).
+2P287B*     CODIGO POSTAL
+2P287B       07  FZ4IPS4-POST-CODE               PIC X(08).
+2P287B*    TIPO NUM DE PORTA
+2P287B       07  FZ4IPS4-TNUM-PORTA              PIC X(01).
+2P287B*    NUM DE PORTA
+2P287B       07  FZ4IPS4-NUM-PORTA               PIC X(04).
+2P287B       07  FILLER                          PIC X(111).
+      *
+      *--- LINHA CA (ANTIGA LINHA C)
+      *--- RESUMO OBJECTOS DA APÓLICE
+           05 FZ4IPS4-LINHA-CA REDEFINES FZ4IPS4-PRINT-DATA.
+             07  FZ4IPS4-OBJS-DESC1-CA              PIC X(30).
+             07  FZ4IPS4-OBJS-DESC2-CA              PIC X(30).
+             07  FZ4IPS4-OBJS-LR-MORADA-CA          PIC X(40).
+             07  FZ4IPS4-OBJS-LR-LOCALIDADE-CA      PIC X(40).
+             07  FZ4IPS4-OBJS-LR-COD-POSTAL-CA      PIC X(08).
+             07  FZ4IPS4-OBJS-CAPITAL-1-CA          PIC S9(13)V9(02).
+             07  FZ4IPS4-OBJS-CAPITAL-2-CA          PIC S9(13)V9(02).
+             07  FZ4IPS4-OBJS-PLANO-CA              PIC X(07).
+2P2440       07  FILLER                             PIC X(216).
+      *---
+      *--- LINHA CB (ANTIGA LINHA C)
+      *--- RESUMO OBJECTOS DA APÓLICE DE CONDOMINIO
+      *--- CBA - LOCAL DE RISCO
+2P3742*--- CBC - REGISTO PARA TITULO-CABECALHO
+      *--- CFA - IMV
+      *--- CJA - BCS CTD PNS
+      *--- COA - FRC
+2P3472*--- COC - FRC
+           05 FZ4IPS4-LINHA-CB REDEFINES FZ4IPS4-PRINT-DATA.
+             07  FZ4IPS4-OBJS-SEGURADO-CB           PIC X(40).
+             07  FZ4IPS4-OBJS-DESC1-CB              PIC X(30).
+             07  FZ4IPS4-OBJS-LR-MORADA-CB          PIC X(40).
+             07  FZ4IPS4-OBJS-LR-LOCALIDADE-CB      PIC X(40).
+             07  FZ4IPS4-OBJS-LR-COD-POSTAL-CB      PIC X(08).
+             07  FZ4IPS4-OBJS-PREMTOT-CB            PIC S9(13)V9(02).
+             07  FZ4IPS4-OBJS-CAPITAL-1-CB          PIC S9(13)V9(02).
+             07  FZ4IPS4-OBJS-LETRA-FR-CB           PIC X(08).
+2P2440       07  FILLER                             PIC X(205).
+      *---
+      *--- LINHA DA
+      *--- COM LIMITE RESPONS POR SINISTRO /PERÍODO VIGÊNCIA
+      *--- A NÍVEL DE APÓLICE
+           05 FZ4IPS4-LINHA-DA REDEFINES FZ4IPS4-PRINT-DATA.
+             07  FZ4IPS4-DESC-DA                    PIC X(30).
+             07  FZ4IPS4-IND-LIM-DA                 PIC X(02).
+             07  FZ4IPS4-VALOR-LIM-DA               PIC S9(13)V9(02).
+2P2440       07  FILLER                             PIC X(354).
+      *
+      *--- LINHA EA (ANTIGA LINHA D)
+      *--- CLÁUSULAS A NÍVEL DA APÓLICE
+           05 FZ4IPS4-LINHA-EA  REDEFINES FZ4IPS4-PRINT-DATA.
+      *    INDICA QUAL O NÚMERO DE FORM. PODEM FORMS COM MAIS QUE
+      *    UMA LINHA. ESTE NÚMERO APENAS MUDA QUANDO HOUVER
+      *    MUDANCA DE FORM
+      *    FORM-CONJUNTO DE CóDIGOS QUE IDENTIFICA AS CLáUSULAS
+             07  FZ4IPS4-AP-FORM-NUMBER          PIC X(10).
+             07  FZ4IPS4-AP-CLAUS-LINE1          PIC X(79).
+             07  FZ4IPS4-AP-CLAUS-LINE2          PIC X(79).
+             07  FZ4IPS4-AP-CLAUS-LINE3          PIC X(79).
+             07  FZ4IPS4-AP-CLAUS-LINE4          PIC X(79).
+2P2440       07  FILLER                          PIC X(75).
+      *
+      *--- LINHA IA (ANTIGA LINHA E)
+      *--- LINHA DE OBJECTO
+           05 FZ4IPS4-LINHA-IA  REDEFINES FZ4IPS4-PRINT-DATA.
+             07  FZ4IPS4-OBJ-DESC-IA             PIC X(30).
+             07  FZ4IPS4-OBJ-DESC2-IA            PIC X(50).
+             07  FZ4IPS4-OBJ-LR-MORADA-IA        PIC X(40).
+             07  FZ4IPS4-OBJ-LR-LOCALIDADE-IA    PIC X(40).
+             07  FZ4IPS4-OBJ-LR-COD-POSTAL-IA    PIC X(08).
+             07  FZ4IPS4-OBJ-CAPITAL-1-IA        PIC S9(13)V9(02).
+      *      OBJECTO-TIPO-CAPITAL=ND
+      *                  (OBJECTO-CAPITAL2 = 'NÃO INFORMADO'
+             07  FZ4IPS4-OBJ-TIPO-CAPITAL-IA     PIC X(02).
+             07  FZ4IPS4-OBJ-CAPITAL-2-IA        PIC S9(13)V9(02).
+             07  FZ4IPS4-OBJ-PLANO-IA            PIC X(07).
+             07  FZ4IPS4-OBJ-COD-ACTIV-IA        PIC X(06).
+             07  FZ4IPS4-OBJ-DESC-ACTIV-IA       PIC X(60).
+             07  FZ4IPS4-OBJ-MODULO-IA           PIC X(80).
+2P2440       07  FILLER                          PIC X(48).
+      *
+      *--- LINHA IB (ANTIGA LINHA E)
+      *--- LINHA DE OBJECTO
+           05 FZ4IPS4-LINHA-IB  REDEFINES FZ4IPS4-PRINT-DATA.
+             07  FZ4IPS4-OBJ-SEGURADO-IB         PIC X(40).
+             07  FZ4IPS4-OBJ-LETRA-FR-IB         PIC X(08).
+             07  FZ4IPS4-OBJ-DESC-IB             PIC X(30).
+             07  FZ4IPS4-OBJ-LR-MORADA-IB        PIC X(40).
+             07  FZ4IPS4-OBJ-LR-LOCALIDADE-IB    PIC X(40).
+             07  FZ4IPS4-OBJ-LR-COD-POSTAL-IB    PIC X(08).
+             07  FZ4IPS4-OBJ-CAPITAL-1-IB        PIC S9(13)V9(02).
+             07  FZ4IPS4-OBJ-PLANO-IB            PIC X(07).
+             07  FZ4IPS4-C-TIPO-FQIA-APCE-IB PIC X(02).
+                 88 FZ4IPS4-TIPO-FQIA-N-APLIC-IB    VALUE '  '.
+                 88 FZ4IPS4-TIPO-FQIA-FRACCAO-IB    VALUE 'FR'.
+                 88 FZ4IPS4-TIPO-FQIA-SINISTRO-IB   VALUE 'SI'.
+2P2440       07  FILLER                          PIC X(211).
+      *
+      *--- LINHA IC  DADOS SUPLEMENTARES DO OBJETO
+      *--- LINHA DE OBJECTO
+           05 FZ4IPS4-LINHA-IC  REDEFINES FZ4IPS4-PRINT-DATA.
+2P287B       07  FZ4IPS4-OBJ-DADOS-SUPLEM-1      PIC X(75).
+2P287B       07  FILLER                          PIC X(326).
+      *
+      *--- LINHA ID
+      *--- LINHA DE LOCAL DE RISCO
+           05 FZ4IPS4-LINHA-ID  REDEFINES FZ4IPS4-PRINT-DATA.
+             07  FZ4IPS4-OBJ-LR-MORADA-ID        PIC X(40).
+             07  FZ4IPS4-OBJ-LR-LOCALIDADE-ID    PIC X(40).
+             07  FZ4IPS4-OBJ-LR-COD-POSTAL-ID    PIC X(08).
+2P2440       07  FILLER                          PIC X(305).
+      *---
+      *--- LINHA KA KB KC KD ANTIGA LINHA F)
+      *--- LINHA DE COBERTURAS
+           05 FZ4IPS4-LINHA-KA REDEFINES FZ4IPS4-PRINT-DATA.
+             07  FZ4IPS4-RISCO-COD               PIC X(05).
+             07  FZ4IPS4-RISCO-COD-ELEM          PIC X(05).
+             07  FZ4IPS4-RISCO-DESC              PIC X(60).
+      *      PREENCHIMENTO DOS CAMPOS FRANQUIA
+      *       SEM FRANQUIA OS CAMPOS FRANQUIA
+      *          IND-FRANQUIA='SF'   (CAMPO VALOR = ZEROS)
+      *                              ==>'SEM FRANQUIA'
+      *       FRANQUIA FIXA
+      *          IND-FRANQUIA='CE'   (CAMPO VALOR = ZEROS)
+      *                              ==>'CONFORME CONDIÇÃO ESPECIAL'
+2P2930*       FRANQUIA FIXA
+2P2930*          IND-FRANQUIA='CT'   (CAMPO VALOR = ZEROS)
+2P2930*                              ==>'CONFORME CONDIÇÃO PARTICULAR'
+      *       FRANQUIA FIXA
+      *          IND-FRANQUIA='CA'   (CAMPO VALOR = ZEROS)
+      *                              ==>'CONFORME COBERTURA AFECTADA'
+      *       FRANQUIA DIAS
+      *          IND-FRANQUIA='N4'   (CAMPO VALOR = ZEROS)
+      *                              ==> Nº DIAS + 'DIAS'
+      *       PERCENTAGEM DO CAPITAL
+      *          IND-FRANQUIA='CF'   (CAMPO VALOR <> ZEROS)
+      *                              ==> CAMPO VALOR
+      *       PERCENTAGEM DO CAPITAL
+      *          IND-FRANQUIA='CP'   (CAMPO VALOR = ZEROS)
+      *                          ==> CONF. COND. PART. DE CADA FRACÇÃO'
+      *      PARA AS SUB-COBERTURAS O IND-FRANQ = SPACES
+      *      E O CAMPO VALOR VEM A ZEROS
+      *      IND-FRANQUIA='  ' (CAMPO VALOR = ZEROS)
+      *
+      *       PERCENTAGEM DO CAPITAL
+      *          IND-FRANQUIA = 'N1' (CAMPO PERC <> ZEROS)
+      *                              (CAMPOS VLR MIN E MAX = ZEROS)
+      *                              ==>'X% CAPITAL'
+      *
+      *                              (CAMPOS VLR MIN E MAX <> ZEROS)
+      *                          ==> X% CAPITAL, MIN Y  E MAX Z
+      *
+      *                            (CAMPOS VLR MIN <> ZEROS MAX = ZEROS)
+      *                              ==> X% CAPITAL MIN Y
+      *
+      *                            (CAMPOS VLR MIN = ZEROS MAX <> ZEROS)
+      *                              ==> X% CAPITAL MAX Z
+      *       PERCENTAGEM DO SINISTRO
+      *          IND-FRANQUIA = 'N2' (CAMPO PERC <> ZEROS)
+      *                              (CAMPOS VLR MIN E MAX = ZEROS)
+      *                              ==>'X% DOS PREJ. IND.'
+      *
+      *                              (CAMPOS VLR MIN E MAX <> ZEROS)
+      *                          ==> X% DOS PREJ. IND., MIN Y  E MAX Z
+      *
+      *                            (CAMPOS VLR MIN <> ZEROS MAX = ZEROS)
+      *                              ==> X% DOS PREJ. IND., MIN Y
+      *
+      *                            (CAMPOS VLR MIN = ZEROS MAX <> ZEROS)
+      *                              ==> X% DOS PREJ. IND., MAX Z
+      *       FRANQUIA FIXA
+      *          IND-FRANQUIA='CC'   (CAMPO VALOR = ZEROS)
+2P2921*                      ='CM'   (CAMPO VALOR = ZEROS)
+      *                              ==>'CONFORME CLÁUSULA'
+      *       FRANQUIA POR LESADO
+      *          IND-FRANQUIA='N6'   (CAMPO VALOR POR LESADO)
+      *                              ==>VALOR POR LESADO
+             07  FZ4IPS4-RISCO-COD-FRANQUIA      PIC X(02).
+             07  FZ4IPS4-RISCO-VALOR-FRANQUIA    PIC S9(11)V9(02).
+             07  FZ4IPS4-RISCO-VALOR-MAX-FRANQ   PIC S9(11)V9(02).
+             07  FZ4IPS4-RISCO-PERC-FRANQUIA     PIC 9(02)V9(05).
+             07  FZ4IPS4-RISCO-NUMERO-DIAS       PIC 9(03).
+      *      PREENCHIMENTO DO  CAMPO  LIMITE DE INDEMNIZAÇÃO
+      *      IND-LIM-IND='01' (CAMPO VALOR)
+      *      IND-LIM-IND='02  (CAMPO PERC E CAMPO VALOR)
+      *                      ' 10% PREJ.IND - MAX 10.000 €'
+      *      IND-LIM-IND='03  (CAMPO VALOR E CAMPO DIAS)
+      *                      '1500 € E MAX 90 DIAS
+      *      IND-LIM-IND='04' 'CONFORME CONDIÇÃO ESPECIAL'
+      *      IND-LIM-IND='05' 'CONFORME CONDIÇÕES GERAIS'
+      *      IND-LIM-IND='06' (CAMPO VALOR E CAMPO VALOR1)
+      *                      'VALOR€ SINISTRO/ VALOR1€ ANUIDADE'
+      *      IND-LIM-IND='07' (CAMPO VALOR E CAMPO DIAS)
+      *                      'SUBS. VALOR€/MES - MAX DIAS MESES'
+      *      IND-LIM-IND='08' (CAMPO VALOR E CAMPO DIAS)
+      *                      'VAL.RENDAS - MAX DIAS MESES OU VALOR'
+      *      IND-LIM-IND='09  (CAMPO PERC              )
+      *                      '% PREJ.IND'
+      *      IND-LIM-IND='10' (CAMPO VALOR E CAMPO DIAS )
+      *                      'MAX VALOR OU N MESES'
+IB1524*      IND-LIM-IND='11' (CAMPO VALOR E CAMPO VALOR1)
+IB1524*                      'VALOR€ POR SINISTRO /
+IB1524*                       VALOR1€ POR ANUIDADE'
+IB1524*      IND-LIM-IND='12' 'Conf. cond. part. de cada fracção"
+IB1524*      IND-LIM-IND='13' (CAMPO VALOR E CAMPO DIAS P/FRACÇÃO)
+IB1524*                       99999E e 999 dias por fracção
+IB1524*      IND-LIM-IND='14' (CAMPO VALOR E CAMPO MESES P/FRACÇÃO)
+IB1524*                       Máx. 99999E OU 99 meses por fracção
+      *      IND-LIM-IND='15' (CAMPO CODIGO TEXTO)
+      *                        A - QUADRO I
+      *                        B - QUADRO II
+      *                        Ex: De acordo com o (Quadro I) das
+      *                            Condições Gerais da Apólice
+             07  FZ4IPS4-RISCO-IND-LIM-INDMN     PIC X(02).
+             07  FZ4IPS4-RISCO-VALOR-LIM-INDMN   PIC S9(13)V9(02).
+             07  FZ4IPS4-RISCO-PERC-LIM-INDMN    PIC 9(02).
+IB1524       07  FZ4IPS4-RISCO-DIAS-LIM-INDMN    PIC 9(03).
+             07  FZ4IPS4-RISCO-VALOR1-LIM-INDMN  PIC S9(13)V9(02).
+             07  FZ4IPS4-RISCO-COD-TEXTO         PIC X.
+2P2440       07  FILLER                          PIC X(255).
+      *---
+      *--- LINHAS KE
+      *--- CLÁUSULAS A NÍVEL DE COBERTURA
+           05 FZ4IPS4-LINHA-KE  REDEFINES FZ4IPS4-PRINT-DATA.
+      *    INDICA QUAL O NÚMERO DE FORM. PODEM FORMS COM MAIS QUE
+      *    UMA LINHA. ESTE NÚMERO APENAS MUDA QUANDO HOUVER
+      *    MUDANCA DE FORM
+      *    FORM-CONJUNTO DE CóDIGOS QUE IDENTIFICA AS CLáUSULAS
+             07  FZ4IPS4-COB-FORM-NUMBER         PIC X(10).
+             07  FZ4IPS4-COB-CLAUS-LINE1         PIC X(79).
+             07  FZ4IPS4-COB-CLAUS-LINE2         PIC X(79).
+             07  FZ4IPS4-COB-CLAUS-LINE3         PIC X(79).
+             07  FZ4IPS4-COB-CLAUS-LINE4         PIC X(79).
+2P2440       07  FILLER                          PIC X(75).
+
+      *---
+      *--- LINHAS KH
+      *--- LOCAL DE RISCO A NÍVEL DE COBERTURA
+           05 FZ4IPS4-LINHA-KH  REDEFINES FZ4IPS4-PRINT-DATA.
+             07  FZ4IPS4-COB-LR-MORADA           PIC X(40).
+             07  FZ4IPS4-COB-LR-LOCALIDADE       PIC X(40).
+             07  FZ4IPS4-COB-LR-COD-POSTAL       PIC X(08).
+2P2440       07  FILLER                          PIC X(305).
+
+      *---
+      *--- LINHA LI
+      *--- DADOS  DE ARMAS
+           05 FZ4IPS4-LINHA-LI REDEFINES FZ4IPS4-PRINT-DATA.
+             07 FZ4IPS4-PROF-ACT-ARMAS           PIC X(60).
+             07 FZ4IPS4-NUM-ARMAS                PIC 9(03).
+             07 FZ4IPS4-LOCAL-ARMAS              PIC X(60).
+             07 FZ4IPS4-SEGURANCA-ARMAS          PIC X(60).
+             07 FZ4IPS4-ROUB-EXTRAV-ARMA         PiC X(03).
+             07 FILLER                           PIC X(215).
+      *
+      *--- LINHA LJ
+      *--- CLASSE DE LICENÇAS  DE ARMAS
+      *--- POTENCIALMENTE PERIOGOSOS
+            05 FZ4IPS4-LINHA-LJ REDEFINES FZ4IPS4-PRINT-DATA.
+             07  FZ4IPS4-CLASS-LICENC         PIC X(79).
+             07  FILLER                       PIC X(322).
+      *
+
+      *---
+      *--- LINHA MA (ANTIGA LINHA G)
+      *--- LINHA PRÉMIO OBJECTO SEGURO
+           05 FZ4IPS4-LINHA-MA  REDEFINES FZ4IPS4-PRINT-DATA.
+             07  FZ4IPS4-OBJ-PR-COMERCIAL        PIC S9(11)V9(02).
+             07  FZ4IPS4-OBJ-CUSTO-APOL          PIC S9(11)V9(02).
+             07  FZ4IPS4-OBJ-IMPOSTO             PIC S9(11)V9(02).
+             07  FZ4IPS4-OBJ-PR-TOTAL            PIC S9(11)V9(02).
+2P2440       07  FILLER                          PIC X(349).
+      *---
+      *--- LINHAS PA,PC,PE,PG ANTIGA LINHA H)
+      *--- CLÁUSULAS A NÍVEL DO OBJECTO
+           05 FZ4IPS4-LINHA-PA  REDEFINES FZ4IPS4-PRINT-DATA.
+      *    INDICA QUAL O NÚMERO DE FORM. PODEM FORMS COM MAIS QUE
+      *    UMA LINHA. ESTE NÚMERO APENAS MUDA QUANDO HOUVER
+      *    MUDANCA DE FORM
+      *    FORM-CONJUNTO DE CóDIGOS QUE IDENTIFICA AS CLáUSULAS
+             07  FZ4IPS4-OBJ-FORM-NUMBER         PIC X(10).
+             07  FZ4IPS4-OBJ-CLAUS-LINE1         PIC X(79).
+             07  FZ4IPS4-OBJ-CLAUS-LINE2         PIC X(79).
+             07  FZ4IPS4-OBJ-CLAUS-LINE3         PIC X(79).
+             07  FZ4IPS4-OBJ-CLAUS-LINE4         PIC X(79).
+2P2440       07  FILLER                          PIC X(75).
+
+      *---
+      *--- LINHA RA (ANTIGA LINHA J)
+      *--- LINHA DE EXTENSOES DE COBERTURA
+           05 FZ4IPS4-LINHA-RA  REDEFINES FZ4IPS4-PRINT-DATA.
+             07  FZ4IPS4-EXT-COD                 PIC X(05).
+             07  FZ4IPS4-EXT-COD-ELEM            PIC X(05).
+             07  FZ4IPS4-EXT-DESC                PIC X(60).
+      *     PREENCHIMENTO DOS CAMPOS FRANQUIA
+      *       SEM FRANQUIA OS CAMPOS FRANQUIA
+      *          IND-FRANQUIA='SF'   (CAMPO VALOR = ZEROS)
+      *                              ==>'SEM FRANQUIA'
+      *       FRANQUIA FIXA
+      *          IND-FRANQUIA='CE'   (CAMPO VALOR = ZEROS)
+      *                              ==>'CONFORME CONDIÇÃO ESPECIAL'
+2P2930*       FRANQUIA FIXA
+2P2930*          IND-FRANQUIA='CT'   (CAMPO VALOR = ZEROS)
+2P2930*                              ==>'CONFORME CONDIÇÃO PARTICULAR'
+      *       FRANQUIA FIXA
+      *          IND-FRANQUIA='CA'   (CAMPO VALOR = ZEROS)
+      *                              ==>'CONFORME COBERTURA AFECTADA'
+      *       FRANQUIA DIAS
+      *          IND-FRANQUIA='N4'   (CAMPO VALOR = ZEROS)
+      *                              ==> Nº DIAS + 'DIAS'
+      *       PERCENTAGEM DO CAPITAL
+      *          IND-FRANQUIA='CF'   (CAMPO VALOR <> ZEROS)
+      *                              ==> CAMPO VALOR
+      *      PARA AS SUB-COBERTURAS O IND-FRANQ = SPACES
+      *      E O CAMPO VALOR VEM A ZEROS
+      *      IND-FRANQUIA='  ' (CAMPO VALOR = ZEROS)
+      *
+      *       PERCENTAGEM DO SINISTRO
+      *          IND-FRANQUIA = 'N2' (CAMPO PERC <> ZEROS)
+      *                              (CAMPOS VLR MIN E MAX = ZEROS)
+      *                              ==>'X% DOS PREJ. IND.'
+      *
+      *                              (CAMPOS VLR MIN E MAX <> ZEROS)
+      *                          ==> X% DOS PREJ. IND., MIN Y  E MAX Z
+      *
+      *                            (CAMPOS VLR MIN <> ZEROS MAX = ZEROS)
+      *                              ==> X% DOS PREJ. IND., MIN Y
+      *
+      *                            (CAMPOS VLR MIN = ZEROS MAX <> ZEROS)
+      *                              ==> X% DOS PREJ. IND., MAX Z
+             07  FZ4IPS4-EXT-COD-FRANQUIA        PIC X(02).
+             07  FZ4IPS4-EXT-VALOR-FRANQUIA      PIC S9(11)V9(02).
+             07  FZ4IPS4-EXT-VALOR-MAX-FRANQ     PIC S9(11)V9(02).
+             07  FZ4IPS4-EXT-PERC-FRANQUIA       PIC 9(02)V9(05).
+             07  FZ4IPS4-EXT-NUMERO-DIAS         PIC 9(03).
+      *      PREENCHIMENTO DO  CAMPO  LIMITE DE INDEMNIZAÇÃO
+      *      IND-LIM-IND='01' (CAMPO VALOR)
+      *      IND-LIM-IND='02  (CAMPO PREC E CAMPO VALOR)
+      *                      ' 10% PREJ.IND - MAX 10.000 €'
+      *      IND-LIM-IND='03  (CAMPO VALOR E CAMPO DIAS)
+      *                      '1500 € E MAX 90 DIAS
+      *      IND-LIM-IND='04' 'CONFORME CONDIÇÃO ESPECIAL'
+      *      IND-LIM-IND='05' 'CONFORME CONDIÇÕES GERAIS'
+      *      IND-LIM-IND='06' (CAMPO VALOR E CAMPO VALOR1)
+      *                      'VALOR€ SINISTRO/ VALOR1€ ANUIDADE'
+      *      IND-LIM-IND='07' (CAMPO VALOR E CAMPO DIAS)
+      *                      'SUBS. VALOR€/MES - MAX DIAS MESES'
+      *      IND-LIM-IND='08' (CAMPO VALOR E CAMPO DIAS)
+      *                      'VAL.RENDAS - MAX DIAS MESES OU VALOR'
+IB1524*      IND-LIM-IND='11' (CAMPO VALOR E CAMPO VALOR1)
+IB1524*                      'VALOR€ POR SINISTRO /
+IB1524*                       VALOR1€ POR ANUIDADE'
+             07  FZ4IPS4-EXT-IND-LIM-INDMN       PIC X(02).
+             07  FZ4IPS4-EXT-VALOR-LIM-INDMN     PIC S9(13)V9(02).
+             07  FZ4IPS4-EXT-PERC-LIM-INDMN      PIC 9(02).
+IB1524       07  FZ4IPS4-EXT-DIAS-LIM-INDMN      PIC 9(03).
+             07  FZ4IPS4-EXT-VALOR1-LIM-INDMN    PIC S9(13)V9(02).
+2P2440       07  FILLER                          PIC X(256).
+      *
+      *--- LINHA UA (ANTIGA LINHA Y)
+      *--- LINHA DADOS DE CADA CO-SEGURADORA
+           05 FZ4IPS4-LINHA-UA  REDEFINES FZ4IPS4-PRINT-DATA.
+             07  FZ4IPS4-CO-SEG-COD              PIC X(10).
+             07  FZ4IPS4-CO-SEG-NOME             PIC X(40).
+             07  FZ4IPS4-CO-SEG-CAPITAL          PIC S9(13)V9(02).
+             07  FZ4IPS4-CO-SEG-PARTICIP         PIC 9(03)V9(06).
+             07  FZ4IPS4-CO-SEG-PREMIO           PIC S9(13)V9(02).
+2P2440       07  FILLER                          PIC X(312).
+      *
+      *--- LINHA VA (NOVA LINHA)
+      *--- LINHA DADOS DE CARTAS DE MIGRAÇÃO
+           05 FZ4IPS4-LINHA-VA  REDEFINES FZ4IPS4-PRINT-DATA.
+      *    CRT-MIGRAÇÃO ='01' MRH CONDOMÍNIO
+      *    CRT-MIGRAÇÃO ='02' MRH CONDOMÍNIO
+      *    CRT-MIGRAÇÃO ='03' MRH PROD MIGRAÇÃO CLÁSSICO->C22
+      *                       SEM CONDIÇÕES GERAIS
+      *                       CRT-MIGRACAO + APOL-MIGRADA
+      *    CRT-MIGRAÇÃO ='04' MRH PROD MIGRAÇÃO CLÁSSICO->C22
+      *                      COM CONDIÇÕES GERAIS
+      *                       CRT-MIGRACAO + APOL-MIGRADA
+      *    CRT-MIGRAÇÃO ='05' PROD CAÇADORES CLÁSSICO->C22
+      *                      COM CONDIÇÕES GERAIS
+      *                       CRT-MIGRACAO + APOL-MIGRADA
+      *    CRT-MIGRAÇÃO ='06' PROD CONDOMÍNIO (FUSÃO MARCAS)
+      *                       COM CONDIÇÕES GERAIS
+      *                       CRT-MIGRACAO
+CEL040*    CRT-MIGRAÇÃO ='07' PROD CAÇADORES (FUSÃO MARCAS)
+CEL040*                       COM CONDIÇÕES GERAIS
+CEL040*                       CRT-MIGRACAO + APOL-MIGRADA
+CEL040*    CRT-MIGRAÇÃO ='08' PROD CAÇADORES (FUSÃO MARCAS)
+CEL040*                       COM CONDIÇÕES GERAIS
+CEL040*                       CRT-MIGRACAO
+CEL040*    CRT-MIGRAÇÃO ='09' PROD RESP CIVIL (FUSÃO MARCAS)
+CEL040*                       CRT-MIGRACAO + APOL-MIGRADA
+CEL049*    CRT-MIGRAÇÃO ='10' PROD CYBER EMPRESAS
+CEL049*                       (CYB - Resp.Civil Cyber Risks)
+CEL049*                       COM CONDIÇÕES GERAIS
+CEL049*                       CRT-MIGRACAO
+CEL059*    CRT-MIGRAÇÃO ='11' PROD MR EMPRESAS (FUSÃO MARCAS)
+CEL059*                       COM CONDIÇÕES GERAIS
+CEL059*                       CRT-MIGRACAO
+CEL059*    CRT-MIGRAÇÃO ='12' PROD MR EMPRESAS (FUSÃO MARCAS)
+CEL059*                       COM CONDIÇÕES GERAIS
+CEL059*                       CRT-MIGRACAO + APOL-MIGRADA
+             07  FZ4IPS4-CRT-MIGRACAO          PIC X(02).
+             07  FZ4IPS4-NUM-APOL-MIGRADA      PIC X(10).
+2P2440       07  FILLER                        PIC X(389).
+      *
+      *--- LINHA ZA (ANTIGA LINHA Z)
+      *--- FIM DE DOCUMENTO
+           05 FZ4IPS4-LINHA-ZA  REDEFINES FZ4IPS4-PRINT-DATA.
+2P2440       07  FILLER                          PIC X(401).
+2P2440     05 FZ4IPS4-TIPO-IMPRESSAO             PIC X(001).
+

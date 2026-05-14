@@ -1,0 +1,141 @@
+
+       01  W400-CAT55-8455.
+           03 W400-REC-5.
+              05 W400-REC-5-CANAL         PIC X(1).
+              05 W400-REC-5-CPOSTAL       PIC 9(8).
+              05 W400-REC-5-ENTIDADE      PIC 9(10).
+              05 W400-REC-5-DOCNUM8       PIC X(08).
+              05 W400-REC-5-ALGORITMO     PIC X(4).
+              05 W400-REC-5-TP-DOCUMENTO  PIC 9(4).
+              05 W400-REC-5-TIMESTAMP     PIC 9(14).
+              05 W400-REC-5-SEQUENCIA     PIC 9(8).
+              05 W400-REC-5-FORM-T        PIC X(4).
+              05 W400-REC-5-ESPACO-1      PIC X(1).
+              05 W400-REC-5-NM-PROGRAMA   PIC X(8).
+              05 W400-REC-5-COD-COMPANHIA PIC X(5).
+              05 W400-REC-5-ESPACO-2      PIC X(7).
+              05 W400-REC-5-COD-BARRAS    PIC X(18).
+              05 W400-REC-5-CER-PRT-LINE  PIC X(171).
+
+       01  W400-CAT56-8456.
+           03 W400-REC-6.
+              05 W400-REC-6-CANAL         PIC X(1).
+              05 W400-REC-6-CPOSTAL       PIC 9(8).
+              05 W400-REC-6-ENTIDADE      PIC 9(10).
+              05 W400-REC-6-DOCNUM8       PIC X(08).
+              05 W400-REC-6-ALGORITMO     PIC X(4).
+              05 W400-REC-6-TP-DOCUMENTO  PIC 9(4).
+              05 W400-REC-6-TIMESTAMP     PIC 9(14).
+              05 W400-REC-6-SEQUENCIA     PIC 9(8).
+              05 W400-REC-6-FORM-T        PIC X(4).
+              05 W400-REC-6-ESPACO-1      PIC X(1).
+              05 W400-REC-6-NM-PROGRAMA   PIC X(8).
+              05 W400-REC-6-COD-COMPANHIA PIC X(5).
+              05 W400-REC-6-ESPACO-2      PIC X(7).
+              05 W400-REC-6-COD-BARRAS    PIC X(18).
+              05 W400-REC-6-CER-PRT-LINE  PIC X(171).
+
+
+       01  W400-CAT57-8457.
+           03 W400-REC-7.
+              05 W400-REC-7-CANAL         PIC X(1).
+              05 W400-REC-7-CPOSTAL       PIC 9(8).
+              05 W400-REC-7-ENTIDADE      PIC 9(10).
+              05 W400-REC-7-DOCNUM8       PIC X(08).
+              05 W400-REC-7-ALGORITMO     PIC X(4).
+              05 W400-REC-7-TP-DOCUMENTO  PIC 9(4).
+              05 W400-REC-7-TIMESTAMP     PIC 9(14).
+              05 W400-REC-7-SEQUENCIA     PIC 9(8).
+              05 W400-REC-7-FORM-T        PIC X(4).
+              05 W400-REC-7-ESPACO-1      PIC X(1).
+              05 W400-REC-7-NM-PROGRAMA   PIC X(8).
+              05 W400-REC-7-COD-COMPANHIA PIC X(5).
+              05 W400-REC-7-ESPACO-2      PIC X(7).
+              05 W400-REC-7-COD-BARRAS    PIC X(18).
+              05 W400-REC-7-CER-PRT-LINE  PIC X(171).
+
+       01  W400-C26AN-0513.
+           03 W400-REC-8.
+              05 W400-REC-8-CANAL         PIC X(1).
+              05 W400-REC-8-CPOSTAL       PIC 9(8).
+              05 W400-REC-8-ENTIDADE      PIC 9(10).
+              05 W400-REC-8-RAMO          PIC X(04).
+              05 W400-REC-8-APOLICE-8     PIC X(8).
+              05 W400-REC-8-TP-DOCUMENTO  PIC 9(4).
+              05 W400-REC-8-TIMESTAMP     PIC 9(14).
+              05 W400-REC-8-SEQUENCIA     PIC 9(8).
+              05 W400-REC-8-FORM-T        PIC X(4).
+              05 W400-REC-8-ESPACO-1      PIC X(1).
+              05 W400-REC-8-NM-PROGRAMA   PIC X(8).
+              05 W400-REC-8-COD-COMPANHIA PIC X(5).
+              05 W400-REC-8-ESPACO-2      PIC X(7).
+              05 W400-REC-8-COD-BARRAS    PIC X(18).
+              05 W400-REC-8-SEXO          PIC X(15).
+              05 W400-REC-8-SEGURADO      PIC X(40).
+              05 W400-REC-8-MORADA        PIC X(40).
+              05 W400-REC-8-MORADA2       PIC X(40).
+              05 W400-REC-8-MORADA3       PIC X(40).
+              05 W400-REC-8-MORADA4       PIC X(40).
+              05 W400-REC-8-DATADIA       PIC X(33).
+              05 W400-REC-8-APOLICE       PIC X(10).
+              05 W400-REC-8-PARTICIPANTE  PIC X(60).
+              05 W400-REC-8-DATA-RENOVACAO PIC X(10).
+              05 W400-REC-8-FILLER        PIC X(01) VALUE '.'.
+              05 W400-REC-8-FILLER        PIC X(171) VALUE SPACES.
+
+       01  W400-C75AN-0514.
+           03 W400-REC-9.
+              05 W400-REC-9-CANAL         PIC X(1).
+              05 W400-REC-9-CPOSTAL       PIC 9(8).
+              05 W400-REC-9-ENTIDADE      PIC 9(10).
+              05 W400-REC-9-RAMO          PIC X(04).
+              05 W400-REC-9-APOLICE-8     PIC X(8).
+              05 W400-REC-9-TP-DOCUMENTO  PIC 9(4).
+              05 W400-REC-9-TIMESTAMP     PIC 9(14).
+              05 W400-REC-9-SEQUENCIA     PIC 9(8).
+              05 W400-REC-9-FORM-T        PIC X(4).
+              05 W400-REC-9-ESPACO-1      PIC X(1).
+              05 W400-REC-9-NM-PROGRAMA   PIC X(8).
+              05 W400-REC-9-COD-COMPANHIA PIC X(5).
+              05 W400-REC-9-ESPACO-2      PIC X(7).
+              05 W400-REC-9-COD-BARRAS    PIC X(18).
+              05 W400-REC-9-SEXO          PIC X(15).
+              05 W400-REC-9-SEGURADO      PIC X(40).
+              05 W400-REC-9-MORADA        PIC X(40).
+              05 W400-REC-9-MORADA2       PIC X(40).
+              05 W400-REC-9-MORADA3       PIC X(40).
+              05 W400-REC-9-MORADA4       PIC X(40).
+              05 W400-REC-9-DATADIA       PIC X(33).
+              05 W400-REC-9-APOLICE       PIC X(10).
+              05 W400-REC-9-PARTICIPANTE  PIC X(60).
+              05 W400-REC-9-DATA-RENOVACAO PIC X(26).
+              05 W400-REC-9-FILLER        PIC X(156) VALUE SPACES.
+
+       01  W400-CLIMI-0475.
+           03 W400-REC-10.
+              05 W400-REC-10-CANAL         PIC X(1).
+              05 W400-REC-10-CPOSTAL       PIC 9(8).
+              05 W400-REC-10-ENTIDADE      PIC 9(10).
+              05 W400-REC-10-RAMO          PIC X(04).
+              05 W400-REC-10-APOLICE-8     PIC X(8).
+              05 W400-REC-10-TP-DOCUMENTO  PIC 9(4).
+              05 W400-REC-10-TIMESTAMP     PIC 9(14).
+              05 W400-REC-10-SEQUENCIA     PIC 9(8).
+              05 W400-REC-10-FORM-T        PIC X(4).
+              05 W400-REC-10-ESPACO-1      PIC X(1).
+              05 W400-REC-10-NM-PROGRAMA   PIC X(8).
+              05 W400-REC-10-COD-COMPANHIA PIC X(5).
+              05 W400-REC-10-ESPACO-2      PIC X(7).
+              05 W400-REC-10-COD-BARRAS    PIC X(18).
+              05 W400-REC-10-SEXO          PIC X(15).
+              05 W400-REC-10-SEGURADO      PIC X(40).
+              05 W400-REC-10-MORADA        PIC X(40).
+              05 W400-REC-10-MORADA2       PIC X(40).
+              05 W400-REC-10-MORADA3       PIC X(40).
+              05 W400-REC-10-MORADA4       PIC X(40).
+              05 W400-REC-10-DATADIA       PIC X(33).
+              05 W400-REC-10-APOLICE       PIC X(10).
+              05 W400-REC-10-PARTICIPANTE  PIC X(60).
+              05 W400-REC-10-DATA-RENOVACAO PIC X(26).
+              05 W400-REC-10-FILLER        PIC X(156) VALUE SPACES.
+

@@ -1,0 +1,54 @@
+      *----------------------------------------------------------------*00010000
+      *                     MAINTENANCE LOG                             00020000
+      *                         A T E N C A O                          *00020100
+      *                         =============                          *00020200
+      *                                                                *00020300
+      *      ALTERACOES NO NY44WU01 DEVERAO SER REPLICADAS:            *00020400
+      *             BGOW9048 - PARA APLICAÇÕES DE OUTPUTS (UGEN)       *00020500
+      *                                                                 00030000
+      * PROG  CCID     DATE         COMMENTS                            00040000
+      *----------------------------------------------------------------*00050000
+      *                                                                 00060000
+      * JMS   M40622   2000-01-17   AGENT LETTER                        00070000
+      *                                                                 00410000
+      * CCA   M40662   2000-02-15   REFERENCIA DOCUMENTO TRAG.          00411000
+      *                                                                 00412000
+AS2   * (AS)  AS2  12.JAN.2004  NOVO CAMPO. CONTA.                      00412100
+      *                                                                 00412200
+AS3   * (AS)  AS3  09.AGO.2004  AUMENTAR ADDRESSEE.                     00412300
+      *                                                                 00412400
+      * RMA         3P0433  2008-11-18  200800164 PROJECTO ACTIVATION   00412500
+      *                                 AUMENTO DO AUTOMATISMO POSTAL.  00412600
+      *                                                                 00412700
+      * LPC         3P0593  2009-08-07  INCLUSAO DA COMPANHIA           00412800
+      *                                                                 00412900
+3P1556* RJF     3P1556  28/05/14  NOVO CAMPO NUMERO DE REPORT           00413000
+      *----------------------------------------------------------------*00420000
+                                                                        00421000
+           03 NY44RU01-PRINT-RECORD.                                    00425000
+              05 NY44RU01-POLICY-BASIC-DATA.                            00425100
+3P0593         07  NY44RU01-COMPANY                PIC X(03).           00425200
+               07  NY44RU01-POLICY-NUMBER          PIC X(16).           00425210
+               07  NY44RU01-PRODUCT-CODE           PIC X(5).            00425300
+               07  NY44RU01-PRODUCT-CODE-DESC      PIC X(30).           00425400
+              05 NY44RU01-POLICY-HOLDER-DATA.                           00580100
+AS3   *        07  NY44RU01-PH-ADDRESSEE           PIC X(30).           00580200
+AS3            07  NY44RU01-PH-ADDRESSEE           PIC X(40).           00580210
+              05 NY44RU01-AGENT-DATA.                                   00580300
+AS3   *        07  NY44RU01-A-ADDRESSEE            PIC X(30).           00581000
+AS3            07  NY44RU01-A-ADDRESSEE            PIC X(40).           00581100
+               07  NY44RU01-A-ADDRESS-1            PIC X(40).           00590000
+               07  NY44RU01-A-ADDRESS-2            PIC X(40).           00600000
+3P0433         07  NY44RU01-A-TOWN-SUBURB          PIC X(40).           00610000
+3P0433*        07  NY44RU01-A-TOWN-SUBURB          PIC X(30).           00610100
+               07  NY44RU01-A-POST-CODE            PIC X(9).            00611000
+               07  NY44RU01-A-POST-CODE-DESC       PIC X(41).           00620000
+AS2            07  NY44RU01-ACCOUNT                PIC X(10).           00620100
+3P0433         07  NY44RU01-A-NUM-TYPE              PIC X(01).          00620200
+3P0433         07  NY44RU01-A-NUM                   PIC X(04).          00620300
+              05 NY44RU01-DOCUMENT-DATA.                                00670000
+               07  NY44RU01-ORIG-DATE-PRINTED      PIC X(10).           00680000
+M40662         07  NY44RU01-REF-DOC-TRAG           PIC X(15).           00690000
+3P1556        05 FILLER                            PIC X(155).          00690100
+3P1556        05 NY44RU01-TIPO-IMPRESSAO           PIC X(001).          00690200
+

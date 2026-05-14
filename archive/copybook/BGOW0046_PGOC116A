@@ -1,0 +1,267 @@
+      ******************************************************************
+      *                                                                *
+      *      AAA    TTTTT   EEEEE   N   N    CCCC    AAA     OOO       *
+      *     A   A     T     E       NN  N   C       A   A   O   O      *
+      *     AAAAA     T     EEEE    N N N   C       AAAAA   O   O      *
+      *     A   A     T     E       N  NN   C       A   A   O   O      *
+      *     A   A     T     EEEEE   N   N    CCCC   A   A    OOO       *
+      *                                                                *
+      * TRATAMENTO DE DOCUMENTOS COM ORIGEM NO GIS. OS PRIMEIROS 298   *
+      * BYTES SAO A IMAGEM DOS COPYBOOKS BGOW0026, BGOW0015 E BGOW0019.*
+      * ALTERACOES AO BGOW0046 DEVEM SER REPLICADAS NO BGOW0026,       *
+      * BGOW0015 E BGOW0019.                                           *
+      *                                                                *
+      ******************************************************************
+      *                                                                *
+      * BGOW0046 - DESENHO DE REGISTO UNICO DOCUMENTOS VINDOS DO GIS   *
+      *            CARTAS, CP'S E EXTRACTOS                            *
+      *                                                                *
+      * -------------------------------------------------------------- *
+      * 20160426  COPY NOVO EXTRATO INTEGRADO GIS
+#02   * 2021.05.11  JADS  COMPILAÇÃO E ALTERAÇÕES RELATIVAS AO COBOL V6*
+#03   * 2022.01.07  JADS  INCLUSAO DO CODIGO ASSINATURA JOSE EDU.BONITO*
+#04   * 2023.12.26  JADS  INCLUSAO DO CODIGO ASSINATURA SANDRA FARO    *
+      *=================================================================
+           05  :PREFIX:-DADOS-REGISTO.
+             07  :PREFIX:-COD-COMPANHIA        PIC X(003).
+                 88  :PREFIX:-C-VIADIRECTA         VALUE '111'.
+                 88  :PREFIX:-C-FIDELIDADEMUNDIAL  VALUE '128'.
+                 88  :PREFIX:-C-IMPERIOBONANCA     VALUE '138'.
+                 88  :PREFIX:-C-MULTICARE          VALUE '148'.
+                 88  :PREFIX:-C-CXPOUPANCA         VALUE '158'.
+             07  :PREFIX:-COD-MARCA            PIC X(003).
+                 88  :PREFIX:-M-OKTELESEGURO       VALUE '001'.
+                 88  :PREFIX:-M-FIDELIDADEMUNDIAL  VALUE '002'.
+                 88  :PREFIX:-M-FMLEVE             VALUE 'L02'.
+                 88  :PREFIX:-M-IMPERIOBONANCA     VALUE '003'.
+                 88  :PREFIX:-M-IBLEVE             VALUE 'L03'.
+                 88  :PREFIX:-M-ICI                VALUE '004'.
+                 88  :PREFIX:-M-CONTINENTE         VALUE '005'.
+                 88  :PREFIX:-M-MULTICARE          VALUE '006'.
+                 88  :PREFIX:-M-CXPOUPANCA         VALUE '009'.
+                 88  :PREFIX:-M-CPLEVE             VALUE 'L09'.
+             07  :PREFIX:-COD-ORIGEM           PIC X(003).
+                 88  :PREFIX:-O-COGEN22            VALUE 'C22'.
+                 88  :PREFIX:-O-COGEN33            VALUE 'C33'.
+                 88  :PREFIX:-O-COGEN41            VALUE 'C41'.
+                 88  :PREFIX:-O-PRIC41             VALUE 'P41'.
+                 88  :PREFIX:-O-CLASSICO           VALUE 'CLA'.
+                 88  :PREFIX:-O-GIS                VALUE 'GIS'.
+                 88  :PREFIX:-O-TAG                VALUE 'TAG'.
+                 88  :PREFIX:-O-COLHEITAS          VALUE 'CLH'.
+                 88  :PREFIX:-O-VIDA-GRUPO         VALUE 'FGS'.
+                 88  :PREFIX:-O-PAXUS              VALUE 'PXS'.
+                 88  :PREFIX:-O-VIDA-IND           VALUE 'RVI'.
+             07  :PREFIX:-COD-POSTALM          PIC X(009).
+             07  :PREFIX:-NR-MEDIADOR          PIC X(010).
+             07  :PREFIX:-COD-POSTALC          PIC X(009).
+             07  :PREFIX:-NR-CLIENTE           PIC X(010).
+             07  :PREFIX:-NR-APOLICE           PIC X(016).
+             07  :PREFIX:-COD-PRODUTO          PIC X(006).
+             07  :PREFIX:-DATA-HORA            PIC X(014).
+             07  :PREFIX:-NUM-DOC              PIC 9(007).
+             07  :PREFIX:-NUM-REGISTO          PIC 9(007).
+             07  :PREFIX:-COD-ASSINATURA       PIC X(004).
+                 88  :PREFIX:-FERNANDES            VALUE 'NF00'.
+                 88  :PREFIX:-HELENA               VALUE 'HM00'.
+                 88  :PREFIX:-HELENA1              VALUE 'HM01'.
+                 88  :PREFIX:-HELENA2              VALUE 'HM02'.
+                 88  :PREFIX:-RITA                 VALUE 'RS01'.
+                 88  :PREFIX:-CADMIN               VALUE 'CA6R'.
+                 88  :PREFIX:-CADMIN1              VALUE 'CA61'.
+                 88  :PREFIX:-ARTUR                VALUE 'AM00'.
+                 88  :PREFIX:-ARTUR1               VALUE 'AM01'.
+                 88  :PREFIX:-EUGENIA              VALUE 'EC00'.
+                 88  :PREFIX:-BRISSOS              VALUE 'BC00'.
+                 88  :PREFIX:-BRIART               VALUE 'BCAM'.
+                 88  :PREFIX:-CORDEIRO             VALUE 'PC00'.
+                 88  :PREFIX:-CORDEIRO1            VALUE 'PC01'.
+                 88  :PREFIX:-BRICORD              VALUE 'BCPC'.
+                 88  :PREFIX:-FFSANTOS             VALUE 'FS00'.
+                 88  :PREFIX:-FFSANTOS1            VALUE 'FS01'.
+                 88  :PREFIX:-BRISANTOS            VALUE 'BCFS'.
+                 88  :PREFIX:-VMACHADO             VALUE 'VM00'.
+                 88  :PREFIX:-MACHSANTOS           VALUE 'VMFS'.
+#03              88  :PREFIX:-JOSEBONITO           VALUE 'JB00'.
+#03              88  :PREFIX:-MACHBONITO           VALUE 'VMJB'.
+#04              88  :PREFIX:-SANDRAFARO           VALUE 'SF01'.
+             07  :PREFIX:-TIPO-DOCUMENTO       PIC X(004).
+                 88  :PREFIX:-OUT1                 VALUE 'OUT1'.
+                 88  :PREFIX:-OUT2                 VALUE 'OUT2'.
+                 88  :PREFIX:-OUT3                 VALUE 'OUT3'.
+                 88  :PREFIX:-OUT4                 VALUE 'OUT4'.
+                 88  :PREFIX:-OUT5                 VALUE 'OUT5'.
+                 88  :PREFIX:-REC1                 VALUE 'REC1'.
+                 88  :PREFIX:-REC2                 VALUE 'REC2'.
+                 88  :PREFIX:-REC3                 VALUE 'REC3'.
+             07  :PREFIX:-TIPO-IMPRESSAO       PIC X(003).
+                 88  :PREFIX:-CEN-AGR-EX           VALUE 'CAE'.
+                 88  :PREFIX:-CEN-AGR-NEX          VALUE 'CAN'.
+                 88  :PREFIX:-CEN-NAGR-EX          VALUE 'CNE'.
+                 88  :PREFIX:-CEN-NAGR-NEX         VALUE 'CNN'.
+                 88  :PREFIX:-DES-AGR-NEX          VALUE 'DAN'.
+                 88  :PREFIX:-DES-NAGR-NEX         VALUE 'DNN'.
+             07  :PREFIX:-COD-IMPRESSORA       PIC X(008).
+             07  :PREFIX:-COD-DOC-ORIGEM       PIC X(010).
+             07  :PREFIX:-TIPO-REG             PIC X(004).
+                 88  :PREFIX:-TIPO-HEADERMM        VALUE 'HDMM'.
+                 88  :PREFIX:-TIPO-HEADER01        VALUE 'HD01'.
+                 88  :PREFIX:-TIPO-HEADER02        VALUE 'HD02'.
+                 88  :PREFIX:-TIPO-HEADER03        VALUE 'HD03'.
+                 88  :PREFIX:-TIPO-HEADER04        VALUE 'HD04'.
+                 88  :PREFIX:-TIPO-HEADER05        VALUE 'HD05'.
+                 88  :PREFIX:-TIPO-HEADER06        VALUE 'HD06'.
+                 88  :PREFIX:-TIPO-HEADER07        VALUE 'HD07'.
+                 88  :PREFIX:-FRASE-REEMIS         VALUE 'DT00'.
+                 88  :PREFIX:-TIPO-DETALHE         VALUE 'DT01'.
+                 88  :PREFIX:-INFO-LEGAIS          VALUE 'IL01'.
+                 88  :PREFIX:-FIM-DOCUMENTO        VALUE 'ENDD'.
+                 88  :PREFIX:-TRSF-0001            VALUE '0001'.
+                 88  :PREFIX:-TRSF-0002            VALUE '0002'.
+                 88  :PREFIX:-TRSF-0003            VALUE '0003'.
+             07  :PREFIX:-MARCA-REIMPRESSAO    PIC X(001).
+                 88  :PREFIX:-ESPACO               VALUE ' '.
+                 88  :PREFIX:-ONLINE               VALUE '1'.
+                 88  :PREFIX:-SEG-VIA              VALUE '2'.
+                 88  :PREFIX:-REGISTADA            VALUE '3'.
+             07  :PREFIX:-COD-CAPA             PIC X(006).
+             07  :PREFIX:-DOC-ID               PIC X(003).
+                 88  :PREFIX:-DOCID-CART           VALUE '   '.
+                 88  :PREFIX:-DOCID-CART1          VALUE '001'.
+                 88  :PREFIX:-DOCID-CP             VALUE '002'.
+                 88  :PREFIX:-DOCID-CR             VALUE '003'.
+                 88  :PREFIX:-DOCID-CERT           VALUE '004'.
+                 88  :PREFIX:-DOCID-EXTR           VALUE '005'.
+                 88  :PREFIX:-DOCID-TRF-CART       VALUE '006'.
+                 88  :PREFIX:-DOCID-REC-SINIS      VALUE '007'.
+                 88  :PREFIX:-DOCID-LISTA          VALUE '008'.
+                 88  :PREFIX:-DOCID-LISTAH         VALUE '009'.
+                 88  :PREFIX:-DOCID-TRFAPOL        VALUE '010'.
+                 88  :PREFIX:-DOCID-EXTINT         VALUE '011'.
+             07  :PREFIX:-USER-ID              PIC X(008).
+             07  :PREFIX:-ADERENTE             PIC X(008).
+             07  :PREFIX:-APOLICE-NCR          PIC X(008).
+             07  :PREFIX:-TIPO-LAYOUT          PIC X(002).
+             07  :PREFIX:-FILLER               PIC X(132).
+      *
+           05  :PREFIX:-DADOS-VARIAVEL         PIC X(3798).
+      *
+           05  :PREFIX:-HDMM REDEFINES :PREFIX:-DADOS-VARIAVEL.
+             07  :PREFIX:-DADOS-CABECALHO.
+               09  :PREFIX:-TITULO-DOC1        PIC X(040).
+               09  :PREFIX:-TITULO-DOC2        PIC X(040).
+               09  :PREFIX:-DADOS-ENDERECAMENTO.
+                 11  :PREFIX:-NOME             PIC X(040).
+                 11  :PREFIX:-MORADA1          PIC X(040).
+                 11  :PREFIX:-MORADA2          PIC X(040).
+                 11  :PREFIX:-MORADA3          PIC X(040).
+                 11  :PREFIX:-MORADA4          PIC X(040).
+                 11  :PREFIX:-IDP              PIC X(004).
+                 11  :PREFIX:-REF-MORADA       PIC X(004).
+   #02*      07  FILLER                        PIC X(3513).
+#02          07  FILLER                        PIC X(3510).
+      *
+           05  :PREFIX:-HD07 REDEFINES :PREFIX:-DADOS-VARIAVEL.
+               09  :PREFIX:-PESSEG             PIC X(040).
+               09  :PREFIX:-DT-EMISSAO         PIC X(010).
+               09  :PREFIX:-NIF                PIC X(009).
+               09  :PREFIX:-DT-INF             PIC X(010).
+               09  :PREFIX:-PERIODO-INI        PIC X(010).
+               09  :PREFIX:-PERIODO-FIM        PIC X(010).
+               09  :PREFIX:-FREQUENC           PIC X(001).
+#02            09  FILLER                      PIC X(3708).
+      *
+           05  :PREFIX:-DT01 REDEFINES :PREFIX:-DADOS-VARIAVEL.
+             07  :PREFIX:-TIPO-LINHA           PIC X(004).
+                 88  :PREFIX:-TL-SAUDACAO          VALUE '0001'.
+                 88  :PREFIX:-TL-ESPACOS           VALUE '0002'.
+                 88  :PREFIX:-TL-CORRENTE          VALUE '0003'.
+                 88  :PREFIX:-TL-FINAL-CORRENTE    VALUE 'F003'.
+                 88  :PREFIX:-TL-RISCO             VALUE '0004'.
+                 88  :PREFIX:-TL-TESOURA           VALUE '0005'.
+                 88  :PREFIX:-TL-TRACEJADO         VALUE '0006'.
+                 88  :PREFIX:-TL-TESOURA-COM-TR    VALUE '0007'.
+                 88  :PREFIX:-TL-CUMPRIMENTOS      VALUE '0008'.
+                 88  :PREFIX:-TL-LINHA-FIXA        VALUE '0009'.
+                 88  :PREFIX:-TL-VERSO             VALUE '0010'.
+                 88  :PREFIX:-TL-TITULO            VALUE '0011'.
+                 88  :PREFIX:-TL-BLOCO-CG          VALUE '0012'.
+                 88  :PREFIX:-TL-TES-TRAC-COMP     VALUE '0013'.
+                 88  :PREFIX:-TL-TES-TRAC-MEDICIL  VALUE '0014'.
+                 88  :PREFIX:-TL-RECSIN-CAIXA      VALUE '0015'.
+                 88  :PREFIX:-TL-RECSIN-CBARRAS    VALUE '0016'.
+                 88  :PREFIX:-TL-FIXA-BIN          VALUE '0017'.
+                 88  :PREFIX:-TL-FRASE-REEMIS      VALUE '0018'.
+                 88  :PREFIX:-TL-SALDO-INT-EXTINT  VALUE '0029'.
+                 88  :PREFIX:-TL-QUADRO1-LINH01    VALUE '0032'.
+                 88  :PREFIX:-TL-QUADRO1-LINH02    VALUE '0034'.
+                 88  :PREFIX:-TL-QUADRO2-LINH01    VALUE '0037'.
+                 88  :PREFIX:-TL-QUADRO2-LINH02    VALUE '0039'.
+                 88  :PREFIX:-TL-QUADRO3-LINH01    VALUE '0042'.
+                 88  :PREFIX:-TL-QUADRO4-LINH01    VALUE '0045'.
+             07  :PREFIX:-TIPO-PARAGRAFO       PIC X(004).
+                 88  :PREFIX:-TL-NORM              VALUE '0001'.
+                 88  :PREFIX:-TL-INDENT-NORM       VALUE '0002'.
+                 88  :PREFIX:-TL-BOLD              VALUE '0003'.
+                 88  :PREFIX:-TL-INDENT-BOLD       VALUE '0004'.
+                 88  :PREFIX:-TL-NORM-PEQ          VALUE '0005'.
+                 88  :PREFIX:-TL-BOLD-PEQ          VALUE '0006'.
+                 88  :PREFIX:-TL-FIXA-PEQ          VALUE '0007'.
+             07  :PREFIX:-LINHA-GIS            PIC X(294).
+      *QUADRO INICIAL - SALDO INTEGRADO
+             07  :PREFIX:-0029 REDEFINES :PREFIX:-LINHA-GIS.
+                 09  :PREFIX:-SI-DT-POSICAO    PIC X(10).
+                 09  :PREFIX:-SI-SALDO         PIC X(16).
+                 09  FILLER                    PIC X(268).
+      *QUADRO 1 LINH01 - CARTEIRA SEGUROS CAPITALIZAÇÃO E PPR
+             07  :PREFIX:-0032 REDEFINES :PREFIX:-LINHA-GIS.
+                 09  :PREFIX:-Q1-PRODUTO       PIC X(30).
+                 09  :PREFIX:-Q1-APOL-ADESAO   PIC X(20).
+                 09  :PREFIX:-Q1-DT-INICIO     PIC X(10).
+                 09  :PREFIX:-Q1-DT-TERMO      PIC X(10).
+                 09  :PREFIX:-Q1-SALDO-AP      PIC X(16).
+   #02*          09  FILLER                    PIC X(212).
+#02              09  FILLER                    PIC X(208).
+      *QUADRO 1 LINH02 - CARTEIRA SEGUROS CAPITALIZAÇÃO E PPR
+             07  :PREFIX:-0034 REDEFINES :PREFIX:-LINHA-GIS.
+                 09  :PREFIX:-Q1-OPCAO-INVEST  PIC X(30).
+                 09  :PREFIX:-Q1-NUNI-UC-UR    PIC X(22).
+                 09  :PREFIX:-Q1-COTACAO-UC-UR PIC X(22).
+                 09  :PREFIX:-Q1-SALDO-OI      PIC X(16).
+                 09  FILLER                    PIC X(204).
+      *QUADRO 2 LINH01 - MOVIMENTOS EFETUADOS NO PERÍODO DE
+      *DD/MM/AAAA À DD/MM/AAAA
+             07  :PREFIX:-0037 REDEFINES :PREFIX:-LINHA-GIS.
+                 09  :PREFIX:-Q2-PRODUTO       PIC X(30).
+                 09  :PREFIX:-Q2-APOL-ADESAO   PIC X(20).
+                 09  FILLER                    PIC X(244).
+      *QUADRO 2 LINH02 - MOVIMENTOS EFETUADOS NO PERÍODO DE
+      *DD/MM/AAAA À DD/MM/AAAA
+             07  :PREFIX:-0039 REDEFINES :PREFIX:-LINHA-GIS.
+                 09  :PREFIX:-Q2-DT            PIC X(10).
+                 09  :PREFIX:-Q2-MOVIMENTOS    PIC X(30).
+                 09  :PREFIX:-Q2-OPCAO-INVEST  PIC X(30).
+                 09  :PREFIX:-Q2-ENCAR-COMIS   PIC X(13).
+                 09  :PREFIX:-Q2-VALOR-BRUTO   PIC X(16).
+                 09  :PREFIX:-Q2-RENDIMENTO    PIC X(13).
+                 09  :PREFIX:-Q2-IMPOSTO       PIC X(13).
+                 09  :PREFIX:-Q2-VALOR-LIQ     PIC X(16).
+                 09  FILLER                    PIC X(153).
+      *QUADRO 3 LINH01 - INFORMAÇÃO SOBRE TAXAS DE RENDIMENTO GARANTIDO
+             07  :PREFIX:-0042 REDEFINES :PREFIX:-LINHA-GIS.
+                 09  :PREFIX:-Q3-PRODUTO       PIC X(30).
+                 09  :PREFIX:-Q3-APOL-ADESAO   PIC X(20).
+                 09  :PREFIX:-Q3-OPCAO-INVEST  PIC X(30).
+                 09  :PREFIX:-Q3-PERIODICIDADE PIC X(10).
+                 09  :PREFIX:-Q3-TAXA          PIC X(06).
+                 09  FILLER                    PIC X(198).
+      *QUADRO 4 LINH01 - INFORMAÇÕES SOBRE TAXAS ANUAIS DE
+      *PARTICIPAÇÃO NOS RESULTADOS REFERENTES AO ANO CIVIL ANTERIOR
+             07  :PREFIX:-0045 REDEFINES :PREFIX:-LINHA-GIS.
+                 09  :PREFIX:-Q4-PRODUTO       PIC X(30).
+                 09  :PREFIX:-Q4-OPCAO-INVEST  PIC X(30).
+                 09  :PREFIX:-Q4-DESCRITIVO    PIC X(30).
+                 09  :PREFIX:-Q4-TAXA          PIC X(06).
+                 09  FILLER                    PIC X(198).
+         07  FILLER                            PIC X(3496).
+

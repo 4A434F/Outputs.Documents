@@ -1,0 +1,107 @@
+      *----------------------------------------------------------------*00010000
+      *                      MAINTENANCE  LOG                          *00020000
+      *                                                                *00030000
+      * ------------------------  ATENÇÃO  --------------------------- *00030000
+      *                                                                *00030000
+      *   ALTERACOES NO NZ5CVU01 DEVERAO SER REPLICADAS:               *00030000
+      *   BGOW9006 - PARA APLICAÇÕES DE OUTPUTS (UGEN)                 *00030000
+      *                                                                *00030000
+      * ------------------------  ATENÇÃO  --------------------------- *00030000
+      *                                                                *00030000
+      *----------------------------------------------------------------*00010000
+      *                                                                *00030000
+      * PROGRAMMER  PCR     DATE      COMMENTS                         *00040000
+      *----------------------------------------------------------------*00050000
+      *                                                                *00140000
+      * PCS         3P1699  AGO-2016  VERSÃO INICIAL                   *00140000
+      *                                                                *00140000
+      * FGBC        3P1954  NOV-2017  CHG611021-DISPONIBILIZAR QR CODE *00140000
+      *                               NA CARTA VERDE                   *00140000
+      *                               INCLUSÃO DE CAMPOS NO TIPO REG.  *00140000
+      *                               '01' - DADOS DA APOLICE.         *00140000
+      *                                       # NIF                    *00140000
+      *                                       # LOCATION REFERENCE     *00140000
+      *                                       # ORIGEM RECIBO          *00140000
+      * JC          3P2283  JUL-2022  DISPONIBILIZAR NR RECIBO DA CV   *00140000
+      *----------------------------------------------------------------*00420000
+                                                                        00421000
+      *--- SORT KEY                                                     00440000
+           03  NZ5CVU01-PRINT-RECORD.                                   00460000
+               05  NZ5CVU01-COMPANY                 PIC  X(03).         00470000
+               05  NZ5CVU01-MARCA                   PIC  X(03).         00470000
+               05  NZ5CVU01-AGENTE                  PIC  X(10).         00490000
+               05  NZ5CVU01-POST-CODE               PIC  X(09).         00490000
+               05  NZ5CVU01-CLIENT-REFERENCE        PIC  X(10).         00500000
+               05  NZ5CVU01-POLICY-NUMBER           PIC  X(16).         00520000
+               05  NZ5CVU01-GREEN-CARD-NUMBER       PIC  X(12).         00520000
+               05  NZ5CVU01-RECORD-TYPE             PIC  X(01).         00530000
+                   88  NZ5CVU01-POLICY-BASIC-DATA   VALUE '1'.          00540000
+                   88  NZ5CVU01-PRODUTO             VALUE '2'.          00540000
+                   88  NZ5CVU01-AGENT-DATA          VALUE '3'.          00560000
+               05  NZ5CVU01-PRINT-DATA              PIC  X(435).        00570000
+                                                                        00580000
+      *------- DADOS DA APÓLICE - REGISTO TIPO '1'                      00440000
+               05  REDEFINES NZ5CVU01-PRINT-DATA.                       00620000
+                   07  NZ5CVU01-DOCUMENT-TYPE       PIC  X(04).         00630000
+                       88  NZ5CVU01-GREEN-CARD            VALUE 'GRCD'. 00640000
+                       88  NZ5CVU01-INSURANCE-CERTIFICATE VALUE 'INSC'. 00650000
+                   07  NZ5CVU01-ADDRESSEE           PIC  X(40).         00660000
+                   07  NZ5CVU01-ADDRESS1            PIC  X(40).         00670000
+                   07  NZ5CVU01-ADDRESS2            PIC  X(40).         00680000
+                   07  NZ5CVU01-TOWN-SUBURB         PIC  X(40).         00690000
+                   07  NZ5CVU01-POSTCODE-DESC       PIC  X(40).         00700000
+                   07  NZ5CVU01-DATA-INI-DOC        PIC  X(10).         00710000
+                   07  NZ5CVU01-DATA-FIM-DOC        PIC  X(10).         00720000
+                   07  NZ5CVU01-DATA-IMPRESSAO      PIC  X(10).         00730000
+                   07  NZ5CVU01-CAPITAL-RCV-DM      PIC S9(13)V99.      00750001
+                   07  NZ5CVU01-CAPITAL-RCV-DC      PIC S9(13)V99.      00750001
+                   07  NZ5CVU01-COD-PAIS            PIC  X(04).         00770000
+                   07  NZ5CVU01-MATRICULA           PIC  X(15).         00880000
+                   07  NZ5CVU01-MARCA-VH            PIC  X(30).         00880000
+                   07  NZ5CVU01-VEH-EXTRA           PIC  X(25).         00880000
+                   07  NZ5CVU01-NMR-CARTA           PIC  X(25).         00880000
+                   07  NZ5CVU01-COD-TEXTO           PIC  X(03).         00880000
+                   07  NZ5CVU01-IND-REGIME          PIC  X(01).         00880000
+                   07  NZ5CVU01-I-CVER-DIRZ-CORX    PIC  X(01).         00880000
+                   07  NZ5CVU01-PESO-REBOQUE        PIC  9(07).         00880000
+                   07  NZ5CVU01-CATG-VH             PIC  X(02).         00880000
+                   07  NZ5CVU01-NUM-TYPE            PIC  X(01).         00880000
+                   07  NZ5CVU01-NUM                 PIC  X(04).         00880000
+                   07  NZ5CVU01-TIPO-RECIBO         PIC  X(01).         00630000
+                       88  NZ5CVU01-NOVO-NEGOCIO    VALUE 'N'.          00640000
+                       88  NZ5CVU01-RENOVACAO       VALUE 'C'.          00640000
+                       88  NZ5CVU01-ALTERACAO       VALUE 'A'.          00640000
+                       88  NZ5CVU01-CANCELAMENTO    VALUE 'M'.          00640000
+                   07  NZ5CVU01-USER-ID             PIC  X(08).         00630000
+                   07  NZ5CVU01-RAMO-PROD           PIC  X(06).         00630000
+                   07  NZ5CVU01-N-SEGURNET          PIC  X(10).
+3P1954             07  NZ5CVU01-NIF                 PIC  X(09).
+3P1954             07  NZ5CVU01-LOCATION-REF        PIC  X(04).
+3P1954             07  NZ5CVU01-ORIGEM-RECIBO       PIC  X(03).
+3P2283             07  NZ5CVU01-NR-RECIBO           PIC  X(10).         00780002
+3P2283             07  FILLER                       PIC  X(02).         00780002
+                                                                        00790000
+      *------- DADOS DO PRODUTO - REGISTO TIPO '2'                      00440000
+               05  REDEFINES NZ5CVU01-PRINT-DATA.                       00620000
+                   07  NZ5CVU01-PRODUTO-CODE        PIC  X(05).         00660000
+                   07  NZ5CVU01-PRODUTO-DESC        PIC  X(40).         00670000
+                   07  NZ5CVU01-RAMO-CODE           PIC  X(06).         00660000
+                   07  NZ5CVU01-RAMO-DESC           PIC  X(40).         00670000
+                   07  NZ5CVU01-PAISES-G5           PIC  X(60).         00670000
+                   07  FILLER                       PIC  X(284).        00780002
+                                                                        00790000
+      *------- DADOS DO AGENTE - REGISTO TIPO '3'                       00440000
+               05  REDEFINES NZ5CVU01-PRINT-DATA.                       00940000
+                   07  NZ5CVU01-ADDRESSEE-AGENT     PIC  X(40).         00660000
+                   07  NZ5CVU01-ADDRESS1-AGENT      PIC  X(40).         00670000
+                   07  NZ5CVU01-ADDRESS2-AGENT      PIC  X(40).         00680000
+                   07  NZ5CVU01-TOWN-SUBURB-AGENT   PIC  X(40).         00690000
+                   07  NZ5CVU01-POST-CODE-AGENT     PIC  X(09).         00490000
+                   07  NZ5CVU01-POSTCODE-DESC-AGENT PIC  X(40).         00700000
+                   07  NZ5CVU01-NUM-TYPE-AGENT      PIC  X(01).         00700000
+                   07  NZ5CVU01-NUM-AGENT           PIC  X(04).         00700000
+                   07  FILLER                       PIC  X(221).        00780002
+                                                                        00790000
+      *------- INDICADOR TIPO IMPRESSÃO                                 00440000
+               05  NZ5CVU01-TIPO-IMPRESSAO          PIC  X(01).
+

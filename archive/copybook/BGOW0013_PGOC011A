@@ -1,0 +1,226 @@
+      *=================================================================
+      * BGOW0013: DESENHO DE REGISTO UNICO PARA CARTAS
+      * -------- --- ----- --------- ----------------------------------
+      * 2010-02-22 AP  GO699 200900091 CARTAS PARA VIA-DIRECTA
+      * 2010-03-04 AP  GO720 200900091 CARTAS PARA VIA-DIRECTA
+      * 2010-03-04 AP  GO756 200900091 CARTAS PARA VIA-DIRECTA
+      * 2010-03-04 AP  GO756 200900091 CARTAS PARA VIA-DIRECTA
+      * 2010-08-30 AP  GO937 200900055 CARTAS ANULAÇÃO CDC1 - UNIFORMIZA
+      * 2011-11-24 AP GO1147 201100140 INCLUSÃO DO CAMPO NIB
+      * 2012-01-05 AP GO1698 CHG-75506 INCLUSÃO MOTIVO PC PARA VD
+      * 2012-06-28 MJE       201100228 CARTAS LIMITE IDADE C22 -PRODUTO
+      *                                PROTECÇAO CRÉDITO E MIGRAC C41
+      * 2012-07-13 PJG       201100228 CARTA EXTRACTO - DESEMPREGO E
+      *                                BAIXA MEDICA (C22)
+      * 2012-12-17 MJE       201100228 CARTA E1 CARTA ATUALIZAÇÃO
+      *                                TARIFÁRIA PHAT
+      * 2013-01-10 MJE       201100228 CARTA E2 E3 PEXT
+      *                                CARTA A1  ORSM
+PJG#1 * 2013-08-23 PJG       201200121 PLATAFORMA CGD - SEGURO PROTECAO
+PJG#1 *                                CREDITO (INCLUSAO DA CARTA E4)
+MJE#1 * 2014-01-27 MJE       201200066 CARTA PEDIDO AJUSTE R1 R2
+MJE#1 *                                RESPONSABILIDADE CIVIL
+MJE#2 * 2014-04-16 MJE       201300091 CARTA COMPROVATIVO DE RESGATE
+PJG#2 *                                                                *
+PJG#2 * PJG   201200094 2014-08-05 INCLUSAO DE INDICADOR PARA TIPO     *
+PJG#2 *                            DE IMPRESSAO, IMMEDIATE(I) OU       *
+PJG#2 *                            OVERNIGHT(O)                        *
+PJG#2 *                                                                *
+MJE#3 * 2015-02-19 MJE       201300155 CARTA DE ESTIMATIVA DE AT C22   *
+MJE#3 *                                                                *
+MJE#4 * 2016-03-30 MJE       201600025 CARTA DE EXCLUSÃO DA COBERTURA  *
+MJE#4 *                                BEST DOCTORS EM AP              *
+      *                                                                *00210000
+MJE#5 * 2016-09-22 MJE       CHG-47479 CARTA CAIXA PROTEÇÃO TOTAL      *00180000
+MJE#5 *                                (CARTA GENÉRICA POR             *
+MJE#5 *                                 EXCLUSÃO DE LIMITE DE IDADE)   *00210000
+      *=================================================================
+           05  :PREFIX:-DADOS-REGISTO.
+             07  :PREFIX:-COD-COMPANHIA        PIC X(003).
+                 88  :PREFIX:-C-VIADIRECTA         VALUE '111'.
+                 88  :PREFIX:-C-FIDELIDADEMUNDIAL  VALUE '128'.
+                 88  :PREFIX:-C-IMPERIOBONANCA     VALUE '138'.
+                 88  :PREFIX:-C-MULTICARE          VALUE '148'.
+             07  :PREFIX:-COD-MARCA            PIC X(003).
+                 88  :PREFIX:-M-OKTELESEGURO       VALUE '001'.
+                 88  :PREFIX:-M-FIDELIDADEMUNDIAL  VALUE '002'.
+                 88  :PREFIX:-M-FMLEVE             VALUE 'L02'.
+                 88  :PREFIX:-M-IMPERIOBONANCA     VALUE '003'.
+                 88  :PREFIX:-M-IBLEVE             VALUE 'L03'.
+                 88  :PREFIX:-M-ICI                VALUE '004'.
+                 88  :PREFIX:-M-CONTINENTE         VALUE '005'.
+                 88  :PREFIX:-M-MULTICARE          VALUE '006'.
+             07  :PREFIX:-COD-ORIGEM           PIC X(003).
+                 88  :PREFIX:-O-COGEN22            VALUE 'C22'.
+                 88  :PREFIX:-O-COGEN33            VALUE 'C33'.
+                 88  :PREFIX:-O-COGEN41            VALUE 'C41'.
+                 88  :PREFIX:-O-PRIC41             VALUE 'P41'.
+                 88  :PREFIX:-O-CLASSICO           VALUE 'CLA'.
+                 88  :PREFIX:-O-GIS                VALUE 'GIS'.
+                 88  :PREFIX:-O-TAG                VALUE 'TAG'.
+                 88  :PREFIX:-O-COLHEITAS          VALUE 'CLH'.
+             07  :PREFIX:-COD-POSTALM          PIC X(009).
+             07  :PREFIX:-NR-MEDIADOR          PIC X(010).
+             07  :PREFIX:-COD-POSTALC          PIC X(009).
+             07  :PREFIX:-NR-CLIENTE           PIC X(010).
+             07  :PREFIX:-NR-APOLICE           PIC X(016).
+             07  :PREFIX:-NR-DOCUMENTO         PIC X(010).
+             07  :PREFIX:-COD-PRODUTO          PIC X(006).
+      *
+           05  :PREFIX:-DADOS-CABECALHO.
+             07  :PREFIX:-TITULO-DOC1          PIC X(040).
+             07  :PREFIX:-TITULO-DOC2          PIC X(040).
+             07  :PREFIX:-DADOS-ENDERECAMENTO.
+                 09  :PREFIX:-NOME             PIC X(040).
+                 09  :PREFIX:-MORADA1          PIC X(040).
+                 09  :PREFIX:-MORADA2          PIC X(040).
+                 09  :PREFIX:-MORADA3          PIC X(040).
+                 09  :PREFIX:-MORADA4          PIC X(040).
+                 09  :PREFIX:-TNUM-PORTA       PIC X(001).
+                 09  :PREFIX:-NUM-PORTA        PIC X(004).
+             07  :PREFIX:-DT-CARTA-EMISSAO     PIC X(032).
+             07  :PREFIX:-ASSUNTO              PIC X(090)
+                                           OCCURS 3 TIMES.
+      *
+           05  :PREFIX:-CORPO-CARTA            PIC X(3300).
+      *
+           05  :PREFIX:-CARTA-CANCEL REDEFINES :PREFIX:-CORPO-CARTA.
+             07  :PREFIX:-TIPO-REG             PIC X(004).
+                 88  :PREFIX:-CDC1                 VALUE 'CDC1'.
+                 88  :PREFIX:-CHIP                 VALUE 'CHIP'.
+                 88  :PREFIX:-ENTI                 VALUE 'ENTI'.
+                 88  :PREFIX:-CTAD                 VALUE 'CTAD'.
+                 88  :PREFIX:-CCAG                 VALUE 'CCAG'.
+                 88  :PREFIX:-CAVR                 VALUE 'CAVR'.
+                 88  :PREFIX:-PTLI                 VALUE 'PTLI'.
+PJG#1            88  :PREFIX:-PREX                 VALUE 'PREX'.
+                 88  :PREFIX:-PTEX                 VALUE 'PTEX'.
+                 88  :PREFIX:-PHAT                 VALUE 'PHAT'.
+                 88  :PREFIX:-ORSM                 VALUE 'ORSM'.
+MJE#1            88  :PREFIX:-CTAJ                 VALUE 'CTAJ'.
+MJE#2            88  :PREFIX:-CTRG                 VALUE 'CTRG'.
+MJE#3            88  :PREFIX:-ESTI                 VALUE 'ESTI'.
+MJE#4            88  :PREFIX:-APEB                 VALUE 'APEB'.
+             07  :PREFIX:-MOTIVO-CANCEL        PIC X(002).
+                 88  :PREFIX:-AGRAVA-RISCOR        VALUE 'AR'.
+                 88  :PREFIX:-FIM-CONTR-LOC        VALUE 'CL'.
+                 88  :PREFIX:-DESISTENCIA0         VALUE 'D1'.
+                 88  :PREFIX:-DESISTENCIA50        VALUE 'D2'.
+                 88  :PREFIX:-DESISTENCIA100       VALUE 'D3'.
+                 88  :PREFIX:-MIG-DESISTENCIA      VALUE 'D4'.
+                 88  :PREFIX:-ERRO                 VALUE 'ER'.
+                 88  :PREFIX:-EXTINCAO             VALUE 'FA'.
+                 88  :PREFIX:-FALSAS-DECLAFD       VALUE 'FD'.
+                 88  :PREFIX:-FALTA-PAG-CADUC      VALUE 'FG'.
+                 88  :PREFIX:-FALTA-PAG-MANUAL     VALUE 'FM'.
+                 88  :PREFIX:-FALTA-PAG-MANUAL0    VALUE 'FP'.
+                 88  :PREFIX:-FALTA-PAG-SUBST      VALUE 'FS'.
+                 88  :PREFIX:-FALSAS-DECLAF1       VALUE 'F1'.
+                 88  :PREFIX:-FALSAS-DECLAF3       VALUE 'F3'.
+                 88  :PREFIX:-MIGRACAO-MAQUIN      VALUE 'MM'.
+                 88  :PREFIX:-PENALIZACAO-100      VALUE 'OM'.
+                 88  :PREFIX:-PEN-COB-PERDA-TOTAL  VALUE 'PC'.
+                 88  :PREFIX:-ANUL-PERDA-DIREC     VALUE 'PD'.
+                 88  :PREFIX:-APEDIDO-SEGURADO     VALUE 'PS'.
+                 88  :PREFIX:-FRAUDE0              VALUE 'R1'.
+                 88  :PREFIX:-FRAUDE50             VALUE 'R2'.
+                 88  :PREFIX:-FRAUDE100            VALUE 'R3'.
+                 88  :PREFIX:-SUBSTITUICAO         VALUE 'SB'.
+                 88  :PREFIX:-SELECCAO-CARTEIRA    VALUE 'SI'.
+                 88  :PREFIX:-SUBSTIT-PRODUTO      VALUE 'SP'.
+                 88  :PREFIX:-SUBSTIT-TRANSF       VALUE 'ST'.
+                 88  :PREFIX:-PERDA-TOTAL          VALUE 'TP'.
+                 88  :PREFIX:-PAG-SINI-PERDA-TOTAL VALUE 'TX'.
+                 88  :PREFIX:-TRANSFERENCIA0       VALUE 'T1'.
+                 88  :PREFIX:-TRANSFERENCIA50      VALUE 'T2'.
+                 88  :PREFIX:-TRANSFERENCIA100     VALUE 'T3'.
+                 88  :PREFIX:-MIG-TRANSF           VALUE 'T4'.
+                 88  :PREFIX:-EXTINCAO-RISCO0      VALUE 'X1'.
+                 88  :PREFIX:-EXTINCAO-RISCO50     VALUE 'X2'.
+                 88  :PREFIX:-EXTINCAO-RISCO100    VALUE 'X3'.
+                 88  :PREFIX:-MIG-EXTIN-RISCO      VALUE 'X4'.
+                 88  :PREFIX:-FALTA-PAGAMENTO      VALUE '01'.
+                 88  :PREFIX:-CANCEL-NOTA-COB      VALUE '02'.
+                 88  :PREFIX:-FALTA-PAGAM-INI      VALUE '03'.
+                 88  :PREFIX:-FALTA-APGAM-INM      VALUE '04'.
+                 88  :PREFIX:-FALTA-PAGAM-CAD      VALUE '05'.
+                 88  :PREFIX:-FALTA-PAGAM-ALT      VALUE '07'.
+             07  :PREFIX:-DESCR-MOTIVO-CANCEL  PIC X(030).
+             07  :PREFIX:-FAZ-DOC-CANCEL       PIC X(001).
+                 88   :PREFIX:-DOC-CANCEL          VALUE 'S'.
+             07  :PREFIX:-FAZ-CARTA-ACOMP      PIC X(001).
+                 88   :PREFIX:-CARTA               VALUE 'S'.
+             07  :PREFIX:-DESCR-PRODUTO        PIC X(030).
+             07  :PREFIX:-DADOS-AGENTE.
+                 09  :PREFIX:-AG-NOME          PIC X(040).
+                 09  :PREFIX:-AG-MORADA1       PIC X(040).
+                 09  :PREFIX:-AG-MORADA2       PIC X(040).
+                 09  :PREFIX:-AG-MORADA3       PIC X(040).
+                 09  :PREFIX:-AG-MORADA4       PIC X(040).
+                 09  :PREFIX:-AG-TNUM-PORTA    PIC X(001).
+                 09  :PREFIX:-AG-NUM-PORTA     PIC X(004).
+             07  :PREFIX:-COD-MOEDA            PIC X(003).
+             07  :PREFIX:-CL-NIF               PIC X(009).
+             07  :PREFIX:-DT-INICIO            PIC X(010).
+             07  :PREFIX:-DT-FIM               PIC X(010).
+             07  :PREFIX:-DT-SINISTRO          PIC X(010).
+             07  :PREFIX:-DT-CESSACAO          PIC X(010).
+             07  :PREFIX:-PREMIO-ANUAL         PIC S9(11)V99.
+             07  :PREFIX:-PREMIO-PAGO          PIC S9(11)V99.
+             07  :PREFIX:-PREMIO-CANCEL        PIC S9(11)V99.
+             07  :PREFIX:-PERC-PENALIZACAO     PIC S9(03)V9(4).
+             07  :PREFIX:-PENALIZACAO          PIC S9(11)V99.
+             07  :PREFIX:-PREMIO-EM-DIVIDA     PIC S9(11)V99.
+             07  :PREFIX:-VALORES-PAGOS-N-REC  PIC S9(11)V99.
+             07  :PREFIX:-VALOR-RESULTANTE     PIC S9(11)V99.
+             07  :PREFIX:-LIMIT-AMT            PIC S9(013).
+             07  :PREFIX:-REFERENCIA           PIC X(010).
+             07  :PREFIX:-IND-UAR              PIC X(001).
+                 88  :PREFIX:-UAR-UNICA            VALUE 'U'.
+                 88  :PREFIX:-UAR-MULTIPLA         VALUE 'M'.
+             07  :PREFIX:-VEIC-NUMERO          PIC X(015).
+             07  :PREFIX:-VEIC-TIPO            PIC X(030).
+             07  :PREFIX:-VEIC-MARCA           PIC X(030).
+             07  :PREFIX:-VEIC-MODELO          PIC X(010).
+             07  :PREFIX:-VEIC-EXTRA           PIC X(025).
+             07  :PREFIX:-VEIC-LICENCA         PIC X(025).
+             07  :PREFIX:-OBJECTO-SEGURO       PIC X(072).
+             07  :PREFIX:-DT-EMISSAO           PIC X(010).
+             07  :PREFIX:-DT-INICIO-RECIBO     PIC X(010).
+             07  :PREFIX:-DT-FIM-RECIBO        PIC X(010).
+             07  :PREFIX:-CAPITAL              PIC X(032).
+             07  :PREFIX:-NIB                  PIC X(021).
+             07  :PREFIX:-TIPO-DE-CARTA        PIC X(002).
+             07  :PREFIX:-NUM-CERTIFICACAO     PIC X(009).
+             07  :PREFIX:-NUM-EMPRESTIMO       PIC X(022).
+             07  :PREFIX:-NUM-CONTA            PIC X(015).
+PJG#1        07  :PREFIX:-PRAZO-EMPRESTIMO     PIC 9(03).
+PJG#1        07  :PREFIX:-TIPO-PRAZO           PIC X(01).
+             07  :PREFIX:-PRM-MENSAL           PIC 9(11)V9(02).
+             07  :PREFIX:-PRM-TOTAL            PIC 9(11)V9(02).
+             07  :PREFIX:-DT-INIC-ANUIDADE     PIC X(10).
+PJG#1        07  :PREFIX:-TRANSACTION-TYPE     PIC X(02).
+MJE#1        07  :PREFIX:-CANAL-DISTRIB        PIC X(03).
+MJE#1        07  :PREFIX:-SEGURADO             PIC X(40).
+MJE#1        07  :PREFIX:-DT-EFEITO-AJUSTE     PIC X(10).
+MJE#1        07  :PREFIX:-DT-FIM-AJUSTE        PIC X(10).
+MJE#1        07  :PREFIX:-TIPO-SEGURO-RC       PIC X(50).
+MJE#1        07  :PREFIX:-TIPO-AJUSTE          PIC X(30).
+MJE#2        07  :PREFIX:-68-N-APOLICE-GIS     PIC X(16).
+MJE#2        07  :PREFIX:-68-DT-RESGATE        PIC X(10).
+MJE#2        07  :PREFIX:-68-M-VALOR-RESGATE   PIC X(16).
+MJE#2        07  :PREFIX:-68-N-APOLICE         PIC X(16).
+MJE#2        07  :PREFIX:-68-M-RECIBO-PR       PIC X(16).
+PJG#2 *
+PJG#2        07  :PREFIX:-TIPO-IMPRESSAO       PIC X(01).
+MJE#3 *
+MJE#3        07  :PREFIX:-ANO                  PIC X(04).
+MJE#3        07  :PREFIX:-TAXA                 PIC 9(3)V9(2).
+MJE#4 *
+MJE#4        07  :PREFIX:-COD-PESQUISA        PIC X(05).
+MJE#4        07  :PREFIX:-COND-GERAIS         PIC X(03).
+MJE#5 *
+MJE#5        07  :PREFIX:-PESSOA-SEGURA       PIC X(60).
+MJE#5        07  :PREFIX:-LIMITE-IDADE        PIC 9(02).
+      *    =============================================================
+

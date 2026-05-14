@@ -1,0 +1,76 @@
+      *---------------------------------------------------------------*
+      *                                                               *
+      *  COPYBOOK Carta Fim de Período de Construção                  *
+      *                                                               *
+      *                                                               *
+      *  ALTERAÇÕES NO COPYBOOK FZ4POS01 DEVERÃO SER REPLICADAS NESTE *
+      *  COPYBOOK (BGOW9065), UTILIZADO NAS APLICAÇÕES DE OUTPUTS     *
+      *  (UGEN) E INFORMAR A RESPECTIVA EQUIPA                        *
+      *                                                               *
+      *---------------------------------------------------------------*
+      *                      MAINTENANCE  LOG                         *
+      *                                                               *
+      *PROGRAMMER  PCR    DATE                COMMENTS                *
+      *---------------------------------------------------------------*
+      *                                                               *
+      *                                                               *
+      *                                                               *
+      *---------------------------------------------------------------*
+      /
+       05  :PREFIX:-PRINT-RECORD.
+      * ------------------------------------------------------------- *
+      *    SORT KEY                                                   *
+      * ------------------------------------------------------------- *
+         07  :PREFIX:-SORT-KEY.
+           09  :PREFIX:-COMPANHIA                 PIC X(03).
+           09  :PREFIX:-MARCA                     PIC X(03).
+           09  :PREFIX:-CANAL-DISTRIBUICAO        PIC X(03).
+           09  :PREFIX:-NUMERO-CLIENTE            PIC X(10).
+           09  :PREFIX:-CODPOSTAL-CLIENTE         PIC X(08).
+           09  :PREFIX:-PRODUTO                   PIC X(05).
+           09  :PREFIX:-APOLICE                   PIC X(16).
+           09  :PREFIX:-COD-CARTA                 PIC X(04).
+               88  :PREFIX:-CARTA-CTPO          VALUE 'CTPO'.
+           09  :PREFIX:-RECORD-TYPE               PIC X(02).
+               88  :PREFIX:-DADOS-CLIENTE       VALUE 'AA'.
+               88  :PREFIX:-DADOS-CARTA         VALUE 'BA'.
+               88  :PREFIX:-FIM-DOCUMENTO       VALUE 'ZZ'.
+         07  :PREFIX:-PRINT-DATA                  PIC X(445).
+      *
+      * LINHA AA - DADOS DO CLIENTE
+         07  REDEFINES :PREFIX:-PRINT-DATA.
+           09  :PREFIX:-AA-NOME                   PIC X(40).
+           09  :PREFIX:-AA-MORADA1                PIC X(40).
+           09  :PREFIX:-AA-MORADA2                PIC X(40).
+           09  :PREFIX:-AA-LOCALIDADE             PIC X(40).
+           09  :PREFIX:-AA-COD-POSTAL             PIC X(40).
+           09  :PREFIX:-AA-TNUM-PORTA             PIC X(01).
+           09  :PREFIX:-AA-NUM-PORTA              PIC X(04).
+           09  :PREFIX:-AA-NIF                    PIC X(22).
+           09  FILLER                             PIC X(217).
+
+      * LINHA BA - DADOS DA CARTA
+         07  REDEFINES :PREFIX:-PRINT-DATA.
+      *    Data duração da apolice inicio aaaa-mm-dd
+           09  :PREFIX:-BA-DATA-DA-INI            PIC X(10).
+      *    Data duração da apolice fim
+           09  :PREFIX:-BA-DATA-DA-FIM            PIC X(10).
+      *    Data periodo de construcao inicio
+           09  :PREFIX:-BA-DATA-PC-INI            PIC X(10).
+      *    Data periodo de construcao fim
+           09  :PREFIX:-BA-DATA-PC-FIM            PIC X(10).
+      *    Data periodo de manutencao inicio
+           09  :PREFIX:-BA-DATA-PM-INI            PIC X(10).
+      *    Data periodo de manurencao fim
+           09  :PREFIX:-BA-DATA-PM-FIM            PIC X(10).
+           09  :PREFIX:-BA-NOME-SEGURADO          PIC X(40).
+           09  FILLER                             PIC X(345).
+      *
+      * LINHA ZZ - FIM DO DOCUMENTO
+         07  REDEFINES :PREFIX:-PRINT-DATA.
+           09  FILLER                             PIC X(445).
+         07  :PREFIX:-TIPO-IMPRESSAO              PIC X(01).
+             88  :PREFIX:-IMP-ONLINE         VALUE 'I'.
+             88  :PREFIX:-IMP-BATCH          VALUE 'O'.
+
+

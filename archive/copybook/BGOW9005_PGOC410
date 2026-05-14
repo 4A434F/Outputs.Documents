@@ -1,0 +1,336 @@
+      *****************************************************************
+      *----------------------------------------------------------------*00010000
+      *                      MAINTENANCE  LOG                           00020000
+      *                                                                 00030000
+      *                        FZ4IPS02                                 00040000
+      *                                                                 00050000
+      *PROGRAMMER  PCR    DATE      COMMENTS                            00060000
+      *----------------------------------------------------------------*00060100
+      *        ---------   ATENÇÃO  --------------------------          00060400
+      *                                                                 00060500
+      *      ALTERACOES NO FZ4IPS02 DEVERAO SER REPLICADAS:             00060600
+      *             BGOW9005 - PARA APLICAÇÕES DE OUTPUTS (UGEN)        00060700
+      *                                                                 00060800
+      *                                                                 00060900
+      *****************************************************************
+      *                                                               *
+      *------------------------ ALTERACOES ---------------------------*
+      *                                                               *
+      *  POR    ASIM       DATA     DESCRICAO                         *
+      *                                                               *
+      *  JM   P2/00170  2008-11-12  NOVO COPYBOOK.                    *
+      *                                                               *
+      *  JM   P2/00483  2009-05-18  CONSIDERAR NOVOS CAMPOS.          *
+      *                                                               *
+      * RMA   P2/00216  2009-06-18  200800164 - AUTOMATISMO POSTAL.   *
+      *                                                               *
+      *  JM   P2/00711  2009-12-02  200900053 - NOVOS PRODUTOS ME.    *
+      *                                                               *
+      *  JM   P2/00860  2010-02-04  NOVOS CAMPOS PARA PREVER MAIS     *
+      *                             CREDORES.                         *
+      *  JM   P2/00910  2010-05-12  200900055 - MIGRACAO MR.          *
+      *                                                               *
+      *  CM   IB1606    2010-09-22  200900055 - MIGRACAO MR.          *
+      *                                                               *
+      *  JM   2P0788    2011-08-16  200800197 - NOVO PRODUTO MRH VD   *
+      *                             RENOMEACAO DE CAMPO.              *
+      *                                                               *
+      *  RCF  2P1336    2013-12-11  HD-899928: CRIACAO DO REGISTO "L" *
+      *                             - CREDORES P/ALARGAR A QUANTIDADE *
+      *                             A IMPRIMIR                        *
+      *  RJF  2P2440    2014-06-04  201200094                         *
+      *  EMA  2P2629    2015-03-17  CHG-374414 - INCLUSÃO DO TIPO DE  *
+      *                                          TRANSAÇÃO            *
+      *                                                               *
+      * MJE          2015-12-02    INCLUSÃO DO CÓDIGO FRANQUIA = 'CC' *
+      *                            = 'CONFORME CONDIÇÃO PARTICULAR'   *
+      *                                                               *
+MJE#01* MJE          2016-05-27    CHG-428782 - Inclusão do NIF da    *
+      *                            entidade tomadora no ficheiro dos  *
+      *                            dados de impressão da Declaração   *
+      *                            de credor (MRH) - VIA DIRECTA      *
+      *                                                               *
+MJE#02* MJE          2016-06-28    201500135 - Nova Oferta MRH        *
+      *                                                               *
+MJE#03* MJE          2015-12-02    CHG-448020-Construções e Montagens *
+      *                            Inclusão do código franquia = 'CT' *
+      *                            igual ao 'CC'                      *
+      *                            = 'Conforme Condição Particular    *
+      *                                                               *
+      *----------------------------------------------------------------
+         03  FZ4IPS2-PRINT-RECORD.
+      *--- SORT KEY
+           05  FZ4IPS2-SORT-KEY.
+      *     CODIGO DE COMPANHIA
+             07  FZ4IPS2-COMPANY                 PIC X(03).
+      *     CODIGO DE MARCA
+             07  FZ4IPS2-MARCA                   PIC X(03).
+      *     Nº DE CLIENTE DO TOMADOR DO SEGURO
+             07  FZ4IPS2-TM-CLIENT-REFERENCE     PIC X(10).
+      *     CODIGO POSTAL DO TOMADOR DO SEGURO
+             07  FZ4IPS2-TM-POST-CODE            PIC X(08).
+      *     CODIGO DE MEDIADOR
+             07  FZ4IPS2-AGENTE-COBRADOR         PIC X(10).
+      *     CODIGO POSTAL DO MEDIADOR
+             07  FZ4IPS2-AG-POST-CODE            PIC X(08).
+      *     CÓDIGO DO PRODUTO
+             07  FZ4IPS2-PRODUTO                 PIC X(05).
+      *     Nº APOLICE
+             07  FZ4IPS2-POLICY-NUMBER           PIC X(16).
+      *     TRANSACÇÃO
+      *     NO COGEN22 - DOCUMENT-NUMBER
+             07  FZ4IPS2-POLICY-TRANSACTION      PIC X(10).
+      *     UNIDADE EM RISCO
+             07  FZ4IPS2-UNIT-RISK-NUM           PIC X(06).
+      *     OBJECTO
+             07  FZ4IPS2-OBJECT-NUM              PIC X(06).
+      *     NºSEQUENCIAL
+             07  FZ4IPS2-NUM-SEQ-1               PIC 9(05).
+      *     TIPO DE REGISTO
+             07  FZ4IPS2-RECORD-TYPE             PIC X(01).
+               88  FZ4IPS2-DADOS-GERAIS       VALUE 'A'.
+               88  FZ4IPS2-DADOS-TEXT         VALUE 'B'.
+               88  FZ4IPS2-COBERTURAS         VALUE 'C'.
+               88  FZ4IPS2-COBERTURAS-D       VALUE 'D'.
+IB1606         88  FZ4IPS2-CLAUSULAS          VALUE 'F'.
+2P1336         88  FZ4IPS2-CREDORES           VALUE 'L'.
+               88  FZ4IPS2-FIM-DOCUMENTO      VALUE 'Z'.
+2P2440*    05  FZ4IPS2-PRINT-DATA                PIC X(409).
+2P2440     05  FZ4IPS2-PRINT-DATA                PIC X(408).
+      *
+      *--- LINHA A
+      *--- DADOS GERAIS  DA APÓLICE
+           05  FILLER REDEFINES FZ4IPS2-PRINT-DATA.
+      *--- TOMADOR DO SEGURO
+      *    NOME
+             07  FZ4IPS2-TM-ADDRESSEE            PIC X(40).
+      *    LINHA DE MORADA-1
+             07  FZ4IPS2-TM-ADDRESS1             PIC X(40).
+      *    LINHA DE MORADA-2
+             07  FZ4IPS2-TM-ADDRESS2             PIC X(40).
+      *    LOCALIDADE
+00483        07  FZ4IPS2-TM-ADDRESS3             PIC X(40).
+      *    CODIGO POSTAL DESC
+00483        07  FZ4IPS2-TM-ADDRESS4             PIC X(40).
+00483 *      07  FZ4IPS2-TM-TOWN-SUBURB          PIC X(40).
+00483 *      07  FZ4IPS2-TM-POSTCODE-DESC        PIC X(40).
+      *    TIPO NUM DE PORTA
+             07  FZ4IPS2-TM-TNUM-PORTA           PIC X(01).
+      *    NUM DE PORTA
+             07  FZ4IPS2-TM-NUM-PORTA            PIC X(04).
+      *    DATA EMISSAO DO DOCUMENTO (AAAA-MM-DD)
+             07  FZ4IPS2-DT-EMISSAO              PIC X(10).
+      *    INDICADOR DE PRIMEIRA IMPRESSÃO
+             07  FZ4IPS2-N-IMPRESSAO             PIC X(01).
+               88  FZ4IPS2-PRIMEIRA-IMP       VALUE '1'.
+               88  FZ4IPS2-SEGUNDA-VIA        VALUE '2'.
+00216        07  FZ4IPS2-TM-COD-BARRAS           PIC X(22).
+2P2629*    TIPO DE TRANSACÇÃO
+2P2629       07  FZ4IPS2-TRANSACTION-TYPE        PIC X(02).
+2P2629           88  FZ4IPS2-NEW-BUSINESS     VALUE '01'.
+2P2629           88  FZ4IPS2-RENEWAL          VALUE '02' '12'.
+2P2629           88  FZ4IPS2-ENDORSEMENT      VALUE '03' '04' '05'.
+2P2629           88  FZ4IPS2-REVIVE           VALUE '06' '07'.
+00216 *      07  FILLER                          PIC X(193).
+2P2440*      07  FILLER                          PIC X(171).
+2P2629*      07  FILLER                          PIC X(170).
+MJE#01*      07  FILLER                          PIC X(168).
+MJE#01       07  FZ4IPS2-TM-NIF                  PIC X(15).
+MJE#01       07  FILLER                          PIC X(153).
+      *
+      *--- LINHA B
+      *--- DADOS DO TEXTO DA DECLARACAO
+      *-------------- PT3  ---------------
+      *      IND-LR-OBJ = 'A' -> 'PELA MORADIA'
+      *      IND-LR-OBJ = 'B' -> 'PELO EDIFÍCIO'
+      *      IND-LR-OBJ = 'C' -> 'PELA FRACÇÃO DE EDIFÍCIO'
+      *------MEI MES MEC   ---------------
+      *      IND-LR-OBJ = 'D' -> 'PELO IMÓVEL'
+      *      IND-LR-OBJ = 'E' -> 'PELO MOBILIÁRIO'
+      *      IND-LR-OBJ = 'F' -> 'PELO CONTEÚDO'
+      *      IND-LR-OBJ = 'G' -> 'PELAS MERCADORIAS'
+      *      IND-LR-OBJ = 'H' -> 'PELOS EQUIPAMENTOS'
+      *      IND-LR-OBJ = 'I' -> 'PELOS STOCKS'
+      *      IND-LR-OBJ = 'J' -> 'PELOS VEÍCULOS'
+      *      IND-LR-OBJ = 'K' -> 'CONFORME CONDIÇÕES ANEXAS'
+      *      IND-LR-OBJ = 'L' -> 'PELOS PAINÉIS'
+IB1606*      IND-LR-OBJ = 'M' -> 'FRACÇÃO CONDOMÍNIO'
+           05  FILLER REDEFINES FZ4IPS2-PRINT-DATA.
+             07  FZ4IPS2-DT-INICIO-APOL          PIC X(10).
+             07  FZ4IPS2-IND-LR-OBJ              PIC X(01).
+                 88 FZ4IPS2-LR-MORADIA       VALUE 'A'.
+                 88 FZ4IPS2-LR-EDIFICIO      VALUE 'B'.
+                 88 FZ4IPS2-LR-FRACCAO       VALUE 'C'.
+                 88 FZ4IPS2-LR-IMOVEL        VALUE 'D'.
+                 88 FZ4IPS2-LR-CONTEUDO      VALUE 'E'.
+00711            88 FZ4IPS2-LR-MOBILIARIO    VALUE 'F'.
+00711            88 FZ4IPS2-LR-MERCADORIAS   VALUE 'G'.
+00711            88 FZ4IPS2-LR-EQUIPAMENTO   VALUE 'H'.
+00711            88 FZ4IPS2-LR-STOCKS        VALUE 'I'.
+00711            88 FZ4IPS2-LR-VEICULOS      VALUE 'J'.
+00711            88 FZ4IPS2-LR-CONF-CGERAIS  VALUE 'K'.
+00711            88 FZ4IPS2-LR-PAINEIS       VALUE 'L'.
+IB1606           88 FZ4IPS2-LR-FRACCAO-COND  VALUE 'M'.
+             07  FZ4IPS2-LR-ADDRESS1             PIC X(40).
+             07  FZ4IPS2-LR-POST-CODE            PIC X(08).
+             07  FZ4IPS2-LR-POST-CODE-DESC       PIC X(40).
+2P1336***---> A ZONA DOS CREDORES FOI COVERTIDA PARA UM TIPO DE REGISTO
+2P1336*       ESPECIFICO: "L"
+2P1336*
+      *      TIPO-CRED-LOC = '47 ' CRED-LOC = CREDOR HIPOTECáRIO
+      *      TIPO-CRED-LOC = '48 ' CRED-LOC = LOCADOR
+      *      TIPO-CRED-LOC = '49 ' CRED-LOC = CREDOR PIGNORATíCIO
+      *2P133607  FZ4IPS2-CREDOR1                 PIC X(40).
+      *2P133607  FZ4IPS2-TIPO-RELACAO            PIC X(02).
+00860 *2P133607  FZ4IPS2-CREDOR2                 PIC X(40).
+00860 *2P133607  FZ4IPS2-CREDOR3                 PIC X(40).
+00860 *2P133607  FZ4IPS2-CREDOR4                 PIC X(40).
+00860 *2P133607  FZ4IPS2-CREDOR5                 PIC X(40).
+00860 *2P133607  FZ4IPS2-CREDOR6                 PIC X(40).
+00860 *IB160607  FZ4IPS2-CREDOR7                 PIC X(40).
+2P1336       07  FILLER                          PIC X(242).
+IB1606       07  FZ4IPS2-SG-ADDRESSEE            PIC X(40).
+IB1606       07  FZ4IPS2-LR-NUM-MATRIZ           PIC X(08).
+IB1606       07  FZ4IPS2-C-TIPO-FQIA-APCE        PIC X(02).
+IB1606         88  FZ4IPS2-TIPO-FQIA-N-APLIC   VALUE '  '.
+IB1606         88  FZ4IPS2-TIPO-FQIA-FRACCAO   VALUE 'FR'.
+IB1606         88  FZ4IPS2-TIPO-FQIA-SINISTRO  VALUE 'SI'.
+000XX *      07  FILLER                          PIC X(268).
+000XX *IB160607  FILLER                          PIC X(28).
+2P2440*IB160607  FILLER                          PIC X(18).
+2P2440       07  FILLER                          PIC X(17).
+      *
+      *--- LINHA C D
+      *--- LINHA DE COBERTURAS
+           05  FILLER REDEFINES FZ4IPS2-PRINT-DATA.
+             07  FZ4IPS2-RISCO-COD               PIC X(05).
+             07  FZ4IPS2-RISCO-COD-ELEM          PIC X(05).
+             07  FZ4IPS2-RISCO-DESC              PIC X(60).
+      *      PREENCHIMENTO DOS CAMPOS FRANQUIA
+      *      IND-FRANQUIA='SF' (CAMPO VALOR = ZEROS)
+      *                        'SEM FRANQUIA'
+      *      FRANQUIA FIXA
+      *      IND-FRANQUIA='CE' (CAMPO VALOR = ZEROS)
+      *                        'CONFORME CONDIÇÃO ESPECIAL'
+      *      FRANQUIA FIXA
+      *      IND-FRANQUIA='CC' (CAMPO VALOR = ZEROS)
+MJE#03*      IND-FRANQUIA='CT' (CAMPO VALOR = ZEROS)
+      *                        'CONFORME CONDIÇÃO PARTICULAR'
+      *       FRANQUIA FIXA
+      *          IND-FRANQUIA='CA'   (CAMPO VALOR = ZEROS)
+      *                          ==>'CONFORME COBERTURA AFECTADA'
+      *       FRANQUIA DIAS
+      *          IND-FRANQUIA='N4'   (CAMPO VALOR = ZEROS)
+      *                          ==> Nº DIAS + 'DIAS'
+      *       PERCENTAGEM DO CAPITAL
+      *          IND-FRANQUIA='CP'   (CAMPO VALOR = ZEROS)
+      *                          ==> CONF. COND. PART. DE CADA FRACÇÃO'
+      *      PERCENTAGEM DO CAPITAL
+      *      IND-FRANQUIA='CF' (CAMPO VALOR <> ZEROS)
+      *
+      *      PARA AS SUB-COBERTURAS O IND-FRANQ = SPACES
+      *      E O CAMPO VALOR VEM A ZEROS
+      *      IND-FRANQUIA='  ' (CAMPO VALOR = ZEROS)
+      *
+      *       PERCENTAGEM DO CAPITAL
+      *          IND-FRANQUIA = 'N1' (CAMPO PERC <> ZEROS)
+      *                              (CAMPOS VLR MIN E MAX = ZEROS)
+      *                              ==>'X% CAPITAL'
+      *
+      *                              (CAMPOS VLR MIN E MAX <> ZEROS)
+      *                          ==> X% CAPITAL, MIN Y  E MAX Z
+      *
+      *                            (CAMPOS VLR MIN <> ZEROS MAX = ZEROS)
+      *                              ==> X% CAPITAL MIN Y
+      *
+      *                            (CAMPOS VLR MIN = ZEROS MAX <> ZEROS)
+      *                              ==> X% CAPITAL MAX Z
+      *
+      *       PERCENTAGEM DO SINISTRO
+      *          IND-FRANQUIA = 'N2' (CAMPO PERC <> ZEROS)
+      *                              (CAMPOS VLR MIN E MAX = ZEROS)
+      *                              ==>'X% DOS PREJ. IND.'
+      *
+      *                              (CAMPOS VLR MIN E MAX <> ZEROS)
+      *                          ==> X% DOS PREJ. IND., MIN Y  E MAX Z
+      *
+      *                            (CAMPOS VLR MIN <> ZEROS MAX = ZEROS)
+      *                              ==> X% DOS PREJ. IND., MIN Y
+      *
+      *                            (CAMPOS VLR MIN = ZEROS MAX <> ZEROS)
+      *                              ==> X% DOS PREJ. IND., MAX Z
+             07  FZ4IPS2-RISCO-COD-FRANQUIA      PIC X(02).
+             07  FZ4IPS2-RISCO-VALOR-FRANQUIA    PIC S9(11)V9(02).
+00483        07  FZ4IPS2-RISCO-VALOR-MAX-FRANQ   PIC S9(11)V9(02).
+00483        07  FZ4IPS2-RISCO-PERC-FRANQUIA     PIC 9(02)V9(05).
+00711        07  FZ4IPS2-RISCO-NUM-DIAS-FRANQ    PIC 9(03).
+      *      PREENCHIMENTO DO  CAMPO  LIMITE DE INDEMNIZAÇÃO
+      *      IND-LIM-IND='01' (CAMPO VALOR)
+      *      IND-LIM-IND='02  (CAMPO PERC E CAMPO VALOR)
+      *                      '% PREJ.IND - MAX 10.000 €'
+      *      IND-LIM-IND='03  (CAMPO VALOR E CAMPO DIAS)
+      *                      '1500 € E MAX 90 DIAS
+      *      IND-LIM-IND='04' 'CONFORME CONDIÇÃO ESPECIAL'
+      *      IND-LIM-IND='05' 'CONFORME CONDIÇÕES GERAIS'
+00910 *      IND-LIM-IND='06' (CAMPO VALOR E CAMPO VALOR1)
+00910 *                       'VALOR€ SINISTRO/ VALOR1€ ANUIDADE'
+00910 *      IND-LIM-IND='07' (CAMPO VALOR E CAMPO DIAS)
+00910 *                       'SUBS. VALOR€/MES - MAX DIAS MESES'
+00910 *      IND-LIM-IND='08' (CAMPO VALOR E CAMPO DIAS)
+00910 *                       'VAL.RENDAS - MAX DIAS MESES OU VALOR'
+IB1606*      IND-LIM-IND='09' (CAMPO PERC              )
+IB1606*                       '% PREJ.IND'
+IB1606*      IND-LIM-IND='10' (CAMPO VALOR E CAMPO DIAS )
+IB1606*                       'MAX VALOR OU N MESES'
+IB1606*      IND-LIM-IND='11' (CAMPO VALOR E CAMPO VALOR1)
+IB1606*                       'VALOR€ POR SINISTRO /
+IB1606*                        VALOR1€ POR ANUIDADE'
+IB1606*      IND-LIM-IND='12' 'Conf. cond. part. de cada fracção"
+IB1606*      IND-LIM-IND='13' (CAMPO VALOR E CAMPO DIAS P/FRACÇÃO)
+IB1606*                       99999E e 999 dias por fracção
+IB1606*      IND-LIM-IND='14' (CAMPO VALOR E CAMPO MESES P/FRACÇÃO)
+IB1606*                       Máx. 99999E OU 99 meses por fracção
+             07  FZ4IPS2-RISCO-IND-LIM-INDMN     PIC X(02).
+             07  FZ4IPS2-RISCO-VALOR-LIM-INDMN   PIC S9(13)V9(02).
+             07  FZ4IPS2-RISCO-PERC-LIM-INDMN    PIC 9(02).
+             07  FZ4IPS2-RISCO-DIAS-LIM-INDMN    PIC 9(02).
+2P0788       07  FZ4IPS2-RISCO-VLR1-LIM-INDMN    PIC S9(13)V9(02).
+00910 *      07  FZ4IPS2-RISCO-VALOR1-LIM-INDMN  PIC S9(13)V9(02).
+MJE#02       07  FZ4IPS2-RISCO-AGRUPAMENTO       PIC X(75).
+MJE#02       07  FILLER                          PIC X(189).
+2P2440*00910 07  FILLER                          PIC X(265).
+MJE#02*2P244007  FILLER                          PIC X(264).
+00483 *      07  FILLER                          PIC X(303).
+00483 *      07  FILLER                          PIC X(283).
+00711 *      07  FILLER                          PIC X(280).
+IB1606*
+IB1606*--- LINHA F
+IB1606*--- LINHA DE CLAUSULAS
+IB1606     05  FILLER REDEFINES FZ4IPS2-PRINT-DATA.
+IB1606       07  FZ4IPS2-OBJ-FORM-NUMBER         PIC X(10).
+IB1606       07  FZ4IPS2-OBJ-CLAUS-LINE1         PIC X(79).
+IB1606       07  FZ4IPS2-OBJ-CLAUS-LINE2         PIC X(79).
+IB1606       07  FZ4IPS2-OBJ-CLAUS-LINE3         PIC X(79).
+IB1606       07  FZ4IPS2-OBJ-CLAUS-LINE4         PIC X(79).
+2P2440*IB160607  FILLER                          PIC X(083).
+2P2440       07  FILLER                          PIC X(082).
+2P1336*
+2P1336*--- LINHA L
+2P1336*--- LINHA DE CREDORES
+2P1336*      TIPO-CRED-LOC = '47 ' CRED-LOC = CREDOR HIPOTECÁRIO
+2P1336*      TIPO-CRED-LOC = '48 ' CRED-LOC = LOCADOR
+2P1336*      TIPO-CRED-LOC = '49 ' CRED-LOC = CREDOR PIGNORATÍCIO
+2P1336     05  FILLER REDEFINES FZ4IPS2-PRINT-DATA.
+2P1336       07  FZ4IPS2-TIPO-RELACAO            PIC X(02).
+2P1336       07  FZ4IPS2-CREDOR                  PIC X(40).
+2P2440*2P133607  FILLER                          PIC X(367).
+2P2440       07  FILLER                          PIC X(366).
+      *
+      *--- LINHA Z
+      *--- FIM DE DOCUMENTO
+      * LINHA Z - FIM DO DOCUMENTO
+           05  FILLER REDEFINES FZ4IPS2-PRINT-DATA.
+2P2440*      07  FILLER                          PIC X(409).
+2P2440       07  FILLER                          PIC X(408).
+2P2440     05  FZ4IPS2-TIPO-IMPRESSAO            PIC X(001).
+

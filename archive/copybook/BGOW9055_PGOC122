@@ -1,0 +1,57 @@
+      *----------------------------------------------------------------*00050000
+      *                      MAINTENANCE  LOG                          *00060000
+      *                                                                *00070000
+      *PROGRAMMER  PCR    DATE                COMMENTS                 *00080000
+      *----------------------------------------------------------------*00090000
+      * R03V03                                                         *00100000
+      *                                                                *00120000
+      * ALTERAÇÕES NESTE COPYBOOK (NZ4ACU02) DEVERÃO SER REPLICADAS NO *
+      * COPYBOOK BGOW9055 UTILIZADO NAS APLICAÇÕES DE OUTPUTS (UGEN) E *
+      * INFORMAR A EQUIPA                                              *
+      *                                                                *00120000
+      * ESTE COPYBOOK SERVE PARA IMPRESSAO DA CARTA DE RENOVACAO C5D4, *
+      *  ACTUALIZACAO DE CAPITAIS MINIMOS RC AUTO, REFERENTE A         *
+      *  5ª DIRECTIVA FASE 4 (2017-06-01 A 2018-06-01)                 *
+      *                                                                *
+      * PLS   3P1885   2017-02-20   ORIGINAL VERSION.                  *00130000
+      *                             REGISTO L RECL = 500               *00140000
+      *----------------------------------------------------------------*00281000
+       03  NZ4ACU02-PRINT-RECORD.                                       00290000
+      *----------------------------------------------------------------*00300000
+      *    SORT KEY                                                     00310000
+      *----------------------------------------------------------------*00320000
+           05  NZ4ACU02-SORT-KEY.                                       00330000
+               07  NZ4ACU02-COMPANY                PIC X(03).           00340000
+               07  NZ4ACU02-MARCA                  PIC X(03).           00340000
+               07  NZ4ACU02-PH-CLIENT-REFERENCE    PIC X(10).           00370000
+               07  NZ4ACU02-PH-POST-CODE           PIC X(08).           00360000
+               07  NZ4ACU02-AGENT                  PIC X(10).           00360000
+               07  NZ4ACU02-AG-POST-CODE           PIC X(08).           00360000
+               07  NZ4ACU02-PRODUCT-CODE           PIC X(05).           00370000
+               07  NZ4ACU02-DOCU-CODE              PIC X(04).           00590000
+      * CARTA 5ª DIRECTIVA FASE 4                                       00590000
+                 88 NZ4ACU02-DOCU-CODE-C5D4        VALUE 'C5D4'.        00590000
+               07  NZ4ACU02-POLICY-NUMBER          PIC X(16).           00390000
+               07  NZ4ACU02-D-H-SISTEMA            PIC X(14).           00391000
+               07  NZ4ACU02-RECORD-TYPE            PIC X(01).           00410000
+                 88  NZ4ACU02-POLICY-DATA          VALUE '1'.           00420000
+           05  NZ4ACU02-PRINT-DATA                 PIC X(417).          00531000
+      *----------------------------------------------------------------*00540000
+      *    POLICY DATA                                                  00550000
+      *----------------------------------------------------------------*00560000
+           05  REDEFINES NZ4ACU02-PRINT-DATA.                           00570000
+               07  NZ4ACU02-PH-LOCATION-REF        PIC X(04).
+               07  NZ4ACU02-PH-ADDRESSEE           PIC X(40).           00590000
+               07  NZ4ACU02-PH-ADDRESS1            PIC X(40).           00600000
+               07  NZ4ACU02-PH-ADDRESS2            PIC X(40).           00610000
+               07  NZ4ACU02-PH-ADDRESS3            PIC X(40).           00620000
+               07  NZ4ACU02-PH-ADDRESS4            PIC X(40).           00630000
+               07  NZ4ACU02-PH-POSTCODE            PIC X(08).           00630000
+               07  NZ4ACU02-PH-TNUM-PORTA          PIC X(01).
+               07  NZ4ACU02-PH-NUM-PORTA           PIC X(04).
+               07  NZ4ACU02-ORIG-DATE-PRINTED      PIC X(10).           00980000
+               07  NZ4ACU02-PRODUCT-CODE-DESC      PIC X(30).           00370000
+               07  NZ4ACU02-ORIGINATOR             PIC X(08).           00370000
+               07  FILLER                          PIC X(152).          00721000
+           05  NZ4ACU02-TIPO-IMPRESSAO             PIC X(001).          00570000
+

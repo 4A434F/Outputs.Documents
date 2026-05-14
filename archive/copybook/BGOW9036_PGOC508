@@ -1,0 +1,130 @@
+      *----------------------------------------------------------------*
+      * LINKAGE COPYBOOK FOR EXTRACT RECEIPT                           *
+      *----------------------------------------------------------------*
+      *                                                                *
+      * ALTERAÇÕES NESTE COPYBOOK (NY5XTU0) DEVERÃO SER REPLICADAS NO  *
+      * COPYBOOK BGOW9036 UTILIZADO NAS APLICAÇÕES DE OUTPUTS (UGEN) E *
+      * INFORMAR A EQUIPA                                              *
+      *                                                                *
+      *----------------------------------------------------------------*
+      *                      MAINTENANCE  LOG                          *
+      *                                                                *
+      *PROGRAMMER  PCR    DATE                COMMENTS                 *
+      *                                                                *
+      * LTC      M51451 02/01/06  VERSÃO INICIAL.                      *
+      *                                                                *
+      * IAC      M41874 FEV.2006  ALTERAÇÕES PARA MERCADORIAS.         *
+      *                                                                *
+      * RIS      M41866 FEV.2006  PRODUTOS CASCO.                      *
+      *                                                                *
+      * LTC      M51550 24/08/06  (INFORMATIONAL) REDEFINED A LARGER   *
+      *                           ITEM.                                *
+      *                                                                *
+      * LTC      M51563 25/10/06  INSTALMENT-NUM PARA FRACCIONADAS.    *
+      *                                                                *
+      * IAC      M51578 FEV.2007  MULTIMARCA MULTICOMPANHIA.           *
+      *                                                                *
+      * AMM      M51674 13-08-2007 INCLUIR CODIGO DE BARRAS.           *
+      *                                                                *
+      * JC       M51885 15-12-2008 - ACT200800164 - AUTOMATISMO POSTAL *
+      *                                                                *
+      * PCS      3P1568 JUL.2014   201200094 - PDS - INTEGRAR OUTPUTS  *
+      *                            C22 E C33 EM SGO                    *
+      *                                                                *
+      *----------------------------------------------------------------*
+
+      *----------------------------------------------------------------*
+      *   RECORD                                                       *
+      *                                                                *
+      *----------------------------------------------------------------*
+       03 NY5XTU0-LINK-DATA.
+      *----------------------------------------------------------------*
+      *    SORT KEY                                                    *
+      *                                                                *
+      *----------------------------------------------------------------*
+          05 NY5XTU0-SORT-KEY.
+             10  NY5XTU0-SORT-POST-CODE            PIC X(09).
+             10  NY5XTU0-SORT-COLLECTING-AGENT     PIC X(10).
+             10  NY5XTU0-SORT-POLICY-NUMBER        PIC X(16).
+             10  NY5XTU0-SORT-NOTICE               PIC X(10).
+             10  NY5XTU0-SORT-Y5DS-SEQ-NUM         PIC 9(07).
+M51578       10  NY5XTU0-SORT-C-COMP-SGRA          PIC X(03).
+M51578       10  NY5XTU0-SORT-C-MARC-SGRA          PIC X(03).
+
+      *----------------------------------------------------------------*
+      *    COMMON FIELDS                                               *
+      *                                                                *
+      *----------------------------------------------------------------*
+          05 NY5XTU0-COMMON-FIELDS.
+             10  NY5XTU0-RECORD-TYPE               PIC X(01).
+                 88 NY5XTU0-HEADER          VALUE '1'.
+                 88 NY5XTU0-ADJUSTMENT      VALUE '2'.
+                 88 NY5XTU0-CURRENT         VALUE '3'.
+                 88 NY5XTU0-END-DOC         VALUE '9'.
+             10  NY5XTU0-DOCUMENT-CODE             PIC X(04).
+                 88 NY5XTU0-MERCADORIAS     VALUE 'RAMT'.
+                 88 NY5XTU0-AERONAVES       VALUE 'RAAE'.
+                 88 NY5XTU0-COMERCIO        VALUE 'RAEC'.
+                 88 NY5XTU0-RECREIO         VALUE 'RAER'.
+M51451       10  NY5XTU0-DATA-EXTRACCAO            PIC X(10).
+             10  NY5XTU0-REPRINT-INDICATOR         PIC X(01).
+                 88 NY5XTU0-ORIGINAL        VALUE 'S'.
+                 88 NY5XTU0-REPRINT         VALUE 'R'.
+             10  NY5XTU0-POLICY-NUMBER             PIC X(16).
+
+3P1568*   05 NY5XTU0-PRINT-DATA                    PIC X(434).
+3P1568    05 NY5XTU0-PRINT-DATA                    PIC X(409).
+      *----------------------------------------------------------------*
+      *    HEADER RECORD                                               *
+      *                                                                *
+      *----------------------------------------------------------------*
+          05 NY5XTU0-HEADER-RECORD
+                        REDEFINES  NY5XTU0-PRINT-DATA.
+             10  NY5XTU0-HEADER-USED-SPACE.
+               15  NY5XTU0-PRODUCT-CODE              PIC X(05).
+               15  NY5XTU0-PRODUCT-CODE-DESC         PIC X(30).
+               15  NY5XTU0-RECEIPT-NUMBER            PIC X(10).
+               15  NY5XTU0-CLIENT-NUMBER             PIC X(10).
+               15  NY5XTU0-CLIENT-NAME               PIC X(40).
+               15  NY5XTU0-CLIENT-ADDRESS-1          PIC X(40).
+               15  NY5XTU0-CLIENT-ADDRESS-2          PIC X(40).
+M51885*        15  NY5XTU0-CLIENT-LOCALITY           PIC X(30).
+M51885         15  NY5XTU0-CLIENT-LOCALITY           PIC X(40).
+               15  NY5XTU0-CLIENT-POST-CODE          PIC X(09).
+M51885*        15  NY5XTU0-CLIENT-POST-CODE-DESC     PIC X(41).
+M51885         15  NY5XTU0-CLIENT-POST-CODE-DESC     PIC X(40).
+M51451         15  NY5XTU0-COLLECTING-AGENT          PIC X(10).
+M51451         15  NY5XTU0-AGENT-NAME                PIC X(40).
+M51567         15  NY5XTU0-INSTALMENT-NUM            PIC 9(03).
+M51674         15  NY5XTU0-COD-BARRAS                PIC X(20).
+M51885         15  NY5XTU0-CLIENT-NUM                PIC X(04).
+M51885         15  NY5XTU0-CLIENT-NUM-TYPE           PIC X(01).
+3P1568       10  FILLER                              PIC X(67).
+3P1568*M5188510  FILLER                              PIC X(092).
+M51885*M5167410  FILLER                              PIC X(106).
+M51567*      10  FILLER                              PIC X(126).
+      *----------------------------------------------------------------*
+      *    ADJUSTMENT + CURRENT  RECORD                                *
+      *                                                                *
+      *----------------------------------------------------------------*
+          05 NY5XTU0-OTHER-DATA-RECORD
+                      REDEFINES NY5XTU0-PRINT-DATA.
+             10  NY5XTU0-OTHER-DATA-USED-SPACE.
+               15  NY5XTU0-RISK-START-DATE           PIC X(10).
+               15  NY5XTU0-RISK-END-DATE             PIC X(10).
+               15  NY5XTU0-ANN-GROSS-PREM            PIC S9(9)V9(2).
+               15  NY5XTU0-SUM-INSURED               PIC S9(9)V9(2).
+               15  NY5XTU0-VEH-REG-NUMBER            PIC X(15).
+               15  NY5XTU0-UNIT-AT-RISK-NUM          PIC X(08).
+M41874         15  NY5XTU0-VEH-YEAR                  PIC X(04).
+M41874         15  NY5XTU0-TIPO-VEICULO              PIC X(21).
+M41874         15  NY5XTU0-VIAGEM.
+M41874             20  NY5XTU0-ORIGEM-LOCALIDADE     PIC X(20).
+M41874             20  NY5XTU0-DESTINO-LOCALIDADE    PIC X(20).
+M41874         15  NY5XTU0-REF-SEGURADO              PIC X(15).
+M41866         15  NY5XTU0-UAR-NAME                  PIC X(25).
+M41866         15  NY5XTU0-TIPO-ACTIVIDADE           PIC X(25).
+3P1568       10  FILLER                              PIC X(214).
+3P1568*M5155010  FILLER                              PIC X(239).
+3P1568    05 NY5XTU0-TIPO-IMPRESSAO                  PIC X(01).
+

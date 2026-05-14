@@ -1,0 +1,122 @@
+      *----------------------------------------------------------------*
+      *                      MAINTENANCE  LOG                          *
+      *                                                                *
+      *PROGRAMMER  PCR    DATE                COMMENTS                 *
+      *----------------------------------------------------------------*
+      *                                                                *
+      * ALTERAÇÕES NO COPYBOOK NZ4SAU01 DEVERÃO SER REPLICADAS NESTE   *
+      * COPYBOOK (BGOW9057) UTILIZADO NAS APLICAÇÕES DE OUTPUTS (UGEN) *
+      * E INFORMAR A EQUIPA                                            *
+      *                                                                *
+      * ACTIVIDADE 201900481 - EMISSÃO CARTAS SELECÇÃO DE CARTEIRA:    *
+      *    ESTE COPYBOOK SERVE PARA IMPRESSÃO DAS CARTAS DE SELECÇÃO   *
+      *    DE CARTEIRA AUTOMÓVEL                                       *
+      *    - 9 CARTAS DE SANEAMENTO DE CARTEIRA AUTOMÓVEL (DNA)        *
+      *                                                                *
+      *----------------------------------------------------------------*
+      *                                                                *
+      * NJF  201900481  2020-04-27  ORIGINAL VERSION.                  *
+      *                             REGISTO LRECL = 500                *
+      *                                                                *
+      *----------------------------------------------------------------*
+      /
+       05  :PREFIX:-PRINT-RECORD.
+      * ------------------------------------------------------------- *
+      *    SORT KEY                                                   *
+      * ------------------------------------------------------------- *
+           07  :PREFIX:-SORT-KEY.
+               09  :PREFIX:-COMPANY                 PIC X(03).
+               09  :PREFIX:-AGENT                   PIC X(10).
+               09  :PREFIX:-DOC-TYPE                PIC X(04).
+                   88  :PREFIX:-DOC-TYPE-SAAN     VALUE 'SAAN'.
+                   88  :PREFIX:-DOC-TYPE-SAEU     VALUE 'SAEU'.
+                   88  :PREFIX:-DOC-TYPE-SAAF     VALUE 'SAAF'.
+                   88  :PREFIX:-DOC-TYPE-SAEC     VALUE 'SAEC'.
+                   88  :PREFIX:-DOC-TYPE-SARC     VALUE 'SARC'.
+                   88  :PREFIX:-DOC-TYPE-SAR2     VALUE 'SAR2'.
+                   88  :PREFIX:-DOC-TYPE-SAR3     VALUE 'SAR3'.
+                   88  :PREFIX:-DOC-TYPE-SARF     VALUE 'SARF'.
+                   88  :PREFIX:-DOC-TYPE-SACF     VALUE 'SACF'.
+               09  :PREFIX:-PH-POST-CODE            PIC X(09).
+               09  :PREFIX:-PH-CLIENT-REFERENCE     PIC X(10).
+               09  :PREFIX:-PRODUCT-CODE            PIC X(05).
+               09  :PREFIX:-POLICY-NUMBER           PIC X(16).
+               09  :PREFIX:-POLICY-TRANSACTION      PIC X(10).
+               09  :PREFIX:-UNIT-AT-RISK-NUM        PIC X(08).
+               09  :PREFIX:-RECORD-TYPE             PIC X(01).
+                   88  :PREFIX:-POLICY-BASIC-DATA VALUE 'A'.
+                   88  :PREFIX:-UAR-DATA          VALUE 'B'.
+                   88  :PREFIX:-DEDUCT-DATA       VALUE 'C'.
+                   88  :PREFIX:-COVER-DATA        VALUE 'D'.
+                   88  :PREFIX:-VEHICLE-DATA      VALUE 'E'.
+                   88  :PREFIX:-END               VALUE 'Z'.
+      *
+           07  :PREFIX:-PRINT-DATA                  PIC X(423).
+      *
+      * ------------------------------------------------------------- *
+      *    POLICY-BASIC-DATA                                          *
+      * ------------------------------------------------------------- *
+           07  REDEFINES :PREFIX:-PRINT-DATA.
+               09  :PREFIX:-PRODUCT-CODE-DESC       PIC X(30).          00580000
+               09  :PREFIX:-PH-ADDRESSEE            PIC X(40).          00590000
+               09  :PREFIX:-PH-ADDRESS1             PIC X(40).          00600000
+               09  :PREFIX:-PH-ADDRESS2             PIC X(40).          00610000
+               09  :PREFIX:-PH-TOWN-SUBURB          PIC X(40).          00620000
+               09  :PREFIX:-PH-POSTCODE-DESC        PIC X(41).          00630000
+               09  :PREFIX:-CANCEL-DATE             PIC X(10).          00630000
+               09  :PREFIX:-RENEWAL-DATE            PIC X(10).          00630000
+               09  :PREFIX:-DATE                    PIC X(10).          00630000
+               09                                   PIC X(162).         00721000
+      *
+      * ------------------------------------------------------------- *
+      *    :PREFIX:-UAR-DATA                                          *
+      * ------------------------------------------------------------- *
+           07  REDEFINES :PREFIX:-PRINT-DATA.                           00760000
+               09  :PREFIX:-VEH-REG-NUMBER          PIC X(15).          00770000
+               09  :PREFIX:-VEH-MAKE                PIC X(30).          00900000
+               09  :PREFIX:-VEH-EXTRA               PIC X(25).          00910000
+               09                                   PIC X(353).         00993000
+      *
+      * ------------------------------------------------------------- *
+      *    :PREFIX:-DEDUCT-DATA                                       *
+      * ------------------------------------------------------------- *
+           07  REDEFINES :PREFIX:-PRINT-DATA.                           01030000
+               09  :PREFIX:-DEDUCTIBLE-TYPE         PIC X(01).          01040000
+                   88  :PREFIX:-VALID-DEDUCT-TYPE VALUE 'A' 'P'.        01040000
+                   88  :PREFIX:-DEDUCT-TYPE-AMT   VALUE 'A'.            01040000
+                   88  :PREFIX:-DEDUCT-TYPE-PCT   VALUE 'P'.            01040000
+               09  :PREFIX:-DEDUCTIBLE-AMT          PIC 9(9)V99.        01040000
+               09  :PREFIX:-DEDUCTIBLE-PCT          PIC 9(3)V99.        01040000
+               09                                   PIC X(406).         01072000
+      *
+      * ------------------------------------------------------------- *
+      *    :PREFIX:-COVER-DATA                                        *
+      * ------------------------------------------------------------- *
+           07  REDEFINES :PREFIX:-PRINT-DATA.                           01030000
+               09  :PREFIX:-COVER-CODE              PIC X(05).          01040000
+               09  :PREFIX:-COVER-DESC              PIC X(60).          01040000
+               09  :PREFIX:-TIPO-MOVIMENTO          PIC X(01).          01040000
+                   88  :PREFIX:-VALID-TIPO-MOV    VALUE 'A' 'R'.        01040000
+               09                                   PIC X(357).         01072000
+      *
+      * ------------------------------------------------------------- *
+      *    :PREFIX:-VEHICLE-DATA                                      *
+      * ------------------------------------------------------------- *
+           07  REDEFINES :PREFIX:-PRINT-DATA.                           01030000
+               09  :PREFIX:-VEH-REG-NUMBER-E        PIC X(15).          01040000
+               09                                   PIC X(408).         01072000
+      *
+      * ------------------------------------------------------------- *
+      *    :PREFIX:-END                                               *
+      * ------------------------------------------------------------- *
+           07  REDEFINES :PREFIX:-PRINT-DATA.                           01030000
+               09  :PREFIX:-FIM                     PIC X(423).         01072000
+      *
+           07  :PREFIX:-TIPO-IMPRESSAO              PIC X(01).          02240000
+               88  :PREFIX:-IMP-ONLINE            VALUE 'I'.
+               88  :PREFIX:-IMP-BATCH             VALUE 'O'.
+      /                                                                 02280000
+      * ------------------------------------------------------------- *
+      *                 END OF BGOW9057 COPYBOOK                      *
+      * ------------------------------------------------------------- *
+

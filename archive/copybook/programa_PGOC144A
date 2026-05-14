@@ -1,0 +1,26 @@
+ 
+      * AREA-INPUT -----------------------------------------------------
+       01  W400-INPUT-AREA.
+         03  W400-IN-COMPANY                PIC X(03).
+             88  IN-C-VIADIRECTA                      VALUE '111'.
+             88  IN-C-FIDELIDADEMUNDIAL               VALUE '128'.
+             88  IN-C-MULTICARE                       VALUE '148'.
+         03  W400-IN-MARCA                  PIC X(03).
+             88  IN-M-OKTELESEGURO                    VALUE '001'.
+             88  IN-M-FIDELIDADEMUNDIAL               VALUE '002'.
+             88  IN-M-SONAE                           VALUE '005'.
+             88  IN-M-MULTICARE                       VALUE '006'.
+         03  W400-IN-CLIENTE                PIC X(10).
+         03  W400-IN-APOLICE                PIC X(16).
+         03  W400-IN-DATA                   PIC X(23).
+         03  W400-IN-NOME                   PIC X(40).
+         03  W400-IN-MORADA1                PIC X(40).
+         03  W400-IN-MORADA2                PIC X(40).
+         03  W400-IN-LOCALIDADE             PIC X(40).
+         03  W400-IN-CPOSTAL                PIC X(08).
+         03  W400-IN-CPOSTAL-DESC           PIC X(40).
+         03  W400-IN-CPAIS                  PIC X(03).
+         03  W400-IN-CPAIS-DESC             PIC X(40).
+         03  W400-IN-IDENT-PORTA            PIC X(04).
+
+ 

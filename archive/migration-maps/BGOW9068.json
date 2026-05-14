@@ -1,0 +1,143 @@
+{
+  "copybook": "BGOW9068",
+  "originSystem": "COGEN22",
+  "title": "Contact and email change letter",
+  "contractType": "Outputs.Documents.Domain.Contracts.COGEN22.BGOW9068Contract",
+  "description": "BGOW9068 is split into document envelope, client and mediator entities, mailing address, policy/product context, and print payload control. The map keeps all source fields visible and shows where each one lands in the current domain contract.",
+  "mappings": [
+    {
+      "title": "Document selector",
+      "sourceGroup": "Document selector",
+      "targetType": "BGOW9068Contract",
+      "targetPath": "DocumentIdentification",
+      "targetLabel": ".NET contract",
+      "decision": "selector",
+      "description": "The document identification is not part of the copybook payload. It is the template/document selector used by the rendering layer.",
+      "rows": [
+        {
+          "source": null,
+          "sourceField": "1328",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1328."
+        }
+      ]
+    },
+    {
+      "title": "Document envelope",
+      "sourceGroup": "Document envelope",
+      "targetType": "DocumentInformation",
+      "targetPath": "DocumentInformation",
+      "decision": "mapped",
+      "description": "These fields identify the source company, brand, client, mediator, product, policy, document type, sequence, processing date, and print channel. They migrate to DocumentInformation because they describe the document envelope and routing context.",
+      "rows": [
+        { "source": "07 :PREFIX:-COMPANY PIC X(003).", "sourceField": "COMPANY", "target": "CompanyCode", "status": "mapped" },
+        { "source": "07 :PREFIX:-MARCA PIC X(003).", "sourceField": "MARCA", "target": "BrandCode", "status": "mapped" },
+        { "source": "07 :PREFIX:-CLIENT-REFERENCE PIC X(010).", "sourceField": "CLIENT-REFERENCE", "target": "ClientNumber", "status": "mapped" },
+        { "source": "07 :PREFIX:-AGENTE-COBRADOR PIC X(010).", "sourceField": "AGENTE-COBRADOR", "target": "AgentNumber", "status": "mapped" },
+        { "source": "07 :PREFIX:-PRODUTO PIC X(005).", "sourceField": "PRODUTO", "target": "ProductCode", "status": "mapped" },
+        { "source": "07 :PREFIX:-POLICY-NUMBER PIC X(016).", "sourceField": "POLICY-NUMBER", "target": "PolicyNumber", "status": "mapped" },
+        { "source": "07 :PREFIX:-POLICY-TRANSACTION PIC X(010).", "sourceField": "POLICY-TRANSACTION", "target": "PolicyTransactionCode", "status": "mapped" },
+        { "source": "07 :PREFIX:-TIPO-DOC PIC X(005).", "sourceField": "TIPO-DOC", "target": "DocumentTypeCode", "status": "mapped" },
+        { "source": "07 :PREFIX:-NUM-SEQ-1 PIC 9(005).", "sourceField": "NUM-SEQ-1", "target": "OriginSequenceNumber", "status": "mapped" },
+        { "source": "07 :PREFIX:-DATA-PROCESSAMENTO PIC X(008).", "sourceField": "DATA-PROCESSAMENTO", "target": "ProcessingDate", "status": "mapped" },
+        { "source": "05 :PREFIX:-TIPO-IMPRESSAO PIC X(001).", "sourceField": "TIPO-IMPRESSAO", "target": "PrintType", "status": "mapped" },
+        { "source": null, "target": "DocumentCode", "status": "target-only" },
+        { "source": null, "target": "UserId", "status": "target-only" },
+        { "source": null, "target": "OriginDocumentNumber", "status": "target-only" },
+        { "source": null, "target": "OriginSystemCode", "status": "target-only" },
+        { "source": null, "target": "FlyerIndicator", "status": "target-only" }
+      ]
+    },
+    {
+      "title": "Client entity",
+      "sourceGroup": "Client / address",
+      "targetType": "Entity",
+      "targetPath": "Client",
+      "decision": "mapped",
+      "description": "BGOW9068 carries the client reference and destination name/address in the same payload. The client is represented as an Entity, with the address fields also available through the mailing address object.",
+      "rows": [
+        { "source": "07 :PREFIX:-CLIENT-REFERENCE PIC X(010).", "sourceField": "CLIENT-REFERENCE", "target": "Client.Reference", "status": "mapped" },
+        { "source": "07 :PREFIX:-TM-ADDRESSEE PIC X(040).", "sourceField": "TM-ADDRESSEE", "target": "Client.Name", "status": "mapped" },
+        { "source": "07 :PREFIX:-POST-CODE PIC X(008).", "sourceField": "POST-CODE", "target": "Client.Address.PostalCode", "status": "mapped" },
+        { "source": "07 :PREFIX:-TM-ADDRESS1 PIC X(040).", "sourceField": "TM-ADDRESS1", "target": "Client.Address.Line1", "status": "mapped" },
+        { "source": "07 :PREFIX:-TM-ADDRESS2 PIC X(040).", "sourceField": "TM-ADDRESS2", "target": "Client.Address.Line2", "status": "mapped" },
+        { "source": "07 :PREFIX:-TM-ADDRESS3 PIC X(040).", "sourceField": "TM-ADDRESS3", "target": "Client.Address.Locality", "status": "mapped" },
+        { "source": "07 :PREFIX:-TM-ADDRESS4 PIC X(040).", "sourceField": "TM-ADDRESS4", "target": "Client.Address.PostalCodeDescription", "status": "mapped" },
+        { "source": "07 :PREFIX:-TM-TNUM-PORTA PIC X(001).", "sourceField": "TM-TNUM-PORTA", "target": "Client.Address.DoorTypeCode", "status": "mapped" },
+        { "source": "07 :PREFIX:-TM-NUM-PORTA PIC X(004).", "sourceField": "TM-NUM-PORTA", "target": "Client.Address.DoorIdentifier", "status": "mapped" },
+        { "source": null, "target": "Client.Number", "status": "target-only" },
+        { "source": null, "target": "Client.TaxIdentificationNumber", "status": "target-only" },
+        { "source": null, "target": "Client.TypeCode and Client.Type", "status": "target-only" },
+        { "source": null, "target": "Client.Contact", "status": "target-only" }
+      ]
+    },
+    {
+      "title": "Mediator entity",
+      "sourceGroup": "Mediator",
+      "targetType": "Entity?",
+      "targetPath": "Agent",
+      "decision": "mapped",
+      "description": "The collecting agent/mediator fields are represented with the same Entity type used for other parties. The mediator is optional because some records may not provide mediator data.",
+      "rows": [
+        { "source": "07 :PREFIX:-AGENTE-COBRADOR PIC X(010).", "sourceField": "AGENTE-COBRADOR", "target": "Agent.Reference", "status": "mapped" },
+        { "source": "07 :PREFIX:-AG-POST-CODE PIC X(008).", "sourceField": "AG-POST-CODE", "target": "Agent.Address.PostalCode", "status": "mapped" },
+        { "source": null, "target": "Agent.Name", "status": "target-only" },
+        { "source": null, "target": "Agent.Number", "status": "target-only" },
+        { "source": null, "target": "Agent.Contact", "status": "target-only" }
+      ]
+    },
+    {
+      "title": "Mailing address",
+      "sourceGroup": "Address",
+      "targetType": "PostalAddress",
+      "targetPath": "MailingAddress",
+      "decision": "mapped",
+      "description": "The TM address lines form the destination postal address used by the letter. The same source fields can also enrich the Client entity address.",
+      "rows": [
+        { "source": "07 :PREFIX:-TM-ADDRESSEE PIC X(040).", "sourceField": "TM-ADDRESSEE", "target": "MailingAddress.Name", "status": "mapped" },
+        { "source": "07 :PREFIX:-TM-ADDRESS1 PIC X(040).", "sourceField": "TM-ADDRESS1", "target": "MailingAddress.Line1", "status": "mapped" },
+        { "source": "07 :PREFIX:-TM-ADDRESS2 PIC X(040).", "sourceField": "TM-ADDRESS2", "target": "MailingAddress.Line2", "status": "mapped" },
+        { "source": "07 :PREFIX:-TM-ADDRESS3 PIC X(040).", "sourceField": "TM-ADDRESS3", "target": "MailingAddress.Locality", "status": "mapped" },
+        { "source": "07 :PREFIX:-TM-ADDRESS4 PIC X(040).", "sourceField": "TM-ADDRESS4", "target": "MailingAddress.PostalCodeDescription", "status": "mapped" },
+        { "source": "07 :PREFIX:-POST-CODE PIC X(008).", "sourceField": "POST-CODE", "target": "MailingAddress.PostalCode", "status": "mapped" },
+        { "source": "07 :PREFIX:-TM-TNUM-PORTA PIC X(001).", "sourceField": "TM-TNUM-PORTA", "target": "MailingAddress.DoorTypeCode", "status": "mapped" },
+        { "source": "07 :PREFIX:-TM-NUM-PORTA PIC X(004).", "sourceField": "TM-NUM-PORTA", "target": "MailingAddress.DoorIdentifier", "status": "mapped" },
+        { "source": null, "target": "MailingAddress.Reference", "status": "target-only" },
+        { "source": null, "target": "MailingAddress.Line3 / Line4", "status": "target-only" },
+        { "source": null, "target": "MailingAddress.CountryCode / CountryDescription", "status": "target-only" }
+      ]
+    },
+    {
+      "title": "Policy and product context",
+      "sourceGroup": "Policy / product",
+      "targetType": "Policy",
+      "targetPath": "Policy",
+      "decision": "mapped",
+      "description": "The policy number, transaction, product code, and product description are grouped under Policy because they describe the insurance policy context of the contact-change letter.",
+      "rows": [
+        { "source": "07 :PREFIX:-POLICY-NUMBER PIC X(016).", "sourceField": "POLICY-NUMBER", "target": "Policy.Number", "status": "mapped" },
+        { "source": "07 :PREFIX:-POLICY-TRANSACTION PIC X(010).", "sourceField": "POLICY-TRANSACTION", "target": "Policy.TransactionCode", "status": "mapped" },
+        { "source": "07 :PREFIX:-PRODUTO PIC X(005).", "sourceField": "PRODUTO", "target": "Policy.Product.ProductCode", "status": "mapped" },
+        { "source": "07 :PREFIX:-PRODUCT PIC X(030).", "sourceField": "PRODUCT", "target": "Policy.Product.BranchProductDescription", "status": "mapped" },
+        { "source": null, "target": "Policy.Product.CurrencyCode", "status": "target-only" },
+        { "source": null, "target": "Policy.Product.BranchCode", "status": "target-only" }
+      ]
+    },
+    {
+      "title": "Print payload control",
+      "sourceGroup": "Print payload control",
+      "targetType": "PrintPayloadRecordControl",
+      "targetPath": "PrintRecordControl",
+      "decision": "mapped",
+      "description": "These fields describe the typed record within the printable payload. They move to PrintPayloadRecordControl instead of becoming business-domain fields.",
+      "rows": [
+        { "source": "07 :PREFIX:-NUM-SEQ-1 PIC 9(005).", "sourceField": "NUM-SEQ-1", "target": "SequenceNumber", "status": "mapped" },
+        { "source": "09 :PREFIX:-RECORD-TYPE-1 PIC X(002).", "sourceField": "RECORD-TYPE-1", "target": "PrimaryRecordType", "status": "mapped" },
+        { "source": "09 :PREFIX:-RECORD-TYPE-2 PIC X(001).", "sourceField": "RECORD-TYPE-2", "target": "SecondaryRecordType", "status": "mapped" },
+        { "source": "07 :PREFIX:-TYPE-1-2.", "sourceField": "TYPE-1-2", "target": "CompositeRecordType", "status": "mapped" },
+        { "source": "05 :PREFIX:-PRINT-DATA PIC X(413).", "sourceField": "PRINT-DATA", "target": "RawPrintData", "status": "mapped" }
+      ]
+    }
+  ]
+}

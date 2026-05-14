@@ -1,0 +1,214 @@
+      ******************************************************************
+      *                                                                *
+      *     AAA    TTTTT   EEEEE   N   N    CCCC    AAA     OOO        *
+      *    A   A     T     E       NN  N   C       A   A   O   O       *
+      *    A   A     T     E       N N N   C       A   A   O   O       *
+      *    AAAAA     T     EEEE    N N N   C       AAAAA   O   O       *
+      *    A   A     T     E       N  NN   C       A   A   O   O       *
+      *    A   A     T     EEEEE   N   N    CCCC   A   A    OOO        *
+      *                                                                *
+      *   TRATAMENTO DE DOCUMENTOS COM ORIGEM NO GIS.                  *
+      *   OS PRIMEIROS 298 BYTES SAO COMUNS AOS COPYBOOKS BGOW0015,    *
+      *   BGOW0019, BGOW0026, BGOW0046 E BGOW0068.                     *
+      *   ALTERACOES NESTE COPYBOOK DEVEM SER REPLICADAS NOS COPYS     *
+      *   REFERIDOS ACIMA.                                             *
+      *                                                                *
+      ******************************************************************
+      *                     -------------------                        *
+      *                     |     REMARKS     |                        *
+      *                     -------------------                        *
+      *                                                                *
+      *================================================================*
+      * BGOW0072  DESENHO DE REGISTO UNICO DOCUMENTOS VINDOS DO GIS:   *
+      *           CONDIÇÕES PARTICULARES PPV (PLANO PROTECÇÃO VIDA)    *
+      *                                                                *
+      * TAMANHO: 4000 BYTES                                            *
+      *                                                                *
+      *================================================================*
+      *                                                                *
+      * NJF  2021-08-30  202100050 - PPV - Risco sem capitalização(CGD)*
+      *                  NOVO COPYBOOK                                 *
+      *                                                                *
+      *================================================================*
+         05  :PREFIX:-DADOS-REGISTO.
+           07  :PREFIX:-DADOS-OBRIGATORIOS.
+             09  :PREFIX:-COD-COMPANHIA            PIC X(03).
+                 88  :PREFIX:-C-FIDELIDADE       VALUE '128'.
+                 88  :PREFIX:-C-IMPERIO          VALUE '138'.
+             09  :PREFIX:-COD-MARCA                PIC X(03).
+                 88  :PREFIX:-M-FIDELIDADE       VALUE '002'.
+                 88  :PREFIX:-M-FMLEVE           VALUE 'L02'.
+                 88  :PREFIX:-M-IMPERIO          VALUE '003'.
+                 88  :PREFIX:-M-IBLEVE           VALUE 'L03'.
+                 88  :PREFIX:-M-ICI              VALUE '004'.
+             09  :PREFIX:-COD-ORIGEM               PIC X(03).
+                 88  :PREFIX:-O-GIS              VALUE 'GIS'.
+             09  :PREFIX:-COD-POSTALM              PIC X(09).
+             09  :PREFIX:-NR-MEDIADOR              PIC X(10).
+             09  :PREFIX:-COD-POSTALC              PIC X(09).
+             09  :PREFIX:-NR-CLIENTE               PIC X(10).
+             09  :PREFIX:-NR-APOLICE               PIC X(16).
+             09  :PREFIX:-COD-PRODUTO              PIC X(06).
+             09  :PREFIX:-DATA-HORA                PIC X(14).
+             09  FILLER                            PIC X(22).
+             09  :PREFIX:-TIPO-IMPRESSAO           PIC X(03).
+                 88  :PREFIX:-IMP-ONLINE         VALUE 'ONL'.
+                 88  :PREFIX:-IMP-EXPEDIR        VALUE 'EXP'.
+             09  :PREFIX:-COD-IMPRESSORA           PIC X(08).
+             09  :PREFIX:-COD-DOC-ORIGEM           PIC X(10).
+             09  :PREFIX:-TIPO-REG                 PIC X(04).
+                 88  :PREFIX:-CPART-EA           VALUE 'CPEA'.
+                 88  :PREFIX:-CPART-TS           VALUE 'CPTS'.
+                 88  :PREFIX:-CPART-PS           VALUE 'CPPS'.
+                 88  :PREFIX:-CPART-BV           VALUE 'CPBV'.
+                 88  :PREFIX:-CPART-BM           VALUE 'CPBM'.
+                 88  :PREFIX:-CPART-GA           VALUE 'CPGA'.
+                 88  :PREFIX:-CPART-GN           VALUE 'CPGN'.
+                 88  :PREFIX:-CPART-EI           VALUE 'CPEI'.
+                 88  :PREFIX:-CPART-AG           VALUE 'CPAG'.
+                 88  :PREFIX:-CPART-PC           VALUE 'CPPC'.
+                 88  :PREFIX:-CPART-ZZ           VALUE 'CPZZ'.
+             09  FILLER                            PIC X(01).
+             09  FILLER                            PIC X(06).
+             09  :PREFIX:-DOC-ID                   PIC X(03).
+                 88  :PREFIX:-DOCID-CP-PPV       VALUE '013'.
+             09  :PREFIX:-USER-ID                  PIC X(08).
+             09  :PREFIX:-ADERENTE                 PIC X(08).
+             09  FILLER                            PIC X(142).
+      *
+           07  :PREFIX:-DADOS-DOCUMENTO            PIC X(3797).
+
+      * ---
+      *    TIPO REGISTO "CPEA"
+           07  FILLER                REDEFINES :PREFIX:-DADOS-DOCUMENTO.
+             09  :PREFIX:-DADOS-ENDERECAMENTO.
+               11  :PREFIX:-DE-NOME                PIC X(40).
+               11  :PREFIX:-DE-LOCATION-REF        PIC X(04).
+               11  :PREFIX:-DE-MORADA1             PIC X(40).
+               11  :PREFIX:-DE-MORADA2             PIC X(40).
+               11  :PREFIX:-DE-LOCALIDADE          PIC X(40).
+               11  :PREFIX:-DE-CPOSTAL             PIC X(09).
+               11  :PREFIX:-DE-CPOSTAL-DESC        PIC X(40).
+               11  :PREFIX:-DE-CPAIS               PIC X(03).
+               11  :PREFIX:-DE-CPAIS-DESC          PIC X(40).
+               11  :PREFIX:-DE-IDP                 PIC X(04).
+               11  :PREFIX:-DE-NIF                 PIC X(22).
+               11  :PREFIX:-DE-TIPO-ENTIDADE       PIC X(01).
+                 88  :PREFIX:-DE-ENT-PARTICUL    VALUE '1'.
+                 88  :PREFIX:-DE-ENT-COLETIVA    VALUE '2'.
+             09  :PREFIX:-DADOS-ASSUNTO.
+               11  :PREFIX:-DA-DT-EMISSAO          PIC X(08).
+               11  :PREFIX:-DA-PRODUTO-DESC        PIC X(40).
+               11  :PREFIX:-DA-NATUREZA-MOV        PIC X(40).
+               11  :PREFIX:-DA-DT-ANIVERSARIA      PIC X(08).
+               11  :PREFIX:-DA-DT-VENCIMENTO       PIC X(08).
+               11  :PREFIX:-DA-DT-INI-PERIODO      PIC X(08).
+               11  :PREFIX:-DA-DT-FIM-PERIODO      PIC X(08).
+               11  :PREFIX:-DA-TIPO-FRACCIONA      PIC X(01).
+                 88  :PREFIX:-DA-FRAC-ANUAL      VALUE 'A'.
+                 88  :PREFIX:-DA-FRAC-MENSAL     VALUE 'M'.
+                 88  :PREFIX:-DA-FRAC-SEMESTRAL  VALUE 'S'.
+                 88  :PREFIX:-DA-FRAC-TRIMESTRAL VALUE 'T'.
+                 88  :PREFIX:-DA-FRAC-UNICO      VALUE 'U'.
+               11  :PREFIX:-DA-TIPO-TRANSACAO      PIC X(01).
+                 88  :PREFIX:-DA-TRANS-NOVO      VALUE 'N'.
+                 88  :PREFIX:-DA-TRANS-RENOVACAO VALUE 'R'.
+                 88  :PREFIX:-DA-TRANS-ALTERACAO VALUE 'A'.
+               11  :PREFIX:-DA-DT-ALTERACAO        PIC X(08).
+               11  :PREFIX:-DA-COD-PESQUISA        PIC X(10).
+               11  :PREFIX:-DA-MODALIDADE          PIC X(02).
+               11  :PREFIX:-DA-VERSAO              PIC X(02).
+             09  FILLER                            PIC X(3370).
+
+      * ---
+      *    TIPO REGISTO "CPTS": Informação do Tomador de Seguro
+           07  FILLER                REDEFINES :PREFIX:-DADOS-DOCUMENTO.
+             09  :PREFIX:-TOMADOR-SEGURO.
+               11  :PREFIX:-TS-NOME                PIC X(50).
+               11  :PREFIX:-TS-DT-NASC             PIC X(08).
+             09  FILLER                            PIC X(3739).
+
+      * ---
+      *    TIPO REGISTO "CPPS": Lista da Pessoas Seguras
+           07  FILLER                REDEFINES :PREFIX:-DADOS-DOCUMENTO.
+             09  :PREFIX:-PESSOAS-SEGURAS.
+               11  :PREFIX:-PS-INFO-DESIGNADOS     PIC X(50).
+               11  :PREFIX:-PS-DETAILS.
+                 13  :PREFIX:-PS-NOME              PIC X(50).
+                 13  :PREFIX:-PS-DT-NASC           PIC X(08).
+             09  FILLER                            PIC X(3689).
+
+      * ---
+      *    TIPO REGISTO "CPBV": Lista Beneficiários em caso de VIDA
+           07  FILLER                REDEFINES :PREFIX:-DADOS-DOCUMENTO.
+             09  :PREFIX:-BENEFICIARIO-VIDA.
+               11  :PREFIX:-BV-INFO-DESIGNADOS     PIC X(50).
+               11  :PREFIX:-BV-DETAILS.
+                 13  :PREFIX:-BV-NOME              PIC X(50).
+                 13  :PREFIX:-BV-DT-NASC           PIC X(08).
+                 13  :PREFIX:-BV-PERCENT           PIC X(15).
+             09  FILLER                            PIC X(3674).
+
+      * ---
+      *    TIPO REGISTO "CPBM": Lista Beneficiários em caso de MORTE
+           07  FILLER                REDEFINES :PREFIX:-DADOS-DOCUMENTO.
+             09  :PREFIX:-BENEFICIARIO-MORTE.
+               11  :PREFIX:-BM-INFO-DESIGNADOS     PIC X(50).
+               11  :PREFIX:-BM-DETAILS.
+                 13  :PREFIX:-BM-NOME              PIC X(50).
+                 13  :PREFIX:-BM-DT-NASC           PIC X(08).
+                 13  :PREFIX:-BM-PERCENT           PIC X(15).
+             09  FILLER                            PIC X(3674).
+
+      * ---
+      *    TIPO REGISTO "CPGA": Lista Garantias (Coberturas contratadas)
+           07  FILLER                REDEFINES :PREFIX:-DADOS-DOCUMENTO.
+             09  :PREFIX:-GARANTIAS.
+               11  :PREFIX:-GA-NIVEL-COBERTURA     PIC X(01).
+                 88  :PREFIX:-GA-NIVEL-COB       VALUE '1'.
+                 88  :PREFIX:-GA-NIVEL-SUBCOB    VALUE '2'.
+               11  :PREFIX:-GA-COBERTURA           PIC X(50).
+               11  :PREFIX:-GA-VALOR-COB           PIC X(15).
+             09  FILLER                            PIC X(3731).
+
+      * ---
+      *    TIPO REGISTO "CPGN": Lista Garantias Notas
+           07  FILLER                REDEFINES :PREFIX:-DADOS-DOCUMENTO.
+             09  :PREFIX:-GARANTIAS-NOTAS.
+               11  :PREFIX:-GN-NOTAS-ADIC          PIC X(200).
+             09  FILLER                            PIC X(3597).
+
+      * ---
+      *    TIPO REGISTO "CPEI": Lista Exclusões / Inclusões
+           07  FILLER                REDEFINES :PREFIX:-DADOS-DOCUMENTO.
+             09  :PREFIX:-EXCLUI-INCLUI.
+               11  :PREFIX:-EI-OBSERVACOES         PIC X(200).
+             09  FILLER                            PIC X(3597).
+
+      * ---
+      *    TIPO REGISTO "CPAG": Lista Agravamentos
+           07  FILLER                REDEFINES :PREFIX:-DADOS-DOCUMENTO.
+             09  :PREFIX:-AGRAVAMENTOS.
+               11  :PREFIX:-AG-COBERTURA           PIC X(50).
+               11  :PREFIX:-AG-PERC-VLR-PREMIO     PIC X(15).
+               11  :PREFIX:-AG-PERC-CAP-SEGURO     PIC X(15).
+             09  FILLER                            PIC X(3717).
+
+      * ---
+      *    TIPO REGISTO "CPPC": Prémio do Contracto
+           07  FILLER                REDEFINES :PREFIX:-DADOS-DOCUMENTO.
+             09  :PREFIX:-PREMIO-CONTRATO.
+               11  :PREFIX:-PC-PARCELA-DESC        PIC X(100).
+               11  :PREFIX:-PC-PARCELA-VALOR       PIC S9(12)V99
+                                                  SIGN LEADING SEPARATE.
+             09  FILLER                            PIC X(3682).
+
+      * ---
+      *    TIPO REGISTO "CPZZ": FIM do Documento
+           07  FILLER                REDEFINES :PREFIX:-DADOS-DOCUMENTO.
+             09  :PREFIX:-FIM-DOCUMENTO            PIC X(3797).
+      /                                                                 02280000
+      * -------------------------------------------------------------- *
+      *                 END OF BGOW0068 COPYBOOK                       *
+      * -------------------------------------------------------------- *
+

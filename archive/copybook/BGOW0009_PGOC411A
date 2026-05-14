@@ -1,0 +1,232 @@
+      *----------------------------------------------------------------*
+      *                      MAINTENANCE  LOG
+      *
+      * PROGRAMMER  PCR        DATE        COMMENTS
+      *----------------------------------------------------------------*
+      * MJE   BGOW0009   20090320  COPYBOOK - CONDIÇÕES PARTICULARES
+      *                            DAS COLHEITAS
+      *
+MJE#1 * MJE              20160317  ATIVIDADE 201500165
+      *                            NOVOS CAMPOS VERTENTE DE SEGURO
+      *----------------------------------------------------------------*
+       03  BGOW0009-PRINT-RECORD.
+      *--- SORT KEY
+           05  BGOW0009-SORT-KEY.
+      *     CODIGO DE COMPANHIA
+               07  BGOW0009-COMPANY                PIC X(03).
+      *     CODIGO DE MARCA
+               07  BGOW0009-MARCA                  PIC X(03).
+      *     Nº DE CLIENTE DO TOMADOR DO SEGURO
+               07  BGOW0009-TM-CLIENT-REFERENCE    PIC X(10).
+      *     CODIGO POSTAL DO TOMADOR DO SEGURO
+               07  BGOW0009-TM-POST-CODE           PIC X(07).
+      *     CODIGO DE MEDIADOR
+               07  BGOW0009-AGENTE-COBRADOR        PIC X(10).
+      *     CODIGO POSTAL DO MEDIADOR
+               07  BGOW0009-AG-POST-CODE           PIC X(07).
+      *     CÓDIGO DO PRODUTO
+               07  BGOW0009-PRODUTO                PIC X(05).
+      *     Nº APOLICE
+               07  BGOW0009-POLICY-NUMBER          PIC X(16).
+      *     TRANSACÇÃO (Nº SEQ DOCUMENTO)
+               07  BGOW0009-POLICY-TRANSACTION     PIC X(10).
+      *     CÓDIGO DE SEGURADO
+      *     NO TIPO DE REGISTOS A,C,D = '00000'
+      *     NO TIPO DE REGISTOS V   = '98888'
+      *     NO TIPO DE REGISTOS Z   = '99999'
+               07  BGOW0009-COD-SEGURADO           PIC X(05).
+      *     CÓDIGO DE CULTURA
+      *     NO TIPO DE REGISTO A,C,D,G = '00000'
+      *     NO TIPO DE REGISTOS V   = '98888'
+      *     NO TIPO DE REGISTO Z   = '99999'
+               07  BGOW0009-COD-CULTURA            PIC X(05).
+      *     NºSEQUENCIAL
+               07  BGOW0009-NUM-SEQ-1              PIC 9(06).
+      *     TIPO DE REGISTO
+               07  BGOW0009-RECORD-TYPE            PIC X(01).
+                   88  BGOW0009-DADOS-GERAIS       VALUE 'A'.
+                   88  BGOW0009-CORRETOR           VALUE 'C'.
+                   88  BGOW0009-DADOS-VLR-APOL     VALUE 'D'.
+                   88  BGOW0009-SEGURADO           VALUE 'G'.
+                   88  BGOW0009-CULTURA            VALUE 'J'.
+                   88  BGOW0009-COBERTURA          VALUE 'K'.
+                   88  BGOW0009-EXTENSAO           VALUE 'L'.
+                   88  BGOW0009-PREM-CULTURA       VALUE 'O'.
+                   88  BGOW0009-CO-SEGURADORA      VALUE 'V'.
+                   88  BGOW0009-FIM-DOCUMENTO      VALUE 'Z'.
+
+MJE#1 *    05  BGOW0009-PRINT-DATA                 PIC X(442).
+MJE#1      05  BGOW0009-PRINT-DATA                 PIC X(505).
+      *--- LINHA A
+      *--- DADOS GERAIS  DA APÓLICE
+           05  REDEFINES BGOW0009-PRINT-DATA.
+      *--- TOMADOR DO SEGURO
+      *    NOME
+               07  BGOW0009-TM-ADDRESSEE           PIC X(40).
+      *    LINHA DE MORADA-1
+               07  BGOW0009-TM-ADDRESS1            PIC X(40).
+      *    LINHA DE MORADA-2
+               07  BGOW0009-TM-ADDRESS2            PIC X(40).
+      *    LOCALIDADE
+               07  BGOW0009-TM-TOWN-SUBURB         PIC X(40).
+      *    CODIGO POSTAL DESC
+               07  BGOW0009-TM-POSTCODE-DESC       PIC X(40).
+      *    TIPO NUM DE PORTA
+               07  BGOW0009-TM-TNUM-PORTA          PIC X.
+      *    NUM DE PORTA
+               07  BGOW0009-TM-NUM-PORTA           PIC X(04).
+      *    PRODUTO DESC
+               07  BGOW0009-PRODUTO-DESC           PIC X(30).
+      *    PLANO DE PAGAMENTO
+      *    ÚNICO - NAS TEMPORÁRIAS
+      *    ANUAL
+      *    FRACIONADA - MENSAL,TRIMESTRAL, SEMESTRAL
+               07  BGOW0009-FORMA-PAGAMENTO-DESC    PIC X(30).
+                   88  BGOW0009-UNICO        VALUE 'ÚNICO'.
+                   88  BGOW0009-ANUAL        VALUE 'ANUAL'.
+                   88  BGOW0009-MENSAL       VALUE 'MENSAL'.
+                   88  BGOW0009-TRIMESTRAL   VALUE 'TRIMESTRAL'.
+                   88  BGOW0009-SEMESTRAL    VALUE 'SEMESTRAL'.
+      *    CÓDIGO CONDIÇÃO GERAL
+               07  BGOW0009-TIPO-COND-GERAL        PIC X(03).
+      *    TIPO DE TRANSACÇÃO
+               07  BGOW0009-TRANSACTION-TYPE        PIC X.
+                   88  BGOW0009-NEW-BUSINESS     VALUE 'N'.
+                   88  BGOW0009-RENEWAL          VALUE 'C'.
+                   88  BGOW0009-ENDORSEMENT      VALUE 'A'.
+      *    DATA ORIGINAL DE 1 PRINT
+               07  BGOW0009-ORIG-DATE-PRINTED      PIC X(10).
+      *    DATA DE VENCIMENTO (DDMM)
+               07  BGOW0009-DATA-VENC               PIC X(04).
+      *    DATA INICIO DO TERMO (AAAA-MM-DD)
+               07  BGOW0009-TERM-EFFECT-DATE        PIC X(10).
+      *    DATA FIM DO TERMO (AAAA-MM-DDA)
+               07  BGOW0009-TERM-EXPIRY-DATE        PIC X(10).
+      *    TEMPO DE APÓLICE(ANO E SEGUINTES)
+               07  BGOW0009-TIPO-APOLICE            PIC X(02).
+                   88  BGOW0009-APOL-TEMPORARIA     VALUE 'TE'.
+                   88  BGOW0009-APOL-ANUAL          VALUE 'AN'.
+      *    INDICADOR DE PRIMEIRA IMPRESSÃO
+               07  BGOW0009-N-IMPRESSAO           PIC X(01).
+                 88 BGOW0009-PRIMEIRA-IMP          VALUE 'P'.
+                 88 BGOW0009-SEGUNDA-VIA           VALUE 'S'.
+      *    INDICADOR DO TIPO DE RECIBO
+               07  BGOW0009-IND-TIPO-REC          PIC X(01).
+                 88 BGOW0009-REC-PREMIO            VALUE 'P'.
+                 88 BGOW0009-REC-ESTORNO           VALUE 'E'.
+                 88 BGOW0009-REC-ACERTO            VALUE 'A'.
+      *    CÓDIGO CONDIÇÃO GERAL ÚNICA
+               07  BGOW0009-COND-GERAL-UNICA       PIC X(05).
+      *    DESCRITIVO DO CÓDIGO CONDIÇÃO GERAL ÚNICO
+               07  BGOW0009-COND-GERAL-UNICA-DESC  PIC X(115).
+               07  BGOW0009-NUM-ACTA               PIC X(03).
+               07  BGOW0009-NUM-CANDIDATURA        PIC X(06).
+               07  BGOW0009-VERSAO-CANDIDATURA     PIC X(02).
+MJE#1          07  BGOW0009-COD-VERTENTE-SEG       PIC X(02).
+MJE#1          07  BGOW0009-DESC-VERTENTE-SEG      PIC X(65).
+MJE#1 *        07  FILLER                          PIC X(04).
+      *--- LINHA C
+      *--- DADOS DO CORRETOR
+           05  REDEFINES BGOW0009-PRINT-DATA.
+      *--- CORRETOR
+      *    NOME
+               07  BGOW0009-CORR-ADDRESSEE         PIC X(40).
+      *    LINHA DE MORADA-1
+               07  BGOW0009-CORR-ADDRESS1          PIC X(40).
+      *    LINHA DE MORADA-2
+               07  BGOW0009-CORR-ADDRESS2          PIC X(40).
+      *    LOCALIDADE
+               07  BGOW0009-CORR-TOWN-SUBURB       PIC X(40).
+      *    CODIGO POSTAL DESC
+               07  BGOW0009-CORR-POSTCODE-DESC     PIC X(40).
+      *    TIPO NUM DE PORTA
+               07  BGOW0009-CORR-TNUM-PORTA        PIC X.
+      *    NUM DE PORTA
+               07  BGOW0009-CORR-NUM-PORTA         PIC X(04).
+MJE#1 *        07  FILLER                          PIC X(237).
+MJE#1          07  FILLER                          PIC X(300).
+      *--- LINHA D
+      *--- DADOS DE VALORES DA APÓLICE
+      *    SE NÃO EXISTIREM VALORES OS CAMPOS VEM A ZEROS À EXCEPÇÃO
+      *    DO VALOR DO PREJUIZO MÍNIMO INDEMNIZAVEL QUE VEM A SPACES
+      *    OU EDITADO EX: 1223,34
+           05  REDEFINES BGOW0009-PRINT-DATA.
+      *    VALORES ANUAL
+               07  BGOW0009-AP-PR-COMERCIAL     PIC S9(13)V9(02).
+               07  BGOW0009-AP-CUSTO-APOL       PIC S9(13)V9(02).
+               07  BGOW0009-AP-IMPOSTO          PIC S9(13)V9(02).
+               07  BGOW0009-AP-PR-TOTAL         PIC S9(13)V9(02).
+               07  BGOW0009-AP-VLR-MX-AP        PIC S9(13)V9(02).
+               07  BGOW0009-AP-PR-TOT-BONIF     PIC S9(13)V9(02).
+               07  BGOW0009-AP-PR-TOT-FCALAM    PIC S9(13)V9(02).
+      *   PREJUIZO MÍNIMO INDEMNIZAVEL
+               07  BGOW0009-AP-PREJ-MIN-INDMN   PIC X(07).
+               07  BGOW0009-AP-LIM-PREJ-INDMN   PIC X(07).
+MJE#1 *        07  FILLER                       PIC X(323).
+MJE#1          07  FILLER                       PIC X(386).
+      *--- LINHA G
+      *--- DADOS DE CADA SEGURADO
+           05  REDEFINES BGOW0009-PRINT-DATA.
+               07  BGOW0009-SEG-NOME            PIC X(40).
+               07  BGOW0009-SEG-CAPITAL         PIC S9(13)V9(02).
+               07  BGOW0009-SEG-PR-COMERCIAL    PIC S9(13)V9(02).
+               07  BGOW0009-SEG-BONIF           PIC S9(13)V9(02).
+               07  BGOW0009-SEG-TOT-BONIF       PIC S9(13)V9(02).
+               07  BGOW0009-SEG-FUNDO-CALAM     PIC S9(13)V9(02).
+               07  BGOW0009-SEG-CRD-HIP         PIC X(40).
+MJE#1 *        07  FILLER                       PIC X(287).
+MJE#1          07  FILLER                       PIC X(350).
+      *--- LINHA J
+      *--- DADOS DE CADA CULTURA
+           05  REDEFINES BGOW0009-PRINT-DATA.
+               07  BGOW0009-CUL-DESC            PIC X(40).
+               07  BGOW0009-CUL-COND-ESP-APL    PIC X(02).
+               07  BGOW0009-CUL-DT-EFEITO-COB   PIC X(10).
+               07  BGOW0009-CUL-LOC-RISCO1      PIC X(40).
+               07  BGOW0009-CUL-LOC-RISCO2      PIC X(40).
+               07  BGOW0009-CUL-LOC-RISCO3      PIC X(40).
+MJE#1 *        07  FILLER                       PIC X(270).
+MJE#1          07  FILLER                       PIC X(333).
+      *--- LINHA K
+      *--- DADOS DE CADA COBERTURA
+           05  REDEFINES BGOW0009-PRINT-DATA.
+               07  BGOW0009-COBERTURA-DESC      PIC X(120).
+MJE#1 *        07  FILLER                       PIC X(322).
+MJE#1          07  FILLER                       PIC X(387).
+      *--- LINHA L
+      *--- DADOS DE CADA EXTENSAO
+           05  REDEFINES BGOW0009-PRINT-DATA.
+               07  BGOW0009-EXTENSAO-DESC       PIC X(120).
+MJE#1 *        07  FILLER                       PIC X(322).
+MJE#1          07  FILLER                       PIC X(387).
+      *--- LINHA O
+      *--- DADOS DE PREMIO DE CULTURA
+           05  REDEFINES BGOW0009-PRINT-DATA.
+               07  BGOW0009-CUL-CAPITAL         PIC S9(13)V9(02).
+               07  BGOW0009-CUL-TAXA            PIC S9(03)V9(04).
+               07  BGOW0009-CUL-PR-COMERCIAL    PIC S9(13)V9(02).
+               07  BGOW0009-CUL-BONIF           PIC S9(13)V9(02).
+               07  BGOW0009-CUL-FUNDO-CALAM     PIC S9(13)V9(02).
+               07  BGOW0009-CUL-COD-BONIF   OCCURS 15 TIMES.
+                   10 BGOW0009-CUL-COD-BON  PIC XX.
+      *    O CAMPO NÍVEL DE BONIFICAÇÃO VEM SPACES OU EDITADO
+      *    EDITADO EX: 1223,34
+               07  BGOW0009-NIVEL-BONIF         PIC X(07).
+MJE#1 *        07  FILLER                       PIC X(338).
+MJE#1          07  FILLER                       PIC X(401).
+      *--- LINHA V
+      *--- LINHA DADOS DE CADA CO-SEGURADORA
+           05  REDEFINES BGOW0009-PRINT-DATA.
+               07  BGOW0009-COD-CO-SEG            PIC X(10).
+               07  BGOW0009-NOME-CO-SEG           PIC X(40).
+               07  BGOW0009-VLR-QUOTA-CO-SEG      PIC S9(05)V9(02).
+               07  BGOW0009-CAPITAL-CO-SEG        PIC S9(13)V9(02).
+               07  BGOW0009-PR-COM-CO-SEG         PIC S9(13)V9(02).
+MJE#1 *        07  FILLER                         PIC X(355).
+MJE#1          07  FILLER                         PIC X(418).
+      *--- LINHA Z
+      *--- FIM DE DOCUMENTO
+           05  REDEFINES BGOW0009-PRINT-DATA.
+MJE#1 *        07  FILLER                          PIC X(442).
+MJE#1          07  FILLER                          PIC X(505).
+

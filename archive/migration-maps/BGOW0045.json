@@ -1,0 +1,785 @@
+{
+  "copybook": "BGOW0045",
+  "originSystem": "FSCD",
+  "title": "FSCD BGOW0045 structural migration",
+  "contractType": "Outputs.Documents.Domain.Contracts.FSCD.BGOW0045Contract",
+  "description": "BGOW0045 was analyzed from the copybook level tree. Reusable groups are projected into shared structures where stable; unresolved fields remain on the raw contract.",
+  "mappings": [
+    {
+      "title": "Document selector",
+      "sourceGroup": "Document selector",
+      "targetType": "BGOW0045Contract",
+      "targetPath": "DocumentIdentification",
+      "targetLabel": ".NET contract",
+      "decision": "selector",
+      "description": "Document identification values owned by BGOW0045 select concrete templates.",
+      "rows": [
+        {
+          "source": null,
+          "sourceField": "1130",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1130."
+        }
+      ]
+    },
+    {
+      "title": "DocumentInformation",
+      "sourceGroup": "COD-DOCUMENTO / TIPO-IMPRESSAO / USERID / COD-COMPANHIA",
+      "targetType": "DocumentInformation",
+      "targetPath": "DocumentInformation",
+      "decision": "mapped",
+      "description": "Structured document envelope and routing information identified in BGOW0045.",
+      "rows": [
+        {
+          "source": null,
+          "target": "BGOW0045Contract.DocumentInformation",
+          "status": "container"
+        },
+        {
+          "source": "07  :PREFIX:-COD-DOCUMENTO            PIC X(04).",
+          "sourceField": "COD-DOCUMENTO",
+          "target": "DocumentInformation.CodDocumento",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "07  :PREFIX:-TIPO-IMPRESSAO           PIC X(01).",
+          "sourceField": "TIPO-IMPRESSAO",
+          "target": "DocumentInformation.TipoImpressao",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "07  :PREFIX:-USERID                   PIC X(08).",
+          "sourceField": "USERID",
+          "target": "DocumentInformation.Userid",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "07  :PREFIX:-COD-COMPANHIA            PIC X(03).",
+          "sourceField": "COD-COMPANHIA",
+          "target": "DocumentInformation.CodCompanhia",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "07  :PREFIX:-COD-MARCA                PIC X(03).",
+          "sourceField": "COD-MARCA",
+          "target": "DocumentInformation.CodMarca",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "07  :PREFIX:-AUX-MARCA                PIC X(01).",
+          "sourceField": "AUX-MARCA",
+          "target": "DocumentInformation.AuxMarca",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "07  :PREFIX:-NR-AGENTE                PIC X(10).",
+          "sourceField": "NR-AGENTE",
+          "target": "DocumentInformation.NrAgente",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "07  :PREFIX:-NR-CLIENTE               PIC X(10).",
+          "sourceField": "NR-CLIENTE",
+          "target": "DocumentInformation.NrCliente",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "07  :PREFIX:-NR-APOLICE               PIC X(16).",
+          "sourceField": "NR-APOLICE",
+          "target": "DocumentInformation.NrApolice",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "07  :PREFIX:-COD-ORIGEM               PIC X(03).",
+          "sourceField": "COD-ORIGEM",
+          "target": "DocumentInformation.CodOrigem",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "07  :PREFIX:-IND-FLYER                PIC X(01).",
+          "sourceField": "IND-FLYER",
+          "target": "DocumentInformation.IndFlyer",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-TIPO-DOCUMENTO         PIC X(01).",
+          "sourceField": "TIPO-DOCUMENTO",
+          "target": "DocumentInformation.TipoDocumento",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-COD-PRODUTO            PIC X(10).",
+          "sourceField": "COD-PRODUTO",
+          "target": "DocumentInformation.CodProduto",
+          "status": "mapped",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "title": "Policy",
+      "sourceGroup": "NR-APOLICE / TIPO-APOLICE / COD-MOEDA / COD-PRODUTO",
+      "targetType": "Policy",
+      "targetPath": "Policy",
+      "decision": "mapped",
+      "description": "Structured policy, product, branch, certificate, or adherent context identified in BGOW0045.",
+      "rows": [
+        {
+          "source": null,
+          "target": "BGOW0045Contract.Policy",
+          "status": "container"
+        },
+        {
+          "source": "07  :PREFIX:-NR-APOLICE               PIC X(16).",
+          "sourceField": "NR-APOLICE",
+          "target": "Policy.NrApolice",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-TIPO-APOLICE           PIC X(01).",
+          "sourceField": "TIPO-APOLICE",
+          "target": "Policy.TipoApolice",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-COD-MOEDA              PIC X(03).",
+          "sourceField": "COD-MOEDA",
+          "target": "Policy.CodMoeda",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-COD-PRODUTO            PIC X(10).",
+          "sourceField": "COD-PRODUTO",
+          "target": "Policy.CodProduto",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-COD-RAMO               PIC X(10).",
+          "sourceField": "COD-RAMO",
+          "target": "Policy.CodRamo",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-DESCR-RAMO-PROD        PIC X(40).",
+          "sourceField": "DESCR-RAMO-PROD",
+          "target": "Policy.DescrRamoProd",
+          "status": "mapped",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "title": "Client",
+      "sourceGroup": "NR-CLIENTE / CL-NOME / CL-LOCATION-REF / CL-MORADA1",
+      "targetType": "Entity",
+      "targetPath": "Client",
+      "decision": "mapped",
+      "description": "Structured client, policyholder, or destination party identified in BGOW0045.",
+      "rows": [
+        {
+          "source": null,
+          "target": "BGOW0045Contract.Client",
+          "status": "container"
+        },
+        {
+          "source": "07  :PREFIX:-NR-CLIENTE               PIC X(10).",
+          "sourceField": "NR-CLIENTE",
+          "target": "Client.NrCliente",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-CL-NOME                PIC X(40).",
+          "sourceField": "CL-NOME",
+          "target": "Client.ClNome",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-CL-LOCATION-REF        PIC X(04).",
+          "sourceField": "CL-LOCATION-REF",
+          "target": "Client.ClLocationRef",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-CL-MORADA1             PIC X(40).",
+          "sourceField": "CL-MORADA1",
+          "target": "Client.ClMorada1",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-CL-MORADA2             PIC X(40).",
+          "sourceField": "CL-MORADA2",
+          "target": "Client.ClMorada2",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-CL-LOCALIDADE          PIC X(40).",
+          "sourceField": "CL-LOCALIDADE",
+          "target": "Client.ClLocalidade",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-CL-CPOSTAL             PIC X(09).",
+          "sourceField": "CL-CPOSTAL",
+          "target": "Client.ClCpostal",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-CL-CPOSTAL-DESC        PIC X(40).",
+          "sourceField": "CL-CPOSTAL-DESC",
+          "target": "Client.ClCpostalDesc",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-CL-CPAIS               PIC X(03).",
+          "sourceField": "CL-CPAIS",
+          "target": "Client.ClCpais",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-CL-CPAIS-DESC          PIC X(40).",
+          "sourceField": "CL-CPAIS-DESC",
+          "target": "Client.ClCpaisDesc",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-CL-IDP                 PIC X(04).",
+          "sourceField": "CL-IDP",
+          "target": "Client.ClIdp",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-CL-NIF                 PIC X(22).",
+          "sourceField": "CL-NIF",
+          "target": "Client.ClNif",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-CL-TIPO-ENTIDADE       PIC X(01).",
+          "sourceField": "CL-TIPO-ENTIDADE",
+          "target": "Client.ClTipoEntidade",
+          "status": "mapped",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "title": "Agent",
+      "sourceGroup": "NR-AGENTE / AG-NOME / AG-LOCATION-REF / AG-MORADA1",
+      "targetType": "Entity?",
+      "targetPath": "Agent",
+      "decision": "mapped",
+      "description": "Optional agent or collecting mediator party identified in BGOW0045.",
+      "rows": [
+        {
+          "source": null,
+          "target": "BGOW0045Contract.Agent",
+          "status": "container"
+        },
+        {
+          "source": "07  :PREFIX:-NR-AGENTE                PIC X(10).",
+          "sourceField": "NR-AGENTE",
+          "target": "Agent.NrAgente",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-NOME                PIC X(40).",
+          "sourceField": "AG-NOME",
+          "target": "Agent.AgNome",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-LOCATION-REF        PIC X(04).",
+          "sourceField": "AG-LOCATION-REF",
+          "target": "Agent.AgLocationRef",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-MORADA1             PIC X(40).",
+          "sourceField": "AG-MORADA1",
+          "target": "Agent.AgMorada1",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-MORADA2             PIC X(40).",
+          "sourceField": "AG-MORADA2",
+          "target": "Agent.AgMorada2",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-LOCALIDADE          PIC X(40).",
+          "sourceField": "AG-LOCALIDADE",
+          "target": "Agent.AgLocalidade",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-CPOSTAL             PIC X(09).",
+          "sourceField": "AG-CPOSTAL",
+          "target": "Agent.AgCpostal",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-CPOSTAL-DESC        PIC X(40).",
+          "sourceField": "AG-CPOSTAL-DESC",
+          "target": "Agent.AgCpostalDesc",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-CPAIS               PIC X(03).",
+          "sourceField": "AG-CPAIS",
+          "target": "Agent.AgCpais",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-CPAIS-DESC          PIC X(40).",
+          "sourceField": "AG-CPAIS-DESC",
+          "target": "Agent.AgCpaisDesc",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-IDP                 PIC X(04).",
+          "sourceField": "AG-IDP",
+          "target": "Agent.AgIdp",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-TELEFONE            PIC X(16).",
+          "sourceField": "AG-TELEFONE",
+          "target": "Agent.AgTelefone",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-TELEMOVEL           PIC X(16).",
+          "sourceField": "AG-TELEMOVEL",
+          "target": "Agent.AgTelemovel",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-EMAIL               PIC X(60).",
+          "sourceField": "AG-EMAIL",
+          "target": "Agent.AgEmail",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-NR-CNT-VENDA        PIC X(10).",
+          "sourceField": "AG-NR-CNT-VENDA",
+          "target": "Agent.AgNrCntVenda",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-VLR-CNT-VENDA       PIC S9(12)V9(02)\n                                   SIGN LEADING SEPARATE.",
+          "sourceField": "AG-VLR-CNT-VENDA",
+          "target": "Agent.AgVlrCntVenda",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-NR-CNT-COBRA        PIC X(10).",
+          "sourceField": "AG-NR-CNT-COBRA",
+          "target": "Agent.AgNrCntCobra",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-VLR-CNT-COBRA       PIC S9(12)V9(02)\n                                   SIGN LEADING SEPARATE.",
+          "sourceField": "AG-VLR-CNT-COBRA",
+          "target": "Agent.AgVlrCntCobra",
+          "status": "mapped",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "title": "MailingAddress",
+      "sourceGroup": "CL-LOCATION-REF / CL-MORADA1 / CL-MORADA2 / CL-LOCALIDADE",
+      "targetType": "PostalAddress",
+      "targetPath": "MailingAddress",
+      "decision": "mapped",
+      "description": "Structured postal destination or mailing address identified in BGOW0045.",
+      "rows": [
+        {
+          "source": null,
+          "target": "BGOW0045Contract.MailingAddress",
+          "status": "container"
+        },
+        {
+          "source": "09  :PREFIX:-CL-LOCATION-REF        PIC X(04).",
+          "sourceField": "CL-LOCATION-REF",
+          "target": "MailingAddress.ClLocationRef",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-CL-MORADA1             PIC X(40).",
+          "sourceField": "CL-MORADA1",
+          "target": "MailingAddress.ClMorada1",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-CL-MORADA2             PIC X(40).",
+          "sourceField": "CL-MORADA2",
+          "target": "MailingAddress.ClMorada2",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-CL-LOCALIDADE          PIC X(40).",
+          "sourceField": "CL-LOCALIDADE",
+          "target": "MailingAddress.ClLocalidade",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-CL-CPOSTAL             PIC X(09).",
+          "sourceField": "CL-CPOSTAL",
+          "target": "MailingAddress.ClCpostal",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-CL-CPOSTAL-DESC        PIC X(40).",
+          "sourceField": "CL-CPOSTAL-DESC",
+          "target": "MailingAddress.ClCpostalDesc",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-LOCATION-REF        PIC X(04).",
+          "sourceField": "AG-LOCATION-REF",
+          "target": "MailingAddress.AgLocationRef",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-MORADA1             PIC X(40).",
+          "sourceField": "AG-MORADA1",
+          "target": "MailingAddress.AgMorada1",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-MORADA2             PIC X(40).",
+          "sourceField": "AG-MORADA2",
+          "target": "MailingAddress.AgMorada2",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-LOCALIDADE          PIC X(40).",
+          "sourceField": "AG-LOCALIDADE",
+          "target": "MailingAddress.AgLocalidade",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-CPOSTAL             PIC X(09).",
+          "sourceField": "AG-CPOSTAL",
+          "target": "MailingAddress.AgCpostal",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-CPOSTAL-DESC        PIC X(40).",
+          "sourceField": "AG-CPOSTAL-DESC",
+          "target": "MailingAddress.AgCpostalDesc",
+          "status": "mapped",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "title": "Premium",
+      "sourceGroup": "VLR-TOTAL-RECIBO / AG-VLR-CNT-VENDA / AG-VLR-CNT-COBRA / AG-VLR-CNT-ESPEC",
+      "targetType": "Premium",
+      "targetPath": "Premium",
+      "decision": "mapped",
+      "description": "Premium, value, capital, or total amounts identified in BGOW0045.",
+      "rows": [
+        {
+          "source": null,
+          "target": "BGOW0045Contract.Premium",
+          "status": "container"
+        },
+        {
+          "source": "09  :PREFIX:-VLR-TOTAL-RECIBO       PIC S9(12)V9(02)\n                                   SIGN LEADING SEPARATE.",
+          "sourceField": "VLR-TOTAL-RECIBO",
+          "target": "Premium.VlrTotalRecibo",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-VLR-CNT-VENDA       PIC S9(12)V9(02)\n                                   SIGN LEADING SEPARATE.",
+          "sourceField": "AG-VLR-CNT-VENDA",
+          "target": "Premium.AgVlrCntVenda",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-VLR-CNT-COBRA       PIC S9(12)V9(02)\n                                   SIGN LEADING SEPARATE.",
+          "sourceField": "AG-VLR-CNT-COBRA",
+          "target": "Premium.AgVlrCntCobra",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-VLR-CNT-ESPEC       PIC S9(12)V9(02)\n                                   SIGN LEADING SEPARATE.",
+          "sourceField": "AG-VLR-CNT-ESPEC",
+          "target": "Premium.AgVlrCntEspec",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-AG-VLR-CNT-PARCE       PIC S9(12)V9(02)\n                                   SIGN LEADING SEPARATE.",
+          "sourceField": "AG-VLR-CNT-PARCE",
+          "target": "Premium.AgVlrCntParce",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-FRT-VLR-ANUAL          PIC S9(12)V9(02)\n                                   SIGN LEADING SEPARATE.",
+          "sourceField": "FRT-VLR-ANUAL",
+          "target": "Premium.FrtVlrAnual",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-FRT-VLR-RISCO          PIC S9(12)V9(02)\n                                   SIGN LEADING SEPARATE.",
+          "sourceField": "FRT-VLR-RISCO",
+          "target": "Premium.FrtVlrRisco",
+          "status": "mapped",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "title": "RiskUnit",
+      "sourceGroup": "FRT-DT-INI-RISCO / FRT-DT-FIM-RISCO / FRT-VLR-RISCO / FTR-TOT-RISCO",
+      "targetType": "RiskUnit",
+      "targetPath": "RiskUnit",
+      "decision": "mapped",
+      "description": "Insured object, insured person, or risk-unit data identified in BGOW0045.",
+      "rows": [
+        {
+          "source": null,
+          "target": "BGOW0045Contract.RiskUnit",
+          "status": "container"
+        },
+        {
+          "source": "09  :PREFIX:-FRT-DT-INI-RISCO       PIC X(08).",
+          "sourceField": "FRT-DT-INI-RISCO",
+          "target": "RiskUnit.FrtDtIniRisco",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-FRT-DT-FIM-RISCO       PIC X(08).",
+          "sourceField": "FRT-DT-FIM-RISCO",
+          "target": "RiskUnit.FrtDtFimRisco",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-FRT-VLR-RISCO          PIC S9(12)V9(02)\n                                   SIGN LEADING SEPARATE.",
+          "sourceField": "FRT-VLR-RISCO",
+          "target": "RiskUnit.FrtVlrRisco",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "09  :PREFIX:-FTR-TOT-RISCO          PIC S9(12)V9(02)\n                                   SIGN LEADING SEPARATE.",
+          "sourceField": "FTR-TOT-RISCO",
+          "target": "RiskUnit.FtrTotRisco",
+          "status": "mapped",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "title": "Tables",
+      "sourceGroup": "DT-INI-APOL / DT-FIM-APOL / DT-INI-REC / DT-FIM-REC",
+      "targetType": "IReadOnlyList<GenericTable>",
+      "targetPath": "Tables",
+      "decision": "candidate",
+      "description": "Repeated detail, footer, list, statement, or tabular blocks identified in BGOW0045.",
+      "rows": [
+        {
+          "source": null,
+          "target": "BGOW0045Contract.Tables",
+          "status": "container"
+        },
+        {
+          "source": "09  :PREFIX:-DT-INI-APOL            PIC X(08).",
+          "sourceField": "DT-INI-APOL",
+          "target": "Tables.DtIniApol",
+          "status": "candidate",
+          "reason": "Repeated detail, footer, list, statement, or tabular blocks identified in BGOW0045."
+        },
+        {
+          "source": "09  :PREFIX:-DT-FIM-APOL            PIC X(08).",
+          "sourceField": "DT-FIM-APOL",
+          "target": "Tables.DtFimApol",
+          "status": "candidate",
+          "reason": "Repeated detail, footer, list, statement, or tabular blocks identified in BGOW0045."
+        },
+        {
+          "source": "09  :PREFIX:-DT-INI-REC             PIC X(08).",
+          "sourceField": "DT-INI-REC",
+          "target": "Tables.DtIniRec",
+          "status": "candidate",
+          "reason": "Repeated detail, footer, list, statement, or tabular blocks identified in BGOW0045."
+        },
+        {
+          "source": "09  :PREFIX:-DT-FIM-REC             PIC X(08).",
+          "sourceField": "DT-FIM-REC",
+          "target": "Tables.DtFimRec",
+          "status": "candidate",
+          "reason": "Repeated detail, footer, list, statement, or tabular blocks identified in BGOW0045."
+        },
+        {
+          "source": "09  :PREFIX:-DT-EXTRACAO            PIC X(08).",
+          "sourceField": "DT-EXTRACAO",
+          "target": "Tables.DtExtracao",
+          "status": "candidate",
+          "reason": "Repeated detail, footer, list, statement, or tabular blocks identified in BGOW0045."
+        },
+        {
+          "source": "09  :PREFIX:-DT-EMISSAO             PIC X(08).",
+          "sourceField": "DT-EMISSAO",
+          "target": "Tables.DtEmissao",
+          "status": "candidate",
+          "reason": "Repeated detail, footer, list, statement, or tabular blocks identified in BGOW0045."
+        },
+        {
+          "source": "09  :PREFIX:-VLR-TOTAL-RECIBO       PIC S9(12)V9(02)\n                                   SIGN LEADING SEPARATE.",
+          "sourceField": "VLR-TOTAL-RECIBO",
+          "target": "Tables.VlrTotalRecibo",
+          "status": "candidate",
+          "reason": "Repeated detail, footer, list, statement, or tabular blocks identified in BGOW0045."
+        },
+        {
+          "source": "09  :PREFIX:-FRT-TIPO-TRANSAC       PIC X(02).",
+          "sourceField": "FRT-TIPO-TRANSAC",
+          "target": "Tables.FrtTipoTransac",
+          "status": "candidate",
+          "reason": "Repeated detail, footer, list, statement, or tabular blocks identified in BGOW0045."
+        },
+        {
+          "source": "09  :PREFIX:-FRT-OBSERVACAO         PIC X(15).",
+          "sourceField": "FRT-OBSERVACAO",
+          "target": "Tables.FrtObservacao",
+          "status": "candidate",
+          "reason": "Repeated detail, footer, list, statement, or tabular blocks identified in BGOW0045."
+        },
+        {
+          "source": "09  :PREFIX:-FRT-DT-PROCESSO        PIC X(08).",
+          "sourceField": "FRT-DT-PROCESSO",
+          "target": "Tables.FrtDtProcesso",
+          "status": "candidate",
+          "reason": "Repeated detail, footer, list, statement, or tabular blocks identified in BGOW0045."
+        },
+        {
+          "source": "09  :PREFIX:-FRT-DT-APROVACAO       PIC X(08).",
+          "sourceField": "FRT-DT-APROVACAO",
+          "target": "Tables.FrtDtAprovacao",
+          "status": "candidate",
+          "reason": "Repeated detail, footer, list, statement, or tabular blocks identified in BGOW0045."
+        },
+        {
+          "source": "09  :PREFIX:-FRT-DT-INI-RISCO       PIC X(08).",
+          "sourceField": "FRT-DT-INI-RISCO",
+          "target": "Tables.FrtDtIniRisco",
+          "status": "candidate",
+          "reason": "Repeated detail, footer, list, statement, or tabular blocks identified in BGOW0045."
+        },
+        {
+          "source": "09  :PREFIX:-FRT-DT-FIM-RISCO       PIC X(08).",
+          "sourceField": "FRT-DT-FIM-RISCO",
+          "target": "Tables.FrtDtFimRisco",
+          "status": "candidate",
+          "reason": "Repeated detail, footer, list, statement, or tabular blocks identified in BGOW0045."
+        },
+        {
+          "source": "09  :PREFIX:-FRT-VLR-ANUAL          PIC S9(12)V9(02)\n                                   SIGN LEADING SEPARATE.",
+          "sourceField": "FRT-VLR-ANUAL",
+          "target": "Tables.FrtVlrAnual",
+          "status": "candidate",
+          "reason": "Repeated detail, footer, list, statement, or tabular blocks identified in BGOW0045."
+        },
+        {
+          "source": "09  :PREFIX:-FRT-VLR-RISCO          PIC S9(12)V9(02)\n                                   SIGN LEADING SEPARATE.",
+          "sourceField": "FRT-VLR-RISCO",
+          "target": "Tables.FrtVlrRisco",
+          "status": "candidate",
+          "reason": "Repeated detail, footer, list, statement, or tabular blocks identified in BGOW0045."
+        }
+      ]
+    },
+    {
+      "title": "PrintRecordControl",
+      "sourceGroup": "TIPO-REGISTO",
+      "targetType": "PrintPayloadRecordControl",
+      "targetPath": "PrintRecordControl",
+      "decision": "mapped",
+      "description": "Record type, document sequence, or print-payload control fields identified in BGOW0045.",
+      "rows": [
+        {
+          "source": null,
+          "target": "BGOW0045Contract.PrintRecordControl",
+          "status": "container"
+        },
+        {
+          "source": "07  :PREFIX:-TIPO-REGISTO             PIC X(01).",
+          "sourceField": "TIPO-REGISTO",
+          "target": "PrintRecordControl.TipoRegisto",
+          "status": "mapped",
+          "reason": null
+        }
+      ]
+    }
+  ]
+}

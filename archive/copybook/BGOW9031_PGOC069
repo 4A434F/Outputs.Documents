@@ -1,0 +1,436 @@
+      *----------------------------------------------------------------*00010000
+      **                     MAINTENANCE  LOG                           00020000
+      *                                                                 00030000
+      *                        FZ4RCS02                                 00040000
+      *                                                                 00050000
+      *PROGRAMMER  PCR    DATE      COMMENTS                            00060000
+      *----------------------------------------------------------------*00060100
+      *        ---------   ATENÇÃO  --------------------------          00060400
+      *                                                                 00060500
+      *      ALTERACOES NO FZ4RCS02 DEVERAO SER REPLICADAS:             00060600
+      *             BGOW9031 - PARA APLICAÇÕES DE OUTPUTS (UGEN)        00060700
+      *                                                                 00060800
+      *                                                                 00060900
+      *----------------------------------------------------------------*00070000
+      *                                                                *00060900
+      *      COPYBOOK PARA IMPRESSAO DE CONDICOES PARTICULARES DE      *
+      *                    RC ANIMAL E FAMILIAR                        *
+      *                                                                *
+      *                         ALTERACOES                             *
+      *                                                                *
+      *                                                                *
+      * PROG.  ALT.    DATA       DESCRICAO                            *
+      *----------------------------------------------------------------*
+      * MJE          2013-03-25  NOVO COPYBOOK.
+      * RJF  2P2440  2014-06-04  201200094
+      * EMA  P2440A  2018-01-05  CORRIGE FILLER.
+      * BV   2P3152  2018-06-29  201700075 - NOVA OFERTA - PETS
+      * MP   2P3574  2020-11-05  Novas CG'S Fidelidade PETS
+      *                          CP'S NA RENOVAÇÃO
+      * RMA  2P3691  2021-12-06  202100043 - DUS PETS - História 477
+      *                          Impressão da hora/minuto da transação.
+      * NJF  CEL040  2022-12-22  202200249 - FUSÃO MARCAS IB/FM (RC E
+      *                          CAÇADORES):
+      *                          Implementação de Cartas a acompanharem
+      *                          as Condições Particulares (devido a
+      *                          migração)
+      *----------------------------------------------------------------*
+
+         03  FZ4RCS2-PRINT-RECORD.
+      *--- SORT KEY
+           05  FZ4RCS2-SORT-KEY.
+      *     CODIGO DE COMPANHIA
+             07  FZ4RCS2-COMPANY                 PIC X(03).
+      *     CODIGO DE MARCA
+             07  FZ4RCS2-MARCA                   PIC X(03).
+      *     CANAL DE DISTRIBUIÇÃO
+             07  FZ4RCS2-CANAL-DISTRIBUICAO      PIC X(03).
+      *     Nº DE CLIENTE DO TOMADOR DO SEGURO
+             07  FZ4RCS2-TM-CLIENT-REFERENCE     PIC X(10).
+      *     CODIGO POSTAL DO TOMADOR DO SEGURO
+             07  FZ4RCS2-TM-POST-CODE            PIC X(08).
+      *     CODIGO DE MEDIADOR
+             07  FZ4RCS2-AGENTE-COBRADOR         PIC X(10).
+      *     CODIGO POSTAL DO MEDIADOR
+             07  FZ4RCS2-AG-POST-CODE            PIC X(08).
+      *     CÓDIGO DO PRODUTO
+             07  FZ4RCS2-PRODUTO                 PIC X(05).
+      *     Nº APOLICE
+             07  FZ4RCS2-POLICY-NUMBER           PIC X(16).
+      *     TRANSACÇÃO
+      *     NO COGEN22 - DOCUMENT-NUMBER
+             07  FZ4RCS2-POLICY-TRANSACTION      PIC X(10).
+      *     NºINFDOC CAMPO INFORMAÇÃO DOS SUB-DOCUMENTOS
+             07  FZ4RCS2-NUM-INFDOC              PIC 9(02).
+      *     UNIDADE EM RISCO
+             07  FZ4RCS2-UNIT-RISK-NUM           PIC X(06).
+      *     CAMPO  DISPONIVEL  PREENCHIDO A ZEROS
+             07  FZ4RCS2-FIELD                   PIC 9(03).
+      *     NÚMERO OBJECTO
+             07  FZ4RCS2-OBJECT-NUM              PIC X(06).
+      *     NºSEQUENCIAL
+             07  FZ4RCS2-NUM-SEQ-1               PIC 9(05).
+      *     TIPO DE REGISTO DENTRO DOS SUB-DOCUMENTOS
+             07  FZ4RCS2-TYPE-1-2.
+                09  FZ4RCS2-RECORD-TYPE-1           PIC X(02).
+                  88  FZ4RCS2-DADOS-GERAIS       VALUE 'AA'.
+                  88  FZ4RCS2-DADOS-VLR-APOL     VALUE 'BA'.
+                  88  FZ4RCS2-RESUMO-OBJ         VALUE 'CA'.
+                  88  FZ4RCS2-CLAUS-APOL         VALUE 'EA'.
+                  88  FZ4RCS2-HAB                VALUE 'HA'.
+                  88  FZ4RCS2-ANIMAL             VALUE 'IA'.
+2P3152            88  FZ4RCS2-PET                VALUE 'IB'.
+                  88  FZ4RCS2-ARMAS              VALUE 'JA'.
+                  88  FZ4RCS2-ARMAS-CLASSE       VALUE 'JB'.
+                  88  FZ4RCS2-COB                VALUE 'MA' 'FA'.
+                  88  FZ4RCS2-PREMIO-OBJ         VALUE 'OA'.
+                  88  FZ4RCS2-CLAUS-OBJ          VALUE 'RA'.
+                  88  FZ4RCS2-CARTA              VALUE 'VA'.
+                  88  FZ4RCS2-FIM-DOCUMENTO      VALUE 'ZA'.
+      *        TIPO DE LAYOUTS POR REGISTO
+                09  FZ4RCS2-RECORD-TYPE-2           PIC X(01).
+                  88  FZ4RCS2-TYPE-A             VALUE 'A'.
+                  88  FZ4RCS2-TYPE-B             VALUE 'B'.
+                  88  FZ4RCS2-TYPE-C             VALUE 'C'.
+                  88  FZ4RCS2-TYPE-D             VALUE 'D'.
+                  88  FZ4RCS2-TYPE-E             VALUE 'E'.
+                  88  FZ4RCS2-TYPE-F             VALUE 'F'.
+                  88  FZ4RCS2-TYPE-G             VALUE 'G'.
+      * ********************************************************
+      * TIPOS DE REGISTOS DE APOLICES DE RESPOMSABILIDADE CIVIL
+      * ANIMAL
+      * CONDIÇÕES PARTICULARES
+      * ********************************************************
+      * DADOS GERAIS APOLICE
+      *      'AAA'
+      * DADOS GERAIS APOLICE COMPLEMENTARES -
+      *      'BAA'
+      * DADOS RESUMO OBJETOS  ESTE TIPO DE REGISTO SÓ É ENVIADO
+      * SE EXISTIR MAIS DO QUE UM OBJECTO
+      *      'CAA'
+      * CLAUSULAS APOLICES
+      *      'EAA'
+      * DADOS DE ANIMAL
+      *      'IAA'
+      * COBERTURA RC                                                  ~
+      *      'MAA'
+      * COBERTURA
+      *      'MAB'
+      * PREMIO OBJECTO
+      *      'OAA'
+      * CLAUSULAS OBJECTO
+      *      'RAA'
+      * CARTAS
+      *      'VAA'
+      * FIM FICHEIRO
+      *      'ZAA'.
+      * ********************************************************
+      * ********************************************************
+      * TIPOS DE REGISTOS DE APOLICES DE RESPOMSABILIDADE CIVIL
+      * FAMILIAR
+      * CONDIÇÕES PARTICULARES
+      * ********************************************************
+      * DADOS GERAIS APOLICE
+      *      'AAA'
+      * DADOS GERAIS APOLICE COMPLEMENTARES -
+      *      'BAA'
+      * CLAUSULAS APOLICES
+      *      'EAA'
+      * COBERTURA RC                                                  ~
+      *      'FAA'
+      * COBERTURA
+      *      'FAB'
+      * DADOS DE HABITAÇÃO PRÓPRIA
+      *      'HAA'
+      * DADOS DE ANIMAL
+      *      'IAB'
+      * DADOS DE ARMAS
+      *      'JAA'
+      * DADOS DE CLASSE DE ARMAS
+      *      'JBA'
+      * CLAUSULAS OBJECTO
+      *      'RAB'
+      * CARTAS
+      *      'VAA'
+      * FIM FICHEIRO
+      *      'ZAA'.
+             07  FILLER REDEFINES FZ4RCS2-TYPE-1-2 PIC X(3).
+                  88  FZ4RCS2-VALID-TYPE-1-2     VALUE 'AAA'
+                                                       'BAA'
+                                                       'CAA'
+                                                       'EAA'
+                                                       'FAA'
+                                                       'FAB'
+                                                       'HAA'
+                                                       'IAA'
+                                                       'IAB'
+2P3152                                                 'IBA'
+2P3152                                                 'IBB'
+                                                       'JAA'
+                                                       'JBA'
+                                                       'MAA'
+                                                       'MAB'
+                                                       'OAA'
+                                                       'RAA'
+                                                       'RAB'
+                                                       'VAA'
+                                                       'ZAA'.
+2P2440     05  FZ4RCS2-PRINT-DATA                PIC X(398).
+      *
+      *--- LINHA AA
+      *--- DADOS GERAIS  DA APÓLICE
+           05  FZ4RCS2-LINHA-AA REDEFINES FZ4RCS2-PRINT-DATA.
+      *--- TOMADOR DO SEGURO
+      *    NOME
+             07  FZ4RCS2-TM-ADDRESSEE            PIC X(40).
+      *    LINHA DE MORADA-1
+             07  FZ4RCS2-TM-ADDRESS1             PIC X(40).
+      *    LINHA DE MORADA-2
+             07  FZ4RCS2-TM-ADDRESS2             PIC X(40).
+      *    LOCALIDADE
+             07  FZ4RCS2-TM-ADDRESS3             PIC X(40).
+      *    CODIGO POSTAL DESC
+             07  FZ4RCS2-TM-ADDRESS4             PIC X(40).
+      *    TIPO NUM DE PORTA
+             07  FZ4RCS2-TM-TNUM-PORTA           PIC X(01).
+      *    NUM DE PORTA
+             07  FZ4RCS2-TM-NUM-PORTA            PIC X(04).
+      *    PRODUTO DESC
+             07  FZ4RCS2-PRODUTO-DESC            PIC X(30).
+      *    PLANO DE PAGAMENTO
+      *    ÚNICO - NAS TEMPORÁRIAS
+      *    ANUAL
+      *    FRACIONADA - MENSAL,TRIMESTRAL, SEMESTRAL
+             07  FZ4RCS2-FORMA-PAGAMENTO-DESC    PIC X(30).
+      *    CÓDIGO CONDIÇÃO GERAL
+             07  FZ4RCS2-TIPO-COND-GERAL         PIC X(03).
+      *    TIPO DE TRANSACÇÃO
+             07  FZ4RCS2-TRANSACTION-TYPE        PIC X(02).
+                   88  FZ4RCS2-NEW-BUSINESS     VALUE '01'.
+                   88  FZ4RCS2-RENEWAL          VALUE '02' '12'.
+                   88  FZ4RCS2-ENDORSEMENT      VALUE '03' '04' '05'.
+                   88  FZ4RCS2-REVIVE           VALUE '06' '07'.
+      *    DATA ORIGINAL DE 1 PRINT
+             07  FZ4RCS2-ORIG-DATE-PRINTED       PIC X(10).
+      *    DATA DE VENCIMENTO (DDMM)
+             07  FZ4RCS2-DATA-VENC               PIC X(04).
+      *    DATA INICIO DO TERMO (AAAA-MM-DD)
+             07  FZ4RCS2-TERM-EFFECT-DATE        PIC X(10).
+      *    DATA FIM DO TERMO (AAAA-MM-DDA)
+             07  FZ4RCS2-TERM-EXPIRY-DATE        PIC X(10).
+      *    TEMPO DE APÓLICE(ANO E SEGUINTES)
+             07  FZ4RCS2-TIPO-APOLICE            PIC X(02).
+               88  FZ4RCS2-APOL-TEMPORARIA     VALUE 'TE'.
+               88  FZ4RCS2-APOL-ANUAL          VALUE 'AN'.
+      *    INDICADOR DE PRIMEIRA IMPRESSÃO
+             07  FZ4RCS2-N-IMPRESSAO             PIC X(01).
+               88  FZ4RCS2-PRIMEIRA-IMP       VALUE '1'.
+               88  FZ4RCS2-SEGUNDA-VIA        VALUE '2'.
+             07  FZ4RCS2-NUM-COPIAS              PIC 9(01).
+2P3691*    HORA-MINUTO TRANSAÇÃO (HH:MM)
+             07  FZ4RCS2-HHMM-TRANSACAO          PIC X(05).
+2P3691       07  FILLER                          PIC X(85).
+      *
+      *--- LINHA BA
+      *--- DADOS DE VALORES DA APÓLICE
+           05 FZ4RCS2-LINHA-BA REDEFINES FZ4RCS2-PRINT-DATA.
+      *    VALORES ANUAL
+             07  FZ4RCS2-ANUAL-PR-COMERCIAL      PIC S9(11)V9(02).
+             07  FZ4RCS2-ANUAL-CUSTO-APOL        PIC S9(11)V9(02).
+             07  FZ4RCS2-ANUAL-IMPOSTO           PIC S9(11)V9(02).
+             07  FZ4RCS2-ANUAL-PR-TOTAL          PIC S9(11)V9(02).
+      *    VALORES 1ª FRACÇÃO
+             07  FZ4RCS2-1F-PR-COMERCIAL         PIC S9(11)V9(02).
+             07  FZ4RCS2-1F-CUSTO-APOL           PIC S9(11)V9(02).
+             07  FZ4RCS2-1F-IMPOSTO              PIC S9(11)V9(02).
+             07  FZ4RCS2-1F-PR-TOTAL             PIC S9(11)V9(02).
+      *    VALORES FRACÇÕES SEGUINTES
+             07  FZ4RCS2-FS-PR-COMERCIAL         PIC S9(11)V9(02).
+             07  FZ4RCS2-FS-CUSTO-APOL           PIC S9(11)V9(02).
+             07  FZ4RCS2-FS-IMPOSTO              PIC S9(11)V9(02).
+             07  FZ4RCS2-FS-PR-TOTAL             PIC S9(11)V9(02).
+      *    CDIGO CONDIÇÃO GERAL ÚNICA
+             07  FZ4RCS2-COND-GERAL-UNICA        PIC X(05).
+      *    DESCRITIVO DO CÓDIGO CONDIÇÃO GERAL ÚNICO
+             07  FZ4RCS2-COND-GERAL-UNICA-DESC   PIC X(115).
+2P3574       07  FZ4RCS2-CG-IMPRESSO             PIC X(001).
+2P3574           88  FZ4RCS2-IMP-CG-RENOV        VALUE 'S'.
+2P3574       07  FILLER                          PIC X(121).
+      *
+      *--- LINHA CA
+      *--- RESUMO OBJECTOS DA APÓLICE
+           05 FZ4RCS2-LINHA-CA REDEFINES FZ4RCS2-PRINT-DATA.
+             07  FZ4RCS2-RES-NOME-ANIM              PIC X(50).
+             07  FZ4RCS2-RES-TIPO-ANIM              PIC X(30).
+             07  FZ4RCS2-RES-ESPECIE-ANIM           PIC X(15).
+2P2440       07  FILLER                             PIC X(303).
+      *
+      *--- LINHA EA
+      *--- CLÁUSULAS DE APÓLICE
+           05 FZ4RCS2-LINHA-EA  REDEFINES FZ4RCS2-PRINT-DATA.
+      *    INDICA QUAL O NÚMERO DE FORM. PODEM FORMS COM MAIS QUE
+      *    UMA LINHA. ESTE NÚMERO APENAS MUDA QUANDO HOUVER
+      *    MUDANCA DE FORM
+      *    FORM-CONJUNTO DE CóDIGOS QUE IDENTIFICA AS CLáUSULAS
+             07  FZ4RCS2-AP-FORM-NUMBER          PIC X(10).
+             07  FZ4RCS2-AP-CLAUS-LINE1          PIC X(79).
+             07  FZ4RCS2-AP-CLAUS-LINE2          PIC X(79).
+             07  FZ4RCS2-AP-CLAUS-LINE3          PIC X(79).
+             07  FZ4RCS2-AP-CLAUS-LINE4          PIC X(79).
+2P2440       07  FILLER                          PIC X(72).
+      *
+      *--- LINHA HA
+      *--- DADOS  HABITACAO PRIMÁRIA OU SECUNDÁRIA
+           05 FZ4RCS2-LINHA-HA REDEFINES FZ4RCS2-PRINT-DATA.
+             07 FZ4RCS2-TIPO-HABITACAO           PIC X(10).
+             07 FZ4RCS2-LOCALIDADE               PIC X(80).
+             07 FZ4RCS2-ANO-CONST                PIC 9(04).
+             07 FZ4RCS2-EST-CONSERV              PIC X(30).
+2P2440       07 FILLER                           PIC X(268).
+      *
+      *--- LINHA IA
+      *--- DADOS  DE ANIMAL
+           05 FZ4RCS2-LINHA-IA REDEFINES FZ4RCS2-PRINT-DATA.
+             07 FZ4RCS2-NUM-ANIM                 PIC 9(05).
+             07 FZ4RCS2-TIPO-ANIM                PIC X(30).
+             07 FZ4RCS2-NOME-ANIM                PIC X(50).
+             07 FZ4RCS2-ESPECIE-ANIM             PIC X(15).
+             07 FZ4RCS2-RACA-ANIM                PIC X(60).
+             07 FZ4RCS2-DATA-NASC-ANIM           PIC X(10).
+             07 FZ4RCS2-ID-ELECT-ANIM            PIC X(16).
+             07 FZ4RCS2-DT-ID-ELECT-ANIM         PIC X(16).
+             07 FZ4RCS2-LIC-DETENC-ANIM          PIC X(03).
+             07 FZ4RCS2-BOL-VAC-ANIM             PIC X(03).
+             07 FZ4RCS2-UTILIZ-ANIM              PIC X(60).
+2P2440       07 FILLER                           PIC X(130).
+2P3152*--- LINHA IB
+2P3152*--- DADOS DE ANIMAL (PETS)
+2P3152     05 FZ4RCS2-LINHA-IB REDEFINES FZ4RCS2-PRINT-DATA.
+2P3152       07 FZ4RCS2-NUM-ANIM-P               PIC 9(05).
+2P3152       07 FZ4RCS2-TIPO-ANIM-P              PIC X(30).
+2P3152       07 FZ4RCS2-NOME-ANIM-P              PIC X(50).
+2P3152       07 FZ4RCS2-ESPECIE-ANIM-P           PIC X(15).
+2P3152       07 FZ4RCS2-RACA-ANIM-P              PIC X(60).
+2P3152       07 FZ4RCS2-DATA-NASC-ANIM-P         PIC X(10).
+2P3152       07 FZ4RCS2-ID-ELECT-ANIM-P          PIC X(16).
+2P3152       07 FZ4RCS2-DT-ID-ELECT-ANIM-P       PIC X(16).
+2P3152       07 FZ4RCS2-LIC-DETENC-ANIM-P        PIC X(03).
+2P3152       07 FZ4RCS2-BOL-VAC-ANIM-P           PIC X(03).
+2P3152       07 FZ4RCS2-UTILIZ-ANIM-P            PIC X(60).
+2P3152       07 FZ4RCS2-PESO-ANML                PIC S9(05)V9(2).
+2P3152       07 FZ4RCS2-GNRO-ANML                PIC X(01).
+2P3152       07 FZ4RCS2-IND-ETLZ-ANML            PIC X(25).
+2P3152       07 FZ4RCS2-I-SAU-ANML               PIC X(70).
+2P3152       07 FZ4RCS2-I-PTLE-ANML              PIC X(01).
+2P3152       07 FZ4RCS2-I-PRTE-ANML              PIC X(07).
+2P3152       07 FZ4RCS2-OPTION-COVERAGES         PIC X(18).
+2P3152*      07 FILLER                           PIC X(15).
+      *
+      *--- LINHA JA
+      *--- DADOS  DE ARMAS
+           05 FZ4RCS2-LINHA-JA REDEFINES FZ4RCS2-PRINT-DATA.
+             07 FZ4RCS2-PROF-ACT-ARMAS           PIC X(60).
+             07 FZ4RCS2-NUM-ARMAS                PIC 9(03).
+             07 FZ4RCS2-LOCAL-ARMAS              PIC X(60).
+             07 FZ4RCS2-SEGURANCA-ARMAS          PIC X(60).
+             07 FZ4RCS2-ROUB-EXTRAV-ARMA         PiC X(03).
+2P2440       07 FILLER                           PIC X(212).
+      *
+      *--- LINHA JB
+      *--- CLASSE DE LICENÇAS  DE ARMAS
+      *--- POTENCIALMENTE PERIOGOSOS
+            05 FZ4RCS2-LINHA-JB REDEFINES FZ4RCS2-PRINT-DATA.
+             07  FZ4RCS2-CLASS-LICENC         PIC X(79).
+2P2440       07  FILLER                       PIC X(319).
+      *
+      *--- LINHA MA FA
+      *--- DADOS DE COBERTURA
+           05 FZ4RCS2-LINHA-MA REDEFINES FZ4RCS2-PRINT-DATA.
+      *    DESCRIÇÃO DA COBERTURA
+             07  FZ4RCS2-COV-DESC           PIC X(60).
+      *      PREENCHIMENTO DOS CAMPOS FRANQUIA
+      *       SEM FRANQUIA OS CAMPOS FRANQUIA
+      *          IND-FRANQUIA='SF'   (CAMPO VALOR = ZEROS)
+      *                              ==>'SEM FRANQUIA'
+      *       PERCENTAGEM DO SINISTRO
+      *          IND-FRANQUIA = 'N2' (CAMPO PERC <> ZEROS)
+      *                              (CAMPOS VLR MIN E MAX = ZEROS)
+      *                              ==>'X% DOS PREJ. IND.'
+      *
+      *                              (CAMPOS VLR MIN E MAX <> ZEROS)
+      *                          ==> X% DOS PREJ. IND., MIN Y  E MAX Z
+      *
+      *                            (CAMPOS VLR MIN <> ZEROS MAX = ZEROS)
+      *                              ==> X% DOS PREJ. IND., MIN Y
+      *
+      *                            (CAMPOS VLR MIN = ZEROS MAX <> ZEROS)
+      *                              ==> X% DOS PREJ. IND., MAX Z
+      *       VALOR FIXO,  VEM NO VLR MIN DA FRANQUIA
+      *          IND-FRANQUIA='N3'   (CAMPO VLR <> ZEROS)
+      *          IND-FRANQUIA='N5'   (CAMPO VLR <> ZEROS)
+      *
+             07  FZ4RCS2-TIPO-FRANQ         PIC X(02).
+             07  FZ4RCS2-PERC-FRANQ         PIC S9(02)V9(5).
+             07  FZ4RCS2-VLR-MIN-FRANQ      PIC S9(11)V9(2).
+             07  FZ4RCS2-VLR-MAX-FRANQ      PIC S9(11)V9(2).
+             07  FZ4RCS2-CAPITAL-RISCO      PIC S9(15)V9(2).
+             07  FZ4RCS2-LIM-VIGENCIA       PIC S9(15)V9(2).
+             07  FZ4RCS2-LIM-SINISTRO       PIC S9(15)V9(2).
+             07  FZ4RCS2-LIM-LESADO         PIC S9(15)V9(2).
+      *
+      *      TIPO DE FRANQUIA APLICÁVEL
+      *      ' ' -> FRANQUIA POR SINISTRO, APENAS APLICÁVEL
+      *             EM DANOS MATERIAISE NÃO OPONÍVEL A TERCEIROS.
+      *      'A' -> FRANQUIA POR SINISTRO E NÃO OPONÍVEL A TERCEIROS.
+             07  FZ4RCS2-FQIA-APLICAVEL     PIC X(01).
+                 88 FZ4RCS2-FQIA-APLIC         VALUE ' '.
+                 88 FZ4RCS2-FQIA-APLIC-A       VALUE 'A'.
+2P3152       07  FZ4RCS2-VALOR-A-CARGO      PIC X(40).
+2P3152       07  FILLER                     PIC X(194).
+      *
+      *--- LINHA OA
+      *--- LINHA PRÉMIO OBJECTO SEGURO
+           05 FZ4RCS2-LINHA-OA REDEFINES FZ4RCS2-PRINT-DATA.
+             07  FZ4RCS2-OBJ-PR-COMERCIAL        PIC S9(11)V9(02).
+             07  FZ4RCS2-OBJ-IMPOSTO             PIC S9(11)V9(02).
+             07  FZ4RCS2-OBJ-PR-TOTAL            PIC S9(11)V9(02).
+P2440A       07  FILLER                          PIC X(274).
+      *
+      *--- LINHA RA
+      *--- CLÁUSULAS DE OBJETO
+           05 FZ4RCS2-LINHA-RA  REDEFINES FZ4RCS2-PRINT-DATA.
+      *    INDICA QUAL O NÚMERO DE FORM. PODEM FORMS COM MAIS QUE
+      *    UMA LINHA. ESTE NÚMERO APENAS MUDA QUANDO HOUVER
+      *    MUDANCA DE FORM
+      *    FORM-CONJUNTO DE CóDIGOS QUE IDENTIFICA AS CLáUSULAS
+             07  FZ4RCS2-FORM-NUMBER             PIC X(10).
+             07  FZ4RCS2-CLAUS-LINE1             PIC X(79).
+             07  FZ4RCS2-CLAUS-LINE2             PIC X(79).
+             07  FZ4RCS2-CLAUS-LINE3             PIC X(79).
+             07  FZ4RCS2-CLAUS-LINE4             PIC X(79).
+2P2440       07  FILLER                          PIC X(72).
+      *
+      *--- LINHA VA (NOVA LINHA)
+      *--- LINHA DADOS DE CARTAS DE MIGRAÇÃO
+           05 FZ4RCS2-LINHA-VA REDEFINES FZ4RCS2-PRINT-DATA.
+      *    CRT-MIGRAÇÃO ='01' PROD RC ANIMAL MIGRAÇÃO C41->C22
+      *                       COM CONDIÇÕES GERAIS
+      *                       CRT-MIGRACAO + APOL-MIGRADA
+      *    CRT-MIGRAÇÃO ='02' PROD RC FAMILIAR MIGRAÇÃO C41->C22
+      *                       COM CONDIÇÕES GERAIS
+      *                       CRT-MIGRACAO + APOL-MIGRADA
+CEL040*    CRT-MIGRAÇÃO ='03' PROD RC FAMILIAR (FUSÃO MARCAS)
+CEL040*                       COM CONDIÇÕES GERAIS
+CEL040*                       CRT-MIGRACAO + APOL-MIGRADA
+CEL040*    CRT-MIGRAÇÃO ='04' PROD RC FAMILIAR (FUSÃO MARCAS)
+CEL040*                       COM CONDIÇÕES GERAIS
+CEL040*                       CRT-MIGRACAO
+             07  FZ4RCS2-CARTA-MIGRACAO       PIC X(02).
+CEL040       07  FZ4RCS2-NUM-APOL-MIGRADA     PIC X(10).
+CEL040       07  FILLER                       PIC X(386).
+      *--- LINHA ZA (ANTIGA LINHA Z)
+      *--- FIM DE DOCUMENTO
+           05 FZ4RCS2-LINHA-ZA  REDEFINES FZ4RCS2-PRINT-DATA.
+2P2440       07  FILLER                          PIC X(398).
+2P2440     05 FZ4RCS2-TIPO-IMPRESSAO             PIC X(001).
+

@@ -1,5 +1,3 @@
-using Outputs.Documents.Domain;
-
 namespace Outputs.Documents.Abstractions;
 
 public interface IDocumentRenderer

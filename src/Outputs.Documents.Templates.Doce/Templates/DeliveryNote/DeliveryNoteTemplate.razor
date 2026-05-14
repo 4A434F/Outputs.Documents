@@ -1,6 +1,6 @@
-@namespace Outputs.Documents.Templates.Doce
+@namespace Outputs.Documents.Templates.DOCE
 @attribute [DocumentTemplate(isDefault: true, Key = "doce-delivery-note", Name = "Delivery Note", Group = "DOCE")]
-@attribute [DocumentLayout(headerTemplate: typeof(HeaderComponent), footerTemplate: typeof(FooterComponent), headerPropertyName: nameof(DeliveryNote.Header), footerPropertyName: nameof(DeliveryNote.Footer))]
+@attribute [DocumentLayout(headerTemplate: typeof(HeaderComponent), footerTemplate: typeof(FooterComponent), headerPropertyName: nameof(DC004DeliveryNote.Header), footerPropertyName: nameof(DC004DeliveryNote.Footer))]
 @using System.Globalization
 @using Microsoft.Extensions.Options
 @inject IOptions<StaticFilePaths> StaticFiles
@@ -46,7 +46,7 @@
 
 @code {
     [Parameter] 
-    public DeliveryNote Model { get; set; } = default!;
+    public DC004DeliveryNote Model { get; set; } = default!;
 
     private string? image;
 

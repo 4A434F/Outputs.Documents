@@ -1,0 +1,134 @@
+      *
+      ***************************************************************
+      *                     -------------------                     *
+      *                     ¦     REMARKS     ¦                     *
+      *                     -------------------                     *
+      *                                                             *
+      * BGOW0055: ESTRUTURA DOS REGISTOS DE:                        *
+      *           - CARTA IMPOSSIBILIDADE DE RECONCILIAÇÃO POUP AUTO*
+      *           - CARTA RECONCILIAÇÃO PELO RESGATE POUP AUTO      *
+      *           - CARTA IMPOSSIBILIDADE DE COBRANÇA               *
+      *           - CARTA REJEIÇÃO DE DÉBITO                        *
+      *                                                             *
+CEL017* TAMANHO.: 2467 BYTES (ANTIGO 2200 BYTES)                    *
+CEL055* TAMANHO.: 2967 BYTES (ANTIGO 2467 BYTES)                    *
+      *                                                             *
+      ***************************************************************
+      *                     -------------------                     *
+      *                     ¦ MAINTENANCE LOG ¦                     *
+      *                     -------------------                     *
+      *                                                             *
+      * PROG.      DATE    COMMENTS                                 *
+      * ------- ---------- ---------------------------------------- *
+      * ASC     2019-03-25 CRIACAO                                  *
+      * ASC     2019-05-15 INCLUSÃO DO CAMPO :PREFIX:-NR-RCIB-SO    *
+CEL003* NJF     2020-03-26 ALTERAR DT-FIM-APOLICE P/A DT-VENCIMENTO *
+CEL017* NJF     2022-01-04 202000045 - SOLUÇÃO DE FACTURAÇÃO:       *
+CEL017*                    ALTERAÇÃO DE COPYBOOKS INTERFACE FSCD    *
+CEL017*                    PARA LRECL=2500                          *
+CEL055* NJF     2023-11-10 202300265 - CIRCULAR 3 ASF:              *
+CEL055*                    ALTERAÇÃO DE COPYBOOKS INTERFACE FSCD    *
+CEL055*                    PARA LRECL=3000                          *
+      *                                                             *
+      ***************************************************************
+      *
+           05  :PREFIX:-DADOS-REGISTO.
+             07  :PREFIX:-COD-DOCUMENTO            PIC X(04).
+                 88  :PREFIX:-DOC-CRT-RESG             VALUE 'RESG'.
+                 88  :PREFIX:-DOC-CRT-IMPRESG          VALUE 'IMPR'.
+                 88  :PREFIX:-DOC-CRT-REJDEB           VALUE 'RDEB'.
+                 88  :PREFIX:-DOC-CRT-IMPCOB           VALUE 'IMPC'.
+             07  :PREFIX:-TIPO-REGISTO             PIC X(01).
+                 88  :PREFIX:-REG-TIPO1                VALUE '1'.
+                 88  :PREFIX:-REG-TIPO2                VALUE '2'.
+                 88  :PREFIX:-REG-TIPO3                VALUE '3'.
+             07  :PREFIX:-TIPO-IMPRESSAO           PIC X(01).
+                 88  :PREFIX:-IMP-ONLINE               VALUE 'I'.
+                 88  :PREFIX:-IMP-BATCH                VALUE 'O'.
+             07  :PREFIX:-USERID                   PIC X(08).
+             07  :PREFIX:-COD-COMPANHIA            PIC X(03).
+                 88  :PREFIX:-COM-VIADIRECTA           VALUE '111'.
+                 88  :PREFIX:-COM-FIDELIDADE           VALUE '128'.
+                 88  :PREFIX:-COM-IMPERIO              VALUE '138'.
+                 88  :PREFIX:-COM-MULTICARE            VALUE '148'.
+             07  :PREFIX:-COD-MARCA                PIC X(03).
+                 88  :PREFIX:-MAR-OKTELESEGURO         VALUE '001'.
+                 88  :PREFIX:-MAR-FIDELIDADE           VALUE '002'.
+                 88  :PREFIX:-MAR-IMPERIO              VALUE '003'.
+                 88  :PREFIX:-MAR-ICI                  VALUE '004'.
+                 88  :PREFIX:-MAR-SONAE                VALUE '005'.
+                 88  :PREFIX:-MAR-MULTICARE            VALUE '006'.
+                 88  :PREFIX:-MAR-EUROBIC              VALUE '028'.
+             07  :PREFIX:-AUX-MARCA                PIC X(01).
+                 88  :PREFIX:-MAR-LEVE                 VALUE 'L'.
+             07  :PREFIX:-NR-AGENTE                PIC X(10).
+             07  :PREFIX:-NR-CLIENTE               PIC X(10).
+             07  :PREFIX:-NR-APOLICE               PIC X(16).
+             07  :PREFIX:-COD-ORIGEM               PIC X(03).
+                 88  :PREFIX:-ORI-COGEN22              VALUE 'CG2'.
+                 88  :PREFIX:-ORI-COGEN33              VALUE 'CGN'.
+                 88  :PREFIX:-ORI-GIS                  VALUE 'GIS'.
+                 88  :PREFIX:-ORI-COLHEITAS            VALUE 'CLH'.
+                 88  :PREFIX:-ORI-MULTICARE            VALUE 'MHS'.
+                 88  :PREFIX:-ORI-SGF-GR               VALUE 'SPG'.
+                 88  :PREFIX:-ORI-SGF-IN               VALUE 'SPA'.
+                 88  :PREFIX:-ORI-FGS                  VALUE 'FGS'.
+                 88  :PREFIX:-ORI-FCS                  VALUE 'FCS'.
+             07  :PREFIX:-IND-FLYER                PIC X(01).
+
+CEL017*    05  :PREFIX:-DADOS-DOCUMENTO            PIC X(2138).
+CEL055*    05  :PREFIX:-DADOS-DOCUMENTO            PIC X(2406).
+CEL055     05  :PREFIX:-DADOS-DOCUMENTO            PIC X(2906).
+      *
+      *    *** TIPO-REGISTO 1: CARTA PAGAMENTO ***
+           05  FILLER  REDEFINES  :PREFIX:-DADOS-DOCUMENTO.
+             07  :PREFIX:-DADOS-CARTA-PAG.
+               09  :PREFIX:-TIPO-CARTA             PIC X(02).
+                 88 :PREFIX:-TIPO-A1      VALUE 'A1'.
+                 88 :PREFIX:-TIPO-B1      VALUE 'B1'.
+               09 :PREFIX:-COD-MOTIVO              PIC X(04).
+               09 :PREFIX:-DESCR-MOTIVO            PIC X(60).
+               09 :PREFIX:-NR-APOLICE-SO           PIC X(16).
+               09 :PREFIX:-NR-RCIB-SO              PIC X(16).
+               09 :PREFIX:-COD-MOEDA               PIC X(03).
+               09 :PREFIX:-COD-PRODUTO             PIC X(10).
+               09 :PREFIX:-COD-RAMO                PIC X(10).
+               09 :PREFIX:-DESCR-RAMO-PROD         PIC X(40).
+             07  :PREFIX:-DADOS-CLIENTE.
+               09  :PREFIX:-CL-NOME                PIC X(40).
+               09  :PREFIX:-CL-LOCATION-REF        PIC X(04).
+               09  :PREFIX:-CL-MORADA1             PIC X(40).
+               09  :PREFIX:-CL-MORADA2             PIC X(40).
+               09  :PREFIX:-CL-LOCALIDADE          PIC X(40).
+               09  :PREFIX:-CL-CPOSTAL             PIC X(09).
+               09  :PREFIX:-CL-CPOSTAL-DESC        PIC X(40).
+               09  :PREFIX:-CL-CPAIS               PIC X(03).
+               09  :PREFIX:-CL-CPAIS-DESC          PIC X(40).
+               09  :PREFIX:-CL-IDP                 PIC X(04).
+               09  :PREFIX:-CL-NIF                 PIC X(22).
+               09  :PREFIX:-CL-TIPO-ENTIDADE       PIC X(01).
+                   88  :PREFIX:-CL-ENT-PARTICUL        VALUE '1'.
+                   88  :PREFIX:-CL-ENT-COLETIVA        VALUE '2'.
+             07  :PREFIX:-DADOS-DATA.
+               09  :PREFIX:-DT-CARTA               PIC X(08).
+CEL003         09  :PREFIX:-DT-VENCIMENTO          PIC X(08).
+               09  :PREFIX:-DT-RESGATE             PIC X(08).
+               09  :PREFIX:-DT-LIMITE-PAG          PIC X(08).
+             07  :PREFIX:-DADOS-VALOR.
+               09  :PREFIX:-VLR-PAGAMENTO PIC S9(12)V9(02)
+                                          SIGN LEADING SEPARATE.
+             07  :PREFIX:-DADOS-PAGAMENTO.
+               09  :PREFIX:-PG-CONTA.
+                 11  :PREFIX:-CNT-NOME-BANCO       PIC X(60).
+                 11  :PREFIX:-CNT-IBAN             PIC X(34).
+                 11  :PREFIX:-CNT-SWIFT            PIC X(11).
+                 11  :PREFIX:-ID-CREDOR            PIC X(35).
+                 11  :PREFIX:-DEB-ADD              PIC X(11).
+               09  :PREFIX:-PG-ATM.
+                 11  :PREFIX:-ATM-ENTIDADE         PIC X(05).
+                 11  :PREFIX:-ATM-REF              PIC X(09).
+CEL017*      07  FILLER                            PIC X(1498).
+CEL055*      07  FILLER                            PIC X(1750).
+CEL055       07  FILLER                            PIC X(2250).
+      *
+

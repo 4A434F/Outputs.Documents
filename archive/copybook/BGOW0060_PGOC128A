@@ -1,0 +1,169 @@
+      ******************************************************************
+      *                     -------------------                        *
+      *                     ¦     REMARKS     ¦                        *
+      *                     -------------------                        *
+      *                                                                *
+      * BGOW0060: ESTRUTURA DO REGISTO EXTRATO MENSAL CONTA EFETIVO    *
+      *           (MENSAL)                                             *
+      *                                                                *
+CEL017* TAMANHO.: 2467 BYTES (ANTIGO 2200 BYTES)                       *
+CEL055* TAMANHO.: 2967 BYTES (ANTIGO 2467 BYTES)                       *
+      *                                                                *
+      * ESTE COPYBOOK, REPRESENTA A ESTRUTURA DO INTERFACE FSCD PARA O *
+      * EXTRATO MENSAL CONTA EFETIVO (ECE), PARA AS COMBINACOES DOS    *
+      * SEGUINTES INDICADORES (ID-BLOCO/TIPO-REGISTO):                 *
+      *  · ECE/B1 - HEADER DADOS EXTRATO                               *
+      *  · ECE/B2 - LIST DETALHE EXTRATO                               *
+      *  · ECE/B3 - FOOTER TOTAL EXTRATO                               *
+      *                                                                *
+      ******************************************************************
+      *                     -------------------                        *
+      *                     ¦ MAINTENANCE LOG ¦                        *
+      *                     -------------------                        *
+      *                                                                *
+      * USER  DATE        COMMENTS                                     *
+      * ----  ----------  -------------------------------------------- *
+      * JADS  2020-01-17  CRIACAO COPYBOOK.                            *
+CEL016* NJF   2021-05-25  202000226 - CRIAR HISTÓRICO DE TAG           *
+CEL017* NJF     2022-01-04 202000045 - SOLUÇÃO DE FACTURAÇÃO:          *
+CEL017*                    ALTERAÇÃO DE COPYBOOKS INTERFACE FSCD       *
+CEL017*                    PARA LRECL=2500                             *
+CEL055* NJF     2023-11-10 202300265 - CIRCULAR 3 ASF:                 *
+CEL055*                    ALTERAÇÃO DE COPYBOOKS INTERFACE FSCD       *
+CEL055*                    PARA LRECL=3000                             *
+      *                                                                *
+      ******************************************************************
+
+           05  :PREFIX:-DADOS-REGISTO.
+               07  :PREFIX:-COD-DOCUMENTO         PIC X(04).
+                   88  :PREFIX:-DOC-EXTRATO                VALUE 'EXCE'.
+               07  :PREFIX:-TIPO-REGISTO          PIC X(01).
+                   88  :PREFIX:-REG-TIPO1                  VALUE '1'.
+                   88  :PREFIX:-REG-TIPO2                  VALUE '2'.
+                   88  :PREFIX:-REG-TIPO3                  VALUE '3'.
+               07  :PREFIX:-TIPO-IMPRESSAO        PIC X(01).
+                   88  :PREFIX:-IMP-ONLINE                 VALUE 'I'.
+                   88  :PREFIX:-IMP-BATCH                  VALUE 'O'.
+               07  :PREFIX:-USERID                PIC X(08).
+               07  :PREFIX:-COD-COMPANHIA         PIC X(03).
+                   88  :PREFIX:-COM-VIADIRECTA             VALUE '111'.
+                   88  :PREFIX:-COM-FIDELIDADE             VALUE '128'.
+                   88  :PREFIX:-COM-IMPERIO                VALUE '138'.
+                   88  :PREFIX:-COM-MULTICARE              VALUE '148'.
+               07  :PREFIX:-COD-MARCA             PIC X(03).
+                   88  :PREFIX:-MAR-OKTELESEGURO           VALUE '001'.
+                   88  :PREFIX:-MAR-FIDELIDADE             VALUE '002'.
+                   88  :PREFIX:-MAR-IMPERIO                VALUE '003'.
+                   88  :PREFIX:-MAR-ICI                    VALUE '004'.
+                   88  :PREFIX:-MAR-SONAE                  VALUE '005'.
+                   88  :PREFIX:-MAR-MULTICARE              VALUE '006'.
+                   88  :PREFIX:-MAR-EUROBIC                VALUE '028'.
+               07  :PREFIX:-AUX-MARCA             PIC X(01).
+                   88  :PREFIX:-MAR-LEVE                   VALUE 'L'.
+               07  :PREFIX:-NR-AGENTE             PIC X(10).
+               07  :PREFIX:-NR-CLIENTE            PIC X(10).
+               07  :PREFIX:-NR-APOLICE            PIC X(16).
+               07  :PREFIX:-COD-ORIGEM            PIC X(03).
+                   88  :PREFIX:-ORI-COGEN22                VALUE 'CG2'.
+                   88  :PREFIX:-ORI-COGEN33                VALUE 'CGN'.
+                   88  :PREFIX:-ORI-GIS                    VALUE 'GIS'.
+                   88  :PREFIX:-ORI-COLHEITAS              VALUE 'CLH'.
+                   88  :PREFIX:-ORI-MULTICARE              VALUE 'MHS'.
+                   88  :PREFIX:-ORI-SGF-GR                 VALUE 'SPG'.
+                   88  :PREFIX:-ORI-SGF-IN                 VALUE 'SPA'.
+                   88  :PREFIX:-ORI-FGS                    VALUE 'FGS'.
+                   88  :PREFIX:-ORI-FCS                    VALUE 'FCS'.
+CEL016             88  :PREFIX:-ORI-SAS                    VALUE 'SAS'.
+               07  :PREFIX:-IND-FLYER             PIC X(01).
+CEL017*    05  :PREFIX:-DADOS-DOCUMENTO           PIC X(2138).
+CEL055*    05  :PREFIX:-DADOS-DOCUMENTO           PIC X(2406).
+CEL055     05  :PREFIX:-DADOS-DOCUMENTO           PIC X(2906).
+
+      ***  TIPO-REGISTO 1: DADOS GERAIS
+           05  FILLER  REDEFINES  :PREFIX:-DADOS-DOCUMENTO.
+               07  :PREFIX:-DADOS-MEDIADOR.
+                   09  :PREFIX:-MD-NOME           PIC X(40).
+                   09  :PREFIX:-MD-LOCATION-REF   PIC X(04).
+                   09  :PREFIX:-MD-MORADA1        PIC X(40).
+                   09  :PREFIX:-MD-MORADA2        PIC X(40).
+                   09  :PREFIX:-MD-LOCALIDADE     PIC X(40).
+                   09  :PREFIX:-MD-CPOSTAL        PIC X(09).
+                   09  :PREFIX:-MD-CPOSTAL-DESC   PIC X(40).
+                   09  :PREFIX:-MD-CPAIS          PIC X(03).
+                   09  :PREFIX:-MD-CPAIS-DESC     PIC X(40).
+                   09  :PREFIX:-MD-IDP            PIC X(04).
+                   09  :PREFIX:-MD-NIF            PIC X(22).
+                   09  :PREFIX:-MD-TIPO-ENTIDADE  PIC X(01).
+                       88  :PREFIX:-MD-ENT-PARTICUL        VALUE '1'.
+                       88  :PREFIX:-MD-ENT-COLETIVA        VALUE '2'.
+               07  :PREFIX:-DADOS-EXTRATO.
+                   09  :PREFIX:-DT-EMISSAO        PIC X(08).
+                   09  :PREFIX:-COD-MOEDA         PIC X(03).
+                   09  :PREFIX:-QTE-LIN-DET       PIC 9(05).
+                   09  :PREFIX:-PERIODO           PIC X(07).
+CEL017*        07  FILLER                         PIC X(1830).
+CEL055*        07  FILLER                         PIC X(2100).
+CEL055         07  FILLER                         PIC X(2600).
+
+      ***  TIPO-REGISTO 2: DETALHE EXTRATO
+           05  FILLER  REDEFINES  :PREFIX:-DADOS-DOCUMENTO.
+               07  :PREFIX:-DETALHE-EXTRATO.
+                   09  :PREFIX:-DT-DATA           PIC X(08).
+                   09  :PREFIX:-DT-HORA           PIC X(06).
+                   09  :PREFIX:-DT-REFERENCIA     PIC X(50).
+                   09  :PREFIX:-DT-TIPO-MOVIMENTO PIC X(50).
+                   09  :PREFIX:-DT-NR-APOLICE     PIC X(16).
+                   09  :PREFIX:-DT-NR-SINISTRO    PIC X(12).
+                   09  :PREFIX:-DT-NR-RECIBO      PIC X(16).
+                   09  :PREFIX:-DT-TIPO           PIC X(12).
+                   09  :PREFIX:-DT-VLR-REC        PIC S9(12)V9(02)
+                                                  SIGN LEADING SEPARATE.
+                   09  :PREFIX:-DT-VLR-COM        PIC S9(12)V9(02)
+                                                  SIGN LEADING SEPARATE.
+                   09  :PREFIX:-DT-VLR-IRS        PIC S9(12)V9(02)
+                                                  SIGN LEADING SEPARATE.
+                   09  :PREFIX:-DT-VLR-SEL        PIC S9(12)V9(02)
+                                                  SIGN LEADING SEPARATE.
+                   09  :PREFIX:-DT-VLR-SEG        PIC S9(12)V9(02)
+                                                  SIGN LEADING SEPARATE.
+                   09  :PREFIX:-DT-VLR-OUT        PIC S9(12)V9(02)
+                                                  SIGN LEADING SEPARATE.
+CEL017*        07  FILLER                         PIC X(1878).
+CEL055*        07  FILLER                         PIC X(2146).
+CEL055         07  FILLER                         PIC X(2646).
+
+      ***  TIPO-REGISTO 3: FOOTER EXTRATO
+           05  FILLER  REDEFINES  :PREFIX:-DADOS-DOCUMENTO.
+               07  :PREFIX:-TOTAIS-EXTRATO.
+                   09  :PREFIX:-TOTAIS-EXT-RESUMO.
+                       11  :PREFIX:-TR-SI-DATA    PIC X(08).
+                       11  :PREFIX:-TR-SI-VALOR   PIC S9(12)V9(02)
+                                                  SIGN LEADING SEPARATE.
+                       11  :PREFIX:-TR-VLR-REC    PIC S9(12)V9(02)
+                                                  SIGN LEADING SEPARATE.
+                       11  :PREFIX:-TR-VLR-COM    PIC S9(12)V9(02)
+                                                  SIGN LEADING SEPARATE.
+                       11  :PREFIX:-TR-VLR-IRS    PIC S9(12)V9(02)
+                                                  SIGN LEADING SEPARATE.
+                       11  :PREFIX:-TR-VLR-SEL    PIC S9(12)V9(02)
+                                                  SIGN LEADING SEPARATE.
+                       11  :PREFIX:-TR-VLR-SEG    PIC S9(12)V9(02)
+                                                  SIGN LEADING SEPARATE.
+                       11  :PREFIX:-TR-VLR-OUT    PIC S9(12)V9(02)
+                                                  SIGN LEADING SEPARATE.
+                       11  :PREFIX:-TR-SF-VALOR   PIC S9(12)V9(02)
+                                                  SIGN LEADING SEPARATE.
+                   09  :PREFIX:-TOTAIS-EXT-ACUMULADO.
+                       11  :PREFIX:-TA-VLR-COM    PIC S9(12)V9(02)
+                                                  SIGN LEADING SEPARATE.
+                       11  :PREFIX:-TA-VLR-IRS    PIC S9(12)V9(02)
+                                                  SIGN LEADING SEPARATE.
+                       11  :PREFIX:-TA-VLR-SEL    PIC S9(12)V9(02)
+                                                  SIGN LEADING SEPARATE.
+                       11  :PREFIX:-TA-VLR-SEG    PIC S9(12)V9(02)
+                                                  SIGN LEADING SEPARATE.
+CEL017*        07  FILLER                         PIC X(1950).
+CEL055*        07  FILLER                         PIC X(2218).
+CEL055         07  FILLER                         PIC X(2718).
+      *
+

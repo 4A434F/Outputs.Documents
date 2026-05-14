@@ -1,0 +1,420 @@
+      *****************************************************************
+      *----------------------------------------------------------------*00010000
+      *                      MAINTENANCE  LOG                           00020000
+      *                                                                 00030000
+      *                        FZ4IPS01                                 00040000
+      *                                                                 00050000
+      *PROGRAMMER  PCR    DATE      COMMENTS                            00060000
+      *----------------------------------------------------------------*00060100
+      *        ---------   ATENÇÃO  --------------------------          00060400
+      *                                                                 00060500
+      *      ALTERACOES NO FZ4IPS01 DEVERAO SER REPLICADAS:             00060600
+      *             BGOW9004 - PARA APLICAÇÕES DE OUTPUTS (UGEN)        00060700
+      *                                                                 00060800
+      *                                                                 00060900
+      *----------------------------------------------------------------*00070000
+      *---------------------------------------------------------------*
+      *  COPYBOOK PARA IMPRESSAO DE CONDICOES PARTICULARES DO         *
+      *  PRODUTO MRH - PT3                                            *
+      *                                                               *
+      *------------------------ ALTERACOES ---------------------------*
+      *                                                               *
+      *  POR    ASIM       DATA     DESCRICAO                         *
+      *                                                               *
+      *  JM   P2/00170  2008-11-12  NOVO COPYBOOK.                    *
+      *                                                               *
+      *  JM   P2/00483  2009-05-18  CONSIDERAR NOVOS CAMPOS.          *
+      *                                                               *
+      * RMA   P2/00216  2009-06-18  200800164 - AUTOMATISMO POSTAL.   *
+      *                                                               *
+      *  JM   P2/00711  2009-11-17  200900053 - NOVOS PRODUTOS ME.    *
+      *                                                               *
+      *  JM   P2/00910  2009-04-28  200900055 - MIGRACAO MR.          *
+      *                                                               *
+      *  JM   2P0788    2011-08-16  200800197 - NOVO PRODUTO MRH VD   *
+      *                             RENOMEACAO DE CAMPO.              *
+      * WALMIRA 2P0928  2012-01-23 HELP-A-HOME NOVO CÓDIGO PARA       *
+      *                            TIPO DE FRANQUIA
+2P2440* RJF  2P2440  2014-06-04  201200094
+      *                            TIPO DE FRANQUIA
+      * MJE          2015-12-02    INCLUSÃO DO CÓDIGO FRANQUIA = 'CC'
+      *                            = 'CONFORME CONDIÇÃO PARTICULAR'
+      *
+      * NJF  CEL008  2020-07-08    201900477 - Mig. Carteira MRH ex-IB
+      *                            NIVEIS 88 NO FZ4IPS1-CARTA-MIGRACAO
+      *                            NOVO CAMPO FZ4IPS1-APOLICE-MIGRADA
+      *
+      *---------------------------------------------------------------*
+
+         03  FZ4IPS1-PRINT-RECORD.
+      *--- SORT KEY
+           05  FZ4IPS1-SORT-KEY.
+      *     CODIGO DE COMPANHIA
+             07  FZ4IPS1-COMPANY                 PIC X(03).
+      *     CODIGO DE MARCA
+             07  FZ4IPS1-MARCA                   PIC X(03).
+      *     Nº DE CLIENTE DO TOMADOR DO SEGURO
+             07  FZ4IPS1-TM-CLIENT-REFERENCE     PIC X(10).
+      *     CODIGO POSTAL DO TOMADOR DO SEGURO
+             07  FZ4IPS1-TM-POST-CODE            PIC X(08).
+      *     CODIGO DE MEDIADOR
+             07  FZ4IPS1-AGENTE-COBRADOR         PIC X(10).
+      *     CODIGO POSTAL DO MEDIADOR
+             07  FZ4IPS1-AG-POST-CODE            PIC X(08).
+      *     CÓDIGO DO PRODUTO
+             07  FZ4IPS1-PRODUTO                 PIC X(05).
+      *     Nº APOLICE
+             07  FZ4IPS1-POLICY-NUMBER           PIC X(16).
+      *     TRANSACÇÃO
+      *     NO COGEN22 - DOCUMENT-NUMBER
+             07  FZ4IPS1-POLICY-TRANSACTION      PIC X(10).
+      *     UNIDADE EM RISCO
+      *     NO TIPO DE REGISTOS A,B,C,D = '000000'
+      *     NO TIPO DE REGISTOS Z = '999999'
+             07  FZ4IPS1-UNIT-RISK-NUM           PIC X(06).
+      *     OBJECTO
+      *     NO TIPO DE REGISTO A,B,C,D = '000000'
+      *     NO TIPO DE REGISTO Z   = '999999'
+             07  FZ4IPS1-OBJECT-NUM              PIC X(06).
+      *     NºSEQUENCIAL
+             07  FZ4IPS1-NUM-SEQ-1               PIC 9(05).
+      *     TIPO DE REGISTO
+             07  FZ4IPS1-RECORD-TYPE             PIC X(01).
+               88  FZ4IPS1-DADOS-GERAIS       VALUE 'A'.
+               88  FZ4IPS1-DADOS-VLR-APOL     VALUE 'B'.
+               88  FZ4IPS1-RESUMO-OBJ-APOL    VALUE 'C'.
+               88  FZ4IPS1-CLAUSULAS-APOL     VALUE 'D'.
+               88  FZ4IPS1-OBJECTO            VALUE 'E'.
+               88  FZ4IPS1-COBERTURAS         VALUE 'F'.
+               88  FZ4IPS1-PRM-OBJECTO        VALUE 'G'.
+               88  FZ4IPS1-CLAUSULAS-OBJECTO  VALUE 'H'.
+00711          88  FZ4IPS1-EXTENSOES-COBERT   VALUE 'J'.
+00711          88  FZ4IPS1-CO-SEGURO          VALUE 'Y'.
+               88  FZ4IPS1-FIM-DOCUMENTO      VALUE 'Z'.
+2P2440*    05  FZ4IPS1-PRINT-DATA                PIC X(409).
+2P2440     05  FZ4IPS1-PRINT-DATA                PIC X(408).
+      *
+      *--- LINHA A
+      *--- DADOS GERAIS  DA APÓLICE
+           05  FZ4IPS1-LINHA-A REDEFINES FZ4IPS1-PRINT-DATA.
+      *--- TOMADOR DO SEGURO
+      *    NOME
+             07  FZ4IPS1-TM-ADDRESSEE            PIC X(40).
+      *    LINHA DE MORADA-1
+             07  FZ4IPS1-TM-ADDRESS1             PIC X(40).
+      *    LINHA DE MORADA-2
+             07  FZ4IPS1-TM-ADDRESS2             PIC X(40).
+      *    LOCALIDADE
+00483        07  FZ4IPS1-TM-ADDRESS3             PIC X(40).
+      *    CODIGO POSTAL DESC
+|            07  FZ4IPS1-TM-ADDRESS4             PIC X(40).
+|     *      07  FZ4IPS1-TM-TOWN-SUBURB          PIC X(40).
+00483 *      07  FZ4IPS1-TM-POSTCODE-DESC        PIC X(40).
+      *    TIPO NUM DE PORTA
+             07  FZ4IPS1-TM-TNUM-PORTA           PIC X(01).
+      *    NUM DE PORTA
+             07  FZ4IPS1-TM-NUM-PORTA            PIC X(04).
+      *    PRODUTO DESC
+             07  FZ4IPS1-PRODUTO-DESC            PIC X(30).
+      *    PLANO DE PAGAMENTO
+      *    ÚNICO - NAS TEMPORÁRIAS
+      *    ANUAL
+      *    FRACIONADA - MENSAL,TRIMESTRAL, SEMESTRAL
+             07  FZ4IPS1-FORMA-PAGAMENTO-DESC    PIC X(30).
+      *    CÓDIGO CONDIÇÃO GERAL
+             07  FZ4IPS1-TIPO-COND-GERAL         PIC X(03).
+      *    TIPO DE TRANSACÇÃO
+             07  FZ4IPS1-TRANSACTION-TYPE        PIC X(02).
+                   88  FZ4IPS1-NEW-BUSINESS     VALUE '01'.
+                   88  FZ4IPS1-RENEWAL          VALUE '02' '12'.
+                   88  FZ4IPS1-ENDORSEMENT      VALUE '03' '04' '05'.
+                   88  FZ4IPS1-REVIVE           VALUE '06' '07'.
+      *    DATA ORIGINAL DE 1 PRINT
+             07  FZ4IPS1-ORIG-DATE-PRINTED       PIC X(10).
+      *    DATA DE VENCIMENTO (DDMM)
+             07  FZ4IPS1-DATA-VENC               PIC X(04).
+      *    DATA INICIO DO TERMO (AAAA-MM-DD)
+             07  FZ4IPS1-TERM-EFFECT-DATE        PIC X(10).
+      *    DATA FIM DO TERMO (AAAA-MM-DDA)
+             07  FZ4IPS1-TERM-EXPIRY-DATE        PIC X(10).
+      *    TEMPO DE APÓLICE(ANO E SEGUINTES)
+             07  FZ4IPS1-TIPO-APOLICE            PIC X(02).
+               88  FZ4IPS1-APOL-TEMPORARIA     VALUE 'TE'.
+               88  FZ4IPS1-APOL-ANUAL          VALUE 'AN'.
+      *    INDICADOR DE PRIMEIRA IMPRESSÃO
+             07  FZ4IPS1-N-IMPRESSAO             PIC X(01).
+               88  FZ4IPS1-PRIMEIRA-IMP       VALUE '1'.
+               88  FZ4IPS1-SEGUNDA-VIA        VALUE '2'.
+             07  FZ4IPS1-NUM-COPIAS              PIC 9(01).
+00216        07  FZ4IPS1-TM-COD-BARRAS           PIC X(22).
+00910 *    INDICADOR PARA IMPRESSAO DE CARTA APOLICES MIGRADAS
+00910        07  FZ4IPS1-CARTA-MIGRACAO          PIC X(02).
+CEL008           88  FZ4IPS1-BON-COB-NBANC     VALUE 'BE'.
+CEL008           88  FZ4IPS1-BON-COB-BANC      VALUE 'BF'.
+CEL008           88  FZ4IPS1-ICI-COB-NBANC     VALUE 'IG'.
+CEL008           88  FZ4IPS1-ICI-COB-BANC      VALUE 'IH'.
+CEL008       07  FZ4IPS1-APOLICE-MIGRADA         PIC X(10).
+CEL008       07  FILLER                          PIC X(66).
+CEL008*      07  FILLER                          PIC X(76).
+2P2440*      07  FILLER                          PIC X(77).
+00216 *      07  FILLER                          PIC X(79).
+00216 *      07  FILLER                          PIC X(101).
+      *
+      *--- LINHA B
+      *--- DADOS DE VALORES DA APÓLICE
+           05 FZ4IPS1-LINHA-B REDEFINES FZ4IPS1-PRINT-DATA.
+      *    VALORES ANUAL
+             07  FZ4IPS1-ANUAL-PR-COMERCIAL      PIC S9(11)V9(02).
+             07  FZ4IPS1-ANUAL-CUSTO-APOL        PIC S9(11)V9(02).
+             07  FZ4IPS1-ANUAL-IMPOSTO           PIC S9(11)V9(02).
+             07  FZ4IPS1-ANUAL-PR-TOTAL          PIC S9(11)V9(02).
+      *    VALORES 1ª FRACÇÃO
+             07  FZ4IPS1-1F-PR-COMERCIAL         PIC S9(11)V9(02).
+             07  FZ4IPS1-1F-CUSTO-APOL           PIC S9(11)V9(02).
+             07  FZ4IPS1-1F-IMPOSTO              PIC S9(11)V9(02).
+             07  FZ4IPS1-1F-PR-TOTAL             PIC S9(11)V9(02).
+      *    VALORES FRACÇÕES SEGUINTES
+             07  FZ4IPS1-FS-PR-COMERCIAL         PIC S9(11)V9(02).
+             07  FZ4IPS1-FS-CUSTO-APOL           PIC S9(11)V9(02).
+             07  FZ4IPS1-FS-IMPOSTO              PIC S9(11)V9(02).
+             07  FZ4IPS1-FS-PR-TOTAL             PIC S9(11)V9(02).
+      *    CDIGO CONDIÇÃO GERAL ÚNICA
+             07  FZ4IPS1-COND-GERAL-UNICA        PIC X(05).
+      *    DESCRITIVO DO CÓDIGO CONDIÇÃO GERAL ÚNICO
+             07  FZ4IPS1-COND-GERAL-UNICA-DESC   PIC X(115).
+2P2440*      07  FILLER                          PIC X(133).
+2P2440       07  FILLER                          PIC X(132).
+      *--- LINHA C
+      *--- RESUMO OBJECTOS DA APÓLICE
+           05 FZ4IPS1-LINHA-C REDEFINES FZ4IPS1-PRINT-DATA.
+             07  FZ4IPS1-OBJS-DESC1              PIC X(30).
+             07  FZ4IPS1-OBJS-DESC2              PIC X(30).
+             07  FZ4IPS1-OBJS-LR-MORADA          PIC X(40).
+             07  FZ4IPS1-OBJS-LR-LOCALIDADE      PIC X(40).
+             07  FZ4IPS1-OBJS-LR-COD-POSTAL      PIC X(08).
+             07  FZ4IPS1-OBJS-CAPITAL-1          PIC S9(13)V9(02).
+             07  FZ4IPS1-OBJS-CAPITAL-2          PIC S9(13)V9(02).
+             07  FZ4IPS1-OBJS-PLANO              PIC X(07).
+2P2440*      07  FILLER                          PIC X(224).
+2P2440       07  FILLER                          PIC X(223).
+      *
+      *--- LINHA D
+      *--- CLÁUSULAS A NÍVEL DA APÓLICE
+           05 FZ4IPS1-LINHA-D  REDEFINES FZ4IPS1-PRINT-DATA.
+      *    INDICA QUAL O NÚMERO DE FORM. PODEM FORMS COM MAIS QUE
+      *    UMA LINHA. ESTE NÚMERO APENAS MUDA QUANDO HOUVER
+      *    MUDANCA DE FORM
+      *    FORM-CONJUNTO DE CóDIGOS QUE IDENTIFICA AS CLáUSULAS
+             07  FZ4IPS1-AP-FORM-NUMBER          PIC X(10).
+             07  FZ4IPS1-AP-CLAUS-LINE1          PIC X(79).
+             07  FZ4IPS1-AP-CLAUS-LINE2          PIC X(79).
+             07  FZ4IPS1-AP-CLAUS-LINE3          PIC X(79).
+             07  FZ4IPS1-AP-CLAUS-LINE4          PIC X(79).
+2P2440*      07  FILLER                          PIC X(83).
+2P2440       07  FILLER                          PIC X(82).
+      *
+      *--- LINHA E
+      *--- LINHA DE OBJECTO
+           05 FZ4IPS1-LINHA-E  REDEFINES FZ4IPS1-PRINT-DATA.
+             07  FZ4IPS1-OBJECTO-DESC            PIC X(30).
+             07  FZ4IPS1-OBJECTO-DESC2           PIC X(50).
+             07  FZ4IPS1-OBJECTO-LR-MORADA       PIC X(40).
+             07  FZ4IPS1-OBJECTO-LR-LOCALIDADE   PIC X(40).
+             07  FZ4IPS1-OBJECTO-LR-COD-POSTAL   PIC X(08).
+             07  FZ4IPS1-OBJECTO-CAPITAL-1       PIC S9(13)V9(02).
+      *      OBJECTO-TIPO-CAPITAL=ND
+      *                  (OBJECTO-CAPITAL2 = 'NÃO INFORMADO'
+             07  FZ4IPS1-OBJECTO-TIPO-CAPITAL    PIC X(02).
+             07  FZ4IPS1-OBJECTO-CAPITAL-2       PIC S9(13)V9(02).
+             07  FZ4IPS1-OBJECTO-PLANO           PIC X(07).
+00711        07  FZ4IPS1-OBJECTO-COD-ACTIV       PIC X(06).
+00711        07  FZ4IPS1-OBJECTO-DESC-ACTIV      PIC X(60).
+00711 *      07  FILLER                          PIC X(205).
+2P2440*00711 07  FILLER                          PIC X(136).
+2P2440       07  FILLER                          PIC X(135).
+      *--- LINHA F
+      *--- LINHA DE COBERTURAS
+           05 FZ4IPS1-LINHA-F  REDEFINES FZ4IPS1-PRINT-DATA.
+             07  FZ4IPS1-RISCO-COD               PIC X(05).
+             07  FZ4IPS1-RISCO-COD-ELEM          PIC X(05).
+             07  FZ4IPS1-RISCO-DESC              PIC X(60).
+      *      PREENCHIMENTO DOS CAMPOS FRANQUIA
+      *       SEM FRANQUIA OS CAMPOS FRANQUIA
+      *          IND-FRANQUIA='SF'   (CAMPO VALOR = ZEROS)
+      *                              ==>'SEM FRANQUIA'
+      *       FRANQUIA FIXA
+      *          IND-FRANQUIA='CE'   (CAMPO VALOR = ZEROS)
+      *                              ==>'CONFORME CONDIÇÃO ESPECIAL'
+      *       FRANQUIA FIXA
+      *          IND-FRANQUIA='CC'   (CAMPO VALOR = ZEROS)
+      *                              ==>'CONFORME CONDIÇÃO PARTICULAR'
+      *       FRANQUIA FIXA
+      *          IND-FRANQUIA='CA'   (CAMPO VALOR = ZEROS)
+      *                              ==>'CONFORME COBERTURA AFECTADA'
+      *       FRANQUIA DIAS
+      *          IND-FRANQUIA='N4'   (CAMPO VALOR = ZEROS)
+      *                              ==> Nº DIAS + 'DIAS'
+      *       PERCENTAGEM DO CAPITAL
+      *          IND-FRANQUIA='CF'   (CAMPO VALOR <> ZEROS)
+      *                              ==> CAMPO VALOR
+      *      PARA AS SUB-COBERTURAS O IND-FRANQ = SPACES
+      *      E O CAMPO VALOR VEM A ZEROS
+      *      IND-FRANQUIA='  ' (CAMPO VALOR = ZEROS)
+      *
+      *       PERCENTAGEM DO SINISTRO
+      *          IND-FRANQUIA = 'N2' (CAMPO PERC <> ZEROS)
+      *                              (CAMPOS VLR MIN E MAX = ZEROS)
+      *                              ==>'X% DOS PREJ. IND.'
+      *
+      *                              (CAMPOS VLR MIN E MAX <> ZEROS)
+      *                          ==> X% DOS PREJ. IND., MIN Y  E MAX Z
+      *
+      *                            (CAMPOS VLR MIN <> ZEROS MAX = ZEROS)
+      *                              ==> X% DOS PREJ. IND., MIN Y
+      *
+      *                            (CAMPOS VLR MIN = ZEROS MAX <> ZEROS)
+      *                              ==> X% DOS PREJ. IND., MAX Z
+2P0928*       FRANQUIA CONFORME CONDIÇÕES GERAIS
+2P0928*          IND-FRANQUIA= 'CG'   (CAMPO VALOR = ZEROS)
+2P0928*                              ==>'CONFORME CONDIÇÕES GERAIS'
+             07  FZ4IPS1-RISCO-COD-FRANQUIA      PIC X(02).
+             07  FZ4IPS1-RISCO-VALOR-FRANQUIA    PIC S9(11)V9(02).
+00483        07  FZ4IPS1-RISCO-VALOR-MAX-FRANQ   PIC S9(11)V9(02).
+00483        07  FZ4IPS1-RISCO-PERC-FRANQUIA     PIC 9(02)V9(05).
+00711        07  FZ4IPS1-RISCO-NUMERO-DIAS       PIC 9(03).
+      *      PREENCHIMENTO DO  CAMPO  LIMITE DE INDEMNIZAÇÃO
+      *      IND-LIM-IND='01' (CAMPO VALOR)
+      *      IND-LIM-IND='02  (CAMPO PREC E CAMPO VALOR)
+      *                      ' 10% PREJ.IND - MAX 10.000 €'
+      *      IND-LIM-IND='03  (CAMPO VALOR E CAMPO DIAS)
+      *                      '1500 € E MAX 90 DIAS
+      *      IND-LIM-IND='04' 'CONFORME CONDIÇÃO ESPECIAL'
+      *      IND-LIM-IND='05' 'CONFORME CONDIÇÕES GERAIS'
+00910 *      IND-LIM-IND='06' (CAMPO VALOR E CAMPO VALOR1)
+00910 *                      'VALOR€ SINISTRO/ VALOR1€ ANUIDADE'
+00910 *      IND-LIM-IND='07' (CAMPO VALOR E CAMPO DIAS)
+00910 *                      'SUBS. VALOR€/MES - MAX DIAS MESES'
+00910 *      IND-LIM-IND='08' (CAMPO VALOR E CAMPO DIAS)
+00910 *                      'VAL.RENDAS - MAX DIAS MESES OU VALOR'
+             07  FZ4IPS1-RISCO-IND-LIM-INDMN     PIC X(02).
+             07  FZ4IPS1-RISCO-VALOR-LIM-INDMN   PIC S9(13)V9(02).
+             07  FZ4IPS1-RISCO-PERC-LIM-INDMN    PIC 9(02).
+             07  FZ4IPS1-RISCO-DIAS-LIM-INDMN    PIC 9(02).
+2P0788       07  FZ4IPS1-RISCO-VLR1-LIM-INDMN    PIC S9(13)V9(02).
+00910 *      07  FZ4IPS1-RISCO-VALOR1-LIM-INDMN  PIC S9(13)V9(02).
+00483 *      07  FILLER                          PIC X(303).
+00483 *      07  FILLER                          PIC X(283).
+00711 *      07  FILLER                          PIC X(280).
+2P2440*00910 07  FILLER                          PIC X(265).
+2P2440       07  FILLER                          PIC X(264).
+      *--- LINHA G
+      *--- LINHA PRÉMIO OBJECTO SEGURO
+           05 FZ4IPS1-LINHA-G  REDEFINES FZ4IPS1-PRINT-DATA.
+             07  FZ4IPS1-OBJ-PR-COMERCIAL        PIC S9(11)V9(02).
+             07  FZ4IPS1-OBJ-CUSTO-APOL          PIC S9(11)V9(02).
+             07  FZ4IPS1-OBJ-IMPOSTO             PIC S9(11)V9(02).
+             07  FZ4IPS1-OBJ-PR-TOTAL            PIC S9(11)V9(02).
+2P2440*      07  FILLER                          PIC X(357).
+2P2440       07  FILLER                          PIC X(356).
+      *--- LINHA H
+      *--- CLÁUSULAS A NÍVEL DO OBJECTO
+           05 FZ4IPS1-LINHA-H  REDEFINES FZ4IPS1-PRINT-DATA.
+      *    INDICA QUAL O NÚMERO DE FORM. PODEM FORMS COM MAIS QUE
+      *    UMA LINHA. ESTE NÚMERO APENAS MUDA QUANDO HOUVER
+      *    MUDANCA DE FORM
+      *    FORM-CONJUNTO DE CóDIGOS QUE IDENTIFICA AS CLáUSULAS
+             07  FZ4IPS1-OBJ-FORM-NUMBER         PIC X(10).
+             07  FZ4IPS1-OBJ-CLAUS-LINE1         PIC X(79).
+             07  FZ4IPS1-OBJ-CLAUS-LINE2         PIC X(79).
+             07  FZ4IPS1-OBJ-CLAUS-LINE3         PIC X(79).
+             07  FZ4IPS1-OBJ-CLAUS-LINE4         PIC X(79).
+2P2440*      07  FILLER                          PIC X(83).
+2P2440       07  FILLER                          PIC X(82).
+
+00711 *--- LINHA J
+00711 *--- LINHA DE EXTENSOES DE COBERTURA
+|          05 FZ4IPS1-LINHA-J  REDEFINES FZ4IPS1-PRINT-DATA.
+|            07  FZ4IPS1-EXT-COD                 PIC X(05).
+|            07  FZ4IPS1-EXT-COD-ELEM            PIC X(05).
+|            07  FZ4IPS1-EXT-DESC                PIC X(60).
+|     *     PREENCHIMENTO DOS CAMPOS FRANQUIA
+|     *       SEM FRANQUIA OS CAMPOS FRANQUIA
+|     *          IND-FRANQUIA='SF'   (CAMPO VALOR = ZEROS)
+|     *                              ==>'SEM FRANQUIA'
+|     *       FRANQUIA FIXA
+|     *          IND-FRANQUIA='CE'   (CAMPO VALOR = ZEROS)
+|     *                              ==>'CONFORME CONDIÇÃO ESPECIAL'
+|     *       FRANQUIA FIXA
+|     *          IND-FRANQUIA='CC'   (CAMPO VALOR = ZEROS)
+|     *                              ==>'CONFORME CONDIÇÃO PARTICULAR'
+|     *       FRANQUIA FIXA
+|     *          IND-FRANQUIA='CA'   (CAMPO VALOR = ZEROS)
+|     *                              ==>'CONFORME COBERTURA AFECTADA'
+|     *       FRANQUIA DIAS
+|     *          IND-FRANQUIA='N4'   (CAMPO VALOR = ZEROS)
+|     *                              ==> Nº DIAS + 'DIAS'
+|     *       PERCENTAGEM DO CAPITAL
+|     *          IND-FRANQUIA='CF'   (CAMPO VALOR <> ZEROS)
+|     *                              ==> CAMPO VALOR
+|     *      PARA AS SUB-COBERTURAS O IND-FRANQ = SPACES
+|     *      E O CAMPO VALOR VEM A ZEROS
+|     *      IND-FRANQUIA='  ' (CAMPO VALOR = ZEROS)
+|     *
+|     *       PERCENTAGEM DO SINISTRO
+|     *          IND-FRANQUIA = 'N2' (CAMPO PERC <> ZEROS)
+|     *                              (CAMPOS VLR MIN E MAX = ZEROS)
+|     *                              ==>'X% DOS PREJ. IND.'
+|     *
+|     *                              (CAMPOS VLR MIN E MAX <> ZEROS)
+|     *                          ==> X% DOS PREJ. IND., MIN Y  E MAX Z
+|     *
+|     *                            (CAMPOS VLR MIN <> ZEROS MAX = ZEROS)
+|     *                              ==> X% DOS PREJ. IND., MIN Y
+|     *
+|     *                            (CAMPOS VLR MIN = ZEROS MAX <> ZEROS)
+|     *                              ==> X% DOS PREJ. IND., MAX Z
+|            07  FZ4IPS1-EXT-COD-FRANQUIA        PIC X(02).
+|            07  FZ4IPS1-EXT-VALOR-FRANQUIA      PIC S9(11)V9(02).
+|            07  FZ4IPS1-EXT-VALOR-MAX-FRANQ     PIC S9(11)V9(02).
+|            07  FZ4IPS1-EXT-PERC-FRANQUIA       PIC 9(02)V9(05).
+|            07  FZ4IPS1-EXT-NUMERO-DIAS         PIC 9(03).
+|     *      PREENCHIMENTO DO  CAMPO  LIMITE DE INDEMNIZAÇÃO
+|     *      IND-LIM-IND='01' (CAMPO VALOR)
+|     *      IND-LIM-IND='02  (CAMPO PREC E CAMPO VALOR)
+|     *                      ' 10% PREJ.IND - MAX 10.000 €'
+|     *      IND-LIM-IND='03  (CAMPO VALOR E CAMPO DIAS)
+|     *                      '1500 € E MAX 90 DIAS
+|     *      IND-LIM-IND='04' 'CONFORME CONDIÇÃO ESPECIAL'
+|     *      IND-LIM-IND='05' 'CONFORME CONDIÇÕES GERAIS'
+00910 *      IND-LIM-IND='06' (CAMPO VALOR E CAMPO VALOR1)
+00910 *                      'VALOR€ SINISTRO/ VALOR1€ ANUIDADE'
+00910 *      IND-LIM-IND='07' (CAMPO VALOR E CAMPO DIAS)
+00910 *                      'SUBS. VALOR€/MES - MAX DIAS MESES'
+00910 *      IND-LIM-IND='08' (CAMPO VALOR E CAMPO DIAS)
+00910 *                      'VAL.RENDAS - MAX DIAS MESES OU VALOR'
+|            07  FZ4IPS1-EXT-IND-LIM-INDMN       PIC X(02).
+|            07  FZ4IPS1-EXT-VALOR-LIM-INDMN     PIC S9(13)V9(02).
+|            07  FZ4IPS1-EXT-PERC-LIM-INDMN      PIC 9(02).
+|            07  FZ4IPS1-EXT-DIAS-LIM-INDMN      PIC 9(02).
+00910        07  FZ4IPS1-EXT-VALOR1-LIM-INDMN    PIC S9(13)V9(02).
+2P2440*00910 07  FILLER                          PIC X(265).
+2P2440       07  FILLER                          PIC X(264).
+00711 *      07  FILLER                          PIC X(280).
+00711 *--- LINHA Y
+00711 *--- LINHA DADOS DE CADA CO-SEGURADORA
+00711      05 FZ4IPS1-LINHA-Y  REDEFINES FZ4IPS1-PRINT-DATA.
+00711        07  FZ4IPS1-CO-SEG-COD              PIC X(10).
+00711        07  FZ4IPS1-CO-SEG-NOME             PIC X(40).
+00711        07  FZ4IPS1-CO-SEG-CAPITAL          PIC S9(13)V9(02).
+00711        07  FZ4IPS1-CO-SEG-PARTICIP         PIC 9(03)V9(06).
+00711        07  FZ4IPS1-CO-SEG-PREMIO           PIC S9(13)V9(02).
+2P2440*00711 07  FILLER                          PIC X(320).
+2P2440       07  FILLER                          PIC X(319).
+      *
+      *--- LINHA Z
+      *--- FIM DE DOCUMENTO
+           05 FZ4IPS1-LINHA-Z  REDEFINES FZ4IPS1-PRINT-DATA.
+2P2440*      07  FILLER                          PIC X(409).
+2P2440       07  FILLER                          PIC X(408).
+2P2440     05 FZ4IPS1-TIPO-IMPRESSAO             PIC X(001).
+

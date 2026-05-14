@@ -1,0 +1,99 @@
+      *----------------------------------------------------------------*00000001
+      *                                                                 00000002
+      *    THIS COPYBOOK IS USED FOR THE COVER NOTE                     00000003
+      *    EXTRACT PROGRAM                                              00000004
+      *                                                                 00000005
+      *================================================================*00000006
+      *                                                                 00000007
+      *                                                                 00000008
+      * ATENCAO: ALTERACOES NESTE COPY NZ44LU01 DEVERAO SER REPLICADAS  00000009
+      *                                                                 00000010
+      * =======  NO BGOW9047 PARA APLICACOES DE OUTPUTS (UGEN)          00000011
+      *                                                                 00000012
+      *================================================================*00000013
+      *-----------------------------------------------------------------00000014
+      *                                                                 00000015
+      *                      MAINTENANCE  LOG                           00000016
+      *                                                                 00000017
+      *PROGRAMMER PCR     DATE      OMMENTS                             00000018
+      *----------------------------------------------------------------*00000019
+      *                                                                 00000020
+      * PO1641            16/09/98  ORIGINAL VERSION                    00000021
+      * MEG0033   M40117  01/10/98  ALTER TO COMPLY WITH CABS/PS FORMAT 00000022
+      *                             REQUIREMENT, ADD QUOTE/CNOTE CHANGES00000023
+      *                                                                 00000024
+      * LPC       M40318  16/05/99  CHANGE ALL COPYBOOK.                00000025
+      *                                                                 00000026
+      * LPC       M40353  17/06/99  PUT AGENT IN SORT KEY.              00000027
+      *                                                                 00000028
+      * JC        M40049  29/09/99  INCLUDE CLIENT-REFERENCE AND        00000029
+      *                             DRIVER-NAME FIELDS.                 00000030
+      *                                                                 00000031
+      * PCVS      M41965  21/11/2005 INCLUIR TIPO DE REGIME DA APOLICE  00000032
+      *                              NO FICHEIRO DE EXTRACCAO PARA      00000033
+      *                              OUTPUTS.                           00000034
+      *                                                                 00000035
+      * CCR         3P0433  2008-11-18  200800164 PROJECTO ACTIVATION   00000036
+      *                                 AUMENTO DO AUTOMATISMO POSTAL.  00000037
+      *                                                                 00000038
+      * DDS    3P1299 OUT.2012   201200021 - NUMERO SEGURNET            00000039
+      *                                                                 00000040
+3P1556* RJF 3P1556  28/05/14   NOVO CAMPO NUMERO DE REPORT              00000041
+      *-----------------------------------------------------------------00000042
+                                                                        00000043
+        02 NZ44LU01-PRINT-RECORD.                                       00000044
+           03 NZ44LU01-SORT-KEY.                                        00000045
+              05 NZ44LU01-SORT-COMPANY        PIC X(03).                00000046
+              05 NZ44LU01-SORT-AGENT          PIC X(10).                00000047
+              05 NZ44LU01-SORT-POST-CODE      PIC X(09).                00000048
+              05 NZ44LU01-SORT-PRODUCT-CODE   PIC X(05).                00000049
+              05 NZ44LU01-SORT-POLICY-NUMBER  PIC X(16).                00000050
+3P1556        05 NZ44LU01-SORT-CERT-NUMBER    PIC X(15).                00000051
+                                                                        00000052
+              05 NZ44LU01-RECORD-TYPE         PIC X(01).                00000053
+                 88  NZ44LU01-BASIC-DATA          VALUE 'B'.            00000054
+                 88  NZ44LU01-EXTRA-DATA          VALUE 'E'.            00000055
+                                                                        00000056
+3P1556     03  NZ44LU01-PRINT-DATA             PIC X(440).              00000057
+                                                                        00000058
+      *******                                                           00000059
+      *    BASIC LEVEL DATA                                             00000060
+      *******                                                           00000061
+           03 REDEFINES NZ44LU01-PRINT-DATA.                            00000062
+                                                                        00000063
+3P1556*       05 NZ44LU01-CERTIFICATE-NUMBER     PIC X(15).             00000064
+              05 NZ44LU01-TERM-EFFECTIVE-DATE    PIC X(10).             00000065
+              05 NZ44LU01-TERM-EXPIRY-DATE       PIC X(10).             00000066
+              05 NZ44LU01-DATE-APROVED           PIC X(10).             00000067
+              05 NZ44LU01-ADDRESSEE              PIC X(40).             00000068
+              05 NZ44LU01-ADDRESS-LINE-1         PIC X(40).             00000069
+              05 NZ44LU01-ADDRESS-LINE-2         PIC X(40).             00000070
+              05 NZ44LU01-TOWN-SUBURB            PIC X(40).             00000071
+              05 NZ44LU01-POST-CODE              PIC X(09).             00000072
+              05 NZ44LU01-POST-CODE-DESCR        PIC X(41).             00000073
+              05 NZ44LU01-DRV-LICENSE-NUM-25     PIC X(25).             00000074
+              05 NZ44LU01-VEH-MAKE               PIC X(60).             00000075
+              05 NZ44LU01-VEH-MODEL              PIC X(10).             00000076
+              05 NZ44LU01-VEH-EXTRA              PIC X(25).             00000077
+              05 NZ44LU01-VEH-REG-NUMBER         PIC X(15).             00000078
+              05 NZ44LU01-COV-LIMIT-AMT          PIC S9(13) COMP-3.     00000079
+              05 NZ44LU01-IND-ASSIST-VIAGEM      PIC X(01).             00000080
+                 88 NZ44LU01-ASSIST-VIAGEM-YES   VALUE 'Y'.             00000081
+                 88 NZ44LU01-ASSIST-VIAGEM-NO    VALUE 'N'.             00000082
+              05 NZ44LU01-DRV-NAME               PIC X(40).             00000083
+              05 NZ44LU01-CLIENT-REFERENCE       PIC X(10).             00000084
+              05 NZ44LU01-IND-REGIME             PIC X(01).             00000085
+              05 NZ44LU01-NUM-TYPE               PIC X(01).             00000086
+              05 NZ44LU01-NUM                    PIC X(04).             00000087
+3P1556        05 FILLER                          PIC X(01).             00000088
+                                                                        00000089
+      *******                                                           00000090
+      *    EXTRA DATA                                                   00000091
+      *******                                                           00000092
+           03 REDEFINES NZ44LU01-PRINT-DATA.                            00000093
+                                                                        00000094
+              05 NZ44LU01-N-SEGURNET             PIC X(10).             00000095
+3P1556        05 FILLER                          PIC X(430).            00000096
+3P1556     03 NZ44LU01-TIPO-IMPRESSAO            PIC X(001).            00000097
+                                                                        00000100
+

@@ -1,0 +1,556 @@
+{
+  "copybook": "BGOW0019",
+  "originSystem": "GIS",
+  "title": "GIS BGOW0019 structural migration",
+  "contractType": "Outputs.Documents.Domain.Contracts.GIS.BGOW0019Contract",
+  "description": "BGOW0019 was analyzed from the copybook level tree. Reusable groups are projected into shared structures where stable; unresolved fields remain on the raw contract.",
+  "mappings": [
+    {
+      "title": "DocumentInformation",
+      "sourceGroup": "COD-COMPANHIA / COD-MARCA / COD-ORIGEM / NR-MEDIADOR",
+      "targetType": "DocumentInformation",
+      "targetPath": "DocumentInformation",
+      "decision": "mapped",
+      "description": "Structured document envelope and routing information identified in BGOW0019.",
+      "rows": [
+        {
+          "source": null,
+          "target": "BGOW0019Contract.DocumentInformation",
+          "status": "container"
+        },
+        {
+          "source": "BGOW0019-COD-COMPANHIA",
+          "sourceField": "COD-COMPANHIA",
+          "target": "DocumentInformation.CodCompanhia",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-COD-MARCA",
+          "sourceField": "COD-MARCA",
+          "target": "DocumentInformation.CodMarca",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-COD-ORIGEM",
+          "sourceField": "COD-ORIGEM",
+          "target": "DocumentInformation.CodOrigem",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-NR-MEDIADOR",
+          "sourceField": "NR-MEDIADOR",
+          "target": "DocumentInformation.NrMediador",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-NR-CLIENTE",
+          "sourceField": "NR-CLIENTE",
+          "target": "DocumentInformation.NrCliente",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-NR-APOLICE",
+          "sourceField": "NR-APOLICE",
+          "target": "DocumentInformation.NrApolice",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-COD-PRODUTO",
+          "sourceField": "COD-PRODUTO",
+          "target": "DocumentInformation.CodProduto",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-DATA-HORA",
+          "sourceField": "DATA-HORA",
+          "target": "DocumentInformation.DataHora",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-NUM-DOC",
+          "sourceField": "NUM-DOC",
+          "target": "DocumentInformation.NumDoc",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-NUM-REGISTO",
+          "sourceField": "NUM-REGISTO",
+          "target": "DocumentInformation.NumRegisto",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-TIPO-DOCUMENTO",
+          "sourceField": "TIPO-DOCUMENTO",
+          "target": "DocumentInformation.TipoDocumento",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-TIPO-IMPRESSAO",
+          "sourceField": "TIPO-IMPRESSAO",
+          "target": "DocumentInformation.TipoImpressao",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-COD-DOCUMENTO-ORIGEM",
+          "sourceField": "COD-DOCUMENTO-ORIGEM",
+          "target": "DocumentInformation.CodDocumentoOrigem",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-MARCA-REIMPRESSAO",
+          "sourceField": "MARCA-REIMPRESSAO",
+          "target": "DocumentInformation.MarcaReimpressao",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-DOC-ID",
+          "sourceField": "DOC-ID",
+          "target": "DocumentInformation.DocId",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-USER-ID",
+          "sourceField": "USER-ID",
+          "target": "DocumentInformation.UserId",
+          "status": "mapped",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "title": "Policy",
+      "sourceGroup": "NR-APOLICE / COD-PRODUTO / ADERENTE / APOLICE-NCR",
+      "targetType": "Policy",
+      "targetPath": "Policy",
+      "decision": "mapped",
+      "description": "Structured policy, product, branch, certificate, or adherent context identified in BGOW0019.",
+      "rows": [
+        {
+          "source": null,
+          "target": "BGOW0019Contract.Policy",
+          "status": "container"
+        },
+        {
+          "source": "BGOW0019-NR-APOLICE",
+          "sourceField": "NR-APOLICE",
+          "target": "Policy.NrApolice",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-COD-PRODUTO",
+          "sourceField": "COD-PRODUTO",
+          "target": "Policy.CodProduto",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-ADERENTE",
+          "sourceField": "ADERENTE",
+          "target": "Policy.Aderente",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-APOLICE-NCR",
+          "sourceField": "APOLICE-NCR",
+          "target": "Policy.ApoliceNcr",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-NCERTIFICADO",
+          "sourceField": "NCERTIFICADO",
+          "target": "Policy.Ncertificado",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-RAMO-DSC",
+          "sourceField": "RAMO-DSC",
+          "target": "Policy.RamoDsc",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-MODALIDADE",
+          "sourceField": "MODALIDADE",
+          "target": "Policy.Modalidade",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-PRODUTO",
+          "sourceField": "PRODUTO",
+          "target": "Policy.Produto",
+          "status": "mapped",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "title": "Client",
+      "sourceGroup": "COD-POSTALC / NR-CLIENTE",
+      "targetType": "Entity",
+      "targetPath": "Client",
+      "decision": "mapped",
+      "description": "Structured client, policyholder, or destination party identified in BGOW0019.",
+      "rows": [
+        {
+          "source": null,
+          "target": "BGOW0019Contract.Client",
+          "status": "container"
+        },
+        {
+          "source": "BGOW0019-COD-POSTALC",
+          "sourceField": "COD-POSTALC",
+          "target": "Client.CodPostalc",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-NR-CLIENTE",
+          "sourceField": "NR-CLIENTE",
+          "target": "Client.NrCliente",
+          "status": "mapped",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "title": "Mediator",
+      "sourceGroup": "COD-POSTALM / NR-MEDIADOR / NOME-MEDIADOR / NOME-MEDIADOR-ANTIGO",
+      "targetType": "Entity?",
+      "targetPath": "Mediator",
+      "decision": "mapped",
+      "description": "Optional mediator party identified in BGOW0019.",
+      "rows": [
+        {
+          "source": null,
+          "target": "BGOW0019Contract.Mediator",
+          "status": "container"
+        },
+        {
+          "source": "BGOW0019-COD-POSTALM",
+          "sourceField": "COD-POSTALM",
+          "target": "Mediator.CodPostalm",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-NR-MEDIADOR",
+          "sourceField": "NR-MEDIADOR",
+          "target": "Mediator.NrMediador",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-NOME-MEDIADOR",
+          "sourceField": "NOME-MEDIADOR",
+          "target": "Mediator.NomeMediador",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-NOME-MEDIADOR-ANTIGO",
+          "sourceField": "NOME-MEDIADOR-ANTIGO",
+          "target": "Mediator.NomeMediadorAntigo",
+          "status": "mapped",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "title": "MailingAddress",
+      "sourceGroup": "COD-POSTALM / COD-POSTALC / MORADA1 / MORADA2",
+      "targetType": "PostalAddress",
+      "targetPath": "MailingAddress",
+      "decision": "mapped",
+      "description": "Structured postal destination or mailing address identified in BGOW0019.",
+      "rows": [
+        {
+          "source": null,
+          "target": "BGOW0019Contract.MailingAddress",
+          "status": "container"
+        },
+        {
+          "source": "BGOW0019-COD-POSTALM",
+          "sourceField": "COD-POSTALM",
+          "target": "MailingAddress.CodPostalm",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-COD-POSTALC",
+          "sourceField": "COD-POSTALC",
+          "target": "MailingAddress.CodPostalc",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-MORADA1",
+          "sourceField": "MORADA1",
+          "target": "MailingAddress.Morada1",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-MORADA2",
+          "sourceField": "MORADA2",
+          "target": "MailingAddress.Morada2",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-MORADA3",
+          "sourceField": "MORADA3",
+          "target": "MailingAddress.Morada3",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-MORADA4",
+          "sourceField": "MORADA4",
+          "target": "MailingAddress.Morada4",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-TNUM-PORTA",
+          "sourceField": "TNUM-PORTA",
+          "target": "MailingAddress.TnumPorta",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-NUM-PORTA",
+          "sourceField": "NUM-PORTA",
+          "target": "MailingAddress.NumPorta",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-MORADA1",
+          "sourceField": "MORADA1",
+          "target": "MailingAddress.Morada1",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-MORADA2",
+          "sourceField": "MORADA2",
+          "target": "MailingAddress.Morada2",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-MORADA3",
+          "sourceField": "MORADA3",
+          "target": "MailingAddress.Morada3",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-MORADA4",
+          "sourceField": "MORADA4",
+          "target": "MailingAddress.Morada4",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-TNUM-PORTA",
+          "sourceField": "TNUM-PORTA",
+          "target": "MailingAddress.TnumPorta",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-NUM-PORTA",
+          "sourceField": "NUM-PORTA",
+          "target": "MailingAddress.NumPorta",
+          "status": "mapped",
+          "reason": null
+        }
+      ]
+    },
+    {
+      "title": "TextBlocks",
+      "sourceGroup": "ASSUNTO1 / ASSUNTO2 / ASSUNTO3 / TIPO-LINHA",
+      "targetType": "IReadOnlyList<TextBlock>",
+      "targetPath": "TextBlocks",
+      "decision": "candidate",
+      "description": "Document text, notes, clauses, or message lines identified in BGOW0019.",
+      "rows": [
+        {
+          "source": null,
+          "target": "BGOW0019Contract.TextBlocks",
+          "status": "container"
+        },
+        {
+          "source": "BGOW0019-ASSUNTO1",
+          "sourceField": "ASSUNTO1",
+          "target": "TextBlocks.Assunto1",
+          "status": "candidate",
+          "reason": "Document text, notes, clauses, or message lines identified in BGOW0019."
+        },
+        {
+          "source": "BGOW0019-ASSUNTO2",
+          "sourceField": "ASSUNTO2",
+          "target": "TextBlocks.Assunto2",
+          "status": "candidate",
+          "reason": "Document text, notes, clauses, or message lines identified in BGOW0019."
+        },
+        {
+          "source": "BGOW0019-ASSUNTO3",
+          "sourceField": "ASSUNTO3",
+          "target": "TextBlocks.Assunto3",
+          "status": "candidate",
+          "reason": "Document text, notes, clauses, or message lines identified in BGOW0019."
+        },
+        {
+          "source": "BGOW0019-TIPO-LINHA",
+          "sourceField": "TIPO-LINHA",
+          "target": "TextBlocks.TipoLinha",
+          "status": "candidate",
+          "reason": "Document text, notes, clauses, or message lines identified in BGOW0019."
+        },
+        {
+          "source": "BGOW0019-LINHA-GIS",
+          "sourceField": "LINHA-GIS",
+          "target": "TextBlocks.LinhaGis",
+          "status": "candidate",
+          "reason": "Document text, notes, clauses, or message lines identified in BGOW0019."
+        },
+        {
+          "source": "BGOW0019-LINHA1-GIS",
+          "sourceField": "LINHA1-GIS",
+          "target": "TextBlocks.Linha1Gis",
+          "status": "candidate",
+          "reason": "Document text, notes, clauses, or message lines identified in BGOW0019."
+        },
+        {
+          "source": "BGOW0019-LINHA2-GIS",
+          "sourceField": "LINHA2-GIS",
+          "target": "TextBlocks.Linha2Gis",
+          "status": "candidate",
+          "reason": "Document text, notes, clauses, or message lines identified in BGOW0019."
+        },
+        {
+          "source": "BGOW0019-LINHA3-GIS",
+          "sourceField": "LINHA3-GIS",
+          "target": "TextBlocks.Linha3Gis",
+          "status": "candidate",
+          "reason": "Document text, notes, clauses, or message lines identified in BGOW0019."
+        },
+        {
+          "source": "BGOW0019-LINHA4-GIS",
+          "sourceField": "LINHA4-GIS",
+          "target": "TextBlocks.Linha4Gis",
+          "status": "candidate",
+          "reason": "Document text, notes, clauses, or message lines identified in BGOW0019."
+        }
+      ]
+    },
+    {
+      "title": "Tables",
+      "sourceGroup": "DT-CARTA-EMISSAO / DT-EMISSAO / DT-ANIVERSARIA / DT-SINISTRO",
+      "targetType": "IReadOnlyList<GenericTable>",
+      "targetPath": "Tables",
+      "decision": "candidate",
+      "description": "Repeated detail, footer, list, statement, or tabular blocks identified in BGOW0019.",
+      "rows": [
+        {
+          "source": null,
+          "target": "BGOW0019Contract.Tables",
+          "status": "container"
+        },
+        {
+          "source": "BGOW0019-DT-CARTA-EMISSAO",
+          "sourceField": "DT-CARTA-EMISSAO",
+          "target": "Tables.DtCartaEmissao",
+          "status": "candidate",
+          "reason": "Repeated detail, footer, list, statement, or tabular blocks identified in BGOW0019."
+        },
+        {
+          "source": "BGOW0019-DT-EMISSAO",
+          "sourceField": "DT-EMISSAO",
+          "target": "Tables.DtEmissao",
+          "status": "candidate",
+          "reason": "Repeated detail, footer, list, statement, or tabular blocks identified in BGOW0019."
+        },
+        {
+          "source": "BGOW0019-DT-ANIVERSARIA",
+          "sourceField": "DT-ANIVERSARIA",
+          "target": "Tables.DtAniversaria",
+          "status": "candidate",
+          "reason": "Repeated detail, footer, list, statement, or tabular blocks identified in BGOW0019."
+        },
+        {
+          "source": "BGOW0019-DT-SINISTRO",
+          "sourceField": "DT-SINISTRO",
+          "target": "Tables.DtSinistro",
+          "status": "candidate",
+          "reason": "Repeated detail, footer, list, statement, or tabular blocks identified in BGOW0019."
+        }
+      ]
+    },
+    {
+      "title": "PrintRecordControl",
+      "sourceGroup": "NUM-DOC / NUM-REGISTO / TIPO-REG / DOC-ID",
+      "targetType": "PrintPayloadRecordControl",
+      "targetPath": "PrintRecordControl",
+      "decision": "mapped",
+      "description": "Record type, document sequence, or print-payload control fields identified in BGOW0019.",
+      "rows": [
+        {
+          "source": null,
+          "target": "BGOW0019Contract.PrintRecordControl",
+          "status": "container"
+        },
+        {
+          "source": "BGOW0019-NUM-DOC",
+          "sourceField": "NUM-DOC",
+          "target": "PrintRecordControl.NumDoc",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-NUM-REGISTO",
+          "sourceField": "NUM-REGISTO",
+          "target": "PrintRecordControl.NumRegisto",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-TIPO-REG",
+          "sourceField": "TIPO-REG",
+          "target": "PrintRecordControl.TipoReg",
+          "status": "mapped",
+          "reason": null
+        },
+        {
+          "source": "BGOW0019-DOC-ID",
+          "sourceField": "DOC-ID",
+          "target": "PrintRecordControl.DocId",
+          "status": "mapped",
+          "reason": null
+        }
+      ]
+    }
+  ]
+}

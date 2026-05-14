@@ -1,0 +1,363 @@
+      * PRINT RECORD FOR POLICY SCHEDULE.  THIS COPYBOOK WAS COMPLETELY 00010000
+      * REDEFINED FOR MC SINCE IN VD WE HAVE ONLY ONE UAR BY POLICY AND 00020000
+      * IN MC WE CAN HAVE AS MANY AS WE LIKE. NEVERTHELESS THE STARTING 00030000
+      * POINT WAS THE SAME COPYBOOK FROM VD.                            00040000
+      *                                                                 00040000
+      *-----------------   ATENÇÃO  ----------------------------------  00040000
+      *                                                                 00040000
+      * ALTERACOES NO NZ44AU01 DEVERAO SER REPLICADAS PARA O COPY       00040000
+      * BGOW9011 - APLICAÇÕES DE OUTPUTS (UGEN) E INFORMAR ESTA EQUIPA  00040000
+      *                                                                 00040000
+      *----------------------------------------------------------------*00090000
+      *                                                                 00050000
+      *                      MAINTENANCE  LOG                           00060000
+      *                                                                 00070000
+      *PROGRAMMER  PCR    DATE                COMMENTS                  00080000
+      *----------------------------------------------------------------*00090000
+      * R03V03                                                          00100000
+      * MUNDIAL                                                         00110000
+      *                                                                 00120000
+      * EO    M40131   1999-02-19   Original version.                   00130000
+      *                             (Motor Traditional Outputs)         00140000
+      * OH    M40275   1999-05-10   MOTOR TRADE PRODUCT                 00150000
+      * AS    M40337   1999-05-28   ALT.Z4M8.                           00160000
+      *                                                                 00170000
+      * LPC   M40353   1999-06-17   PUT AGENT IN SORT KEY.              00180000
+      *                                                                 00190000
+      * CC    M40361   1999-06-22   UAT FIX 116.                        00200000
+      *                                                                 00210000
+      * LPC   M40360   1999-06-30   CHANGE ALL COPYBOOK                 00220000
+      *                                                                 00230000
+      * DWR   M40347   1999-07-13   ADD COVERAGE DATES FOR CC0248       00240000
+      *                                                                 00250000
+      * LPC   M40360   1999-08-13   GET OUT SOME FIELDS                 00260000
+      *                                                                 00270000
+      * AMLM  M40453   1999-09-30   INCLUIR DATA E HORA DE SISTEMA      00271000
+      *                                                                 00272000
+      * AMLM  M40454   1999-09-30   INCLUIR EXTENSOES TERRITORIAIS      00273000
+      *                                                                 00274000
+      * PO    M40523   1999-10-30   INCLUIR POLICY-TRANSACTION NA CHAVE 00275000
+      *                                                                 00276000
+      * AMLM  M40568   1999-11-27   INCLUIR PREMIOS E CARGAS NAS        00277000
+      *                             COBERTURAS DO SISTEMA.              00277100
+      *                                                                 00278000
+      * AMLM  M40588   1999-12-10   INCLUIR INDICADOR DE APOLICE        00279000
+      *                             TEMPORARIA.                         00279100
+      *                                                                 00279200
+      * JMS   M40617   2000-01-11   SCHD CHANGE REASON DESCRIPTION TEXT 00279300
+      *                                                                 00279400
+      * CCA   M40662   2000-02-10   REFERENCIA DOCUMENTO SCHD.          00279500
+      *                                                                 00279600
+      * CCA   M40689   2000-02-24   UNIT-AT-RISK-CODE DOCUMENTO SCHD.   00279700
+      *                                                                 00279800
+      * JMS   M40728   2000-04-05   ALTERAÇÃO SCHD E ACTA               00279900
+      *                                                                 00280000
+      * AMLM  M40740   2000-04-11   INCLUIR 'VEHICLE-TYPE'              00280100
+      *                                                                 00280200
+      * PMC   M40937   2001-02-20   INCLUIR INDICADOR DE PRODUTO MONICA 00280200
+      *                                                                 00280200
+      * DDS   M41812   2004-08-31   PASSAR VALOR DA PROXIMA PRESTAÇÃO   00280200
+      *                                                                 00280200
+      * RKR   3P0108   2007-11-17   5 DIRECTIVA INCLUIR CAMPO CARTA-5D  00280200
+      *                                                                 00280200
+      * RCF   3P0149   2007-11-26   INCLUSAO DO "SCHEME"                00280200
+      *                                                                 00280200
+      * RCF   3P0177   2007-12-17   INCLUSAO DO "PESO BRUTO"            00280200
+      *                                                                 00280200
+3P0434* WALMIRA 3P0434 OUT/2008  200800172 -NOVO RJCS - CONDIÇÕES GERAIS
+      *                                                                 00280200
+      * CCR   3P0433   2008-11-18  200800164 PROJECTO ACTIVATION
+      *                                 AUMENTO DO AUTOMATISMO POSTAL.
+      *                                                                 00280200
+      * AM    3P1052   2011-06-22  201000198 - Inclusão do Canal de
+      *                            Distribuição
+      *                                                                 00280200
+3P1199* DDS     3P1199 JAN.2012     CAMPO PROTOCOLO
+      *                             (CONDIÇÕES PARTICULARES)
+      *
+3P1417* RJF   3P1417   2013-03-21   201200177 - MIGRAÇÃO AUTCT -> AUTOK
+3P1556* RJF   3P1556  28/05/14  NOVO CAMPO NUMERO DE REPORT
+      *
+3P1651* SDG   3P1651  02/02/15  HD-1123838 falta de casas decimais no
+3P1651*                        valor de capitais das condições
+3P1651*                        particulares
+      * JC    3P2303  23/02/24  202200585 CONSOLIDACAO AUTOT
+      *----------------------------------------------------------------*00281000
+       03  NZ44AU01-PRINT-RECORD.                                       00290000
+      *----------------------------------------------------------------*00300000
+      *    SORT KEY                                                     00310000
+      *----------------------------------------------------------------*00320000
+           05  NZ44AU01-SORT-KEY.                                       00330000
+               07  NZ44AU01-COMPANY                PIC X(03).           00340000
+               07  NZ44AU01-AGENT                  PIC X(10).           00350000
+               07  NZ44AU01-PH-POST-CODE           PIC X(09).           00360000
+               07  NZ44AU01-PH-CLIENT-REFERENCE    PIC X(10).           00370000
+               07  NZ44AU01-PRODUCT-CODE           PIC X(05).           00380000
+               07  NZ44AU01-POLICY-NUMBER          PIC X(16).           00390000
+M40453         07  NZ44AU01-D-H-SISTEMA            PIC X(14).           00391000
+M40523         07  NZ44AU01-POLICY-TRANSACTION     PIC X(10).           00392000
+               07  NZ44AU01-UNIT-AT-RISK-NUM       PIC X(08).           00400000
+               07  NZ44AU01-RECORD-TYPE            PIC X(01).           00410000
+                   88  NZ44AU01-POLICY-BASIC-DATA  VALUE 'A'.           00420000
+                   88  NZ44AU01-POLICY-EXTRA-DATA  VALUE 'B'.           00430000
+                   88  NZ44AU01-POLICY-COVER-DATA  VALUE 'C'.           00440000
+                   88  NZ44AU01-POLICY-TEXT-DATA   VALUE 'D'.           00450000
+                   88  NZ44AU01-POLICY-ENDORSEMENT VALUE 'E'.           00460000
+                   88  NZ44AU01-UAR-DATA           VALUE 'F'.           00470000
+                   88  NZ44AU01-UAR-IP-DATA        VALUE 'G'.           00480000
+                   88  NZ44AU01-SPECIAL-EQUIP-DATA VALUE 'H'.           00490000
+                   88  NZ44AU01-UAR-TEXT-DATA      VALUE 'I'.           00500000
+                   88  NZ44AU01-COVERAGE-DATA      VALUE 'J'.           00510000
+                   88  NZ44AU01-UAR-ENDORSEMENT    VALUE 'L'.           00520000
+M40454             88  NZ44AU01-UAR-EXT-TERRIT     VALUE 'K'.           00521000
+M40937         07  NZ44AU01-TIPO-PRODUTO           PIC X(01).
+M40937             88  NZ44AU01-PRODUTO-MONICA     VALUE 'S'.
+3P2303             88  NZ44AU01-TRADICIONAL        VALUE 'T'.
+3P1556     05  NZ44AU01-PRINT-DATA                 PIC X(412).          00531000
+      *----------------------------------------------------------------*00540000
+      *    POLICY BASIC LEVEL DATA                                      00550000
+      *----------------------------------------------------------------*00560000
+           05  REDEFINES NZ44AU01-PRINT-DATA.                           00570000
+               07  NZ44AU01-PRODUCT-CODE-DESC      PIC X(30).           00580000
+               07  NZ44AU01-PH-ADDRESSEE           PIC X(40).           00590000
+               07  NZ44AU01-PH-ADDRESS1            PIC X(40).           00600000
+               07  NZ44AU01-PH-ADDRESS2            PIC X(40).           00610000
+3p0433*        07  NZ44AU01-PH-TOWN-SUBURB         PIC X(30).           00620000
+3P0433         07  NZ44AU01-PH-TOWN-SUBURB         PIC X(40).           00620000
+               07  NZ44AU01-PH-POSTCODE-DESC       PIC X(41).           00630000
+               07  NZ44AU01-BC-CLIENT-REFERENCE    PIC X(10).           00640000
+               07  NZ44AU01-BC-ADDRESSEE           PIC X(40).           00650000
+               07  NZ44AU01-BC-ADDRESS1            PIC X(40).           00660000
+M40453*        07  NZ44AU01-BC-ADDRESS2            PIC X(40).           00670000
+3P0433*        07  NZ44AU01-BC-TOWN-SUBURB         PIC X(30).           00680000
+               07  NZ44AU01-BC-POST-CODE           PIC X(09).           00690000
+               07  NZ44AU01-BC-POSTCODE-DESC       PIC X(41).           00700000
+               07  NZ44AU01-UAR-NUM                PIC 9(04).           00710000
+M41812         07  NZ44AU01-INSTAL-VALUE           PIC S9(11)V99.
+3P0108         07  NZ44AU01-CARTA-5D               PIC X(01).
+3P1052         07  NZ44AU01-CANAL-DISTRIBUICAO     PIC X(03).
+3P1556         07                                  PIC X(20).           00721000
+      *-------                                                          00730000
+      *    POLICY EXTRA LEVEL DATA                                      00740000
+      *-------                                                          00750000
+           05  REDEFINES NZ44AU01-PRINT-DATA.                           00760000
+               07  NZ44AU01-TRANSACTION-TYPE       PIC X(02).           00770000
+                   88  NZ44AU01-NEW-BUSINESS       VALUE '01'.          00780000
+                   88  NZ44AU01-RENEWAL            VALUE '02' '12'.     00790000
+                   88  NZ44AU01-ENDORSEMENT        VALUE '03' '04' '05'.00800000
+                   88  NZ44AU01-REVIVE             VALUE '06' '07'.     00810000
+                   88  NZ44AU01-CANCELLATION       VALUE '08' '09'.     00820000
+                   88  NZ44AU01-LAPSE              VALUE '10'.          00830000
+                   88  NZ44AU01-CANCEL-TERM-DATES  VALUE '13'.          00840000
+                   88  NZ44AU01-REWRITE            VALUE '14'.          00850000
+                   88  NZ44AU01-ANNIV-RATING-DATE  VALUE '15'.          00860000
+                   88  NZ44AU01-STATE-RATE-CHANGE  VALUE '16'.          00870000
+               07  NZ44AU01-ANN-NETT-PREM-TOT      PIC S9(09)V9(02)     00880000
+                                                        COMP-3.         00890000
+               07  NZ44AU01-PLAN-CODE              PIC X(30).           00900000
+               07  NZ44AU01-TERM-EFFECT-DATE       PIC X(10).           00910000
+               07  NZ44AU01-TERM-EXPIRY-DATE       PIC X(10).           00920000
+               07  NZ44AU01-ALT-EFFECT-DATE        PIC X(10).           00921000
+               07  NZ44AU01-ALT-EXPIRY-DATE        PIC X(10).           00922000
+               07  NZ44AU01-RENEWAL-INDICATOR      PIC X(01).           00930000
+                   88  NZ44AU01-AUTOMATIC-RENEWAL  VALUE 'A'.           00940000
+                   88  NZ44AU01-MANUAL-RENEWAL-ONLY VALUE 'M'.          00950000
+                   88  NZ44AU01-NON-RENEW          VALUE 'Z'.           00960000
+                   88  NZ44AU01-SEMI-AUTOMATIC     VALUE 'P'.           00970000
+               07  NZ44AU01-ORIG-DATE-PRINTED      PIC X(10).           00980000
+M40588         07  NZ44AU01-INDICADOR-SEG-TEMP     PIC X(01).           00981000
+M40588             88  NZ44AU01-SEGURO-TEMPORARIO  VALUE 'S'.           00982000
+M40662         07  NZ44AU01-REF-DOC-SCHD           PIC X(15).           00983000
+3P0434         07  NZ44AU01-C-TIPO-CNDZ-GERL       PIC X(03).
+3P0434         07  NZ44AU01-C-CNDZ-GERL-CTTO       PIC X(05).
+3P0434         07  NZ44AU01-D-CNDZ-GERL-CTTO       PIC X(30).
+3P0433         07  NZ44AU01-BC-ADDRESS2            PIC X(40).           00680000
+3P0433         07  NZ44AU01-BC-TOWN-SUBURB         PIC X(40).           00680000
+3P0433         07  NZ44AU01-BC-NUM-TYPE            PIC X(01).
+3P0433         07  NZ44AU01-BC-NUM                 PIC X(04).
+3P0433         07  NZ44AU01-PH-NUM-TYPE            PIC X(01).
+3P0433         07  NZ44AU01-PH-NUM                 PIC X(04).
+3P1199         07  NZ44AU01-GROUP-NUMBER           PIC X(16).
+3P1556         07                                  PIC X(163).          00993000
+      *-------                                                          01000000
+      *    POLICY COVER LEVEL DATA                                      01010000
+      *-------                                                          01020000
+           05  REDEFINES NZ44AU01-PRINT-DATA.                           01030000
+               07  NZ44AU01-COVER-POLICY-CODE      PIC X(05).           01040000
+               07  NZ44AU01-COVER-INC-GROSS-PREM   PIC S9(11)V9(02)     01050000
+                                                       COMP-3.          01060000
+M40568         07  NZ44AU01-COVER-BASE-PREMIUM     PIC S9(09)V9(02)     01060200
+M40568                                                 COMP-3.          01060300
+M40568         07  NZ44AU01-COVER-MALUS            PIC S9(09)V9(02)     01060400
+M40568                                                 COMP-3.          01060500
+M40568         07  NZ44AU01-COVER-COMM-PREMIUM     PIC S9(09)V9(02)     01060600
+M40568                                                 COMP-3.          01060700
+M40568         07  NZ44AU01-COVER-BONUS            PIC S9(09)V9(02)     01060800
+M40568                                                 COMP-3.          01060900
+M40568         07  NZ44AU01-COVER-INSTAL-LOADING   PIC S9(09)V9(02)     01061000
+M40568                                                 COMP-3.          01061100
+M40568         07  NZ44AU01-COVER-FGA              PIC S9(09)V9(02)     01061200
+M40568                                                 COMP-3.          01061300
+M40568         07  NZ44AU01-COVER-SNB              PIC S9(09)V9(02)     01061400
+M40568                                                 COMP-3.          01061500
+M40568         07  NZ44AU01-COVER-INEM             PIC S9(09)V9(02)     01061600
+M40568                                                 COMP-3.          01061700
+M40568         07  NZ44AU01-COVER-STAMP-DUTY       PIC S9(09)V9(02)     01061800
+M40568                                             COMP-3.              01062000
+3P1556         07                                  PIC X(346).          01072000
+      *-------                                                          01080000
+      *    POLICY TEXT LEVEL DATA                                       01090000
+      *-------                                                          01100000
+           05  REDEFINES NZ44AU01-PRINT-DATA.                           01110000
+               07  NZ44AU01-POLICY-FORM-NUMBER     PIC X(10).           01120000
+               07  NZ44AU01-POLICY-SCREEN-LINE     PIC X(79).           01130000
+M40937         07                                  PIC X(323).          01141000
+      *-------                                                          01150000
+      *    POLICY ENDORSEMENT LEVEL DATA                                01160000
+      *-------                                                          01170000
+           05  REDEFINES NZ44AU01-PRINT-DATA.                           01180000
+M40617         07  NZ44AU01-POLICY-ENDORS-REASON   PIC X(99).           01190000
+3P1556         07                                  PIC X(313).          01201000
+                                                                        01210000
+      *-------                                                          01220000
+      *    UAR LEVEL DATA                                               01230000
+      *-------                                                          01240000
+           05  REDEFINES NZ44AU01-PRINT-DATA.                           01250000
+               07  NZ44AU01-LINE-OF-BUSINESS       PIC X(30).           01260000
+               07  NZ44AU01-VEHICLE-TYPE           PIC X(60).           01270000
+               07  NZ44AU01-VEH-MAKE               PIC X(60).           01280000
+               07  NZ44AU01-VEH-MODEL              PIC X(10).           01290000
+               07  NZ44AU01-T-LICENSE-DATE                              01300000
+                   REDEFINES NZ44AU01-VEH-MODEL    PIC X(10).           01310000
+               07  NZ44AU01-VEH-EXTRA              PIC X(25).           01320000
+               07  NZ44AU01-T-LICENSE-NUMBER-25                         01330000
+                   REDEFINES NZ44AU01-VEH-EXTRA    PIC X(25).           01340000
+               07  NZ44AU01-VEH-REG-NUMBER         PIC X(15).           01350000
+               07  NZ44AU01-STATED-VALUE           PIC S9(11) COMP-3.   01360000
+               07  NZ44AU01-NAMED-DRIVER           PIC X(90).           01370000
+M40689         07  NZ44AU01-UNIT-AT-RISK-CODE      PIC X(02).           01371000
+M40728         07  NZ44AU01-VEH-WEIGHT-GROSS       PIC S9(7) COMP-3.    01381100
+M40740         07  NZ44AU01-VEH-TYPE               PIC X(03).           01382100
+3P0149         07  NZ44AU01-SCHEME-ID              PIC X(06).           01382100
+3P0177         07  NZ44AU01-Q-PESO-BRUTO           PIC S9(7) COMP-3.    01382100
+3P1417         07  NZ44AU01-BONUS-APP-IND          PIC X(01).           01382100
+3P1417         07  NZ44AU01-NCD-LEVEL-TECH         PIC X(02).           01382100
+3P1417         07  NZ44AU01-NCD-LEVEL-COMM         PIC X(02).           01382100
+3P1651*CAMPO EQUIVALENTE AO NZ44AU01-STATED-VALUE COM CASA DECIMAIS
+3P1651         07  NZ44AU01-STATED-VALUE-DEC       PIC S9(11)V99 COMP-3.01360000
+3P1651*        07                                  PIC X(092).          01383000
+3P1651         07                                  PIC X(085).          01383000
+      *-------                                                          01390000
+      *    UAR IP LEVEL DATA                                            01400000
+      *-------                                                          01410000
+           05  REDEFINES NZ44AU01-PRINT-DATA.                           01420000
+               07  NZ44AU01-IP-CLIENT-REFERENCE    PIC X(10).           01430000
+               07  NZ44AU01-IP-ADDRESSEE           PIC X(40).           01440000
+               07  NZ44AU01-IP-ADDRESS1            PIC X(40).           01450000
+               07  NZ44AU01-IP-ADDRESS2            PIC X(40).           01460000
+3P0433*        07  NZ44AU01-IP-TOWN-SUBURB         PIC X(30).           01470000
+3P0433         07  NZ44AU01-IP-TOWN-SUBURB         PIC X(40).           01470000
+               07  NZ44AU01-IP-POST-CODE           PIC X(09).           01480000
+               07  NZ44AU01-IP-POSTCODE-DESC       PIC X(41).           01490000
+3P0433         07  NZ44AU01-IP-NUM-TYPE            PIC X(01).
+3P0433         07  NZ44AU01-IP-NUM                 PIC X(04).
+3P1556         07                                  PIC X(187).          01511000
+      *-------                                                          01520000
+      *    SPECIAL EQUIP LEVEL DATA                                     01530000
+      *-------                                                          01540000
+           05  FILLER REDEFINES NZ44AU01-PRINT-DATA.                    01550000
+               07  NZ44AU01-SPECIAL-EQUIP-TYPE     PIC X(60).           01560000
+               07  NZ44AU01-SPECIAL-EQUIP-MAKE     PIC X(12).           01570000
+               07  NZ44AU01-SPECIAL-EQUIP-MODL     PIC X(12).           01580000
+               07  NZ44AU01-AMOUNT-INSURED         PIC S9(11) COMP-3.   01590000
+3P0439         07  NZ44AU01-SPECIAL-EQUIP          PIC X(75).           01580000
+3P1651*CAMPO EQUIVALENTE AO NZ44AU01-AMOUNT-INSURED COM CASAS DECIMAIS
+3P1651         07  NZ44AU01-AMOUNT-INSURED-DEC     PIC S9(11)V99 COMP-3.01590000
+3P1651*        07                                  PIC X(247).          01601000
+3P1651         07                                  PIC X(240).          01601000
+      *-------                                                          01610000
+      *    UAR TEXT LEVEL DATA                                          01620000
+      *-------                                                          01630000
+           05  REDEFINES NZ44AU01-PRINT-DATA.                           01640000
+               07  NZ44AU01-UAR-FORM-NUMBER        PIC X(10).           01650000
+               07  NZ44AU01-UAR-SCREEN-LINE        PIC X(79).           01660000
+3P1556         07                                  PIC X(323).          01671000
+      *-------                                                          01680000
+      *    COVERAGE LEVEL DATA                                          01690000
+      *-------                                                          01700000
+           05  REDEFINES NZ44AU01-PRINT-DATA.                           01710000
+               07  NZ44AU01-COVERAGE-CODE          PIC X(05).           01720000
+                   88  NZ44AU01-SYSTEM-COV-CODE    VALUE '00000'        01730000
+                                                    THRU '99999'.       01740000
+               07                                  PIC X(01).           01750000
+                   88  NZ44AU01-COVER-DATA         VALUE 'C'.           01760000
+                   88  NZ44AU01-DEDUCTIBLE-DATA    VALUE 'D'.           01770000
+3P1556         07  NZ44AU01-COVER-DEDUCTIBLE-DATA  PIC X(406).          01781000
+               07  REDEFINES NZ44AU01-COVER-DEDUCTIBLE-DATA.            01790000
+                   09  NZ44AU01-SUM-INSURED        PIC S9(11) COMP-3.   01800000
+                   09  NZ44AU01-BASE-PREMIUM       PIC S9(09)V9(02)     01810000
+                                                       COMP-3.          01820000
+                   09  NZ44AU01-MALUS              PIC S9(09)V9(02)     01830000
+                                                       COMP-3.          01840000
+                   09  NZ44AU01-COMMERCIAL-PREMIUM PIC S9(09)V9(02)     01850000
+                                                       COMP-3.          01860000
+                   09  NZ44AU01-BONUS              PIC S9(09)V9(02)     01870000
+                                                       COMP-3.          01880000
+                   09  NZ44AU01-INSTALMENT-LOADING PIC S9(09)V9(02)     01890000
+                                                       COMP-3.          01900000
+                   09  NZ44AU01-FGA                PIC S9(09)V9(02)     01910000
+                                                       COMP-3.          01920000
+                   09  NZ44AU01-SNB                PIC S9(09)V9(02)     01930000
+                                                       COMP-3.          01940000
+                   09  NZ44AU01-INEM               PIC S9(09)V9(02)     01950000
+                                                       COMP-3.          01960000
+                   09  NZ44AU01-STAMP-DUTY         PIC S9(09)V9(02)     01970000
+                                                       COMP-3.          01980000
+3P1651*CAMPO EQUIVALENTE AO NZ44AU01-SUM-INSURED COM CASAS DECIMAIS
+3P1651             09  NZ44AU01-SUM-INSURED-DEC    PIC S9(11)V99 COMP-3.01800000
+3P1651*            09                              PIC X(346).          01991000
+3P1651             09                              PIC X(339).          01991000
+               07  REDEFINES NZ44AU01-COVER-DEDUCTIBLE-DATA.            02000000
+                   09  NZ44AU01-COVER-TYPE         PIC X(04).           02010000
+                   09  NZ44AU01-LIMIT-AMT          PIC S9(13) COMP-3.   02020000
+                   09  NZ44AU01-DEDUCTIBLE-TYPE    PIC X(02).           02030000
+                       88  NZ44AU01-DEDUCTIBLE-IS-AMOUNT                02040000
+                                                   VALUE 'A'.           02050000
+                       88  NZ44AU01-DEDUCTIBLE-IS-DAYS                  02060000
+                                                   VALUE 'D'.           02070000
+                       88  NZ44AU01-DEDUCTIBLE-IS-KM                    02080000
+                                                   VALUE 'K'.           02090000
+                       88  NZ44AU01-DEDUCTIBLE-IS-PERCENT               02100000
+                                                   VALUE 'P'.           02110000
+                   09  NZ44AU01-DEDUCTIBLE-AMT     PIC S9(09)V9(02)     02120000
+                                                       COMP-3.          02130000
+                   09  NZ44AU01-DEDUCTIBLE-PCT     PIC S9(03)V9(02)     02140000
+                                                     COMP-3.            02150000
+3P1651*CAMPO EQUIVALENTE AO NZ44AU01-LIMIT-AMT COM CASAS DECIMAIS
+3P1651             09  NZ44AU01-LIMIT-AMT-DEC      PIC S9(13)V99 COMP-3.02020000
+3P1651*            09                              PIC X(384).          02161000
+3P1651             09                              PIC X(376).          02161000
+      *-------                                                          02170000
+      *    UAR ENDORSEMENT LEVEL DATA                                   02180000
+      *-------                                                          02190000
+           05  REDEFINES NZ44AU01-PRINT-DATA.                           02200000
+M40617         07  NZ44AU01-UAR-ENDORS-REASON      PIC X(99).           02210000
+3P1556         07                                  PIC X(313).          02221000
+                                                                        02230000
+M40454*-------                                                          02231000
+M40454*    UAR EXTENSOES TERRITORIAIS                                   02232000
+M40454*-------                                                          02233000
+M40454     05  REDEFINES NZ44AU01-PRINT-DATA.                           02240000
+M40454         07  NZ44AU01-ENDORSEMENT-TYPE       PIC X(04).           02250000
+M40454         07  NZ44AU01-DESCRICAO              PIC X(60).           02260000
+M40454         07  NZ44AU01-FREE-TEXT              PIC X(60).           02260100
+M40454         07  NZ44AU01-TE-COVER               PIC X(02).           02261000
+M40454         07  NZ44AU01-EFFECTIVE-DATE         PIC X(10).           02270000
+M40454         07  NZ44AU01-EXPIRY-DATE            PIC X(10).           02271000
+M40454         07  NZ44AU01-NUM-DAYS               PIC S9(3) COMP-3.    02272000
+M40454         07  NZ44AU01-CHARGE-IND             PIC X(01).           02273000
+M40454         07  NZ44AU01-RENEW-IND              PIC X(01).           02274000
+3P1556         07                                  PIC X(261).          02275000
+3P1556     05  NZ44AU01-TIPO-IMPRESSAO             PIC X(001).          02240000
+                                                                        02280000
+

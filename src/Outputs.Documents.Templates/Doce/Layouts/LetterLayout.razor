@@ -1,5 +1,5 @@
-@namespace Outputs.Documents.Templates.Doce.Layouts
-@using Outputs.Documents.Domain.Doce
+@namespace Outputs.Documents.Templates.DOCE.Layouts
+@using Outputs.Documents.Domain.Locations
 
 <html>
     <head>
@@ -14,7 +14,7 @@
 
 
 @code {
-    [Parameter] public Address? Address { get; set; }
+    [Parameter] public PostalAddress? Address { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
 }
 

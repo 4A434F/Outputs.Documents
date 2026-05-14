@@ -1,0 +1,313 @@
+      *----------------------------------------------------------------*
+      *                      MAINTENANCE  LOG
+      *
+      *                         A T E N C A O                          *
+      *                         =============                          *
+      *                                                                *
+      *      ALTERACOES NO NY44WU01 DEVERAO SER REPLICADAS:            *
+      *             BGOW9039 - PARA APLICAÇÕES DE OUTPUTS (UGEN)       *
+      * PROGRAMMER  PCR     DATE        COMMENTS
+      *----------------------------------------------------------------*
+      *
+      * RJF         M41890  2005-06-14  VERSÃO ORIGINAL.
+      *
+3P0434* WALMIRA 3P0434 OUT/2008  200800172 -NOVO RJCS - CONDIÇÕES GERAIS
+      *
+      * CCR         3P0433  2008-11-25  200800164 PROJECTO ACTIVATION
+      *                                 AUMENTO DO AUTOMATISMO POSTAL.
+      *
+      * PMC         3P1334  2012-11-08  CHG-143007 NO SEGUIMENTO DO
+      *                                 CHG, SERÁ PASSADO O DESCRITIVO
+      *                                 DAS COBERTURAS .
+      *
+3P1556* RJF     3P1556  28/05/14  NOVO CAMPO NUMERO DE REPORT
+      *----------------------------------------------------------------*
+       03  NY4NAU01-PRINT-RECORD.
+      *--- SORT KEY
+           05  NY4NAU01-SORT-KEY.
+      *     CODIGO DE COMPANHIA
+               07  NY4NAU01-COMPANY                PIC X(03).
+      *     CODIGO DE AGENTE
+               07  NY4NAU01-AGENT                  PIC X(10).
+      *     CODIGO POSTAL DO TOMADOR DO SEGURO
+               07  NY4NAU01-TM-POST-CODE           PIC X(09).
+      *     Nº DE CLIENTE DO TOMADOR DO SEGURO
+               07  NY4NAU01-TM-CLIENT-REFERENCE    PIC X(10).
+      *     CÓDIGO DO PRODUTO
+               07  NY4NAU01-PRODUCT-CODE           PIC X(05).
+      *     Nº APOLICE
+               07  NY4NAU01-POLICY-NUMBER          PIC X(16).
+      *     DATA E HORA
+               07  NY4NAU01-D-H-SISTEMA            PIC X(14).
+      *     TRANSACÇÃO
+               07  NY4NAU01-POLICY-TRANSACTION     PIC X(10).
+      *     UNIDADE EM RISCO
+               07  NY4NAU01-UNIT-AT-RISK-NUM       PIC X(08).
+      *     NºSEQUENCIAL
+               07  NY4NAU01-NUM-SEQ-1              PIC S9(03) COMP-3.
+      *     TIPO DE REGISTO
+               07  NY4NAU01-RECORD-TYPE            PIC X(01).
+                   88  NY4NAU01-DADOS-GERAIS       VALUE 'A'.
+                   88  NY4NAU01-OUTROS-DADOS       VALUE 'B'.
+                   88  NY4NAU01-ENTIDADE-INT       VALUE 'C'.
+                   88  NY4NAU01-CLASSE-DESC        VALUE 'D'.
+                   88  NY4NAU01-CLASSE-GERAL       VALUE 'E'.
+                   88  NY4NAU01-NUM-SERIE          VALUE 'F'.
+                   88  NY4NAU01-TEXTO-CLASSE       VALUE 'G'.
+                   88  NY4NAU01-COBERTURAS-UAR     VALUE 'H'.
+                   88  NY4NAU01-TEXTO-FRAN         VALUE 'I'.
+                   88  NY4NAU01-TEXTO-UAR          VALUE 'J'.
+                   88  NY4NAU01-COBERTURA-APOL     VALUE 'L'.
+                   88  NY4NAU01-TEXTOS-APOLICE     VALUE 'M'.
+                   88  NY4NAU01-PREMIOS            VALUE 'N'.
+                   88  NY4NAU01-TEXTO-AJCAP        VALUE 'O'.
+
+3P1556*    05  NY4NAU01-PRINT-DATA                 PIC X(412).
+3P1556     05  NY4NAU01-PRINT-DATA                 PIC X(411).
+      *--- LINHA A
+      *--- DADOS BÁSICOS DA APÓLICE
+           05  REDEFINES NY4NAU01-PRINT-DATA.
+      *    CODIGO DO DOCUMENTO
+               07  NY4NAU01-DOCUMENT-CODE          PIC X(04).
+      *    REFERENCIA
+               07  NY4NAU01-REFERENCIA             PIC X(15).
+      *    DESCODIFICACAO DO PRODUTO
+               07  NY4NAU01-PRODUCT-CODE-DESC      PIC X(30).
+      *--- TOMADOR DO SEGURO
+      *    NOME
+               07  NY4NAU01-TM-ADDRESSEE           PIC X(40).
+      *    1 LINHA DE MORADA
+               07  NY4NAU01-TM-ADDRESS1            PIC X(40).
+      *    2 LINHA DE MORADA
+               07  NY4NAU01-TM-ADDRESS2            PIC X(40).
+      *    LOCALIDADE
+3P0433*        07  NY4NAU01-TM-TOWN-SUBURB         PIC X(30).
+3P0433         07  NY4NAU01-TM-TOWN-SUBURB         PIC X(40).
+      *    CODIGO POSTAL DESC
+               07  NY4NAU01-TM-POSTCODE-DESC       PIC X(41).
+      *--- SEGURADO
+      *    Nº DE CLIENTE
+               07  NY4NAU01-SE-CLIENT-REFERENCE    PIC X(10).
+      *    NOME
+               07  NY4NAU01-SE-ADDRESSEE           PIC X(40).
+      *    1 LINHA DE MORADA
+               07  NY4NAU01-SE-ADDRESS1            PIC X(40).
+      *    LOCALIDADE
+3P0433*        07  NY4NAU01-SE-TOWN-SUBURB         PIC X(30).
+3P0433         07  NY4NAU01-SE-TOWN-SUBURB         PIC X(40).
+      *    CODIGO POSTAL
+               07  NY4NAU01-SE-POST-CODE           PIC X(09).
+      *    INDICADOR DE PRIMEIRA IMPRESSÃO
+               07  NY4NAU01-PRIMEIRA-IMP           PIC X(01).
+                 88 NY4NAU01-PRIMEIRA              VALUE '1'.
+                 88 NY4NAU01-SEGUNDA-VIA           VALUE '2'.
+      *    INDICADOR DE IMPRESSÃO VIA BATCH OU ON-LINE
+               07  NY4NAU01-VIA-IMPRESSAO          PIC X(01).
+                 88 NY4NAU01-ON-LINE               VALUE 'I'.
+                 88 NY4NAU01-BATCH                 VALUE 'O' ' '.
+3P1556*3P1334  07  FILLER                          PIC X(21).
+3P1556         07  FILLER                          PIC X(20).
+      *--- LINHA B
+      *--- OUTROS DADOS DA APOLICE
+           05  REDEFINES NY4NAU01-PRINT-DATA.
+      *    TIPO DE TRANSACÇÃO
+               07  NY4NAU01-TRANSACTION-TYPE       PIC X(02).
+                   88  NY4NAU01-NEW-BUSINESS       VALUE '01'.
+                   88  NY4NAU01-RENEWAL            VALUE '02' '12'.
+                   88  NY4NAU01-ENDORSEMENT        VALUE '03' '04' '05'.
+                   88  NY4NAU01-REVIVE             VALUE '06' '07'.
+                   88  NY4NAU01-CANCELLATION       VALUE '08' '09'.
+                   88  NY4NAU01-LAPSE              VALUE '10'.
+                   88  NY4NAU01-CANCEL-TERM-DATES  VALUE '13'.
+                   88  NY4NAU01-REWRITE            VALUE '14'.
+                   88  NY4NAU01-ANNIV-RATING-DATE  VALUE '15'.
+                   88  NY4NAU01-STATE-RATE-CHANGE  VALUE '16'.
+      *     PREMIO PROVISORIO
+               07  NY4NAU01-PREMIO-PROVISORIO      PIC S9(10)V9(2).
+      *     CÓDIGO CONDIÇÃO GERAL
+               07  NY4NAU01-C-TIPO-CNDZ-GERL       PIC X(03).
+      *     DESCRITIVO CONDICAO GERAL
+               07  NY4NAU01-C-TIPO-CNDZ-GERL-DESC  PIC X(30).
+      *     PREMIO ANUAL
+               07  NY4NAU01-ANN-NETT-PREM-TOT      PIC S9(09)V9(02).
+      *     PLANO DE PAGAMENTO
+               07  NY4NAU01-PLAN-CODE              PIC X(30).
+      *     DATA INICIO TERMO
+               07  NY4NAU01-TERM-EFFECT-DATE       PIC X(10).
+      *     DATA FIM TERMO
+               07  NY4NAU01-TERM-EXPIRY-DATE       PIC X(10).
+      *     INDICADOR DE RENOVAÇÃO
+               07  NY4NAU01-RENEWAL-INDICATOR      PIC X(01).
+                   88  NY4NAU01-AUTOMATIC-RENEWAL      VALUE 'A'.
+                   88  NY4NAU01-MANUAL-RENEWAL-ONLY    VALUE 'M'.
+                   88  NY4NAU01-NON-RENEW              VALUE 'Z'.
+                   88  NY4NAU01-SEMI-AUTOMATIC         VALUE 'P'.
+      *     DATA ORIGINAL DE 1 PRINT
+               07  NY4NAU01-ORIG-DATE-PRINTED      PIC X(10).
+      *     NUMERO DOCUMENTO
+               07  NY4NAU01-REF-DOC                PIC X(15).
+      *     CAPITAL SEGURO
+               07  NY4NAU01-CAPITAL-SEGURO         PIC S9(11)V9(02).
+      *     DATA VENCIMENTO
+               07  NY4NAU01-DATA-VEN               PIC X(10).
+      *     DATA EFEITO ALTERAÇÃO
+               07  NY4NAU01-DATA-ALTE              PIC X(10).
+      *     TIPO ACTA (COMPLETA/RESUMO)
+               07  NY4NAU01-TIPO-ACTA              PIC X(01).
+                 88 NY4NAU01-COMPLETA      VALUE 'C'.
+                 88 NY4NAU01-RESUMO        VALUE 'R'.
+      *     TIPO APOLICE (GRUPO/INDIVIDUAL)
+               07  NY4NAU01-TIPO-APOLICE           PIC X(01).
+                 88 NY4NAU01-INDIVIDUAL    VALUE 'I'.
+                 88 NY4NAU01-GRUPO         VALUE 'G'.
+      *     TEMPO DE APOLICE (ANO E SEGUINTES/TEMPORARIA)
+               07  NY4NAU01-POLICY-TYPE            PIC X(02).
+                   88  NY4NAU01-APOLICE-TEMPORARIA VALUE 'TE'.
+                   88  NY4NAU01-APOLICE-ANUAL      VALUE 'AN'.
+                   88  NY4NAU01-FLUTUANTE          VALUE 'FL'.
+3P0434*     CÓDIGO CONDIÇÃO GERAL UNICA
+3P0434         07  NY4NAU01-C-CNDZ-GERL-CTTO       PIC X(05).
+3P0434*     DESCRITIVO CONDICAO GERAL UNICA
+3P0434         07  NY4NAU01-D-CNDZ-GERL-CTTO       PIC X(30).
+3P0433*    COMO NÃO HÁ ESPAÇO NO REGISTO CORRESPONDENTE
+3P0433*    ESCREVEMOS AQUI OS DESCRITIVO DO COD POSTAL
+3P0433         07  NY4NAU01-SE-POSTCODE-DESC       PIC X(41).
+3P0433         07  NY4NAU01-LR-POSTCODE-DESC       PIC X(41).
+3P0433         07  NY4NAU01-LR-TOWN-SUBURB         PIC X(40).
+               07  NY4NAU01-SE-ADDRESS2            PIC X(40).
+3P0433         07  NY4NAU01-TM-NUM-TYPE            PIC X(01).
+3P0433         07  NY4NAU01-TM-NUM                 PIC X(04).
+3P0433         07  NY4NAU01-SE-NUM-TYPE            PIC X(01).
+3P0433         07  NY4NAU01-SE-NUM                 PIC X(04).
+3P0434*        07                                  PIC X(241).
+3P0434*3P0433  07                                  PIC X(206).
+3P1334*3P0433         07                                  PIC X(034).
+3P1556*3P1334  07 FILLER                           PIC X(075).
+3P1556         07 FILLER                           PIC X(033).
+      *--- LINHA C
+      *--- ENTIDADE INTERESSADA
+           05  REDEFINES NY4NAU01-PRINT-DATA.
+               07  NY4NAU01-TIPO-CONTRATO          PIC X(01).
+                 88  NY4NAU01-LOCADOR              VALUE 'L' 'G'.
+                 88  NY4NAU01-CREDOR               VALUE 'C' 'H'.
+               07  NY4NAU01-CONTRATO               PIC X(15).
+      *    NUMERO DE CLIENTE
+               07  NY4NAU01-EI-CLIENT-REFERENCE    PIC X(10).
+      *    NOME
+               07  NY4NAU01-EI-ADDRESSEE           PIC X(40).
+      *    1 LINHA DE MORADA
+               07  NY4NAU01-EI-ADDRESS1            PIC X(40).
+      *    2 LINHA DE MORADA
+               07  NY4NAU01-EI-ADDRESS2            PIC X(40).
+      *    LOCALIDADE
+3P0433*        07  NY4NAU01-EI-TOWN-SUBURB         PIC X(30).
+3P0433         07  NY4NAU01-EI-TOWN-SUBURB         PIC X(40).
+      *    CÓDIGO POSTAL
+               07  NY4NAU01-EI-POST-CODE           PIC X(09).
+      *    DESCRITIVO CÓDIGO POSTAL
+               07  NY4NAU01-EI-POSTCODE-DESC       PIC X(41).
+3P0433*    DESCRITIVO TIPO E NUMERO DE PORTA
+3P0433         07  NY4NAU01-EI-NUM-TYPE            PIC X(01).
+3P0433         07  NY4NAU01-EI-NUM                 PIC X(04).
+      *     LOCAL DE RISCO
+               07  NY4NAU01-LR-ADDRESS1            PIC X(40).
+               07  NY4NAU01-LR-ADDRESS2            PIC X(40).
+               07  NY4NAU01-LR-POST-CODE           PIC X(09).
+3P0433         07  NY4NAU01-LR-NUM-TYPE            PIC X(01).
+3P0433         07  NY4NAU01-LR-NUM                 PIC X(04).
+      *    PERIODO DE INDEMNIZAÇÃO/CARENCIA
+               07  NY4NAU01-Q-ANO-SBTD-NOVO        PIC 9(02).
+3P0433*        07                                  PIC X(29).
+3P1556*3P0433  07                                  PIC X(34).
+3P1556         07                                  PIC X(33).
+      *--- LINHA D
+      *--- CÓDIGO E DESCRITIVO CLASSE
+           05  REDEFINES NY4NAU01-PRINT-DATA.
+      *    CÓDIGO DE CLASSE
+               07  NY4NAU01-C-CLAS-EQPT            PIC X(03).
+      *    1 LINHA DE DESCRIÇÃO DE CLASSE
+               07  NY4NAU01-C-CLAS-DESC-1          PIC X(75).
+      *    2 LINHA DE DESCRIÇÃO DE CLASSE
+               07  NY4NAU01-C-CLAS-DESC-2          PIC X(75).
+3P1556*        07                                  PIC X(259).
+3P1556         07                                  PIC X(258).
+      *--- LINHA E
+      *--- DADOS Y4MQ
+           05  REDEFINES NY4NAU01-PRINT-DATA.
+      *    MARCA
+               07  NY4NAU01-C-MARC-EQPT            PIC X(10).
+      *    MODELO
+               07  NY4NAU01-C-MODL-EQPT            PIC X(24).
+      *    ANO FABRICO
+               07  NY4NAU01-ZA-FABRICO             PIC 9(04).
+      *    QUANTIDADE
+               07  NY4NAU01-Q-UNI-EQPT             PIC 9(05).
+      *    MONTANTE SEGURO
+               07  NY4NAU01-M-GRUP-EQPT-TOT        PIC 9(11)V99.
+      *    CLAUSULAS  DESCRITIVAS
+               07  NY4NAU01-CLAUSULAS              PIC X(01).
+                   88 NY4NAU01-NORMAL              VALUE 'N'.
+                   88 NY4NAU01-EM-ANEXO            VALUE 'A'.
+                   88 NY4NAU01-NA-COMPANHIA        VALUE 'C'.
+3P1556*        07                                  PIC X(355).
+3P1556         07                                  PIC X(354).
+      *--- LINHA F, G
+      *--- TEXTOS LIVRES, Nº SÉRIE
+           05  REDEFINES NY4NAU01-PRINT-DATA.
+               07  NY4NAU01-TEXTO-LIVRE-1          PIC X(75).
+               07  NY4NAU01-TEXTO-LIVRE-2          PIC X(75).
+3P1556*        07                                  PIC X(262).
+3P1556         07                                  PIC X(261).
+      *--- LINHA H, L
+      *--- COBERTURAS
+           05  REDEFINES NY4NAU01-PRINT-DATA.
+      *    CÓDIGO DE COBERTURA
+               07  NY4NAU01-COBERTURA              PIC X(05).
+      *    VALOR QUE A COBERTURA SEGURA
+               07  NY4NAU01-VALOR-SEGURO           PIC S9(11)V9(02).
+      *    VALOR QUE A COBERTURA SEGURA
+3P1334         07  NY4NAU01-COBERTURA-DESC         PIC X(110).
+3P1334*        07                                  PIC X(394).
+3P1556*3P1334  07                                  PIC X(284).
+3P1556         07                                  PIC X(283).
+      *--- LINHA I, J, M, O
+      *--- UAR TEXT LEVEL DATA
+           05  REDEFINES NY4NAU01-PRINT-DATA.
+      *    INDICA QUAL O NÚMERO DE FORM. PODEM FORMS COM MAIS QUE
+      *    UMA LINHA. ESTE NÚMERO APENAS MUDA QUANDO HOUVER
+      *    MUDANCA DE FORM
+               07  NY4NAU01-UAR-FORM-NUMBER        PIC X(10).
+               07  NY4NAU01-UAR-SCREEN-LINE        PIC X(79).
+3P1556*        07                                  PIC X(323).
+3P1556         07                                  PIC X(322).
+      *--- LINHA N
+      *--- DADOS DO PRÉMIO
+           05  REDEFINES NY4NAU01-PRINT-DATA.
+      *    PREMIO TOTAL DE COBERTURAS EXCEPTO A ACTA
+               07  NY4NAU01-PREMIO-COM-COB         PIC S9(11)V99.
+      *    SNB TOTAL DE COBERTURA EXCEPTO A ACTA
+               07  NY4NAU01-SNB-COB                PIC S9(11)V99.
+      *    IS TOTAL DE COBERTURA EXCEPTO A ACTA
+               07  NY4NAU01-IS-COB                 PIC S9(11)V99.
+      *    PREMIO TOTAL DE COBERTURAS + IMPOSTOS SEM ACTA
+               07  NY4NAU01-PREMIO-TOT-COB         PIC S9(11)V99.
+      *    PREMIO ACTA
+               07  NY4NAU01-PREMIO-01000           PIC S9(11)V99.
+      *    SNB ACTA
+               07  NY4NAU01-SNB-01000              PIC S9(11)V99.
+      *    IS ACTA
+               07  NY4NAU01-IS-01000               PIC S9(11)V99.
+      *    PREMIO TOTAL ACTA + IMPOSTOS
+               07  NY4NAU01-PRM-TOT-01000          PIC S9(11)V99.
+      *    PREMIO COMERCIAL DA APOLICE
+               07  NY4NAU01-PRM-COMER-TOT          PIC S9(11)V99.
+      *    SNB DA APOLICE
+               07  NY4NAU01-PRM-SNB-TOT            PIC S9(11)V99.
+      *    IS DA APOLICE
+               07  NY4NAU01-PRM-IS-TOT             PIC S9(11)V99.
+      *    PREMIO TOTAL DA APOLICE COBERTURAS, ACTA + IMPOSTOS
+               07  NY4NAU01-PRM-TOT                PIC S9(11)V99.
+3P1556*        07                                  PIC X(256).
+3P1556         07                                  PIC X(255).
+3P1556     05  NY4NAU01-TIPO-IMPRESSAO             PIC X(001).
+

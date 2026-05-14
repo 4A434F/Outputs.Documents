@@ -1,6 +1,6 @@
-@namespace Outputs.Documents.Templates.Doce
+@namespace Outputs.Documents.Templates.DOCE
 @attribute [DocumentTemplate(isDefault: true, Key = "doce-courtesy-letter", Name = "Courtesy Letter", Group = "DOCE")]
-@attribute [DocumentLayout(headerTemplate: typeof(HeaderComponent), footerTemplate: typeof(FooterComponent), headerPropertyName: nameof(DoceCourtesyLetter.Header), footerPropertyName: nameof(DoceCourtesyLetter.Footer))]
+@attribute [DocumentLayout(headerTemplate: typeof(HeaderComponent), footerTemplate: typeof(FooterComponent), headerPropertyName: nameof(DC001CourtesyLetter.Header), footerPropertyName: nameof(DC001CourtesyLetter.Footer))]
 @using System.Globalization
 @using Microsoft.Extensions.Options
 @inject IOptions<StaticFilePaths> StaticFiles
@@ -39,7 +39,7 @@
 
 @code {
     [Parameter] 
-    public DoceCourtesyLetter Model { get; set; } = default!;
+    public DC001CourtesyLetter Model { get; set; } = default!;
 
     private string? image;
 

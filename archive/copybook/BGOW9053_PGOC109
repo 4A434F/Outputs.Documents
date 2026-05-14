@@ -1,0 +1,522 @@
+      *****************************************************************
+      *----------------------------------------------------------------*00010000
+      **                     MAINTENANCE  LOG                           00020000
+      *                        FZ4ITS02                                 00040000
+      *                                                                 00050000
+      *PROGRAMMER  PCR    DATE      COMMENTS                            00060000
+      *  MJE             20150914   ATIVIDADE 201400073
+MJE#01*  MJE             20160314   POR NECESSIDADE DE AUMENTO DO
+MJE#01*                             COMPRIMENTO DO CAMPO TIPO DE VEÍCULO
+MJE#01*                             FOI CRIADO UM NOVO CAMPO NO FIM DO
+MJE#01*                             REGISTO TIPO IC
+      *  MP              201708166  NIVEL 88 ESPECIAL FRONTING
+      *                             RETROFIT OUTPUTS
+      *  BV     2P3424   20190710   CHG-816211 CERTIFICADO SEGURO
+      *                             (RAMO MM) ACRESCENTAR CAMPO REF SEG.
+      *  CCR    P3420A   20190819   CHG-824169 NOVO TIPO DE APÓLICE (R)
+      *
+      *----------------------------------------------------------------*00060100
+      *        ---------   ATENÇÃO  --------------------------          00060400
+      *                                                                 00060500
+      *      ALTERACOES NO FZ4ITS02 DEVERAO SER REPLICADAS:             00060600
+      *             BGOW9053 - PARA APLICAÇÕES DE OUTPUTS (UGEN)        00060700
+      *                                                                 00060800
+      *                                                                 00060900
+      *----------------------------------------------------------------*00070000
+      *------------------------------------------------------------ ---*
+      *  COPYBOOK PARA IMPRESSAO DE CERTIFICADO DE SEGURO              *
+      *                           E CONDIÇÕES PARTICULARES             *
+      *    MERCADORIAS TRANSPORTADAS                                   *
+      *    TRANSPORTE DE MERCADORIAS                                   *
+      *            RODOVIÁRIO NACIONAL                                 *
+      *            NACIONAL POR CONTAS PRÓPRIA                         *
+      *            RODOVIÁRIO INTERNACIONAL                            *
+      *            EMBARCAÇÕES DE COMÉRCIO                             *
+      *            EMBARCAÇÕES DE RECREIO                              *
+      *                                                                *
+      *--------------------------------------------------------------- *
+         03  FZ4ITS2-PRINT-RECORD.
+      *--- AREA COMUM
+           05  FZ4ITS2-COMUM.
+      *     CODIGO DE COMPANHIA
+             07  FZ4ITS2-COMPANY                 PIC X(03).
+      *     CODIGO DE MARCA
+             07  FZ4ITS2-MARCA                   PIC X(03).
+      *     CANAL DE DISTRIBUIÇÃO
+             07  FZ4ITS2-CANAL-DISTRIB           PIC X(03).
+      *     CODIGO SISTEMA ORIGEM
+             07  FZ4ITS2-COD-ORIGEM              PIC X(03).
+      *----
+      *     CODIGO DE DOCUMENTO
+      *       MMCT - CERTIFICADO DE MERCADORIAS TRANSPORTADAS
+      *       CRCT - CERTIFICADO DE TRANSPORTES DE MERCADORIAS
+      *       BRCT - CERTIFICADO DE EMBARCAÇÕES
+      *
+      *       MMCP - CONDIÇÃO PARTICULAR DE MERCADORIAS TRANSPORTADAS
+      *       CRCP - CONDIÇÃO PARTICULAR DE TRANSPORTES DE MERCADORIAS
+      *       BRCP - CONDIÇÃO PARTICULAR DE EMBARCAÇÕES
+             07  FZ4ITS2-COD-DOCUMENTO           PIC X(04).
+               88  FZ4ITS2-COD-DOC-MMCT     VALUE 'MMCT'.
+2P3424* CODIGOS DE DOCUMENTO ACRESCENTADOS NESTE CCID PARA FICAREM
+2P3424* COERENTES COM O COPY BGOW9053, POIS JÁ TINHA EM PR.
+2P3424         88  FZ4ITS2-COD-DOC-TRCT     VALUE 'TRCT'.
+               88  FZ4ITS2-COD-DOC-CRCT     VALUE 'CRCT'.
+2P3424         88  FZ4ITS2-COD-DOC-CRCI     VALUE 'CRCI'.
+2P3424         88  FZ4ITS2-COD-DOC-CRCN     VALUE 'CRCN'.
+               88  FZ4ITS2-COD-DOC-BRCT     VALUE 'BRCT'.
+2P3424         88  FZ4ITS2-COD-DOC-BRDS     VALUE 'BRDS'.
+               88  FZ4ITS2-COD-DOC-MMCP     VALUE 'MMCP'.
+               88  FZ4ITS2-COD-DOC-CRCP     VALUE 'CRCP'.
+               88  FZ4ITS2-COD-DOC-BRCP     VALUE 'BRCP'.
+      *     CODIGO DE IDIOMA
+             07  FZ4ITS2-COD-IDIOMA              PIC X(01).
+               88  FZ4ITS2-COD-IDIOMA-E     VALUE 'E'.
+               88  FZ4ITS2-COD-IDIOMA-P     VALUE 'P'.
+      *     Nº DE CLIENTE DO TOMADOR DO SEGURO
+             07  FZ4ITS2-TM-CLIENT-REFERENCE     PIC X(10).
+      *     CODIGO POSTAL DO TOMADOR DO SEGURO
+             07  FZ4ITS2-TM-POST-CODE            PIC X(08).
+      *     CODIGO DE MEDIADOR
+             07  FZ4ITS2-AGENTE-COBRADOR         PIC X(10).
+      *     CODIGO POSTAL DO MEDIADOR
+             07  FZ4ITS2-AG-POST-CODE            PIC X(08).
+      *     CÓDIGO DO PRODUTO
+             07  FZ4ITS2-PRODUTO                 PIC X(05).
+      *     Nº APOLICE
+             07  FZ4ITS2-POLICY-NUMBER           PIC X(16).
+      *     NÚMERO DE TRANSAÇÃO
+             07  FZ4ITS2-TRANSACAO-NUMBER        PIC X(10).
+      *     NºINFDOC INFORMA A POSIÇÃO NO DOCUMENTO
+             07  FZ4ITS2-NUM-INFDOC              PIC 9(02).
+      *     NÚMERO DE UNIDADE DE RISCO
+             07  FZ4ITS2-UNIT-RISK-NUM           PIC X(06).
+      *     NÚMERO DE OBJETO
+             07  FZ4ITS2-OBJECT-NUM              PIC X(06).
+      *     NÚMERO AGREGADOR
+             07  FZ4ITS2-NUM-AGREGADOR           PIC X(06).
+      *     NÚMERO DE SEQUENCIA
+             07  FZ4ITS2-NUM-SEQ-1               PIC 9(05).
+      *     TIPO DE REGISTO DENTRO DOS SUB-DOCUMENTOS
+             07  FZ4ITS2-TYPE-1-2.
+                09  FZ4ITS2-RECORD-TYPE-1           PIC X(02).
+                  88  FZ4ITS2-DADOS-GERAIS       VALUE 'AA'.
+                  88  FZ4ITS2-DADOS-VLR-APOL     VALUE 'BA'.
+                  88  FZ4ITS2-SEGURADO           VALUE 'CA'.
+                  88  FZ4ITS2-TRATORES           VALUE 'FA'.
+                  88  FZ4ITS2-OBJ-SUPL-MM        VALUE 'IA'.
+                  88  FZ4ITS2-OBJ-SUPL-CR        VALUE 'IC'.
+                  88  FZ4ITS2-OBJ-SUPL-BR        VALUE 'IE'.
+                  88  FZ4ITS2-TXT-NAV-BR         VALUE 'IF'.
+                  88  FZ4ITS2-OBJ-SEGURO         VALUE 'II'.
+                  88  FZ4ITS2-OBJ-MOTOR          VALUE 'IK'.
+                  88  FZ4ITS2-OBJ-BENS-SEG       VALUE 'IM'.
+                  88  FZ4ITS2-OBJ-CAP            VALUE 'KA'.
+                  88  FZ4ITS2-OBJ-FAT-PPROV      VALUE 'KG'.
+                  88  FZ4ITS2-COB-AMBITO         VALUE 'MA'.
+                  88  FZ4ITS2-COB-RISCO          VALUE 'MB'.
+                  88  FZ4ITS2-TXT-COB-RISCO      VALUE 'MT'.
+                  88  FZ4ITS2-OPER-REBOQ         VALUE 'OA'.
+                  88  FZ4ITS2-ENTIDADES          VALUE 'QA'.
+                  88  FZ4ITS2-CLAUS-OBJ          VALUE 'SA'.
+                  88  FZ4ITS2-CLAUS-APOL         VALUE 'UA'.
+                  88  FZ4ITS2-CO-SEGURO          VALUE 'WA'.
+                  88  FZ4ITS2-FIM-DOCUMENTO      VALUE 'ZA'.
+      *        TIPO DE LAYOUTS POR REGISTO
+                09  FZ4ITS2-RECORD-TYPE-2           PIC X(01).
+                  88  FZ4ITS2-TYPE-A             VALUE 'A'.
+                  88  FZ4ITS2-TYPE-B             VALUE 'B'.
+                  88  FZ4ITS2-TYPE-C             VALUE 'C'.
+                  88  FZ4ITS2-TYPE-D             VALUE 'D'.
+                  88  FZ4ITS2-TYPE-E             VALUE 'E'.
+                  88  FZ4ITS2-TYPE-F             VALUE 'F'.
+                  88  FZ4ITS2-TYPE-G             VALUE 'G'.
+                  88  FZ4ITS2-TYPE-H             VALUE 'H'.
+             07  FILLER REDEFINES FZ4ITS2-TYPE-1-2 PIC X(3).
+                  88  FZ4ITS2-VALID-TYPE-1-2     VALUE 'AAA'
+                                                       'BAA'
+                                                       'CAA'
+                                                       'FAA'
+                                                       'IAA'
+                                                       'ICA'
+                                                       'IEA'
+                                                       'IEB'
+                                                       'IFA'
+                                                       'IIA'
+                                                       'IIB'
+                                                       'IKA'
+                                                       'IMA'
+                                                       'KAA'
+                                                       'KGA'
+                                                       'MAA'
+                                                       'MBA'
+                                                       'MBB'
+                                                       'MTA'
+                                                       'OTA'
+                                                       'QAA'
+                                                       'SAA'
+                                                       'UAA'
+                                                       'WAA'
+                                                       'ZAA'.
+           05  FZ4ITS2-PRINT-DATA                PIC X(387).
+
+      *
+      *--- LINHA AA
+      *--- DADOS GERAIS  DA APÓLICE
+           05  FZ4ITS2-LINHA-AA REDEFINES FZ4ITS2-PRINT-DATA.
+      *--- TOMADOR DO SEGURO
+      *    NOME
+             07  FZ4ITS2-TM-ADDRESSEE            PIC X(40).
+      *    LINHA DE MORADA-1
+             07  FZ4ITS2-TM-ADDRESS1             PIC X(40).
+      *    LINHA DE MORADA-2
+             07  FZ4ITS2-TM-ADDRESS2             PIC X(40).
+      *    LOCALIDADE
+             07  FZ4ITS2-TM-ADDRESS3             PIC X(40).
+      *    CODIGO POSTAL DESC
+             07  FZ4ITS2-TM-ADDRESS4             PIC X(40).
+      *    TIPO NUM DE PORTA
+             07  FZ4ITS2-TM-TNUM-PORTA           PIC X(01).
+      *    NUM DE PORTA
+             07  FZ4ITS2-TM-NUM-PORTA            PIC X(04).
+      *    PRODUTO DESC
+             07  FZ4ITS2-PRODUTO-DESC            PIC X(30).
+      *    PLANO DE PAGAMENTO
+      *    ÚNICO - NAS TEMPORÁRIAS
+      *    ANUAL
+      *    FRACIONADA - MENSAL,TRIMESTRAL, SEMESTRAL
+             07  FZ4ITS2-FORMA-PAGAMENTO-DESC    PIC X(30).
+      *    CÓDIGO CONDIÇÃO GERAL
+             07  FZ4ITS2-TIPO-COND-GERAL         PIC X(03).
+      *--- TIPO DE TRANSACÇÃO
+             07  FZ4ITS2-TRANSACTION-TYPE        PIC X(02).
+                   88  FZ4ITS2-NEW-BUSINESS     VALUE '01'.
+                   88  FZ4ITS2-RENEWAL          VALUE '02' '12'.
+                   88  FZ4ITS2-ENDORSEMENT      VALUE '03' '04' '05'.
+                   88  FZ4ITS2-REVIVE           VALUE '06' '07'.
+      *    DATA ORIGINAL DE 1 PRINT
+             07  FZ4ITS2-ORIG-DATE-PRINTED       PIC X(10).
+      *    DATA DE VENCIMENTO (DDMM)
+             07  FZ4ITS2-DATA-VENC               PIC X(04).
+      *    DATA INICIO DO TERMO (AAAA-MM-DD)
+             07  FZ4ITS2-TERM-EFFECT-DATE        PIC X(10).
+      *    DATA FIM DO TERMO (AAAA-MM-DDA)
+             07  FZ4ITS2-TERM-EXPIRY-DATE        PIC X(10).
+      *---
+      *    TIPO APOLICE
+      *    -  RELAÇÃO DE APLICAÇÕES
+      *        A - APLICAÇÃO
+      *        P - ESPECIAL APLICAÇÃO
+      *    -  RELAÇÃO DE ADERENTES
+      *        E - ESPECIAL
+      *        F - FRONTING
+      *        N - NORMAL
+             07  FZ4ITS2-TIPO-APOLICE            PIC X(01).
+               88  FZ4ITS2-APLICACAO           VALUE 'A'.
+               88  FZ4ITS2-ESPECIAL            VALUE 'E'.
+               88  FZ4ITS2-FRONTING            VALUE 'F'.
+               88  FZ4ITS2-NORMAL              VALUE 'N'.
+               88  FZ4ITS2-ESPECIAL-APLICACAO  VALUE 'P'.
+               88  FZ4ITS2-FRONTING-APLICACAO  VALUE 'T'.
+P3420A         88  FZ4ITS2-FACULTATIVO         VALUE 'R'.
+      *    TEMPO DE APÓLICE(ANO E SEGUINTES)
+             07  FZ4ITS2-MODO-RENOVACAO          PIC X(02).
+               88  FZ4ITS2-APOL-TEMPORARIA     VALUE 'TE'.
+               88  FZ4ITS2-APOL-ANUAL          VALUE 'AN'.
+      *    USER-ID DE IMPRESSSÃO
+             07  FZ4ITS2-USER-ID                 PIC X(08).
+      *    INDICADOR DE PRIMEIRA IMPRESSÃO
+             07  FZ4ITS2-N-IMPRESSAO             PIC X(01).
+               88  FZ4ITS2-PRIMEIRA-IMP       VALUE '1'.
+               88  FZ4ITS2-SEGUNDA-VIA        VALUE '2'.
+      *    NÚMERO DE CÓPIAS
+             07  FZ4ITS2-NUM-COPIAS              PIC 9(01).
+             07  FILLER                          PIC X(70).
+      *
+      *--- LINHA BA
+      *--- DADOS DE VALORES DA APÓLICE
+           05 FZ4ITS2-LINHA-BA REDEFINES FZ4ITS2-PRINT-DATA.
+      *    VALORES ANUAL
+             07  FZ4ITS2-ANUAL-PR-COMERCIAL      PIC S9(11)V9(02).
+             07  FZ4ITS2-ANUAL-CUSTO-APOL        PIC S9(11)V9(02).
+             07  FZ4ITS2-ANUAL-IMPOSTO           PIC S9(11)V9(02).
+             07  FZ4ITS2-ANUAL-PR-TOTAL          PIC S9(11)V9(02).
+      *    VALORES 1ª FRACÇÃO
+             07  FZ4ITS2-1F-PR-COMERCIAL         PIC S9(11)V9(02).
+             07  FZ4ITS2-1F-CUSTO-APOL           PIC S9(11)V9(02).
+             07  FZ4ITS2-1F-IMPOSTO              PIC S9(11)V9(02).
+             07  FZ4ITS2-1F-PR-TOTAL             PIC S9(11)V9(02).
+      *    VALORES FRACÇÕES SEGUINTES
+             07  FZ4ITS2-FS-PR-COMERCIAL         PIC S9(11)V9(02).
+             07  FZ4ITS2-FS-CUSTO-APOL           PIC S9(11)V9(02).
+             07  FZ4ITS2-FS-IMPOSTO              PIC S9(11)V9(02).
+             07  FZ4ITS2-FS-PR-TOTAL             PIC S9(11)V9(02).
+      *    CDIGO CONDIÇÃO GERAL ÚNICA
+             07  FZ4ITS2-COND-GERAL-UNICA        PIC X(05).
+      *    DESCRITIVO DO CÓDIGO CONDIÇÃO GERAL ÚNICO
+             07  FZ4ITS2-COND-GERAL-UNICA-DESC   PIC X(115).
+             07  FILLER                          PIC X(111).
+      *---
+      *--- LINHA CA
+      *--- LINHA DE ENDEREÇAMENTO DO SEGURADO
+           05 FZ4ITS2-LINHA-CA REDEFINES FZ4ITS2-PRINT-DATA.
+      *    TIPO DE RELAÇÃO
+             07  FZ4ITS2-SE-TIPO-RELACAO         PIC X(02).
+      *    NUMERO DE ENTIDADE
+             07  FZ4ITS2-SE-ENTIDADE             PIC X(10).
+      *    NOME
+             07  FZ4ITS2-SE-ADDRESSEE            PIC X(40).
+      *    LINHA DE MORADA-1
+             07  FZ4ITS2-SE-ADDRESS1             PIC X(40).
+      *    LINHA DE MORADA-2
+             07  FZ4ITS2-SE-ADDRESS2             PIC X(40).
+      *    LOCALIDADE
+             07  FZ4ITS2-SE-ADDRESS3             PIC X(40).
+      *    CODIGO POSTAL DESC
+             07  FZ4ITS2-SE-ADDRESS4             PIC X(40).
+      *     CODIGO POSTAL
+             07  FZ4ITS2-SE-POST-CODE            PIC X(08).
+      *    TIPO NUM DE PORTA
+             07  FZ4ITS2-SE-TNUM-PORTA           PIC X(01).
+      *    NUM DE PORTA
+             07  FZ4ITS2-SE-NUM-PORTA            PIC X(04).
+             07  FILLER                          PIC X(162).
+      *---
+      *--- LINHA FA
+      *--- LINHA DE TRATORES QUE REBOCAM VEÍCULOS
+           05 FZ4ITS2-LINHA-FA REDEFINES FZ4ITS2-PRINT-DATA.
+             07  FZ4ITS2-TRATOR-MATRICULA        PIC X(15).
+             07  FZ4ITS2-TRATOR-TIP-VEIC         PIC X(30).
+             07  FILLER                          PIC X(342).
+      *
+      *--- LINHA IA
+      *--- PARA DADOS SUPLEMENTAR DO OBJETO
+      *--- DE MERCADORIAS TRANSPORTADAS
+           05 FZ4ITS2-LINHA-IA REDEFINES FZ4ITS2-PRINT-DATA.
+             07  FZ4ITS2-VIAGEM                  PIC X(25).
+             07  FZ4ITS2-DESTINO                 PIC X(25).
+             07  FZ4ITS2-TRANSBORDO              PIC X(10).
+             07  FZ4ITS2-TRANSITO                PIC X(30).
+             07  FZ4ITS2-MEIO-TRANSPORTE         PIC X(30).
+             07  FZ4ITS2-NOME                    PIC X(30).
+             07  FZ4ITS2-MATRICULA               PIC X(15).
+             07  FZ4ITS2-LOCAL-CARREGAMENTO      PIC X(30).
+2P3424* ESTE CAMPO FOI SOLICITADO DOS DADOS SUPLEMENTARES DE MERCADORIAS
+2P3424       07  FZ4ITS2-CERT-NUMBER             PIC X(15).
+2P3424*      07  FIILER                          PIC X(192).
+2P3424       07  FILLER                          PIC X(177).
+      *
+      *--- LINHA IC
+      *--- PARA DADOS SUPLEMENTAR DO OBJETO
+      *--- DE TRANSPORTE DE MERCADORIAS
+      *--- DE RODOVIÁRIO NACIONAL
+      *--- DE RODOVIÁRIO INTERNACIONAL
+      *--- DE CONTA PRÓPRIA
+           05 FZ4ITS2-LINHA-IC REDEFINES FZ4ITS2-PRINT-DATA.
+             07  FZ4ITS2-MATRICULA-VEIC          PIC X(15).
+             07  FZ4ITS2-TIPO-VEIC               PIC X(15).
+             07  FZ4ITS2-ANO-FAB-VEIC            PIC X(04).
+             07  FZ4ITS2-MATERIAS-PERIG          PIC X(10).
+             07  FZ4ITS2-CONGELADOS              PIC X(10).
+             07  FZ4ITS2-REFRIGERADOS            PIC X(10).
+             07  FZ4ITS2-AMB-GEOG-RISCO          PIC X(120).
+             07  FZ4ITS2-TIPO-VEICULO            PIC X(30).
+             07  FIILER                          PIC X(173).
+      *
+      *--- LINHA IE
+      *--- PARA DADOS DO OBJETO
+
+           05 FZ4ITS2-LINHA-IE REDEFINES FZ4ITS2-PRINT-DATA.
+             07  FZ4ITS2-NOME-EMBR               PIC X(30).
+             07  FZ4ITS2-MARCA-EMBR              PIC X(30).
+             07  FZ4ITS2-MATRIC-EMBR             PIC X(15).
+             07  FZ4ITS2-ANO-CONST-EMBR          PIC X(04).
+             07  FZ4ITS2-MATER-CONST-EMBR        PIC X(30).
+             07  FZ4ITS2-ATIV-EMBR               PIC X(30).
+             07  FZ4ITS2-TIPO-EMBR               PIC X(30).
+             07  FZ4ITS2-CLASSIF-EMBR            PIC X(30).
+             07  FZ4ITS2-LOTACAO-EMBR            PIC X(04).
+             07  FZ4ITS2-COMP-DESPORT-EMBR       PIC X(10).
+             07  FILLER                          PIC X(174).
+      *
+      *--- LINHA IF
+      *--- PARA DADOS DO
+      *--- TEXTO DA ÁREA DE NAVEGAÇÃO
+      *--- PARA EMBARCAÇÕES DE RECREIO E COMÉRCIO
+           05 FZ4ITS2-LINHA-IF REDEFINES FZ4ITS2-PRINT-DATA.
+             07  FZ4ITS2-TXT-NAV                 PIC X(75).
+             07  FILLER                          PIC X(312).
+      *
+      *--- LINHA II
+      *--- PARA DADOS DO OBJETO
+      *--- TRANSPORTE DE MERCADORIAS
+      *--- MERCADORIAS TRANSPORTADAS
+           05 FZ4ITS2-LINHA-II REDEFINES FZ4ITS2-PRINT-DATA.
+             07  FZ4ITS2-OBJ-SEGURO-DESC         PIC X(75).
+             07  FILLER                          PIC X(312).
+      *
+      *
+      *--- LINHA IK
+      *--- PARA DADOS DO OBJETO
+      *--- PARA EMBARCAÇÕES DE RECREIO E COMÉRCIO
+           05 FZ4ITS2-LINHA-IK REDEFINES FZ4ITS2-PRINT-DATA.
+             07  FZ4ITS2-NUM-MOTOR-EMBR          PIC X(01).
+             07  FZ4ITS2-MARCA-MOT-EMBR1         PIC X(16).
+             07  FZ4ITS2-POTENC-MOT-EMBR1        PIC X(05).
+             07  FZ4ITS2-ANO-FAB-MOT-EMBR1       PIC X(04).
+             07  FZ4ITS2-CAPSEG-MOT-EMBR1        PIC S9(15)V9(02).
+             07  FZ4ITS2-MARCA-MOT-EMBR2         PIC X(16).
+             07  FZ4ITS2-POTENC-MOT-EMBR2        PIC X(05).
+             07  FZ4ITS2-ANO-FAB-MOT-EMBR2       PIC X(04).
+             07  FZ4ITS2-CAPSEG-MOT-EMBR2        PIC S9(15)V9(02).
+             07  FILLER                          PIC X(302).
+      *
+      *
+      *--- LINHA IM
+      *--- PARA DADOS DO OBJETO
+      *--- DESCRIÇÃO E VALORIZAÇÃO DOS BENS SEGUROS
+           05 FZ4ITS2-LINHA-IM REDEFINES FZ4ITS2-PRINT-DATA.
+             07  FZ4ITS2-BEM-SEG-DESC            PIC X(50).
+             07  FZ4ITS2-BEM-SEG-CAPITAL         PIC S9(15)V9(02).
+             07  FILLER                          PIC X(320).
+      *---
+      *--- LINHA KA
+      *--- LINHA CAPITAL/CONTRAVALOR/ CAMBIOE FRANQUIA DO OBJETO
+           05 FZ4ITS2-LINHA-KA REDEFINES FZ4ITS2-PRINT-DATA.
+             07  FZ4ITS2-OBJ-CAPITAL             PIC S9(15)V9(02).
+             07  FZ4ITS2-OBJ-CAPITAL-MD          PIC X(03).
+             07  FZ4ITS2-OBJ-CONTRA-VLR          PIC S9(15)V9(02).
+             07  FZ4ITS2-OBJ-CONTRA-VLR-MD       PIC X(03).
+             07  FZ4ITS2-OBJ-CAMBIO              PIC S9(3)V9(8).
+             07  FZ4ITS2-OBJ-TXT                 PIC X(250).
+             07  FILLER                          PIC X(86).
+      *
+      *
+      *--- LINHA KG
+      *--- PARA DADOS DO OBJETO
+      *--- FATURAÇÃO ANUAL/PRÉMIO PROV A COBRAR
+           05 FZ4ITS2-LINHA-KG REDEFINES FZ4ITS2-PRINT-DATA.
+             07  FZ4ITS2-FAT-ANUAL-PREV          PIC S9(11)V9(02).
+             07  FZ4ITS2-PRM-PROV-COBRAR         PIC S9(11)V9(02).
+             07  FILLER                          PIC X(361).
+      *---
+      *--- LINHA MA
+      *--- LINHA DE COBERTURAS/RISCO
+      *--- MERCADORIAS TRANSPORTADAS
+      *--- QUANDO COBERTURA O CÓDIGO DO RISCO IGUAL A ESPAÇOS
+           05 FZ4ITS2-LINHA-MA REDEFINES FZ4ITS2-PRINT-DATA.
+             07  FZ4ITS2-COD-COBERT-RISC.
+               10  FZ4ITS2-COD-COBERT              PIC X(03).
+               10  FZ4ITS2-COD-RISC                PIC X(03).
+             07  FZ4ITS2-COB-RISC-DESC           PIC X(75).
+             07  FILLER                          PIC X(306).
+      *---
+      *--- LINHA MB
+      *--- LINHA DE COBERTURAS/RISCO
+      *--- RODOVIÁRIO NACIONAL
+      *--- RODOVIÁRIO INTERNACIONAL
+      *--- CONTA PRÓPRIA
+      *--- EMBARCAÇÕES DE RECREIO E COMÉRCIO
+      *---QUANDO COBERTURA O CÓDIGO DO RISCO IGUAL A ESPAÇOS
+           05 FZ4ITS2-LINHA-MB REDEFINES FZ4ITS2-PRINT-DATA.
+             07  FZ4ITS2-COD-COB-RISCO.
+               10 FZ4ITS2-COD-COBERTURA           PIC X(03).
+               10 FZ4ITS2-COD-RISCO               PIC X(03).
+             07  FZ4ITS2-COB-RISCO-DESC          PIC X(75).
+             07  FZ4ITS2-COB-RISCO-COD-FRQ       PIC X(02).
+             07  FZ4ITS2-COB-RISCO-VLR-FRQ       PIC S9(11)V9(02).
+             07  FZ4ITS2-COB-RISCO-PERC-FRQ      PIC S9(02)V9(05).
+             07  FZ4ITS2-COB-RISCO-DIAS-FRQ      PIC 9(03).
+             07  FZ4ITS2-COB-RISCO-AST1-FRQ      PIC X(01).
+      *      PREENCHIMENTO DO CAMPO CAPITAL
+             07  FZ4ITS2-COB-RISCO-CAP           PIC S9(15)V9(02).
+             07  FZ4ITS2-COB-RISCO-AST2-CAP      PIC X(01).
+             07  FILLER                          PIC X(262).
+      *
+      *--- LINHA MT
+      *--- LINHA DE ASTERISCOS PARA COBERTURAS E RISCO
+      *--- RODOVIÁRIO NACIONAL
+      *--- RODOVIÁRIO INTERNACIONAL
+      *--- CONTA PRÓPRIA
+      *--- EMBARCAÇÕES DE RECREIO E COMÉRCIO
+      *--- TRANSPORTE DDE MERCADORIAS
+      *--- MERCADORIAS TRANSPORTADAS
+           05 FZ4ITS2-LINHA-MT REDEFINES FZ4ITS2-PRINT-DATA.
+             07  FZ4ITS2-COD-COB-RISCO-TXT.
+               10  FZ4ITS2-COD-COB-TXT             PIC X(03).
+               10  FZ4ITS2-COD-RISCO-TXT           PIC X(03).
+             07  FZ4ITS2-COB-RISCO-TXT           PIC X(250).
+             07  FILLER                          PIC X(131).
+      *---
+      *--- LINHA OA
+      *--- LINHA DE OPERAÇÕES DE REBOQUE
+      *--- EMBARCAÇÕES DE COMÉRCIO
+           05 FZ4ITS2-LINHA-OA REDEFINES FZ4ITS2-PRINT-DATA.
+             07  FZ4ITS2-LIM-MAX-CAP             PIC S9(15)V9(02).
+             07  FZ4ITS2-LIM-OPER-REB            PIC S9(15)V9(02).
+             07  FILLER                          PIC X(353).
+      *
+      *
+      *---
+      *--- LINHA QA
+      *--- LINHA DE ENDEREÇAMENTO DE ENTIDADES
+      *            DESTINATÁRIO          - 4D
+      *            COMISSÁRIO DE AVARIAS - 4A
+      *            CREDOR HIPOTECÁRIO    - 4K
+      *            ENTIDADE INTERESSADA  - 4L
+      *            SEGURADO ADICIONAL    - 47
+           05 FZ4ITS2-LINHA-QA REDEFINES FZ4ITS2-PRINT-DATA.
+      *    TIPO DE RELAÇÃO
+             07  FZ4ITS2-TIPO-RELACAO            PIC X(02).
+      *    NOME
+             07  FZ4ITS2-ADDRESSEE               PIC X(40).
+      *    LINHA DE MORADA-1
+             07  FZ4ITS2-ADDRESS1                PIC X(40).
+      *    LINHA DE MORADA-2
+             07  FZ4ITS2-ADDRESS2                PIC X(40).
+      *    LOCALIDADE
+             07  FZ4ITS2-ADDRESS3                PIC X(40).
+      *    CODIGO POSTAL DESC
+             07  FZ4ITS2-ADDRESS4                PIC X(40).
+      *     CODIGO POSTAL
+             07  FZ4ITS2-POST-CODE               PIC X(08).
+      *    TIPO NUM DE PORTA
+             07  FZ4ITS2-TNUM-PORTA              PIC X(01).
+      *    NUM DE PORTA
+             07  FZ4ITS2-NUM-PORTA               PIC X(04).
+             07  FILLER                          PIC X(172).
+      *---
+      *--- LINHAS SA
+      *--- CLÁUSULAS POR OBJETO
+           05 FZ4ITS2-LINHA-SA  REDEFINES FZ4ITS2-PRINT-DATA.
+      *    O CAMPO FORM-NUMBER POR QUEBRA IDENTIFICA MUDANÇA DE
+      *    CLAÚSULA OU MUDANÇA E PARÁGRAFO
+             07  FZ4ITS2-OBJ-FORM-NUMBER        PIC X(10).
+             07  FZ4ITS2-OBJ-CLAUS-LINE         PIC X(75).
+             07  FILLER                         PIC X(302).
+      *---
+      *--- LINHAS UA
+      *--- CLÁUSULAS POR APOLICE
+           05 FZ4ITS2-LINHA-UA  REDEFINES FZ4ITS2-PRINT-DATA.
+      *    O CAMPO FORM-NUMBER POR QUEBRA IDENTIFICA MUDANÇA DE
+      *    CLAÚSULA OU MUDANÇA E PARÁGRAFO
+             07  FZ4ITS2-AP-FORM-NUMBER         PIC X(10).
+             07  FZ4ITS2-AP-CLAUS-LINE          PIC X(75).
+             07  FILLER                         PIC X(302).
+      *---
+      *--- LINHAS WA
+      *--- LINHA DADOS DE CADA CO-SEGURADORA
+      *--- CO-SEGURO
+           05 FZ4ITS2-LINHA-WA  REDEFINES FZ4ITS2-PRINT-DATA.
+             07  FZ4ITS2-CO-SEG-COD              PIC X(10).
+             07  FZ4ITS2-CO-SEG-NOME             PIC X(40).
+             07  FZ4ITS2-CO-SEG-CAPITAL          PIC S9(13)V9(02).
+             07  FZ4ITS2-CO-SEG-PARTICIP         PIC 9(03)V9(06).
+             07  FZ4ITS2-CO-SEG-PREMIO           PIC S9(13)V9(02).
+             07  FILLER                          PIC X(298).
+      *
+      *--- LINHA ZA
+      *--- FIM DE DOCUMENTO
+           05 FZ4ITS2-LINHA-ZA  REDEFINES FZ4ITS2-PRINT-DATA.
+             07  FILLER                          PIC X(387).
+           05 FZ4ITS2-TIPO-IMPRESSAO             PIC X(001).
+

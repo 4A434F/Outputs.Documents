@@ -1,0 +1,87 @@
+      *--------------------------------------------------------------*  00010000
+      *   200800186 - CENTRALIZAR IMPRESSÃO E EXPEDIÇÃO OUTPUTS VIDA *  00011002
+      *                                                              *
+      *   CLAUSULA - LAYOUT REGISTO PARA AS CARTAS :                 *
+      *    C001 - CARTA AGENTE              (ANTIGA O223)            *  00011102
+      *    C002 - CARTA 30 DIAS             (ANTIGA O237)            *  00011102
+      *    C003 - CARTA ADVOGADO            (ANTIGA O219A)           *  00011102
+      *    C004 - CARTA CREDOR HIPOTECÁRIO  (ANTIGA O212B)           *  00011102
+      *                                                              *  00011200
+      *                                                              *  00011200
+      *   ALTERAÇÕES NO BUSK410A TÊM QUE SER REFLECTIDAS NO COPY     *  00011200
+      *              BGOW9014 - APLICAÇÃO DE OUTPUTS.                *  00011200
+      *--------------------------------------------------------------*  00012000
+       01  BUSK410A-REC-CARTA.                                          00020002
+           02  BUSK410A-COD-COMPANHIA          PIC X(003).              00030002
+           02  BUSK410A-COD-MARCA              PIC X(003).              00060002
+           02  BUSK410A-COD-ORIGEM             PIC X(003).              00090002
+           02  BUSK410A-COD-POSTALM            PIC X(007).              00100002
+           02  BUSK410A-NR-MEDIADOR            PIC X(010).              00100002
+           02  BUSK410A-COD-POSTALC.                                    00100002
+               03 BUSK410A-COD-POSTALC-C       PIC X(004).              00100002
+               03 BUSK410A-COD-POSTALC-I       PIC X(003).              00100002
+           02  BUSK410A-NR-CLIENTE             PIC X(010).              00100002
+           02  BUSK410A-NR-APOLICE             PIC X(016).              00100002
+           02  BUSK410A-NR-RECIBO              PIC X(010).              00100002
+           02  BUSK410A-COD-RAMO               PIC X(002).              00100002
+           02  BUSK410A-COD-CARTA              PIC X(004).              00100002
+               88  BUSK410A-COD-C001         VALUE 'C001'.              00170002
+               88  BUSK410A-COD-C002         VALUE 'C002'.              00170002
+               88  BUSK410A-COD-C003         VALUE 'C003'.              00170002
+               88  BUSK410A-COD-C004         VALUE 'C004'.              00170002
+      *
+           02  BUSK410A-DADOS-ENDERECAMENTO.                            00100002
+               03  BUSK410A-NOME               PIC X(040).              00100002
+               03  BUSK410A-MORADA1            PIC X(040).              00100002
+               03  BUSK410A-MORADA2            PIC X(040).              00100002
+               03  BUSK410A-MORADA3            PIC X(040).              00100002
+               03  BUSK410A-MORADA4            PIC X(004).              00100002
+               03  BUSK410A-TNUM-PORTA         PIC X(001).              00100002
+               03  BUSK410A-NUM-PORTA          PIC X(004).              00100002
+               03  BUSK410A-REGISTO-CTT        PIC X(017).              00100002
+               03  BUSK410A-NUMERO-CTT         PIC X(013).              00100002
+      *
+           02  BUSK410A-DESCR-RAMO             PIC X(030).              00100002
+           02  BUSK410A-DT-CESSACAO-APOL       PIC X(010).              00100002
+           02  BUSK410A-DT-VENCIMEN-APOL       PIC X(010).              00100002
+           02  BUSK410A-DATA-CARTA             PIC X(010).              00100002
+           02  BUSK410A-CL-NOME                PIC X(040).              00100002
+           02  BUSK410A-CL-NIF                 PIC X(009).              00100002
+           02  BUSK410A-CL-NIB                 PIC X(021).              00100002
+           02  BUSK410A-CL-EMPRESTIMO          PIC X(012).              00100002
+           02  BUSK410A-REFERENCIA             PIC X(030).              00100002
+           02  BUSK410A-PREMIO                 PIC S9(013)V99.          00100002
+           02  BUSK410A-TOT-REC                PIC S9(013)V99.          00100002
+           02  BUSK410A-TOT-JUR                PIC S9(013)V99.          00100002
+           02  BUSK410A-TOT-REC-JUR            PIC S9(013)V99.          00100002
+           02  BUSK410A-LIVRE                  PIC X(100).              00100002
+      *
+           02  BUSK410A-DADOS-C                PIC X(1000).             00100002
+      *  CARTA AGENTE
+           02  BUSK410A-DADOS-C001 REDEFINES BUSK410A-DADOS-C.          00100002
+               03  BUSK410A-R1-T OCCURS 14.                             00100002
+                   04  BUSK410A-R1-RECIBO      PIC 9(010).              00100002
+                   04  BUSK410A-R1-DT-INI-REC  PIC X(010).              00100002
+                   04  BUSK410A-R1-DT-FIM-REC  PIC X(010).              00100002
+                   04  BUSK410A-R1-VALOR       PIC S9(013)V99.          00100002
+      *  CARTA 30 DIAS
+           02  BUSK410A-DADOS-C002 REDEFINES BUSK410A-DADOS-C.          00100002
+               03  BUSK410A-R2-T OCCURS 9.                              00100002
+                   04  BUSK410A-R2-RECIBO      PIC X(010).              00100002
+                   04  BUSK410A-R2-DT-VENC-REC PIC X(010).              00100002
+                   04  BUSK410A-R2-MEDIADOR    PIC X(010).              00100002
+                   04  BUSK410A-R2-TOT-REC     PIC S9(013)V99.          00100002
+      *  CARTA ADVOGADO
+           02  BUSK410A-DADOS-C003 REDEFINES BUSK410A-DADOS-C.          00100002
+               03  BUSK410A-R3-T OCCURS 13.                             00100002
+                   04  BUSK410A-R3-REC.                                 00100002
+                       05  BUSK410A-R3-RECIBO  PIC 9(006).              00100002
+                       05  BUSK410A-R3-BARRA   PIC X(001).              00100002
+                       05  BUSK410A-R3-CD      PIC 9(001).              00100002
+                       05  FILLER              PIC X(002).              00100002
+                   04  BUSK410A-R3-DT-DEVI-REC PIC X(010).              00100002
+                   04  BUSK410A-R3-TOT-REC     PIC S9(013)V99.          00100002
+                   04  BUSK410A-R3-JUROS-VENC  PIC S9(013)V99.          00100002
+                   04  BUSK410A-R3-TOTAL       PIC S9(013)V99.          00100002
+      *
+

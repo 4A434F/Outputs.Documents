@@ -1,0 +1,216 @@
+{
+  "copybook": "BGOW9064",
+  "originSystem": "COGEN22",
+  "title": "Tailor aggregate plan particular conditions",
+  "contractType": "Outputs.Documents.Domain.Contracts.COGEN22.BGOW9064Contract",
+  "description": "BGOW9064 keeps the copybook flow as the source of truth. Reusable groups are promoted into typed document, address, entity, policy, risk, coverage, and document text objects while unresolved legacy fields remain raw and searchable.",
+  "mappings": [
+    {
+      "title": "Document selector",
+      "sourceGroup": "Document selector",
+      "targetType": "BGOW9064Contract",
+      "targetPath": "DocumentIdentification",
+      "targetLabel": ".NET contract",
+      "decision": "selector",
+      "description": "The document identification is not part of the copybook payload. It is the template/document selector used by the rendering layer.",
+      "rows": [
+        {
+          "source": null,
+          "sourceField": "1327",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1327."
+        }
+      ]
+    },
+    {
+      "title": "Registration and routing header",
+      "sourceGroup": "DADOS-REGISTO",
+      "targetType": "DocumentInformation",
+      "targetPath": "DocumentInformation",
+      "decision": "mapped",
+      "description": "This level identifies how the document was requested, who created it, and where it came from. It migrates into document metadata because these fields describe the document envelope and routing context, not the client or policy body.",
+      "rows": [
+        { "source": "05 :PREFIX:-DADOS-REGISTO.", "target": "BGOW9064Contract.DocumentInformation", "status": "container" },
+        { "source": "07 :PREFIX:-COD-DOCUMENTO PIC X(04).", "sourceField": "COD-DOCUMENTO", "target": "DocumentCode", "status": "mapped" },
+        { "source": "07 :PREFIX:-TIPO-REGISTO PIC X(04).", "sourceField": "TIPO-REGISTO", "target": "TipoRegisto raw contract field", "status": "raw", "reason": "Legacy record discriminator kept raw." },
+        { "source": "07 :PREFIX:-TIPO-IMPRESSAO PIC X(01).", "sourceField": "TIPO-IMPRESSAO", "target": "PrintType", "status": "mapped" },
+        { "source": "07 :PREFIX:-USERID PIC X(08).", "sourceField": "USERID", "target": "UserId", "status": "mapped" },
+        { "source": "07 :PREFIX:-COD-COMPANHIA PIC X(03).", "sourceField": "COD-COMPANHIA", "target": "CompanyCode", "status": "mapped" },
+        { "source": "07 :PREFIX:-COD-MARCA PIC X(03).", "sourceField": "COD-MARCA", "target": "BrandCode", "status": "mapped" },
+        { "source": "07 :PREFIX:-NR-AGENTE PIC X(10).", "sourceField": "NR-AGENTE", "target": "AgentNumber", "status": "mapped" },
+        { "source": "07 :PREFIX:-NR-CLIENTE PIC X(10).", "sourceField": "NR-CLIENTE", "target": "ClientNumber", "status": "mapped" },
+        { "source": "07 :PREFIX:-NR-APOLICE PIC X(16).", "sourceField": "NR-APOLICE", "target": "PolicyNumber", "status": "mapped" },
+        { "source": "09 :PREFIX:-DOC-NR PIC X(10).", "sourceField": "DOC-NR", "target": "OriginDocumentNumber", "status": "mapped" },
+        { "source": "09 :PREFIX:-DOC-SEQREG-NR PIC X(05).", "sourceField": "DOC-SEQREG-NR", "target": "OriginSequenceNumber", "status": "mapped" },
+        { "source": "07 :PREFIX:-COD-ORIGEM PIC X(03).", "sourceField": "COD-ORIGEM", "target": "OriginSystemCode", "status": "mapped" },
+        { "source": "07 :PREFIX:-IND-FLYER PIC X(01).", "sourceField": "IND-FLYER", "target": "FlyerIndicator", "status": "mapped" },
+        { "source": null, "target": "DocumentTypeCode", "status": "target-only", "reason": "Reusable field supported by DocumentInformation but not populated by BGOW9064." },
+        { "source": null, "target": "PolicyTransactionCode", "status": "target-only", "reason": "Reusable field supported by DocumentInformation but not populated by BGOW9064." },
+        { "source": null, "target": "ProductCode", "status": "target-only", "reason": "Reusable field supported by DocumentInformation but not populated by BGOW9064." },
+        { "source": null, "target": "ProcessingDate", "status": "target-only", "reason": "Reusable field supported by DocumentInformation but not populated by BGOW9064." }
+      ]
+    },
+    {
+      "title": "Postal destination",
+      "sourceGroup": "DADOS-MORADA",
+      "targetType": "PostalAddress",
+      "targetPath": "PostalAddress",
+      "decision": "mapped",
+      "description": "This level is a postal destination. It is promoted into the common address object so clients, agents, creditors, and mailing blocks use the same address vocabulary across copybooks.",
+      "rows": [
+        { "source": "05 :PREFIX:-DADOS-DOCUMENTO PIC X(421).", "sourceField": "DADOS-DOCUMENTO", "target": "DadosDocumento raw payload area", "status": "raw", "reason": "Envelope/redefines area retained for traceability." },
+        { "source": "07 :PREFIX:-DADOS-MORADA.", "target": "BGOW9064Contract.PostalAddress", "status": "container" },
+        { "source": "09 :PREFIX:-MR-NOME PIC X(40).", "sourceField": "MR-NOME", "target": "Name", "status": "mapped" },
+        { "source": "09 :PREFIX:-MR-LOCATION-REF PIC X(04).", "sourceField": "MR-LOCATION-REF", "target": "Reference", "status": "mapped" },
+        { "source": "09 :PREFIX:-MR-MORADA1 PIC X(40).", "sourceField": "MR-MORADA1", "target": "Line1", "status": "mapped" },
+        { "source": "09 :PREFIX:-MR-MORADA2 PIC X(40).", "sourceField": "MR-MORADA2", "target": "Line2", "status": "mapped" },
+        { "source": "09 :PREFIX:-MR-LOCALIDADE PIC X(40).", "sourceField": "MR-LOCALIDADE", "target": "Locality", "status": "mapped" },
+        { "source": "09 :PREFIX:-MR-CPOSTAL PIC X(09).", "sourceField": "MR-CPOSTAL", "target": "PostalCode", "status": "mapped" },
+        { "source": "09 :PREFIX:-MR-CPOSTAL-DESC PIC X(40).", "sourceField": "MR-CPOSTAL-DESC", "target": "PostalCodeDescription", "status": "mapped" },
+        { "source": "09 :PREFIX:-MR-CPAIS PIC X(03).", "sourceField": "MR-CPAIS", "target": "CountryCode", "status": "mapped" },
+        { "source": "09 :PREFIX:-MR-CPAIS-DESC PIC X(40).", "sourceField": "MR-CPAIS-DESC", "target": "CountryDescription", "status": "mapped" },
+        { "source": "09 :PREFIX:-MR-IDP PIC X(04).", "sourceField": "MR-IDP", "target": "DoorIdentifier", "status": "mapped" },
+        { "source": null, "target": "Line3", "status": "target-only" },
+        { "source": null, "target": "Line4", "status": "target-only" },
+        { "source": null, "target": "DoorTypeCode", "status": "target-only" }
+      ]
+    },
+    {
+      "title": "Client identity",
+      "sourceGroup": "DADOS-CLIENTE",
+      "targetType": "Entity",
+      "targetPath": "Entity",
+      "decision": "mapped",
+      "description": "The copybook calls this group client data. The shared domain type is Entity because the same identity shape appears later as clients, mediators, creditors, and other document parties.",
+      "rows": [
+        { "source": "07 :PREFIX:-DADOS-CLIENTE.", "target": "BGOW9064Contract.Entity", "status": "container" },
+        { "source": "09 :PREFIX:-CL-NOME PIC X(40).", "sourceField": "CL-NOME", "target": "Name", "status": "mapped" },
+        { "source": "09 :PREFIX:-CL-NIF PIC X(22).", "sourceField": "CL-NIF", "target": "TaxIdentificationNumber", "status": "mapped" },
+        { "source": "09 :PREFIX:-CL-TIPO-ENTIDADE PIC X(01).", "sourceField": "CL-TIPO-ENTIDADE", "target": "TypeCode and Type", "status": "mapped" },
+        { "source": null, "target": "Reference", "status": "target-only" },
+        { "source": null, "target": "Number", "status": "target-only" },
+        { "source": null, "target": "Address", "status": "target-only" },
+        { "source": null, "target": "Contact", "status": "target-only" }
+      ]
+    },
+    {
+      "title": "General policy/product context",
+      "sourceGroup": "DADOS-GERAIS",
+      "targetType": "Raw contract fields, candidate Policy model",
+      "targetPath": "BGOW9064Contract raw fields",
+      "targetLabel": "Current decision",
+      "decision": "candidate",
+      "description": "This level is policy and product context, but it has not yet been promoted to a final shared object for BGOW9064. The fields stay raw and annotated until another copybook confirms the same shape and naming.",
+      "rows": [
+        { "source": "07 :PREFIX:-DADOS-GERAIS.", "target": "BGOW9064Contract raw fields", "status": "container" },
+        { "source": "09 :PREFIX:-DG-DT-EMISSAO PIC X(08).", "sourceField": "DG-DT-EMISSAO", "target": "DgDtEmissao", "status": "candidate" },
+        { "source": "09 :PREFIX:-DG-PRODUTO-DESC PIC X(40).", "sourceField": "DG-PRODUTO-DESC", "target": "DgProdutoDesc", "status": "candidate" },
+        { "source": "09 :PREFIX:-DG-COD-RAMO PIC X(02).", "sourceField": "DG-COD-RAMO", "target": "DgCodRamo", "status": "candidate" },
+        { "source": "09 :PREFIX:-DG-DT-VENCIMENTO PIC X(08).", "sourceField": "DG-DT-VENCIMENTO", "target": "DgDtVencimento", "status": "candidate" },
+        { "source": "09 :PREFIX:-DG-DT-INI-PERIODO PIC X(08).", "sourceField": "DG-DT-INI-PERIODO", "target": "DgDtIniPeriodo", "status": "candidate" },
+        { "source": "09 :PREFIX:-DG-DT-FIM-PERIODO PIC X(08).", "sourceField": "DG-DT-FIM-PERIODO", "target": "DgDtFimPeriodo", "status": "candidate" },
+        { "source": "09 :PREFIX:-DG-TIPO-FRACCIONA PIC X(01).", "sourceField": "DG-TIPO-FRACCIONA", "target": "DgTipoFracciona", "status": "candidate" },
+        { "source": "09 :PREFIX:-DG-TIPO-TRANSACAO PIC X(01).", "sourceField": "DG-TIPO-TRANSACAO", "target": "DgTipoTransacao", "status": "candidate" }
+      ]
+    },
+    {
+      "title": "Premium values",
+      "sourceGroup": "DADOS-VALOR",
+      "targetType": "Premium",
+      "targetPath": "Premium",
+      "decision": "mapped",
+      "description": "The copybook already groups these monetary fields as premium data. The group is kept together and moved under the policy domain because premium values only make sense in the context of an insurance policy.",
+      "rows": [
+        { "source": "07 :PREFIX:-DADOS-VALOR.", "target": "BGOW9064Contract.Premium", "status": "container" },
+        { "source": "09 :PREFIX:-DV-PREMIO-COM PIC S9(12)V9(02) SIGN LEADING SEPARATE.", "sourceField": "DV-PREMIO-COM", "target": "Commercial", "status": "mapped" },
+        { "source": "09 :PREFIX:-DV-ENCARGOS PIC S9(12)V9(02) SIGN LEADING SEPARATE.", "sourceField": "DV-ENCARGOS", "target": "Charges", "status": "mapped" },
+        { "source": "09 :PREFIX:-DV-PREMIO-TOT PIC S9(12)V9(02) SIGN LEADING SEPARATE.", "sourceField": "DV-PREMIO-TOT", "target": "Total", "status": "mapped" },
+        { "source": "09 :PREFIX:-DV-PREMIO-COM-AD PIC S9(12)V9(02) SIGN LEADING SEPARATE.", "sourceField": "DV-PREMIO-COM-AD", "target": "AdditionalCommercial", "status": "mapped" },
+        { "source": "09 :PREFIX:-DV-ENCARGOS-AD PIC S9(12)V9(02) SIGN LEADING SEPARATE.", "sourceField": "DV-ENCARGOS-AD", "target": "AdditionalCharges", "status": "mapped" },
+        { "source": "09 :PREFIX:-DV-PREMIO-TOT-AD PIC S9(12)V9(02) SIGN LEADING SEPARATE.", "sourceField": "DV-PREMIO-TOT-AD", "target": "AdditionalTotal", "status": "mapped" },
+        { "source": "09 :PREFIX:-DV-PREMIO-COM-1F PIC S9(12)V9(02) SIGN LEADING SEPARATE.", "sourceField": "DV-PREMIO-COM-1F", "target": "FirstFractionCommercial", "status": "mapped" },
+        { "source": "09 :PREFIX:-DV-ENCARGOS-1F PIC S9(12)V9(02) SIGN LEADING SEPARATE.", "sourceField": "DV-ENCARGOS-1F", "target": "FirstFractionCharges", "status": "mapped" },
+        { "source": "09 :PREFIX:-DV-PREMIO-TOT-1F PIC S9(12)V9(02) SIGN LEADING SEPARATE.", "sourceField": "DV-PREMIO-TOT-1F", "target": "FirstFractionTotal", "status": "mapped" },
+        { "source": "09 :PREFIX:-DV-PREMIO-COM-FS PIC S9(12)V9(02) SIGN LEADING SEPARATE.", "sourceField": "DV-PREMIO-COM-FS", "target": "FollowingFractionsCommercial", "status": "mapped" },
+        { "source": "09 :PREFIX:-DV-ENCARGOS-FS PIC S9(12)V9(02) SIGN LEADING SEPARATE.", "sourceField": "DV-ENCARGOS-FS", "target": "FollowingFractionsCharges", "status": "mapped" },
+        { "source": "09 :PREFIX:-DV-PREMIO-TOT-FS PIC S9(12)V9(02) SIGN LEADING SEPARATE.", "sourceField": "DV-PREMIO-TOT-FS", "target": "FollowingFractionsTotal", "status": "mapped" }
+      ]
+    },
+    {
+      "title": "Insured object and risk detail",
+      "sourceGroup": "OBJECTO-SEGURO / DET-OBJ-SEG",
+      "targetType": "RiskUnit",
+      "targetPath": "RiskUnit",
+      "decision": "mapped",
+      "description": "These groups describe what is insured and the risk context around it. Shared fields move into RiskUnit. Specific details that do not yet have a stable common meaning remain raw, while RiskUnit exposes typed detail slots for future copybooks.",
+      "rows": [
+        { "source": "07 :PREFIX:-OBJECTO-SEGURO.", "target": "BGOW9064Contract.RiskUnit", "status": "container" },
+        { "source": "09 :PREFIX:-OS-OBJECTO-SEG PIC X(20).", "sourceField": "OS-OBJECTO-SEG", "target": "Description", "status": "mapped" },
+        { "source": "09 :PREFIX:-OS-LOCAL-RISC1 PIC X(40).", "sourceField": "OS-LOCAL-RISC1", "target": "RiskLocationLine1", "status": "mapped" },
+        { "source": "09 :PREFIX:-OS-LOCAL-RISC2 PIC X(40).", "sourceField": "OS-LOCAL-RISC2", "target": "RiskLocationLine2", "status": "mapped" },
+        { "source": "09 :PREFIX:-OS-CAPITAL-SEG PIC S9(12)V9(02) SIGN LEADING SEPARATE.", "sourceField": "OS-CAPITAL-SEG", "target": "InsuredCapital", "status": "mapped" },
+        { "source": "09 :PREFIX:-PR-PRODUTO PIC X(60).", "sourceField": "PR-PRODUTO", "target": "ProductDescription", "status": "mapped" },
+        { "source": "09 :PREFIX:-DO-PRODUTO PIC X(60).", "sourceField": "DO-PRODUTO", "target": "ProductDescription", "status": "mapped" },
+        { "source": "09 :PREFIX:-DO-APOLICE PIC X(16).", "sourceField": "DO-APOLICE", "target": "PolicyNumber", "status": "mapped" },
+        { "source": "09 :PREFIX:-DO-OBJETO-SEG PIC X(40).", "sourceField": "DO-OBJETO-SEG", "target": "Description", "status": "mapped" },
+        { "source": "09 :PREFIX:-DO-ACTIVIDADE PIC X(60).", "sourceField": "DO-ACTIVIDADE", "target": "ActivityDescription", "status": "mapped" },
+        { "source": "09 :PREFIX:-DO-MODALIDADE PIC X(30).", "sourceField": "DO-MODALIDADE", "target": "ModalityDescription", "status": "mapped" },
+        { "source": "09 :PREFIX:-DO-AMBITO-COB PIC X(50).", "sourceField": "DO-AMBITO-COB", "target": "CoverageScopeDescription", "status": "mapped" },
+        { "source": "09 :PREFIX:-DO-LOCAL-RISC PIC X(200).", "sourceField": "DO-LOCAL-RISC", "target": "RiskLocationDescription", "status": "mapped" },
+        { "source": "09 :PREFIX:-DO-NR-TRABALH PIC X(05).", "sourceField": "DO-NR-TRABALH", "target": "WorkerCount", "status": "mapped" },
+        { "source": "09 :PREFIX:-LT-NOME PIC X(40).", "sourceField": "LT-NOME", "target": "LtNome raw contract field", "status": "raw" },
+        { "source": "09 :PREFIX:-LT-PROFISSAO PIC X(20).", "sourceField": "LT-PROFISSAO", "target": "LtProfissao raw contract field", "status": "raw" },
+        { "source": "09 :PREFIX:-LT-RETR-ANUAL PIC S9(12)V9(02) SIGN LEADING SEPARATE.", "sourceField": "LT-RETR-ANUAL", "target": "LtRetrAnual raw contract field", "status": "raw" },
+        { "source": "09 :PREFIX:-LT-DET-RETR PIC X(75).", "sourceField": "LT-DET-RETR", "target": "LtDetRetr raw contract field", "status": "raw" },
+        { "source": "09 :PREFIX:-RU-DESCRITIVO PIC X(60).", "sourceField": "RU-DESCRITIVO", "target": "RuDescritivo raw contract field", "status": "raw" },
+        { "source": "09 :PREFIX:-RU-VALOR PIC S9(12)V9(02) SIGN LEADING SEPARATE.", "sourceField": "RU-VALOR", "target": "RuValor raw contract field", "status": "raw" },
+        { "source": null, "target": "Count", "status": "target-only" },
+        { "source": null, "target": "Type", "status": "target-only" },
+        { "source": null, "target": "General / LifeRisk / Health / Vehicle / Garage / OtherVehicle / MultiRisk / WorkAccident", "status": "target-only" }
+      ]
+    },
+    {
+      "title": "Coverage rows",
+      "sourceGroup": "COBERTURAS",
+      "targetType": "Coverage[]",
+      "targetPath": "Coverages",
+      "decision": "mapped",
+      "description": "COBERTURAS is a repeated group. The coverage identity and description fields go to Coverage, while franchise and indemnity-limit fields are grouped under CoverageDeductible.",
+      "rows": [
+        { "source": "07 :PREFIX:-COBERTURAS OCCURS.", "target": "BGOW9064Contract.Coverages[]", "status": "container" },
+        { "source": "09 :PREFIX:-CB-TIPO-COBERTURA PIC X(03).", "sourceField": "CB-TIPO-COBERTURA", "target": "Coverage.TypeCode", "status": "mapped" },
+        { "source": "09 :PREFIX:-CB-COD-COB PIC X(05).", "sourceField": "CB-COD-COB", "target": "Coverage.Code", "status": "mapped" },
+        { "source": "09 :PREFIX:-CB-DESC-COB PIC X(60).", "sourceField": "CB-DESC-COB", "target": "Coverage.Description", "status": "mapped" },
+        { "source": "09 :PREFIX:-CB-TIPO-TABELA PIC X(02).", "sourceField": "CB-TIPO-TABELA", "target": "Coverage.TableType", "status": "mapped" },
+        { "source": "11 :PREFIX:-CB-COD-FRANQUIA PIC X(02).", "sourceField": "CB-COD-FRANQUIA", "target": "Coverage.Deductible.TypeCode", "status": "mapped" },
+        { "source": "11 :PREFIX:-CB-VALOR-FRANQUIA PIC S9(12)V9(02) SIGN LEADING SEPARATE.", "sourceField": "CB-VALOR-FRANQUIA", "target": "Coverage.Deductible.Value", "status": "mapped" },
+        { "source": "11 :PREFIX:-CB-VALOR-MAX-FRANQ PIC S9(12)V9(02) SIGN LEADING SEPARATE.", "sourceField": "CB-VALOR-MAX-FRANQ", "target": "Coverage.Deductible.MaximumValue", "status": "mapped" },
+        { "source": "11 :PREFIX:-CB-PERC-FRANQUIA PIC 9(03)V9(02).", "sourceField": "CB-PERC-FRANQUIA", "target": "Coverage.Deductible.Percentage", "status": "mapped" },
+        { "source": "11 :PREFIX:-CB-NUMERO-DIAS PIC 9(03).", "sourceField": "CB-NUMERO-DIAS", "target": "Coverage.Deductible.Days", "status": "mapped" },
+        { "source": "11 :PREFIX:-CB-IND-LIM-INDMN PIC X(02).", "sourceField": "CB-IND-LIM-INDMN", "target": "Coverage.Deductible.IndemnityLimitTypeCode", "status": "mapped" },
+        { "source": "11 :PREFIX:-CB-VALOR-LIM-INDMN PIC S9(12)V9(02) SIGN LEADING SEPARATE.", "sourceField": "CB-VALOR-LIM-INDMN", "target": "Coverage.Deductible.IndemnityLimitValue", "status": "mapped" },
+        { "source": "11 :PREFIX:-CB-PERC-LIM-INDMN PIC 9(02).", "sourceField": "CB-PERC-LIM-INDMN", "target": "Coverage.Deductible.IndemnityLimitPercentage", "status": "mapped" },
+        { "source": "11 :PREFIX:-CB-DIAS-LIM-INDMN PIC 9(02).", "sourceField": "CB-DIAS-LIM-INDMN", "target": "Coverage.Deductible.IndemnityLimitDays", "status": "mapped" },
+        { "source": "11 :PREFIX:-CB-VLR1-LIM-INDMN PIC S9(12)V9(02) SIGN LEADING SEPARATE.", "sourceField": "CB-VLR1-LIM-INDMN", "target": "Coverage.Deductible.AnnualIndemnityLimitValue", "status": "mapped" },
+        { "source": "09 :PREFIX:-CB-FRANQUIA-CHAR PIC X(30).", "sourceField": "CB-FRANQUIA-CHAR", "target": "Coverage.DeductibleText", "status": "mapped" },
+        { "source": "09 :PREFIX:-CB-VALOR-CAP-SEG PIC S9(12)V9(02) SIGN LEADING SEPARATE.", "sourceField": "CB-VALOR-CAP-SEG", "target": "Coverage.InsuredCapital", "status": "mapped" }
+      ]
+    },
+    {
+      "title": "Reusable text/list blocks",
+      "sourceGroup": "NOTAS-COBERTURA / COND-GERAIS / DECLAR-CLAUSULAS",
+      "targetType": "Document primitives",
+      "targetPath": "CoverageNotes / GeneralConditions / ParticularClauses",
+      "decision": "mapped",
+      "description": "These repeated groups are document content, not insurance entities. They map to small text primitives so templates can render notes, conditions, and clauses without each copybook inventing a new text shape.",
+      "rows": [
+        { "source": "09 :PREFIX:-NC-NOTAS-COB PIC X(80).", "sourceField": "NC-NOTAS-COB", "target": "CoverageNotes[].Text", "status": "mapped" },
+        { "source": "09 :PREFIX:-CG-CODIGO PIC X(03).", "sourceField": "CG-CODIGO", "target": "GeneralConditions[].Title", "status": "mapped" },
+        { "source": "09 :PREFIX:-CG-DESCRITIVO PIC X(80).", "sourceField": "CG-DESCRITIVO", "target": "GeneralConditions[].Text", "status": "mapped" },
+        { "source": "09 :PREFIX:-DC-TIPO-DEC-CLAUS PIC X(03).", "sourceField": "DC-TIPO-DEC-CLAUS", "target": "ParticularClauses[].Title or Subtitle", "status": "mapped" },
+        { "source": "09 :PREFIX:-DC-DESCRITIVO PIC X(418).", "sourceField": "DC-DESCRITIVO", "target": "ParticularClauses[].Text", "status": "mapped" }
+      ]
+    }
+  ]
+}

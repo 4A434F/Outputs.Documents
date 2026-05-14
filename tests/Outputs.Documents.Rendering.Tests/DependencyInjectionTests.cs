@@ -2,7 +2,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Outputs.Documents.Abstractions;
 using Outputs.Documents.Abstractions.Rendering;
 using Outputs.Documents.Rendering.Razor;
-using Outputs.Documents.Templates.FSCD;
 
 namespace Outputs.Documents.Rendering.Tests;
 
@@ -75,24 +74,7 @@ public sealed class DependencyInjectionTests
         Assert.Same(generator, provider.GetRequiredService<IPdfGenerator>());
         Assert.IsType<DocumentRenderer>(provider.GetRequiredService<IDocumentRenderer>());
     }
-
-    [Fact]
-    public void WithDocumentsFromAssembly_RegistersTemplateDescriptorsAndSelectionRules()
-    {
-        var services = new ServiceCollection();
-
-        services
-            .AddRazorDocumentRendering()
-            .WithDocumentsFromAssembly(typeof(FscdDocumentTemplate).Assembly);
-
-        using var provider = services.BuildServiceProvider();
-        var registry = provider.GetRequiredService<IDocumentTemplateRegistry>();
-        var rules = provider.GetServices<IDocumentTemplateSelectionRule>().ToArray();
-
-        Assert.Equal(typeof(FscdDocumentTemplate), registry.GetDefault(typeof(FscdDocumentModel)).BodyTemplateType);
-        Assert.Contains(rules, rule => rule.GetType() == typeof(FscdDummyTemplateRule));
-        Assert.Contains(rules, rule => rule.GetType() == typeof(CourtesyLetterPreviewTemplateRule));
-    }
+    
 
     private sealed class DummyPdfGenerator : IPdfGenerator
     {

@@ -1,6 +1,7 @@
-@namespace Outputs.Documents.Templates.Doce.Components
+@namespace Outputs.Documents.Templates.DOCE.Components
 @using Microsoft.Extensions.Options
 @using Microsoft.AspNetCore.Components
+@using Outputs.Documents.Domain.Locations
 
 @inject IOptions<StaticFilePaths>  StaticFiles
 
@@ -40,7 +41,7 @@
 </style>
 
 @code {
-    [Parameter] public Address? Address { get; set; }
+    [Parameter] public PostalAddress? Address { get; set; }
 
     public string? Base64Font { get; set; }
 

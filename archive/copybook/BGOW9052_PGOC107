@@ -1,0 +1,189 @@
+      *****************************************************************
+      *----------------------------------------------------------------*00010000
+      **                     MAINTENANCE  LOG                           00020000
+      *                        FZ4ITS01                                 00040000
+      *                                                                 00050000
+      *PROGRAMMER  PCR    DATE      COMMENTS                            00060000
+      *----------------------------------------------------------------*00060100
+      *        ---------   ATENÇÃO  --------------------------          00060400
+      *                                                                 00060500
+      *      ALTERACOES NO FZ4ITS01 DEVERAO SER REPLICADAS:             00060600
+      *             BGOW9052 - PARA RELAÇÃO DE ADERENTES E              00060700
+      *                             RELAÇÃO DE APLICAÇÕES               00060800
+      *----------------------------------------------------------------*00070000
+      *----------------------------------------------------------------*
+      *  COPYBOOK PARA IMPRESSAO DOS DOCUMENTOS:                       *
+      *                                                                *
+      *  BRLA - RELAÇÃO ADERENTES EMBARCAÇÕES DE COMÉRCIO E RECREIO    *
+      *
+      *  CRLA - RELAÇÃO ADERENTES TRANSPORTE DE MERCADORIAS            *
+      *                                                                *
+      *  MMLA - RELAÇÃO ADERENTES DE MERCADORIS TRANSPORTADAS          *
+      *         RELAÇÃO APLICAÇÕES DE MERCADORIAS TRANSPORTADAS        *00060900
+      *                                                                *
+      *                                                                *
+      * MJE     2015-06-05   ATIVIDADE 201400073                       *
+      *                      NOVOS E MIGRAÇAO TRANSPORTE               *
+      *                      E ENGENHARIAS                             *
+MJE#01* MJE     2017-08-14   NIVEL 88 FRONTING APLICAÇÃO 'T' PARA      *
+      *                      O CAMPO TIPO DE APÓLICE                   *
+      *----------------------------------------------------------------*
+
+         03  FZ4ITS1-PRINT-RECORD.
+      *--- AREA COMUM
+           05  FZ4ITS1-COMUM.
+      *     CODIGO DE COMPANHIA
+             07  FZ4ITS1-COMPANY                 PIC X(03).
+      *     CODIGO DE MARCA
+             07  FZ4ITS1-MARCA                   PIC X(03).
+      *     CANAL DE DISTRIBUIÇÃO
+             07  FZ4ITS1-CANAL-DISTRIB           PIC X(03).
+      *     CODIGO SISTEMA ORIGEM
+             07  FZ4ITS1-COD-ORIGEM              PIC X(03).
+      *     CODIGO DE DOCUMENTO
+             07  FZ4ITS1-COD-DOCUMENTO           PIC X(04).
+      *     Nº DE CLIENTE DO TOMADOR DO SEGURO
+             07  FZ4ITS1-TM-CLIENT-REFERENCE     PIC X(10).
+      *     CODIGO POSTAL DO TOMADOR DO SEGURO
+             07  FZ4ITS1-TM-POST-CODE            PIC X(08).
+      *     CODIGO DE MEDIADOR
+             07  FZ4ITS1-AGENTE-COBRADOR         PIC X(10).
+      *     CODIGO POSTAL DO MEDIADOR
+             07  FZ4ITS1-AG-POST-CODE            PIC X(08).
+      *     CÓDIGO DO PRODUTO
+             07  FZ4ITS1-PRODUTO                 PIC X(05).
+      *     Nº APOLICE
+             07  FZ4ITS1-POLICY-NUMBER           PIC X(16).
+      *     NÚMERO DE TRANSAÇÃO
+             07  FZ4ITS1-TRANSACAO-NUMBER        PIC X(10).
+      *     NÚMERO DE RECIBO
+             07  FZ4ITS1-RECIBO-NUMBER           PIC X(10).
+      *     ADERENTE/APLICAÇÃO
+             07  FZ4ITS1-NUM-ADER-APLIC            PIC X(06).
+      *     TIPO DE REGISTO DENTRO DOS SUB-DOCUMENTOS
+             07  FZ4ITS1-TYPE-1-2.
+                09  FZ4ITS1-RECORD-TYPE-1           PIC X(02).
+                  88  FZ4ITS1-DADOS-GERAIS       VALUE 'AA'.
+                  88  FZ4ITS1-ADER-APLIC         VALUE 'EA'.
+                  88  FZ4ITS1-FIM-DOCUMENTO      VALUE 'ZA'.
+      *        TIPO DE LAYOUTS POR REGISTO
+                09  FZ4ITS1-RECORD-TYPE-2           PIC X(01).
+                  88  FZ4ITS1-TYPE-A             VALUE 'A'.
+                  88  FZ4ITS1-TYPE-B             VALUE 'B'.
+                  88  FZ4ITS1-TYPE-C             VALUE 'C'.
+                  88  FZ4ITS1-TYPE-D             VALUE 'D'.
+                  88  FZ4ITS1-TYPE-E             VALUE 'E'.
+      * ********************************************************
+      * TIPOS DE REGISTOS DE RELAÇÕES ADERENTES E APLICAÇÕES
+      * ********************************************************
+      * DADOS GERAIS APOLICE
+      *      'AAA'
+      * DADOS RELAÇÃO DE ADERENTES EMBARCÃO DE RECREIO
+      *      'EAA'
+      * DADOS RELAÇÃO DE ADERENTES EMBARCÃO DE COMERCIO
+      *      'EAB'
+      * DADOS RELAÇÃO DE ADERENTES MERCADORIAS POR CONTA PRÓPRIA
+      *       RELAÇÃO DE ADERENTES MERCADORIAS ROD. NACIONAL
+      *       RELAÇÃO DE ADERENTES MERCADORIAS ROD. INTERNACIONAL
+      *      'EAC'
+      * DADOS RELAÇÃO DE ADERENTES MERCADORIAS TRANSPORTADAS
+      *      'EAD'
+      * DADOS RELAÇÃO DE APLICAÇÕES MERCADORIAS TRANSPORTADAS
+      *      'EAE'
+      * FIM FICHEIRO
+      *      'ZAA'.
+      * ********************************************************
+             07  FILLER REDEFINES FZ4ITS1-TYPE-1-2 PIC X(3).
+                  88  FZ4ITS1-VALID-TYPE-1-2     VALUE 'AAA'
+                                                       'EAA'
+                                                       'EAB'
+                                                       'EAC'
+                                                       'EAD'
+                                                       'EAE'
+                                                       'ZAA'.
+           05  FZ4ITS1-PRINT-DATA                PIC X(397).
+      *
+      *--- LINHA AA
+      *--- DADOS GERAIS  DA APÓLICE
+           05  FZ4ITS1-LINHA-AA REDEFINES FZ4ITS1-PRINT-DATA.
+      *--- TOMADOR DO SEGURO
+      *    NOME
+             07  FZ4ITS1-TM-ADDRESSEE            PIC X(40).
+      *    LINHA DE MORADA-1
+             07  FZ4ITS1-TM-ADDRESS1             PIC X(40).
+      *    LINHA DE MORADA-2
+             07  FZ4ITS1-TM-ADDRESS2             PIC X(40).
+      *    LOCALIDADE
+             07  FZ4ITS1-TM-ADDRESS3             PIC X(40).
+      *    CODIGO POSTAL DESC
+             07  FZ4ITS1-TM-ADDRESS4             PIC X(40).
+      *    TIPO NUM DE PORTA
+             07  FZ4ITS1-TM-TNUM-PORTA           PIC X(01).
+      *    NUM DE PORTA
+             07  FZ4ITS1-TM-NUM-PORTA            PIC X(04).
+      *    PRODUTO DESC
+             07  FZ4ITS1-PRODUTO-DESC            PIC X(30).
+      *    CÓDIGO CONDIÇÃO GERAL
+             07  FZ4ITS1-TIPO-COND-GERAL         PIC X(03).
+      *    PLANO DE PAGAMENTO
+             07  FZ4ITS1-FORMA-PAGAMENTO-DESC    PIC X(30).
+      *    PRESTAÇÃO DO PAGAMENTO
+             07  FZ4ITS1-PRESTACAO-PAGAMENTO     PIC X(02).
+      *
+      *    TIPO APOLICE
+      *    -  RELAÇÃO DE APLICAÇÕES
+      *        A - APLICAÇÃO
+      *        P - ESPECIAL APLICAÇÃO
+      *        T - FRONTING APLICAÇÃO
+      *    -  RELAÇÃO DE ADERENTES
+      *        E - ESPECIAL
+      *        F - FRONTING
+      *        N - NORMAL
+             07  FZ4ITS1-TIPO-APOLICE            PIC X(01).
+               88  FZ4ITS1-APLICACAO           VALUE 'A'.
+               88  FZ4ITS1-ESPECIAL            VALUE 'E'.
+               88  FZ4ITS1-FRONTING            VALUE 'F'.
+               88  FZ4ITS1-NORMAL              VALUE 'N'.
+               88  FZ4ITS1-ESPECIAL-APLICACAO  VALUE 'P'.
+MJE#01         88  FZ4ITS1-FRONTING-APLICACAO  VALUE 'T'.
+      *    MODO DE RENOVAÇÃO
+             07  FZ4ITS1-MODO-RENOVACAO          PIC X(02).
+               88  FZ4ITS1-APOL-TEMPORARIA     VALUE 'TE'.
+               88  FZ4ITS1-APOL-ANUAL          VALUE 'AN'.
+      *    DATA ORIGINAL DE 1 PRINT
+             07  FZ4ITS1-ORIG-DATE-PRINTED       PIC X(10).
+      *    USER-ID DE IMPRESSSÃO
+             07  FZ4ITS1-USER-ID                 PIC X(08).
+      *    INDICADOR DE PRIMEIRA IMPRESSÃO
+             07  FZ4ITS1-N-IMPRESSAO             PIC X(01).
+               88  FZ4ITS1-PRIMEIRA-IMP       VALUE '1'.
+               88  FZ4ITS1-SEGUNDA-VIA        VALUE '2'.
+             07  FZ4ITS1-NUM-COPIAS              PIC 9(01).
+             07  FILLER                          PIC X(104).
+      *--- LINHA EA
+      *--- PARA DADOS DO OBJETO (ADERENTE/APLICAÇÃO)
+           05 FZ4ITS1-LINHA-EA REDEFINES FZ4ITS1-PRINT-DATA.
+             07  FZ4ITS1-DATA-INICIO                PIC X(10).
+             07  FZ4ITS1-DATA-FRAC-REN              PIC X(10).
+             07  FZ4ITS1-MATRICULA                  PIC X(15).
+      *--- TIPO VEÍCUILO/TIPO DE EMBARCAÇÃO
+             07  FZ4ITS1-TIPO-VEICULO               PIC X(30).
+      *--- ANO VEICULO/ANO CONSTRUÇÃO
+             07  FZ4ITS1-ANO-VEIC-CONST             PIC X(04).
+             07  FZ4ITS1-REF-SEGURADO               PIC X(15).
+             07  FZ4ITS1-ORIG-LOCALIDADE            PIC X(25).
+             07  FZ4ITS1-DEST-LOCALIDADE            PIC X(25).
+             07  FZ4ITS1-NOME-EMBARCACAO            PIC X(30).
+             07  FZ4ITS1-CAPITAL-SEGURO             PIC S9(15)V9(2).
+             07  FZ4ITS1-PREMIO-TOTAL               PIC S9(11)V9(2).
+             07  FZ4ITS1-PRM-TOTAL                  PIC S9(15)V9(2).
+             07  FILLER                             PIC X(186).
+      *
+      *--- LINHA ZA
+      *--- FIM DE DOCUMENTO
+           05 FZ4ITS1-LINHA-ZA  REDEFINES FZ4ITS1-PRINT-DATA.
+             07  FILLER                          PIC X(397).
+      *
+           05 FZ4ITS1-TIPO-IMPRESSAO             PIC X(001).
+
+

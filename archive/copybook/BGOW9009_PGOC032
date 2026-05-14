@@ -1,0 +1,161 @@
+      *----------------------------------------------------------------*00010000
+      *                      MAINTENANCE  LOG                           00020000
+      *                                                                 00030000
+      *                        NZ44CU01                                 00040000
+      *                                                                 00050000
+      *        ---------   ATENÇÃO  --------------------------          00060400
+      *                                                                 00060500
+      *      ALTERACOES NO NZ44CU01 DEVERAO SER REPLICADAS:             00060600
+      *             BGOW9009 - PARA APLICAÇÕES DE OUTPUTS (UGEN)        00060700
+      *                                                                 00060800
+      *                                                                 00060900
+      *PROGRAMMER  PCR    DATE      COMMENTS                            00060000
+      *----------------------------------------------------------------*00070000
+      *                                                                 00080000
+      * R03V03                                                          00090000
+      * MUNDIAL                                                         00100000
+      *                                                                 00110000
+      * CEN        W40031 04/02/98  PRINT RECORD FOR NCD CERTIFICATE    00120000
+      * AS         W40061 20-04-98  ALTERAÇÃO DOS CAMPOS DE MORADA.     00130000
+      *                                                                 00140000
+      * EO         M40131 10-11-98  Add new fields.                     00150000
+      *                             (Motor Traditional Outputs)         00160000
+      *                                                                 00170000
+      * JMS   M40215   1999-02-02   RECORD TYPE SPLIT                   00180000
+      *                                                                 00190000
+      * JMS   M40250   1999-03-15   NCD CERTIFICATE CHANGES             00200000
+      *                                                                 00210000
+      * OH    M40275   1999-05-12   MOTOR TRADE PRODUCTS                00220000
+      *                                                                 00230000
+      * LPC   M40355   1999-06-18   PUT CANCEL REQUEST                  00240000
+      *                                                                 00241000
+      * AMLM  M10022   1999-06-23   FORMATAR NOME COM 'ADDRESSEE'       00242000
+      *                                                                 00242100
+      * PO    M40512   1999-10-25   Passar ORIG-DATE-PRINTED.           00243000
+      *                                                                 00244000
+      * CCA   M40662   2000-02-18   REFERENCIA DOCUMENTO                00245000
+      *                                                                 00246000
+      * AS    M41572   27-FEV-2003  CODIGO BARRAS CTT.
+      *
+      * IAC   M41699   2003-11-17   CARTA PARA ENTIDADE INTERESSADA.    00246000
+      *                                                                 00246000
+      * CCR         3P0433  2008-11-18  200800164 PROJECTO ACTIVATION
+      *                                 AUMENTO DO AUTOMATISMO POSTAL.
+      *                                                                 00246000
+3P1556* RJF 3P1556  28/05/14   NOVO CAMPO NUMERO DE REPORT
+      *                                                                 00246000
+3P2130* JC  3P2130  11/04/19   Novo campo nr cliente da entidade
+      *                        interessada.                             00250000
+      *----------------------------------------------------------------*00250000
+           03 NZ44CU01-PRINT-RECORD.                                    00260000
+M40250        05 NZ44CU01-SORT-KEY.                                     00270000
+WAL              07 NZ44CU01-COMPANY-KEY           PIC  X(03).          00280000
+                 07 NZ44CU01-POST-CODE             PIC  X(09).          00280000
+M40250           07 NZ44CU01-A-POST-CODE           PIC  X(09).          00290000
+M40250           07 NZ44CU01-L-POST-CODE           PIC  X(09).          00300000
+M40250           07 NZ44CU01-CANC-LAP-REASON       PIC  X(2).           00310000
+                 07 NZ44CU01-POLICY-NUMBER         PIC  X(16).          00320000
+M40759           07 NZ44CU01-UNIT-AT-RISK-NUM      PIC  X(08).          00321000
+M41699           07 NZ44CU01-TIPO-DE-CARTA         PIC  X(04).          00321000
+M41699              88 NZ44CU01-CARTA-NCDC         VALUE 'NCDC'.        00321000
+M41699              88 NZ44CU01-CARTA-ENT1         VALUE 'ENT1'.        00321000
+M41699              88 NZ44CU01-CARTA-ENT2         VALUE 'ENT2'.        00321000
+M40250           07 NZ44CU01-RECORD-TYPE           PIC  X.              00330000
+M40250              88 NZ44CU01-RECORD-TYPE-1      VALUE '1'.           00340000
+M40250              88 NZ44CU01-RECORD-TYPE-2      VALUE '2'.           00350000
+M40250              88 NZ44CU01-RECORD-TYPE-3      VALUE '3'.           00360000
+M40759*M40250       88 NZ44CU01-RECORD-TYPE-4      VALUE '4'.           00370001
+M40759              88 NZ44CU01-RECORD-TYPE-4      VALUE '5'.           00371001
+M40759*M40275       88 NZ44CU01-RECORD-TYPE-5      VALUE '5'.           00380001
+M40759              88 NZ44CU01-RECORD-TYPE-5      VALUE '4'.           00381001
+M40250        05 NZ44CU01-RECORD-1.                                     00390000
+                 07 NZ44CU01-COMPANY               PIC  X(03).          00400000
+M40131           07 NZ44CU01-PRODUCT-CODE          PIC  X(05).          00410000
+                 07 NZ44CU01-POLICY-EFFECTIVE-DATE PIC  X(08).          00420000
+                 07 NZ44CU01-POLICY-EXPIRY-DATE    PIC  X(08).          00430000
+M40131           07 NZ44CU01-CLIENT-REFERENCE      PIC  X(10).          00440000
+                 07 NZ44CU01-CLIENT-NAME.                               00450000
+                    09 NZ44CU01-CLIENT-NAME1       PIC  X(45).          00460000
+                    09 NZ44CU01-CLIENT-NAME2       PIC  X(45).          00470000
+                 07 NZ44CU01-CLIENT-FIRST-NAME     PIC  X(25).          00480000
+                 07 NZ44CU01-CLIENT-MIDDLE-NAME    PIC  X(50).          00490000
+                 07 NZ44CU01-CLIENT-LAST-NAME      PIC  X(15).          00500000
+                 07 NZ44CU01-LOCATION-FIELDS.                           00510000
+W40061              09 NZ44CU01-ADDRESS-LINE-1     PIC  X(40).          00540000
+W40061              09 NZ44CU01-ADDRESS-LINE-2     PIC  X(40).          00550000
+3P0433              09 NZ44CU01-ADDRESS-LINE-3     PIC  X(40).          00560000
+3P0433              09 NZ44CU01-ADDRESS-LINE-4     PIC  X(40).          00570000
+3P0433              09 NZ44CU01-POST-CODE-DESC     PIC  X(40).          00580000
+3P1556           07 NZ44CU01-ORIG-DATE-PRINTED     PIC  X(10).          00581000
+3P0433           07 NZ44CU01-NUM-TYPE              PIC  X(01).          00582000
+3P0433           07 NZ44CU01-NUM                   PIC  X(04).          00582000
+3P1556           07 FILLER                         PIC  X(09).          00592000
+3P1556           07 NZ44CU01-TIPO-IMP1             PIC  X(01).          00592000
+M40250        05 NZ44CU01-RECORD-2 REDEFINES                            00600000
+M40250           NZ44CU01-RECORD-1.                                     00610000
+M40250           07 NZ44CU01-AGENT.                                     00620000
+M40250              09 NZ44CU01-A-ACCOUNT-NUMBER   PIC  X(10).          00630000
+M40250              09 NZ44CU01-A-ADDRESSEE        PIC  X(40).          00640000
+M40250              09 NZ44CU01-A-ADDRESS-LINE-1   PIC  X(40).          00650000
+M40250              09 NZ44CU01-A-ADDRESS-LINE-2   PIC  X(40).          00660000
+3P0433              09 NZ44CU01-A-ADDRESS-LINE-3   PIC  X(40).          00670000
+3P0433              09 NZ44CU01-A-ADDRESS-LINE-4   PIC  X(40).          00680000
+3P0433              09 NZ44CU01-A-POST-CODE-DESC   PIC  X(40).          00690000
+3P0433              09 NZ44CU01-A-NUM-TYPE         PIC  X(01).
+3P0433              09 NZ44CU01-A-NUM              PIC  X(04).
+3P0433              09 FILLER                      PIC  X(183).         00700000
+3P1556           07 NZ44CU01-TIPO-IMP2             PIC  X(01).          00592000
+                                                                        00710000
+M40250        05 NZ44CU01-RECORD-3 REDEFINES                            00720000
+M40250           NZ44CU01-RECORD-1.                                     00730000
+M40131           07 NZ44CU01-VEHICLE-TYPE          PIC  X(03).          00740000
+M40131           07 NZ44CU01-VEH-YEAR              PIC S9(04) COMP-3.   00750000
+                 07 NZ44CU01-VEH-MAKE-DESC         PIC  X(38).          00760000
+                 07 NZ44CU01-VEH-MODEL             PIC  X(10).          00770000
+                 07 NZ44CU01-VEH-EXTRA             PIC  X(25).          00780000
+                 07 NZ44CU01-VEH-REG-NUMBER        PIC  X(15).          00790000
+                 07 NZ44CU01-CANC-LAP-REASON-DESC  PIC  X(30).          00800000
+M40355           07 NZ44CU01-CANC-REQUEST          PIC  X(01).          00810000
+M40355             88 NZ44CU01-CANC-REQ-COMPANY    VALUE 'C'.           00820000
+M40355             88 NZ44CU01-CANC-REQ-CLIENT     VALUE 'U'.           00830000
+                 07 NZ44CU01-CANC-REV-EFF-DATE     PIC  X(08).          00840000
+                 07 NZ44CU01-NCD-PERCENT       PIC S9(03)V9(02) COMP-3. 00850000
+                 07 NZ44CU01-TRAN-AMOUNT        PIC S9(11)V9(02) COMP-3.00860000
+M40250           07 NZ44CU01-LEASING.                                   00870000
+M40250              09 NZ44CU01-L-ADDRESSEE        PIC  X(40).          00880000
+M40250              09 NZ44CU01-L-ADDRESS-LINE-1   PIC  X(40).          00890000
+M40250              09 NZ44CU01-L-ADDRESS-LINE-2   PIC  X(40).          00900000
+M40250*3P0433       09 NZ44CU01-L-ADDRESS-LINE-3   PIC  X(30).          00910000
+M40250*3P0433       09 NZ44CU01-L-ADDRESS-LINE-4   PIC  X(30).          00920000
+3P0433              09 NZ44CU01-L-ADDRESS-LINE-3   PIC  X(40).          00910000
+3P0433              09 NZ44CU01-L-ADDRESS-LINE-4   PIC  X(40).          00920000
+M40250*3P0433       09 NZ44CU01-L-POST-CODE-DESC   PIC  X(30).          00930000
+3P0433              09 NZ44CU01-L-POST-CODE-DESC   PIC  X(40).          00930000
+M41572              09 NZ44CU01-CTT-CODIGO-BARRAS  PIC  X(08).
+3P0433              09 NZ44CU01-L-NUM-TYPE         PIC  X(01).
+3P0433              09 NZ44CU01-L-NUM              PIC  X(04).
+3P2130              09 NZ44CU01-L-CLIENT-REF       PIC  X(10).
+3P2130*3P0433    07 FILLER                         PIC  X(42).          00950000
+3P2130           07 FILLER                         PIC  X(32).          00950000
+3P1556           07 NZ44CU01-TIPO-IMP3             PIC  X(01).          00592000
+                                                                        00960000
+M40250        05 NZ44CU01-RECORD-4 REDEFINES                            00970000
+M40250           NZ44CU01-RECORD-1.                                     00980000
+                 07 NZ44CU01-LOSS-DETAILS OCCURS 6 TIMES.               00990000
+                   09 NZ44CU01-OCCURRENCE-NUMBER  PIC  X(10).           01000000
+                   09 NZ44CU01-DATE-OCCURRED      PIC  X(08).           01010000
+                   09 NZ44CU01-INDEMNITY-AMOUNT PIC S9(10)V9(02) COMP-3.01020000
+                   09 NZ44CU01-INSURED-LIABL-PERC PIC S9(03) COMP-3.    01030000
+                   09 NZ44CU01-COMMENTS           PIC  X(25).           01040000
+3P1556           07 FILLER                        PIC  X(126).          01050000
+3P1556           07 NZ44CU01-TIPO-IMP4            PIC  X(01).           00592000
+                                                                        01060000
+M40275        05 NZ44CU01-RECORD-5 REDEFINES                            01070000
+M40275           NZ44CU01-RECORD-1.                                     01080000
+M40275           07 NZ44CU01-T-VEHICLE-TYPE           PIC X(03).        01090000
+M10022           07 NZ44CU01-T-ADDRESSEE              PIC X(40).        01100000
+M40275           07 NZ44CU01-T-LICENSE-NUMBER-25      PIC X(25).        01130000
+M40275           07 NZ44CU01-T-LICENSE-DATE           PIC X(10).        01140000
+3P1556           07 FILLER                            PIC X(360).       00592000
+3P1556           07 NZ44CU01-TIPO-IMP5                PIC X(01).        00592000
+

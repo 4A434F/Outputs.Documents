@@ -1,0 +1,98 @@
+      *=================================================================
+      * BGOW0022: DESENHO DE REGISTO UNICO TRANSFERENCIA DE MEDIAÇÃO
+      * ---------------------------------------------------------------
+      * 2011-06-09 AP  GO     201000079 MELHORIAS NO MASTER DE CONTAS
+PJG#1 *                                                             *
+PJG#1 * PJG   201200094 2014-08-05 INCLUSAO DE INDICADOR PARA TIPO  *
+PJG#1 *                            DE IMPRESSAO, IMMEDIATE(I) OU    *
+PJG#1 *                            OVERNIGHT(O)                     *
+      *
+#02   * 2021.05.11  JADS  COMPILAÇÃO E ALTERAÇÕES RELATIVAS AO COBOL V6.
+      *=================================================================
+           05  :PREFIX:-DADOS-REGISTO.
+             07  :PREFIX:-COD-COMPANHIA                PIC X(003).
+                 88  :PREFIX:-C-VIADIRECTA              VALUE '111'.
+                 88  :PREFIX:-C-FIDELIDADEMUNDIAL       VALUE '128'.
+                 88  :PREFIX:-C-IMPERIOBONANCA          VALUE '138'.
+                 88  :PREFIX:-C-MULTICARE               VALUE '148'.
+             07  :PREFIX:-COD-MARCA                    PIC X(003).
+                 88  :PREFIX:-M-OKTELESEGURO            VALUE '001'.
+                 88  :PREFIX:-M-FIDELIDADEMUNDIAL       VALUE '002'.
+                 88  :PREFIX:-M-FMLEVE                  VALUE 'L02'.
+                 88  :PREFIX:-M-IMPERIOBONANCA          VALUE '003'.
+                 88  :PREFIX:-M-IBLEVE                  VALUE 'L03'.
+                 88  :PREFIX:-M-ICI                     VALUE '004'.
+                 88  :PREFIX:-M-CONTINENTE              VALUE '005'.
+                 88  :PREFIX:-M-MULTICARE               VALUE '006'.
+             07  :PREFIX:-COD-ORIGEM                   PIC X(003).
+                 88  :PREFIX:-O-COGEN22                 VALUE 'C22'.
+                 88  :PREFIX:-O-COGEN33                 VALUE 'C33'.
+                 88  :PREFIX:-O-COGEN41                 VALUE 'C41'.
+                 88  :PREFIX:-O-PRIC41                  VALUE 'P41'.
+                 88  :PREFIX:-O-CLASSICO                VALUE 'CLA'.
+                 88  :PREFIX:-O-GIS                     VALUE 'GIS'.
+                 88  :PREFIX:-O-FGS                     VALUE 'FGS'.
+                 88  :PREFIX:-O-TAG                     VALUE 'TAG'.
+                 88  :PREFIX:-O-COLHEITAS               VALUE 'CLH'.
+             07  :PREFIX:-COD-POSTALM                  PIC X(009).
+             07  :PREFIX:-NR-MEDIADOR                  PIC X(010).
+             07  :PREFIX:-COD-POSTALC                  PIC X(009).
+             07  :PREFIX:-NR-CLIENTE                   PIC X(010).
+             07  :PREFIX:-NR-APOLICE                   PIC X(016).
+             07  :PREFIX:-NR-DOCUMENTO                 PIC X(010).
+             07  :PREFIX:-COD-PRODUTO                  PIC X(006).
+             07  :PREFIX:-ADERENTE                     PIC X(008).
+      *
+           05  :PREFIX:-DADOS-CABECALHO.
+             07  :PREFIX:-TITULO-DOC1                  PIC X(040).
+             07  :PREFIX:-TITULO-DOC2                  PIC X(040).
+             07  :PREFIX:-DADOS-ENDERECAMENTO.
+                 09  :PREFIX:-NOME                     PIC X(040).
+                 09  :PREFIX:-MORADA1                  PIC X(040).
+                 09  :PREFIX:-MORADA2                  PIC X(040).
+                 09  :PREFIX:-MORADA3                  PIC X(040).
+                 09  :PREFIX:-MORADA4                  PIC X(040).
+                 09  :PREFIX:-TNUM-PORTA               PIC X(001).
+                 09  :PREFIX:-NUM-PORTA                PIC X(004).
+             07  :PREFIX:-DT-CARTA-EMISSAO             PIC X(032).
+             07  :PREFIX:-ASSUNTO                      PIC X(090)
+                                           OCCURS 3 TIMES.
+      *
+           05  :PREFIX:-CORPO-CARTA                    PIC X(3300).
+      *
+           05  :PREFIX:-MASTER-CONTAS REDEFINES :PREFIX:-CORPO-CARTA.
+             07  :PREFIX:-PRODUTO-DESC                  PIC X(030).
+             07  :PREFIX:-DATA-PROCESSAMENTO            PIC X(010).
+             07  :PREFIX:-CANAL-DISTRIBUICAO            PIC X(003).
+             07  :PREFIX:-COD-DOCUMENTO                 PIC X(004).
+                 88  :PREFIX:-OUT1                      VALUE 'OUT1'.
+                 88  :PREFIX:-OUT2                      VALUE 'OUT2'.
+                 88  :PREFIX:-OUT3                      VALUE 'OUT3'.
+                 88  :PREFIX:-OUT4                      VALUE 'OUT4'.
+                 88  :PREFIX:-OUT5                      VALUE 'OUT5'.
+             07  :PREFIX:-NR-TRANSERENCIA               PIC X(010).
+             07  :PREFIX:-TIPO-TRANSFERENCIA            PIC X(002).
+             07  :PREFIX:-NR-APOLICE-TRF                PIC X(009).
+             07  :PREFIX:-LISTA-APOLICE                 PIC X(384).
+             07  :PREFIX:-DADOS-MEDIADOR-NOVO.
+                 09  :PREFIX:-MEDIADOR-NOVO             PIC X(040).
+                 09  :PREFIX:-MEDIADOR-MORADA1          PIC X(040).
+                 09  :PREFIX:-MEDIADOR-MORADA2          PIC X(040).
+                 09  :PREFIX:-MEDIADOR-MORADA3          PIC X(040).
+                 09  :PREFIX:-MEDIADOR-MORADA4          PIC X(040).
+                 09  :PREFIX:-MEDIADOR-TNUM-PORTA       PIC X(001).
+                 09  :PREFIX:-MEDIADOR-NUM-PORTA        PIC X(004).
+                 09  :PREFIX:-MEDIADOR-TELEFONE1        PIC X(016).
+                 09  :PREFIX:-MEDIADOR-TELEMOVEL1       PIC X(016).
+                 09  :PREFIX:-MEDIADOR-TELEFONE2        PIC X(016).
+                 09  :PREFIX:-MEDIADOR-TELEMOVEL2       PIC X(016).
+                 09  :PREFIX:-MEDIADOR-EMAIL            PIC X(045).
+             07  :PREFIX:-DADOS-MEDIADOR-ANTIGO.
+                 09  :PREFIX:-NR-MEDIADOR-ANTIGO        PIC X(010).
+                 09  :PREFIX:-MEDIADOR-ANTIGO           PIC X(040).
+                 09  :PREFIX:-COMP-MEDIADOR-ANTIGA      PIC X(003).
+PJG#1 *
+PJG#1        07  :PREFIX:-TIPO-IMPRESSAO         PIC X(01).
+#02          07  FILLER                                 PIC X(2480).
+      *    =============================================================
+

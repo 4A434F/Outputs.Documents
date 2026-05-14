@@ -1,0 +1,485 @@
+      *----------------------------------------------------------------*00010000
+      *                      MAINTENANCE  LOG                           00020000
+      *                                                                 00030000
+      *        ---------   ATENÇÃO  --------------------------          00030000
+      *                                                                 00030000
+      *      ALTERACOES NO NZ5PDU01 DEVERAO SER REPLICADAS:
+      *             BGOW9001 - PARA APLICAÇÕES DE OUTPUTS (UGEN)
+      *
+      *
+      * PROGRAMMER  PCR    DATE        COMMENTS                         00040000
+      *----------------------------------------------------------------*00050000
+      *                                                                 00060000
+      * DDS                SET.2007    VERSÃO ORIGINAL                  00080400
+A1    * AS          A1     NOV.2008    ACT 200800091                    00080500
+      * IAC         5P0564 DEZ.2008    200800164 - AUTOMATISMO POSTAL
+      * CLS         5P0687 NOV.2009    200900034 - DINAMIZAÇÃO DO
+      *                                DÉBITO DIRECTO                   00140000
+      * FA          4P0636 MAR 2010    NOVOS ELEMENTOS GIS
+      * AMM/PCS     4P0646 MAR 2010    INCLUIR NOVOS CAMPOS
+      *
+      * NJF         4P0745 NOV 2010    INCLUIR NOVOS CAMPOS (PARA IMPLE-
+      *                                MENTAÇÃO DO NOVO LAYOUT DO CTAD:
+      *                                QUANDO O VALOR DE RECIBOS PENDEN-
+      *                                TES É MAIOR QUE ZERO)
+      *
+      * NJF         3P0889 NOV 2010    201000028 - ACTIVACTION OUTPUTS:
+      *                                NOVO CAMPO PARA VALOR PRÉMIO A-
+      *                                NUAL DO CONTRATO (USADO PELO CO-
+      *                                GEN 3.3 MAS QUE TEM QUE ESTAR RE-
+      *                                FLECTIDO NESTE COPY, PORQUE DO
+      *                                LADO DE OUTPUTS, OS AVISOS / RE-
+      *                                CIBOS SÃO CONVERTIDOS DO LAYOUT
+      *                                DO NY5INV01 PARA ESTE LAYOUT)
+      *
+      * NMMB        4P0821 JUN.2011    CHG-7213 APRESENTAÇÃO DA CONTA
+      *                                DE MEDIAÇÃO NOS RECIBOS
+      *
+      * NJF         4P0839 20-07-2011  200900243 - ACTIVACTION OUTPUTS:
+      *                                NOVA LINHA (RECORD-TYPE = 'X')
+      *                                PARA PASSAR A INFORMAÇÃO A CONS-
+      *                                TAR NO EXTRACTO ANUAL
+      *
+      * NCP         4P1038 21-08-2013  201300061 - CONVERTER
+      *                                FICHEIROS DD/TRANSF CRED NO
+      *                                FORMATO SEPA.
+      *                                INCLUIR NOVOS CAMPOS.
+      *
+      * NCP         4P1060 06-11-2013  201300061 - CONVERTER
+      *                                FICHEIROS DD/TRANSF CRED NO
+      *                                FORMATO SEPA.
+      *                                INCLUIR NOVOS CAMPOS.
+      *
+      * PCS         3P1568 JUL.2014    201200094 - PDS - INTEGRAR       00140000
+      *                                OUTPUTS C22 E C33 EM SGO         00140000
+      *                                                                 00140000
+      * NMMB        4P1152 OUT.2014    201401020 - COBERTURA PVC        00140000
+      *                                MONO FOLHA COM AVISOS-RECIBO     00140000
+      *                                                                 00140000
+      *----------------------------------------------------------------*
+
+           03  NZ5PDU01-PRINT-RECORD.
+      *----------------------------------------------------------------*
+      *    CHAVE
+      *----------------------------------------------------------------*
+               05  NZ5PDU01-SORT-KEY.
+                   07  NZ5PDU01-C-COMP-SGRA          PIC X(03).
+                   07  NZ5PDU01-C-MARC-SGRA          PIC X(03).
+                   07  NZ5PDU01-NOTICE               PIC X(10).
+                   07  NZ5PDU01-DOCUMENT-CODE        PIC X(04).
+                   07  NZ5PDU01-RECORD-TYPE            PIC X(01).       00410000
+                       88  NZ5PDU01-NOTICE-DATA        VALUE 'A'.
+                       88  NZ5PDU01-CLIENT-DATA        VALUE 'B'.
+                       88  NZ5PDU01-AGENT-DATA         VALUE 'C'.
+                       88  NZ5PDU01-PAYMENT-DATA       VALUE 'D'.
+                       88  NZ5PDU01-OBJECTO-DATA       VALUE 'E'.
+                       88  NZ5PDU01-LISTA-DATA         VALUE 'F'.
+                       88  NZ5PDU01-CREDOR-DATA        VALUE 'G'.
+4P0839                 88  NZ5PDU01-EXTRACTO-DATA      VALUE 'X'.
+                       88  NZ5PDU01-END-OF-DOCUMENT    VALUE 'Z'.
+      *--- INDICA SE É UMA 1ª IMPRESSÃO OU UMA RE-IMPRESSÃO
+                   07  NZ5PDU01-I-IMPRESSAO          PIC X(01).
+                       88 NZ5PDU01-1-VIA                 VALUE ' ' '1'.
+                       88 NZ5PDU01-RE-IMPRESSAO          VALUE '2'.
+3P1568*4P0646  05  NZ5PDU01-PRINT-DATA               PIC X(478).
+3P1568         05  NZ5PDU01-PRINT-DATA               PIC X(477).
+
+      *----------------------------------------------------------------*
+      *    NOTICE BASIC LEVEL DATA - REGISTO TIPO 'A'
+      *----------------------------------------------------------------*
+               05  REDEFINES NZ5PDU01-PRINT-DATA.
+                 07  NZ5PDU01-PRINT-NOTICE-DATA.
+      *--- ALICAÇÃO ORIGEM
+                   09  NZ5PDU01-C-APL-ORIG           PIC X(03).
+      *--- COBRADOR
+                   09  NZ5PDU01-C-CTA-ENT-AGT-CBRX   PIC X(10).
+      *--- CLIENTE
+                   09  NZ5PDU01-C-TOMADOR            PIC X(10).
+      *--- APOLICE
+                   09  NZ5PDU01-IDENTIFIER           PIC X(16).
+      *--- Nº DE RECIBO
+      *            09  NZ5PDU01-NOTICE               PIC X(10).
+      *--- MOEDA
+                   09  NZ5PDU01-C-MOED-ISO           PIC X(03).
+      *--- RAMO
+                   09  NZ5PDU01-C-RAMO-DIRZ-FNCO     PIC X(06).
+      *--- DESCRIÇÃO DO RAMO
+                   09  NZ5PDU01-RAMO-DESCR           PIC X(30).
+      *--- PRODUTO
+                   09  NZ5PDU01-PRODUCT-CODE         PIC X(06).
+      *--- DESCRIÇÃO DO PRODUTO
+                   09  NZ5PDU01-PRODUCT-DESCR        PIC X(30).
+      *--- TIPO DE RECIBO - PREMIO, ESTORNO, INDEMNIZAÇÃO,
+      *---                  REEMBOLSO.
+                   09  NZ5PDU01-C-TIPO-RCIB          PIC X(02).
+      *--- MEIO DE PAGAMENTO - CAIXA, CHEQUE, EFT ...
+                   09  NZ5PDU01-C-MEIO-PAG           PIC X(01).
+      *--- TIPO DE RECIBO
+      *--- 'N' (NOVO) ; 'A' (ALTERAÇÃO) ; 'C' (CONTINUADO) ;
+      *--- 'M' (CANCELAMENTO) ; 'F' (FROTA) ; 'L' (COLECTIVA)
+                   09 NZ5PDU01-TIPO-RECIBO        PIC X(01).
+                       88 NZ5PDU01-TIPO-RECIBO-N   VALUE 'N'.
+                       88 NZ5PDU01-TIPO-RECIBO-A   VALUE 'A'.
+                       88 NZ5PDU01-TIPO-RECIBO-C   VALUE 'C'.
+                       88 NZ5PDU01-TIPO-RECIBO-M   VALUE 'M'.
+                       88 NZ5PDU01-TIPO-RECIBO-F   VALUE 'F'.
+                       88 NZ5PDU01-TIPO-RECIBO-L   VALUE 'L'.
+      *---------------------------------------------------------
+                   09 NZ5PDU01-DATA-INI-APOL      PIC X(10).
+                   09 NZ5PDU01-DATA-FIM-APOL      PIC X(10).
+                   09 NZ5PDU01-DATA-CANCEL        PIC X(10).
+                   09 NZ5PDU01-DATA-INI-REC       PIC X(10).
+                   09 NZ5PDU01-DATA-FIM-REC       PIC X(10).
+      *---------------------------------------------------------
+      *--- TIPO DE IMPRESSÃO
+      *--- 'A' (AGENTE) ; 'C' (CLIENTE) ; 'B' (AMBOS)
+                   09 NZ5PDU01-TIPO-CARTA-RECIBO  PIC X(01).
+                       88 NZ5PDU01-TIPO-CARTA-RECIBO-A VALUE 'A'.
+                       88 NZ5PDU01-TIPO-CARTA-RECIBO-C VALUE 'C'.
+                       88 NZ5PDU01-TIPO-CARTA-RECIBO-B VALUE 'B'.
+      *---- CANCELAMENTO ---------------------------------------
+                   09  NZ5PDU01-CANCELLATION-DATE      PIC X(10).
+                   09  NZ5PDU01-MOTIVO-CANC            PIC X(02).
+                   09  NZ5PDU01-MOTIVO-CANC-DESCR      PIC X(30).
+      *--- RAMO ------------------------------------------------
+                   09  NZ5PDU01-RAMO-SO              PIC X(06).
+      *--- DESCRIÇÃO DO RAMO -----------------------------------
+                   09  NZ5PDU01-RAMO-SO-DESCR        PIC X(30).
+      *--- DATA LIMITE DE PAGAMENTO ----------------------------
+                   09  NZ5PDU01-DATA-LIM-PAG         PIC X(10).
+      *--- DATA PARA DEVOLUÇÃO DO RECIBO -----------------------
+                   09  NZ5PDU01-DATA-DEV-REC         PIC X(10).
+      *--- DATA 1ª IMPRESSAO -----------------------------------
+                   09  NZ5PDU01-DATA-1-IMPRESSAO     PIC X(10).
+      *--- CANCELAMENTO - PREMIO TOTAL -------------------------
+                   09  NZ5PDU01-CANC-PREMIO-TOTAL    PIC S9(11)V9(2).
+      *--- CANCELAMENTO - PREMIO PAGO --------------------------
+                   09  NZ5PDU01-CANC-PREMIO-PAGO     PIC S9(11)V9(2).
+      *--- CANCELAMENTO - PERIODO NAO DECORRIDO ----------------
+                   09  NZ5PDU01-CANC-PER-N-DEC       PIC S9(11)V9(2).
+A2    *--- ESPECIE DE RECIBO -----------------------------------
+A2                 09  NZ5PDU01-C-ESPE-RCIB          PIC X(03).
+A2                     88 NZ5PDU01-ESPE-ACERTO       VALUE 'AC '.
+A2                     88 NZ5PDU01-ESPE-CANCEL       VALUE 'CN ' 'CX '.
+A2                     88 NZ5PDU01-ESPE-ALTERACAO    VALUE 'EN '.
+A2                     88 NZ5PDU01-ESPE-NOVO         VALUE 'NB '.
+A2                     88 NZ5PDU01-ESPE-PRESTACAO    VALUE 'NP '.
+A2                     88 NZ5PDU01-ESPE-REC-ACERTO   VALUE 'RC '.
+A2                     88 NZ5PDU01-ESPE-RENOVACAO    VALUE 'RN '.
+A2                     88 NZ5PDU01-ESPE-FF-NOVO      VALUE '001'.
+A2                     88 NZ5PDU01-ESPE-FF-UNICO     VALUE '002'.
+A2                     88 NZ5PDU01-ESPE-FF-RENOVACAO VALUE '003'.
+A2                     88 NZ5PDU01-ESPE-FF-ACTA      VALUE '004'.
+A2                     88 NZ5PDU01-ESPE-FF-REN-VAR   VALUE '006'.
+A2                     88 NZ5PDU01-ESPE-FF-ESTORNO   VALUE '009'.
+4P0745*--- TIPO DE DOCUMENTO CTAD ------------------------------
+4P0745             09  NZ5PDU01-C-TIPO-CTAD          PIC X(01).
+4P0745                 88 NZ5PDU01-CTAD-NO-RCIB-PEND VALUE ' '.
+4P0745                 88 NZ5PDU01-CTAD-RCIB-PEND    VALUE 'P'.
+4P0745*--- CANCELAMENTO - VALOR DOS RECIBOS PENDENTES ----------
+4P0745             09  NZ5PDU01-CANC-RCIB-PEND       PIC S9(11)V9(2).
+3P0889*--- RENOVAÇÕES - VALOR DO PRÉMIO ANUAL DO CONTRATO ------
+3P0889             09  NZ5PDU01-M-PREMIO-ANUAL-AP    PIC S9(11)V9(2).
+3P0889*--- REFERÊNCIA DE REGISTO PARA OS CTT (TRACK & TRACE) ---
+3P0889             09  NZ5PDU01-NUMERO-REGISTO-CTT   PIC X(17).
+3P0889*--- REFERÊNCIA DE REGISTO PARA OS CTT (TRACK & TRACE) ---
+3P0889             09  NZ5PDU01-NUMERO-CTT           PIC X(13).
+4P0821*--- ANGARIADOR
+4P0821             09  NZ5PDU01-C-CONT-ENT-MDAX      PIC X(10).
+4P0821*--- AGENTE OUTRAS COMISSÕES
+4P0821             09  NZ5PDU01-N-CTA-AGT-OTR-COMS   PIC X(10).
+4P1038*--- IBAN
+4P1038             09  NZ5PDU01-REFERENCIA-IBAN      PIC X(34).
+4P1038*--- SWIFT
+4P1038             09  NZ5PDU01-SWIFT                PIC X(11).
+4P1060*--- ID-CREDOR
+4P1060             09  NZ5PDU01-ID-CREDOR-SEPA       PIC X(35).
+A2    *            09  FILLER                        PIC X(162).
+4P0745*A2          09  FILLER                        PIC X(159).
+3P0889*4P0745      09  FILLER                        PIC X(145).
+4P0821*3P0889      09  FILLER                        PIC X(102).
+4P1038*4P0821      09  FILLER                        PIC X(082).
+4P1038*4P1038      09  FILLER                        PIC X(037).
+3P1568             09  FILLER                        PIC X(001).
+3P1568*4P1060      09  FILLER                        PIC X(002).
+
+      *----------------------------------------------------------------*
+      *    CLIENT BASIC LEVEL DATA - REGISTO TIPO 'B'
+      *----------------------------------------------------------------*
+               05  REDEFINES NZ5PDU01-PRINT-DATA.
+                 07  NZ5PDU01-PRINT-CLIENT-DATA.
+      *--- NOME DO CLIENTE
+                   09  NZ5PDU01-CLIENT-NAME          PIC X(40).         00140000
+      *--- MORADA DO CLIENTE 1
+                   09  NZ5PDU01-CLIENT-ADDRESS       PIC X(40).         00150000
+      *--- MORADA DO CLIENTE 2
+                   09  NZ5PDU01-CLIENT-ADDRESS-2     PIC X(40).         00160000
+      *--- LOCALIDADE DO CLIENTE
+5P0564*            09  NZ5PDU01-CLIENT-CITY          PIC X(30).         00170000
+5P0564             09  NZ5PDU01-CLIENT-CITY          PIC X(40).         00170000
+      *--- CODIGO POSTAL DO CLIENTE
+                   09  NZ5PDU01-CLIENT-POST-CODE     PIC X(09).         00180000
+      *--- DESCRIÇÃO DO CODIGO POSTAL DO CLIENTE
+5P0564*            09  NZ5PDU01-CLIENT-POST-DESCR    PIC X(41).         00190000
+5P0564             09  NZ5PDU01-CLIENT-POST-DESCR    PIC X(40).         00190000
+      *--- Nº DE CONTRIBUINTE DO CLIENTE
+                   09  NZ5PDU01-FISCAL-NUMBER        PIC X(09).
+5P0564             09  NZ5PDU01-CLIENT-NUM-TYPE      PIC X(01).         00190000
+5P0564             09  NZ5PDU01-CLIENT-NUM           PIC X(04).         00190000
+4P1152             09  NZ5PDU01-IND-FLYER            PIC X(01).
+4P1152             09  FILLER                        PIC X(253).
+4P1152*3P1568      09  FILLER                        PIC X(254).
+3P1568*5P0564      09  FILLER                        PIC X(255).
+5P0564*            09  FILLER                        PIC X(269).
+
+      *----------------------------------------------------------------*
+      *    AGENT BASIC LEVEL DATA - REGISTO TIPO 'C'
+      *----------------------------------------------------------------*
+               05  REDEFINES NZ5PDU01-PRINT-DATA.
+                 07  NZ5PDU01-PRINT-AGENT-DATA.
+      *--- NOME DO AGENTE (COBRADOR)
+                   09  NZ5PDU01-AGENT-NAME           PIC X(40).         00140000
+      *--- MORADA DO AGENTE (COBRADOR) 1
+                   09  NZ5PDU01-AGENT-ADDRESS        PIC X(40).         00150000
+      *--- MORADA DO AGENTE (COBRADOR) 2
+                   09  NZ5PDU01-AGENT-ADDRESS-2      PIC X(40).         00160000
+      *--- LOCALIDADE AGENTE (COBRADOR) 2
+5P0564*            09  NZ5PDU01-AGENT-CITY           PIC X(30).         00170000
+5P0564             09  NZ5PDU01-AGENT-CITY           PIC X(40).         00170000
+      *--- CODIGO POSTAL DO AGENTE (COBRADOR)
+                   09  NZ5PDU01-AGENT-POST-CODE      PIC X(09).         00180000
+      *--- DESCRIÇÃO CODIGO POSTAL DO AGENTE (COBRADOR)
+5P0564*            09  NZ5PDU01-AGENT-POST-DESCR     PIC X(41).         00190000
+5P0564             09  NZ5PDU01-AGENT-POST-DESCR     PIC X(40).         00190000
+      *--- COMISSÃO DE COBRANÇA
+                   09  NZ5PDU01-M-COMS-CBRC          PIC S9(11)V9(2).
+      *--- COMISSÃO DE VENDA (MEDIAÇÃO)
+                   09  NZ5PDU01-M-OUTR-COMS          PIC S9(11)V9(2).
+      *--- OUTRAS COMISSÕES
+                   09  NZ5PDU01-M-COMS-AGRZ          PIC S9(11)V9(2).
+5P0564             09  NZ5PDU01-AGENT-NUM-TYPE       PIC X(01).         00190000
+5P0564             09  NZ5PDU01-AGENT-NUM            PIC X(04).         00190000
+
+5P0564*            09  FILLER                        PIC X(239).
+3P1568             09  FILLER                        PIC X(224).
+3P1568*5P0564      09  FILLER                        PIC X(225).
+
+      *----------------------------------------------------------------*
+      *    PAYMENT BASIC LEVEL DATA
+      *----------------------------------------------------------------*
+               05  REDEFINES NZ5PDU01-PRINT-DATA.
+                 07  NZ5PDU01-PRINT-PAYMENT-DATA.
+
+      *--- NOME DO BANCO + CONTA
+                   09  NZ5PDU01-BANK-ID.
+                      11  NZ5PDU01-CLIENT-BANK-NAME    PIC X(40).
+                      11  NZ5PDU01-CLIENT-ACCT-NUMBER  PIC X(13).
+      *--- NIB - BANCO + BALCÃO + Nº DE CONTA + CHKD
+                   09  NZ5PDU01-N-NIB                  PIC X(21).       SQLCOPYA
+      *--- ENTIDADE CREDORA + ADC
+                   09  NZ5PDU01-C-CREDOR-ADC.                           SQLCOPYA
+                      11  NZ5PDU01-ID-CREDOR           PIC X(06).
+                      11  NZ5PDU01-C-REF-EXRT-BNCI     PIC X(11).
+      *--- REFERÊNCIA ATM
+                   09  NZ5PDU01-ATM-REFERENCE-NO       PIC X(09).
+      *--- ENTIDADE ATM
+                   09  NZ5PDU01-ATM-ENTIDADE           PIC X(05).
+      *--- CAPITAL
+                   09  NZ5PDU01-M-CAP-RCIB             PIC S9(11)V9(2).
+      *--- CAPITAL RC
+                   09  NZ5PDU01-CAPITAL-RC             PIC S9(11)V9(2).
+      *--- BONIFICAÇÃO
+                   09  NZ5PDU01-M-BONIFICACAO          PIC S9(11)V9(2).
+      *--- PREMIO COMERCIAL
+                   09  NZ5PDU01-PREMIO-COMERCIAL       PIC S9(11)V9(2).
+      *--- PREMIO TOTAL
+                   09  NZ5PDU01-M-RECIBO               PIC S9(11)V9(2).
+      *--- DATA DE INICIO DO RECIBO
+                   09  NZ5PDU01-Z-INIC-PAG-RCIB        PIC X(10).       SQLCOPYA
+      *--- DATA DE FIM DO RECIBO E DE LIMITE DE PAGAMENTO DO RECIBO
+                   09  NZ5PDU01-Z-LIM-PAG-RCIB         PIC X(10).       SQLCOPYA
+      *--- DATA DE EMISSÃO DO RECIBO
+                   09  NZ5PDU01-Z-EMIS-RCIB            PIC X(10).       SQLCOPYA
+      *--- Nº DA PRESTAÇÃO
+                   09  NZ5PDU01-INSTALMENT-NUMBER      PIC X(03).       SQLCOPYA
+      *--- FREQUENCIA DE PAGAMENTO - ANUAL/SEMESTRAL...
+                   09  NZ5PDU01-C-FREQ-PAG             PIC X(02).       SQLCOPYA
+      *--- REGIME
+                   09  NZ5PDU01-I-REGM-D122            PIC X(01).       SQLCOPYA
+      *--- DATA DE INICIO DA APOLICE
+                   09  NZ5PDU01-POLICY-EFF-DATE        PIC X(10).       00140000
+      *--- DEPARTAMENTO / AGENCIA
+                   09  NZ5PDU01-BRANCH-CODE            PIC X(03).       00140000
+      *--- REFERENCIA CTT
+                   09  NZ5PDU01-C-REF-CTT              PIC X(36).       00140000
+      *--- CODIGO DE BARRAS DO RECIBO (TAG)
+                   09  NZ5PDU01-CODIGO-BARRAS-TAG      PIC X(20).
+      *--- PENALIZACÃO
+                   09  NZ5PDU01-PENALTY                PIC S9(09)V9(2).
+      *--- ENCARGOS
+                   09  NZ5PDU01-M-ENCARGO              PIC S9(09)V9(2).
+      *--- CUSTO FRACCIONAMENTO
+                   09  NZ5PDU01-M-CUST-FRAT            PIC S9(09)V9(2).
+      *--- FUNDAP
+                   09  NZ5PDU01-M-PAG-FNDP             PIC S9(09)V9(2).
+      *--- FGA
+                   09  NZ5PDU01-M-FGA                  PIC S9(09)V9(2).
+      *--- SNB
+                   09  NZ5PDU01-M-SNB                  PIC S9(09)V9(2).
+      *--- INEM
+                   09  NZ5PDU01-M-INEM                 PIC S9(09)V9(2).
+      *--- CV
+                   09  NZ5PDU01-M-CUST-CVER            PIC S9(09)V9(2).
+      *--- SELOS
+                   09  NZ5PDU01-M-SELOS                PIC S9(09)V9(2).
+      *--- ACTA
+                   09  NZ5PDU01-M-ACTA                 PIC S9(09)V9(2).
+      *--- IS
+                   09  NZ5PDU01-M-CUST-IS              PIC S9(09)V9(2).
+      *--- FUNDO CALAMIDADE
+                   09  NZ5PDU01-M-FNDO-CLMD            PIC S9(09)V9(2).
+      *--- FGA OUTRAS
+                   09  NZ5PDU01-M-FND-GAR-ATMV-OTR     PIC S9(09)V9(2).
+      *--- FGA RC
+                   09  NZ5PDU01-M-FGA-RSPE-CIVL        PIC S9(09)V9(2).
+      *--- BONUS
+                   09  NZ5PDU01-M-BONUS                PIC S9(09)V9(2).
+      *--- PREMIO SIMPLES
+                   09  NZ5PDU01-M-PREM-SMPL            PIC S9(11)V9(2).
+      *--- INDICADOR DE ADC SUSPENSA
+                   09  NZ5PDU01-IND-ADC-SP             PIC X(01).
+      *--- VALOR SIMULAÇÃO PARA ADC SUSPENSA
+                   09  NZ5PDU01-SIMULACAO-ADC-SP       PIC S9(11)V9(2).
+
+5P0687*            09  FILLER                          PIC X(027).
+4P0839*5P0687      09  FILLER                          PIC X(013).
+3P1568             09  FILLER                          PIC X(010).
+3P1568*4P0839      09  FILLER                          PIC X(011).
+
+      *----------------------------------------------------------------*
+      *    OBJECTO DATA
+      *----------------------------------------------------------------*
+               05  REDEFINES NZ5PDU01-PRINT-DATA.
+                 07  NZ5PDU01-PRINT-OBJECTO-DATA.
+
+      *--- AUTOMOVEL
+                   09  NZ5PDU01-VEHICLE-MAKE           PIC X(30).
+                   09  NZ5PDU01-VEHICLE-MODEL          PIC X(10).
+                   09  NZ5PDU01-VEHICLE-VERSION        PIC X(25).
+                   09  NZ5PDU01-VEHICLE-REG-NUMBER     PIC X(15).
+      *--- DESCRIÇÃO DO OBJECTO DO COGEN 2.2
+                   09  NZ5PDU01-X-LVRE-1               PIC X(65).
+                   09  NZ5PDU01-X-LVRE-2               PIC X(65).
+
+4P0636*--- DESCRIÇÃO DADOS DO GIS
+4P0636             09  NZ5PDU01-NOME-PESSOA-SEGURA1    PIC X(50).
+4P0636             09  NZ5PDU01-NOME-PESSOA-SEGURA2    PIC X(50).
+4P0636             09  NZ5PDU01-APOL-COMPLEMENTAR      PIC X(24).
+4P0636             09  NZ5PDU01-TIPO-DOC               PIC X(08).
+
+4P0646*--- DESCRIÇÃO
+4P0646             09  NZ5PDU01-I-REF-TAR-AVSO         PIC X(01).
+4P0646             09  NZ5PDU01-C-TEXT-VRSO-AVSO       PIC X(02).
+4P0646             09  NZ5PDU01-M-CAP-IMOV             PIC S9(11)V9(2).
+4P0646             09  NZ5PDU01-C-TIPO-ACTZ-CAP        PIC X(02).
+4P0646             09  NZ5PDU01-X-FREN-AVSO            PIC X(60).
+
+3P1568             09  FILLER                          PIC X(57).
+3P1568*4P0646      09  FILLER                          PIC X(58).
+4P0636*4P0646      09  FILLER                          PIC X(136).
+4P0636*            09  FILLER                          PIC X(268).
+
+      *----------------------------------------------------------------*
+      *    LISTA DE RECIBOS
+      *----------------------------------------------------------------*
+               05  REDEFINES NZ5PDU01-PRINT-DATA.
+                 07  NZ5PDU01-PRINT-LISTA-DATA.
+
+      *--- LISTA DE RECIBOS A ANULAR
+                   09 NZ5PDU01-INVOICE-DATA-T.
+                    10 NZ5PDU01-INVOICE-DATA OCCURS 9.
+                      11 NZ5PDU01-INVOICE-NUMBER       PIC X(10).
+                      11 NZ5PDU01-INVOICE-START-DATE   PIC X(10).
+                      11 NZ5PDU01-INVOICE-END-DATE     PIC X(10).
+                      11 NZ5PDU01-INVOICE-AMOUNT       PIC S9(13)V9(2).
+
+3P1568             09  FILLER                          PIC X(72).
+3P1568*4P0646      09  FILLER                          PIC X(73).
+
+      *----------------------------------------------------------------*
+      *    CREDOR
+      *----------------------------------------------------------------*
+               05  REDEFINES NZ5PDU01-PRINT-DATA.
+                 07  NZ5PDU01-PRINT-CREDOR-DATA.
+
+      *--- DADOS DO CREDOR
+                   09  NZ5PDU01-CREDOR-NAME            PIC X(40).
+                   09  NZ5PDU01-CREDOR-ADDRESS         PIC X(40).
+                   09  NZ5PDU01-CREDOR-ADDRESS-2       PIC X(40).
+5P0564*            09  NZ5PDU01-CREDOR-CITY            PIC X(30).
+5P0564             09  NZ5PDU01-CREDOR-CITY            PIC X(40).
+                   09  NZ5PDU01-CREDOR-POST-CODE       PIC X(09).
+5P0564*            09  NZ5PDU01-CREDOR-POST-DESCR      PIC X(41).
+5P0564             09  NZ5PDU01-CREDOR-POST-DESCR      PIC X(40).
+5P0564             09  NZ5PDU01-CREDOR-NUM-TYPE        PIC X(01).
+5P0564             09  NZ5PDU01-CREDOR-NUM             PIC X(04).
+
+5P0564*            09  FILLER                          PIC X(278).
+3P1568             09  FILLER                          PIC X(263).
+3P1568*5P0564      09  FILLER                          PIC X(264).
+
+4P0839*----------------------------------------------------------------*
+4P0839*    INFORMAÇÃO EXTRACTO
+4P0839*----------------------------------------------------------------*
+4P0839         05  REDEFINES NZ5PDU01-PRINT-DATA.
+4P0839           07  NZ5PDU01-PRINT-EXTRACTO-DATA.
+4P0839             09  NZ5PDU01-EXT-RECORD-TYPE        PIC X(01).       00120000
+4P0839               88  NZ5PDU01-EXT-REC-TYPE-1     VALUE '1'.         00120000
+4P0839               88  NZ5PDU01-EXT-REC-TYPE-2     VALUE '2'.         00120000
+4P0839               88  NZ5PDU01-EXT-REC-TYPE-3     VALUE '3'.         00120000
+4P0839               88  NZ5PDU01-EXT-REC-TYPE-4     VALUE '4'.         00120000
+4P0839               88  NZ5PDU01-EXT-REC-TYPE-5     VALUE '5'.         00120000
+4P0839             09  NZ5PDU01-EXTRACTO-OTHER-DATA    PIC X(200).      00120000
+4P0839             09  NZ5PDU01-EXTRACTO-RECTYPE-1
+4P0839                           REDEFINES NZ5PDU01-EXTRACTO-OTHER-DATA.
+4P0839               11  NZ5PDU01-POLICY-NUMBER        PIC X(16).       00120000
+4P0839               11  NZ5PDU01-NOTICE-NUMBER        PIC X(10).       00120000
+4P0839               11  NZ5PDU01-TIPO-LAYOUT          PIC X(01).       00120000
+4P0839               11  NZ5PDU01-FRACCIONAMENTO       PIC X(02).       00120000
+4P0839               11  NZ5PDU01-PROD-CODE            PIC X(05).       00120000
+4P0839               11  NZ5PDU01-PROD-CODE-DESC       PIC X(40).       00120000
+4P0839               11  FILLER                        PIC X(126).      00120000
+4P0839             09  NZ5PDU01-EXTRACTO-RECTYPE-C
+4P0839                           REDEFINES NZ5PDU01-EXTRACTO-OTHER-DATA.
+4P0839               11  NZ5PDU01-DATA-EMISSAO         PIC X(10).       00120000
+4P0839               11  NZ5PDU01-INSTALMENT-NO        PIC X(03).       00120000
+4P0839               11  NZ5PDU01-DATA-INI-RECIBO      PIC X(10).       00120000
+4P0839               11  NZ5PDU01-DATA-FIM-RECIBO      PIC X(10).       00120000
+4P0839               11  NZ5PDU01-DATA-DEVIDO          PIC X(10).       00120000
+4P0839               11  NZ5PDU01-VALOR-MOV            PIC S9(11)V9(2). 00120000
+4P0839               11  NZ5PDU01-DATA-PAGAMENTO       PIC X(10).       00120000
+4P0839               11  FILLER                        PIC X(134).      00120000
+4P0839             09  NZ5PDU01-EXTRACTO-RECTYPE-5
+4P0839                           REDEFINES NZ5PDU01-EXTRACTO-OTHER-DATA.
+4P0839               11  NZ5PDU01-SUM-REC-PAG          PIC S9(11)V9(2). 00120000
+4P0839               11  NZ5PDU01-SUM-REC-EMIT         PIC S9(11)V9(2). 00120000
+4P0839               11  NZ5PDU01-SUM-REC-FUT          PIC S9(11)V9(2). 00120000
+4P0839               11  NZ5PDU01-VALOR-TOTAL          PIC S9(13)V9(2). 00120000
+4P0839               11  FILLER                        PIC X(146).      00120000
+3P1568             09  FILLER                          PIC X(276).
+3P1568*4P0839      09  FILLER                          PIC X(277).
+4P0839
+      *----------------------------------------------------------------*
+      *    ULTIMA LINHA 'Z'
+      *----------------------------------------------------------------*
+               05  REDEFINES NZ5PDU01-PRINT-DATA.
+                 07  NZ5PDU01-PRINT-ULTIMA-DATA.
+
+3P1568             09  FILLER                          PIC X(477).
+3P1568*            09  FILLER                          PIC X(478).
+3P1568         05  NZ5PDU01-TIPO-IMPRESSAO             PIC X(001).
+
+      *----------------------------------------------------------------*
+      *                       FIM DO COPY                              *
+      *----------------------------------------------------------------*
+

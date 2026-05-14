@@ -1,0 +1,47 @@
+ 
+      *** REGISTO DE LEITURA DO FICH DE INPUT ***
+       01  W400-INPUT-AREA.
+         03  W400-IN-COMPANHIA           PIC X(03).
+             88  IN-C-VIADIRECTA                    VALUE '111'.
+             88  IN-C-FIDELIDADEMUNDIAL             VALUE '128'.
+             88  IN-C-IMPERIOBONANCA                VALUE '138'.
+             88  IN-C-MULTICARE                     VALUE '148'.
+         03  W400-IN-MARCA               PIC X(03).
+             88  IN-M-OKTELESEGURO                  VALUE '001'.
+             88  IN-M-FIDELIDADEMUNDIAL             VALUE '002'.
+             88  IN-M-FMLEVE                        VALUE 'L02'.
+             88  IN-M-IMPERIOBONANCA                VALUE '003'.
+             88  IN-M-IBLEVE                        VALUE 'L03'.
+             88  IN-M-ICI                           VALUE '004'.
+             88  IN-M-SONAE                         VALUE '005'.
+             88  IN-M-MULTICARE                     VALUE '006'.
+         03  W400-IN-TIPO-CARTA          PIC X(02).
+             88  IN-T-REN-APOL                      VALUE 'RA'.
+PJG#2        88  IN-T-CRT-MIG                       VALUE 'CM'.
+PJG#3        88  IN-T-PATR-CLA                      VALUE 'PC'.
+MJE#1        88  IN-T-CRT-MIG-CG                    VALUE 'CG'.
+         03  W400-IN-PRODUCT-CODE        PIC X(05).
+CEL037       88  W400-IN-PRODUCT-APGBB
+CEL037           VALUE 'APGBB'.
+CEL037       88  W400-IN-PRODUCT-VR
+puhl             VALUE '3567 ' '3568 ' '3569 ' '3570 ' '3571 '.
+CEL037       88  W400-IN-PRODUCT-VCR
+puhl             VALUE '5065 ' '5066 ' '5067 ' '5068 ' '5069 '.
+         03  W400-IN-PRODUCT-DESC        PIC X(30).
+         03  W400-IN-POLICY              PIC X(16).
+         03  W400-IN-NEW-POLICY          PIC X(16).
+         03  W400-IN-CL-NUMBER           PIC X(10).
+         03  W400-IN-CL-ADDRESSEE        PIC X(40).
+         03  W400-IN-CL-ADDRESS1         PIC X(40).
+         03  W400-IN-CL-ADDRESS2         PIC X(40).
+         03  W400-IN-CL-CITY             PIC X(40).
+         03  W400-IN-CL-POST-CODE        PIC X(09).
+         03  W400-IN-CL-POST-DESC        PIC X(40).
+         03  W400-IN-CL-NUM-TYPE         PIC X(01).
+         03  W400-IN-CL-NUM              PIC X(04).
+MJE#1    03  W400-IN-COND-GERAIS         PIC X(03).
+MJE#1    03  W400-IN-COD-PESQ            PIC X(05).
+MJE#1 *  03  FILLER                      PIC X(193).
+         03  W400-IN-ADERENTE            PIC X(08).
+         03  W400-IN-NEW-ADERENTE        PIC X(08).
+         03  FILLER                      PIC X(177).

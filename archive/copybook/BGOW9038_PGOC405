@@ -1,0 +1,436 @@
+      *----------------------------------------------------------------*
+      *                      MAINTENANCE  LOG
+      *
+      *                         A T E N C A O                          *
+      *                         =============                          *
+      *                                                                *
+      *      ALTERACOES NO NY44WU01 DEVERAO SER REPLICADAS:            *
+      *             BGOW9038 - PARA APLICAÇÕES DE OUTPUTS (UGEN)       *
+      * PROGRAMMER  PCR     DATE        COMMENTS
+      *----------------------------------------------------------------*
+      *
+      * DDS         M41874  2005-06-14  VERSÃO ORIGINAL.
+      *
+      * IAC         M41874  FEV.2006    INDICADOR DE NOVA UAR.
+      *             M42087  OUT.2006    ALTERAÇÕES PARA ROD NAC./CMR/CP
+      * JM          3P0038  12/07/2007  CONSIDERAR SINAL EM PREMIO COM.
+      *
+3P0434* WALMIRA 3P0434 OUT/2008  200800172 -NOVO RJCS - CONDIÇÕES GERAIS
+      *
+      * CCR         3P0433  2008-11-25  200800164 PROJECTO ACTIVATION
+      *                                 AUMENTO DO AUTOMATISMO POSTAL.
+3P1556* RJF     3P1556  28/05/14  NOVO CAMPO NUMERO DE REPORT
+      *----------------------------------------------------------------*
+       03  NY4KAU01-PRINT-RECORD.
+      *----------------------------------------------------------------*
+      *    SORT KEY
+      *----------------------------------------------------------------*
+           05  NY4KAU01-SORT-KEY.
+               07  NY4KAU01-COMPANY                PIC X(03).
+               07  NY4KAU01-AGENT                  PIC X(10).
+               07  NY4KAU01-PH-POST-CODE           PIC X(09).
+               07  NY4KAU01-PH-CLIENT-REFERENCE    PIC X(10).
+               07  NY4KAU01-PRODUCT-CODE           PIC X(05).
+               07  NY4KAU01-POLICY-NUMBER          PIC X(16).
+               07  NY4KAU01-D-H-SISTEMA            PIC X(14).
+               07  NY4KAU01-POLICY-TRANSACTION     PIC X(10).
+               07  NY4KAU01-SEQ-NUMBER             PIC 9(08).
+               07  NY4KAU01-RECORD-TYPE            PIC X(01).
+                   88  NY4KAU01-POLICY-BASIC-DATA  VALUE 'A'.
+                   88  NY4KAU01-POLICY-EXTRA-DATA  VALUE 'B'.
+                   88  NY4KAU01-UAR-NUMBER         VALUE 'C'.
+                   88  NY4KAU01-POLICY-COVER-DATA  VALUE 'D'.
+                   88  NY4KAU01-UAR-DATA           VALUE 'E'.
+                   88  NY4KAU01-UAR-TRANSBORDOS    VALUE 'G'.
+                   88  NY4KAU01-UAR-TRANSPORTES    VALUE 'H'.
+                   88  NY4KAU01-MERCADORIAS        VALUE 'I'.
+                   88  NY4KAU01-VERBIAGE-DATA      VALUE 'J'.
+                   88  NY4KAU01-UAR-SA-DATA        VALUE 'K'.
+                   88  NY4KAU01-UAR-CA-DATA        VALUE 'L'.
+                   88  NY4KAU01-UAR-IP-DATA        VALUE 'M'.
+                   88  NY4KAU01-COVERAGE-DATA      VALUE 'N'.
+                   88  NY4KAU01-UAR-TEXT-DATA      VALUE 'O'.
+M41874             88  NY4KAU01-POLICY-TEXT-DATA   VALUE 'P'.
+M42037*            88  NY4KAU01-UAR-TEXTO-LIVRE    VALUE 'Q'.
+                   88  NY4KAU01-END-OF-DOCUMENT    VALUE 'Z'.
+
+3P1556*    05  NY4KAU01-PRINT-DATA                 PIC X(414).
+3P1556     05  NY4KAU01-PRINT-DATA                 PIC X(413).
+
+      *-------
+      *    DADOS BÁSICOS DA APÓLICE  - NY4KAU01-POLICY-BASIC-DATA
+      *-------
+
+           05  REDEFINES NY4KAU01-PRINT-DATA.
+      *--- CÓDIGO DO DOCUMENTO
+               07  NY4KAU01-DOCUMENT-CODE          PIC X(04).
+      *--- INDICADOR DO TIPO DE DOCUMENTO
+      *        07  NY4KAU01-DOCUMENT-TYPE          PIC X(01).
+      *            88  NY4KAU01-CONDICOES-PART     VALUE '1'.
+      *            88  NY4KAU01-CERTIFICADO        VALUE '2'.
+      *--- INDICADOR DE PRIMEIRA IMPRESSÃO OU DE SEGUNDA VIA
+               07  NY4KAU01-INDICADOR-IMPRESSAO    PIC X(01).
+                   88  NY4KAU01-PRIMEIRA-IMPRESSAO VALUE '1'.
+                   88  NY4KAU01-SEGUNDA-VIA        VALUE '2'.
+      *--- INDICADOR DO TIPO DE APOLICE
+               07  NY4KAU01-POLICY-TYPE            PIC X(02).
+                   88  NY4KAU01-APOLICE-TEMPORARIA VALUE 'TE'.
+                   88  NY4KAU01-APOLICE-ANUAL      VALUE 'AN'.
+                   88  NY4KAU01-FLUTUANTE          VALUE 'FL'.
+      *--- Nº DO CERTIFICADO DE SEGURO
+               07  NY4KAU01-REFERENCIA             PIC X(15).
+      *--- DESCRIÇÃO DO PRODUTO
+               07  NY4KAU01-PRODUCT-CODE-DESC      PIC X(30).
+      *--- TOMADOR DO SEGURO
+               07  NY4KAU01-PH-ADDRESSEE           PIC X(40).
+               07  NY4KAU01-PH-ADDRESS1            PIC X(40).
+               07  NY4KAU01-PH-ADDRESS2            PIC X(40).
+3P0433*        07  NY4KAU01-PH-TOWN-SUBURB         PIC X(30).
+3P0433         07  NY4KAU01-PH-TOWN-SUBURB         PIC X(40).
+               07  NY4KAU01-PH-POSTCODE-DESC       PIC X(41).
+      *--- SEGURADO
+               07  NY4KAU01-BC-CLIENT-REFERENCE    PIC X(10).
+               07  NY4KAU01-BC-ADDRESSEE           PIC X(40).
+               07  NY4KAU01-BC-ADDRESS1            PIC X(40).
+3P0433*        07  NY4KAU01-BC-TOWN-SUBURB         PIC X(30).
+3P0433         07  NY4KAU01-BC-TOWN-SUBURB         PIC X(40).
+               07  NY4KAU01-BC-POST-CODE           PIC X(09).
+3P0433*        07  NY4KAU01-BC-POSTCODE-DESC       PIC X(41).
+3P1556*        07                                  PIC X(21).
+3P1556         07                                  PIC X(20).
+
+      *-------
+      *    DADOS EXTRA DA APÓLICE - NY4KAU01-POLICY-EXTRA-DATA
+      *-------
+           05  REDEFINES NY4KAU01-PRINT-DATA.
+               07  NY4KAU01-TRANSACTION-TYPE       PIC X(02).
+                   88  NY4KAU01-NEW-BUSINESS       VALUE '01'.
+                   88  NY4KAU01-RENEWAL            VALUE '02' '12'.
+                   88  NY4KAU01-ENDORSEMENT        VALUE '03' '04' '05'.
+                   88  NY4KAU01-REVIVE             VALUE '06' '07'.
+                   88  NY4KAU01-CANCELLATION       VALUE '08' '09'.
+                   88  NY4KAU01-LAPSE              VALUE '10'.
+                   88  NY4KAU01-CANCEL-TERM-DATES  VALUE '13'.
+                   88  NY4KAU01-REWRITE            VALUE '14'.
+                   88  NY4KAU01-ANNIV-RATING-DATE  VALUE '15'.
+                   88  NY4KAU01-STATE-RATE-CHANGE  VALUE '16'.
+
+               07  NY4KAU01-ANN-NETT-PREM-TOT      PIC 9(09)V9(02).
+               07  NY4KAU01-PLAN-CODE              PIC X(30).
+               07  NY4KAU01-TERM-EFFECT-DATE       PIC X(10).
+               07  NY4KAU01-TERM-EXPIRY-DATE       PIC X(10).
+               07  NY4KAU01-EFFECTIVE-DATE         PIC X(10).
+               07  NY4KAU01-END-DATE               PIC X(05).
+               07  NY4KAU01-RENEWAL-INDICATOR      PIC X(01).
+                   88  NY4KAU01-AUTOMATIC-RENEWAL      VALUE 'A'.
+                   88  NY4KAU01-MANUAL-RENEWAL-ONLY    VALUE 'M'.
+                   88  NY4KAU01-NON-RENEW              VALUE 'Z'.
+                   88  NY4KAU01-SEMI-AUTOMATIC         VALUE 'P'.
+               07  NY4KAU01-ORIG-DATE-PRINTED      PIC X(10).
+               07  NY4KAU01-REF-DOC                PIC X(15).
+      *--- NUMERO DE UNIDADES EM RISCO
+               07  NY4KAU01-UAR-NUM                PIC 9(04).
+      *--- PREMIO PROVISORIO
+      *        07  NY4KAU01-PREMIO-PROVISORIO      PIC 9(10)V9(2).
+               07  NY4KAU01-CAPITAL-PROVISORIO     PIC 9(10)V9(2).
+      *--- Nº DA CONDIÇÃO GERAL
+               07  NY4KAU01-C-TIPO-CNDZ-GERL       PIC X(03).
+      *--- DESC. DA CONDIÇÃO GERAL
+               07  NY4KAU01-C-TIPO-CNDZ-GERL-DESC  PIC X(30).
+      *--- CAPITAL MAXIMO PR CARREGAMENTO
+      *        07  NY4KAU01-CAPITAL-MAXIMO         PIC 9(11)V9(2).
+               07  NY4KAU01-CAP-MAX-CARREGAMENTO   PIC 9(11)V9(2).
+      *--- CAPITAL DEFINITIVO DA ANUIDADE
+               07  NY4KAU01-CAPITAL-DEFINITIVO     PIC 9(11)V9(2).
+3P0434*--- Nº DA CONDIÇÃO GERAL UNICA
+3P0434         07  NY4KAU01-C-CNDZ-GERL-CTTO       PIC X(05).
+3P0434*--- DESC. DA CONDIÇÃO GERAL UNICA
+3P0434         07  NY4KAU01-D-CNDZ-GERL-CTTO       PIC X(30).
+3P0433         07  NY4KAU01-PH-NUM-TYPE            PIC X(01).
+3P0433         07  NY4KAU01-PH-NUM                 PIC X(04).
+3P0433         07  NY4KAU01-BC-NUM-TYPE            PIC X(01).
+3P0433         07  NY4KAU01-BC-NUM                 PIC X(04).
+3P0433         07  NY4KAU01-BC-ADDRESS2            PIC X(40).
+3P0433         07  NY4KAU01-BC-POSTCODE-DESC       PIC X(41).
+3P0434*        07                                  PIC X(235).
+3P0434*3P0433  07                                  PIC X(200).
+3P1556*3P0433  07                                  PIC X(109).
+3P1556         07                                  PIC X(108).
+
+      *-------
+      *    NUMERO DA UNIDADE EM RISCO - NY4KAU01-UAR-NUMBER
+      *-------
+      *    APLICAVEL AOS DOCS CIAB/CIMU/CPAB/CPMU/AIAB/AIMU/APAB/APMU
+      *    E ACTAS - DOCUMENTOS QUE SÓ TÊM UMA UAR
+      *-------
+
+           05  REDEFINES NY4KAU01-PRINT-DATA.
+               07  NY4KAU01-ONE-UAR-NUMBER         PIC X(08).
+M41874         07  NY4KAU01-NEW-UAR                PIC X(01).
+M41874         07  NY4KAU01-UAR-EFFECT-DATE        PIC X(10).
+3P1556*        07                                  PIC X(395).
+3P1556         07                                  PIC X(394).
+
+      *-------
+      *    POLICY COVER LEVEL DATA - NY4KAU01-POLICY-COVER-DATA
+      *-------
+      *    COBERTURAS AO NÍVEL DA APÓLICE
+      *-------
+
+           05  REDEFINES NY4KAU01-PRINT-DATA.
+               07  NY4KAU01-COVER-POLICY-CODE      PIC X(05).
+               07  NY4KAU01-COVER-INC-GROSS-PREM   PIC 9(11)V9(02).
+               07  NY4KAU01-COVER-BASE-PREMIUM     PIC 9(09)V9(02).
+               07  NY4KAU01-COVER-COMM-PREMIUM     PIC 9(09)V9(02).
+               07  NY4KAU01-COVER-SNB              PIC 9(09)V9(02).
+               07  NY4KAU01-COVER-STAMP-DUTY       PIC 9(09)V9(02).
+               07  NY4KAU01-COVER-DESC             PIC X(30).
+3P1556*        07                                  PIC X(322).
+3P1556         07                                  PIC X(321).
+
+      *-------
+      *    CONDIÇÕES PARTICULARES-CLAUSULAS - NY4KAU01-POLICY-TEXT-DATA
+      *-------
+
+           05  REDEFINES NY4KAU01-PRINT-DATA.
+               07  NY4KAU01-POLICY-FORM-NUMBER     PIC X(10).
+               07  NY4KAU01-POLICY-SCREEN-LINE     PIC X(79).
+M41874         07  NY4KAU01-POLICY-COD-CLAUSULA    PIC X(08).
+3P1556*        07                                  PIC X(317).
+3P1556         07                                  PIC X(316).
+
+      *-------
+      *    MOTIVO DE ALTERAÇÃO - NY4KAU01-POLICY-ENDORSEMENT
+      *-------
+      *
+      *    05  REDEFINES NY4KAU01-PRINT-DATA.
+      *        07  NY4KAU01-POLICY-ENDORS-REASON   PIC X(99).
+M41874*        07                                  PIC X(315).
+
+      *-------
+      *    DADOS DA UR - NY4KAU01-UAR-DATA
+      *-------
+
+           05  REDEFINES NY4KAU01-PRINT-DATA.
+               07  NY4KAU01-LINE-OF-BUSINESS       PIC X(30).
+               07  NY4KAU01-UNIT-AT-RISK-CODE      PIC X(02).
+               07  NY4KAU01-PAIS-ORIGEM            PIC X(03).
+               07  NY4KAU01-ORIGEM-LOCALIDADE      PIC X(20).
+               07  NY4KAU01-PAIS-DESTINO           PIC X(03).
+               07  NY4KAU01-DESTINO-LOCALIDADE     PIC X(20).
+               07  NY4KAU01-AMBITO-RISCO           PIC X(02).
+               07  NY4KAU01-AMBITO-RISCO-DESC      PIC X(30).
+               07  NY4KAU01-C-TIPO-CRGT-EMBC       PIC X(01).
+               07  NY4KAU01-C-TIPO-CRGT-EMBC-DESC  PIC X(30).
+               07  NY4KAU01-CAPITAL-TOT-EUROS      PIC 9(11)V9(2).
+               07  NY4KAU01-CAPITAL-TOT-M-REF      PIC 9(11)V9(2).
+               07  NY4KAU01-MOEDA-REF              PIC X(03).
+               07  NY4KAU01-CAMBIO                 PIC 9(3)V9(6).
+               07  NY4KAU01-IND-TIPO-VEICULO       PIC X(01).
+      *        07  NY4KAU01-CAP-MAX-CARREGAMENTO   PIC 9(11)V9(2).
+               07  NY4KAU01-TIPO-TRANSITO          PIC X(03).
+               07  NY4KAU01-TIPO-TRANSITO-DESC     PIC X(30).
+               07  NY4KAU01-REF-NEGOCIO            PIC X(15).
+M41874         07  NY4KAU01-MAT-PERIGOSAS          PIC X(01).
+M41874         07  NY4KAU01-PROD-CONG-REFR         PIC X(01).
+M41874         07  NY4KAU01-MERC-USADA             PIC X(01).
+M42087         07  NY4KAU01-IND-TARIFACAO          PIC X(01).
+M42087             88  NY4KAU01-TARIF-MANUAL         VALUE 'M'.
+M42087             88  NY4KAU01-TARIF-GERAL          VALUE 'A'.
+3P1556*M4187   07                                  PIC X(182).
+3P1556         07                                  PIC X(181).
+
+      *-------
+      *    DESCRITIVO DAS MERCADORIAS - NY4KAU01-MERCADORIAS
+      *-------
+
+           05  REDEFINES NY4KAU01-PRINT-DATA.
+               07  NY4KAU01-CODIGO-ESTATISTICO     PIC X(04).
+               07  NY4KAU01-SEQUENCE-ALPHA         PIC X(03).
+               07  NY4KAU01-MERCADORIA-1           PIC X(75).
+               07  NY4KAU01-MERCADORIA-2           PIC X(75).
+               07  NY4KAU01-CAPITAL-EUROS          PIC 9(11)V9(2).
+               07  NY4KAU01-CAPITAL-MOEDA-REF      PIC 9(11)V9(2).
+3P1556*        07  NY4KAU01-MERCADORIAS-FILLER     PIC X(231).
+3P1556         07  NY4KAU01-MERCADORIAS-FILLER     PIC X(230).
+
+      *-------
+      *    DADOS DO TRANSBORDO - NY4KAU01-UAR-TRANSBORDOS
+      *-------
+
+           05  REDEFINES NY4KAU01-PRINT-DATA.
+               07  NY4KAU01-TRANSBORDO             PIC X(01).
+                   88  NY4KAU01-COM-TRANSBORDO-POR   VALUE 'S'.
+                   88  NY4KAU01-COM-TRANSBORDO-ING   VALUE 'Y'.
+                   88  NY4KAU01-SEM-TRANSBORDO       VALUE 'N'.
+      *        07  NY4KAU01-TIPO-TRANSBORDO        PIC X(01).
+      *        07  NY4KAU01-TIPO-TRANSBORDO-DESC   PIC X(30).
+               07  NY4KAU01-LOCALIDADE             PIC X(20).
+3P1556*        07                                  PIC X(393).
+3P1556         07                                  PIC X(392).
+
+      *-------
+      *    DADOS DO MEIO DE TRANSPORTE - NY4KAU01-UAR-TRANSPORTES
+      *-------
+
+           05  REDEFINES NY4KAU01-PRINT-DATA.
+               07  NY4KAU01-TIPO-TRANSPORTE        PIC X(01).
+               07  NY4KAU01-DESC-TRANSPORTE        PIC X(30).
+               07  NY4KAU01-VEH-REG-NUMBER         PIC X(15).
+               07  NY4KAU01-NOME-TRANSPORTES       PIC X(20).
+M41874         07  NY4KAU01-ANO-FABRICO            PIC X(04).
+M41874         07  NY4KAU01-CX-CARGA               PIC X(01).
+M41874         07  NY4KAU01-DESC-CX-CARGA          PIC X(22).
+M41874         07  NY4KAU01-ALARME                 PIC X(01).
+3P1556*M41874  07                                  PIC X(320).
+3P1556         07                                  PIC X(319).
+
+      *-------
+      *    ENTIDADE INTERESSADA - NY4KAU01-UAR-IP-DATA
+      *-------
+
+           05  REDEFINES NY4KAU01-PRINT-DATA.
+               07  NY4KAU01-IP-CLIENT-REFERENCE    PIC X(10).
+               07  NY4KAU01-IP-ADDRESSEE           PIC X(40).
+               07  NY4KAU01-IP-ADDRESS1            PIC X(40).
+               07  NY4KAU01-IP-ADDRESS2            PIC X(40).
+3P0433         07  NY4KAU01-IP-TOWN-SUBURB         PIC X(40).
+3P0433*        07  NY4KAU01-IP-TOWN-SUBURB         PIC X(30).
+               07  NY4KAU01-IP-POST-CODE           PIC X(09).
+               07  NY4KAU01-IP-POSTCODE-DESC       PIC X(41).
+3P0433         07  NY4KAU01-IP-NUM-TYPE            PIC X(01).
+3P0433         07  NY4KAU01-IP-NUM                 PIC X(04).
+3P0433*        07                                  PIC X(204).
+3P1556*3P0433  07                                  PIC X(189).
+3P1556         07                                  PIC X(188).
+
+      *-------
+      *    COSIGNATÁRIO - NY4KAU01-UAR-SA-DATA
+      *-------
+
+           05  REDEFINES NY4KAU01-PRINT-DATA.
+               07  NY4KAU01-SA-CLIENT-REFERENCE    PIC X(10).
+               07  NY4KAU01-SA-ADDRESSEE           PIC X(40).
+               07  NY4KAU01-SA-ADDRESS1            PIC X(40).
+3P0433         07  NY4KAU01-SA-ADDRESS2            PIC X(40).
+3P0433         07  NY4KAU01-SA-TOWN-SUBURB         PIC X(40).
+3P0433*        07  NY4KAU01-SA-TOWN-SUBURB         PIC X(30).
+               07  NY4KAU01-SA-POST-CODE           PIC X(09).
+               07  NY4KAU01-SA-POSTCODE-DESC       PIC X(41).
+3P0433         07  NY4KAU01-SA-NUM-TYPE            PIC X(01).
+3P0433         07  NY4KAU01-SA-NUM                 PIC X(04).
+3P0433*        07                                  PIC X(244).
+3P1556*3P0433  07                                  PIC X(189).
+3P1556         07                                  PIC X(188).
+
+      *-------
+      *    COMISSÁRIO DE AVARIAS  - NY4KAU01-UAR-CA-DATA
+      *-------
+
+           05  REDEFINES NY4KAU01-PRINT-DATA.
+               07  NY4KAU01-CA-CLIENT-REFERENCE    PIC X(10).
+               07  NY4KAU01-CA-ADDRESSEE           PIC X(40).
+               07  NY4KAU01-CA-ADDRESS1            PIC X(40).
+3P0433         07  NY4KAU01-CA-ADDRESS2            PIC X(40).
+3P0433*        07  NY4KAU01-CA-TOWN-SUBURB         PIC X(30).
+3P0433         07  NY4KAU01-CA-TOWN-SUBURB         PIC X(40).
+               07  NY4KAU01-CA-POST-CODE           PIC X(09).
+               07  NY4KAU01-CA-POSTCODE-DESC       PIC X(41).
+3P0433         07  NY4KAU01-CA-NUM-TYPE            PIC X(01).
+3P0433         07  NY4KAU01-CA-NUM                 PIC X(04).
+3P0433*        07                                  PIC X(244).
+3P1556*3P0433  07                                  PIC X(189).
+3P1556         07                                  PIC X(188).
+
+      *-------
+      *    UAR TEXT LEVEL DATA - NY4KAU01-UAR-TEXT-DATA
+      *-------
+
+           05  REDEFINES NY4KAU01-PRINT-DATA.
+               07  NY4KAU01-UAR-FORM-NUMBER        PIC X(10).
+               07  NY4KAU01-UAR-SCREEN-LINE        PIC X(79).
+M41874         07  NY4KAU01-UAR-COD-CLAUSULA       PIC X(08).
+3P1556*        07                                  PIC X(317).
+3P1556         07                                  PIC X(316).
+
+      *-------
+      *    COBERTURAS - NY4KAU01-COVERAGE-DATA
+      *-------
+      *    COBERTURAS + ELEMENTOS DE COB AO NÍVEL DA UNIDADE EM RISCO
+      *-------
+
+           05  REDEFINES NY4KAU01-PRINT-DATA.
+               07  NY4KAU01-COVERAGE-CODE          PIC X(05).
+                   88  NY4KAU01-SYSTEM-COV-CODE    VALUE '00000'
+                                                    THRU '99999'.
+               07  NY4KAU01-COVERAGE-DESC          PIC X(30).
+               07                                  PIC X(01).
+                   88  NY4KAU01-COVER-DATA         VALUE 'C'.
+                   88  NY4KAU01-DEDUCTIBLE-DATA    VALUE 'D'.
+
+3P1556*        07  NY4KAU01-COVER-DEDUCTIBLE-DATA  PIC X(378).
+3P1556         07  NY4KAU01-COVER-DEDUCTIBLE-DATA  PIC X(377).
+               07  REDEFINES NY4KAU01-COVER-DEDUCTIBLE-DATA.
+                   09  NY4KAU01-SUM-INSURED        PIC 9(11).
+                   09  NY4KAU01-BASE-PREMIUM       PIC 9(09)V9(02).
+3P0038*            09  NY4KAU01-COMMERCIAL-PREMIUM PIC 9(09)V9(02).
+3P0038             09  NY4KAU01-COMMERCIAL-PREMIUM PIC S9(09)V9(02).
+                   09  NY4KAU01-SNB                PIC S9(09)V9(02).
+                   09  NY4KAU01-STAMP-DUTY         PIC S9(09)V9(02).
+M42087             09  NY4KAU01-FRACIONAMENTO      PIC 9(09)V9(02).
+M42087*            09                              PIC X(323).
+3P1556*M42087      09                              PIC X(310).
+3P1556             09                              PIC X(309).
+
+               07  REDEFINES NY4KAU01-COVER-DEDUCTIBLE-DATA.
+      *--- ELEMENTO DE COBERTURA
+                   09  NY4KAU01-COVER-TYPE         PIC X(04).
+                   09  NY4KAU01-COVER-TYPE-DESC    PIC X(30).
+                   09  NY4KAU01-LIMIT-AMT          PIC 9(13).
+                   09  NY4KAU01-DEDUCTIBLE-TYPE    PIC X(01).
+                       88  NY4KAU01-DEDUCTIBLE-IS-AMOUNT
+                                                   VALUE 'A'.
+                       88  NY4KAU01-DEDUCTIBLE-IS-DAYS
+                                                   VALUE 'D'.
+                       88  NY4KAU01-DEDUCTIBLE-IS-KM
+                                                   VALUE 'K'.
+                       88  NY4KAU01-DEDUCTIBLE-IS-PERCENT
+                                                   VALUE 'P'.
+M41874                 88  NY4KAU01-DEDUCTIBLE-IS-INDEMIN
+M41874                                             VALUE 'I'.
+                   09  NY4KAU01-DEDUCTIBLE-AMT     PIC 9(09)V9(02).
+                   09  NY4KAU01-DEDUCTIBLE-PCT     PIC 9(03)V9(02).
+M42087             09  NY4KAU01-RIS-IND-MINIMO     PIC 9(09)V9(02).
+M42087             09  NY4KAU01-RIS-IND-MAXIMO     PIC 9(09)V9(02).
+M41874             09  NY4KAU01-EXT-DATA-INICIO    PIC X(10).
+M41874             09  NY4KAU01-EXT-DATA-FIM       PIC X(10).
+M41874             09  NY4KAU01-AMB-GEOGRAFICO     PIC X(30).
+3P1556*M41874      09                              PIC X(242).
+3P1556             09                              PIC X(241).
+      *-------
+      *    UAR ENDORSEMENT LEVEL DATA - NY4KAU01-UAR-ENDORSEMENT
+      *-------
+      *    05  REDEFINES NY4KAU01-PRINT-DATA.
+      *        07  NY4KAU01-UAR-ENDORS-REASON      PIC X(99).
+      *        07                                  PIC X(315).
+
+      *-------
+      *    TEXTO LIVRE AO NÍVEL DA APÓLICE - NY4KAU01-VERBIAGE-DATA
+      *-------
+
+           05  REDEFINES NY4KAU01-PRINT-DATA.
+               07  NY4KAU01-VERBIAGE-SCRIPT-1      PIC X(75).
+               07  NY4KAU01-VERBIAGE-SCRIPT-2      PIC X(75).
+3P1556*        07  NY4KAU01-VERBIAGE-FILLER        PIC X(264).
+3P1556         07  NY4KAU01-VERBIAGE-FILLER        PIC X(263).
+
+      *-------
+      *    IDENTIFICA QUE O DOCUMENTO PARA A APÓLICE CHEGOU AO FIM
+      *-------
+
+           05  REDEFINES NY4KAU01-PRINT-DATA.
+3P1556*        07                                  PIC X(414).
+3P1556         07                                  PIC X(413).
+
+3P1556     05  NY4KAU01-TIPO-IMPRESSAO             PIC X(001).
+

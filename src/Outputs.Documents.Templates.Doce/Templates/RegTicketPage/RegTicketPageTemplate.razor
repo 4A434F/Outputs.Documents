@@ -1,7 +1,7 @@
-@namespace Outputs.Documents.Templates.Doce
+@namespace Outputs.Documents.Templates.DOCE
 @attribute [DocumentTemplate(isDefault: true, Key = "doce-registered-ticket-page", Name = "Registered Ticket Page", Group = "DOCE")]
 @attribute [DocumentLayout(widthCm: 23, heightCm: 43)]
-@using Outputs.Documents.Templates.Doce.Components
+@using Outputs.Documents.Templates.DOCE.Components
 
 <div class="page-wrapper">
     @if (Model?.Ticket1 is not null)
@@ -27,7 +27,7 @@
 
 @code {
     [Parameter]
-    public RegTicketPage? Model { get; set; }
+    public DC005RegTicketPage? Model { get; set; }
 }
 
 <style>

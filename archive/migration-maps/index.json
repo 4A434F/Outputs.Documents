@@ -1,0 +1,80 @@
+{
+  "maps": [
+    {
+      "copybook": "BGOW0010",
+      "file": "BGOW0010.json"
+    },
+    {
+      "copybook": "BGOW0015",
+      "file": "BGOW0015.json"
+    },
+    {
+      "copybook": "BGOW0019",
+      "file": "BGOW0019.json"
+    },
+    {
+      "copybook": "BGOW0044",
+      "file": "BGOW0044.json"
+    },
+    {
+      "copybook": "BGOW0045",
+      "file": "BGOW0045.json"
+    },
+    {
+      "copybook": "BGOW0046",
+      "file": "BGOW0046.json"
+    },
+    {
+      "copybook": "BGOW0054",
+      "file": "BGOW0054.json"
+    },
+    {
+      "copybook": "BGOW0055",
+      "file": "BGOW0055.json"
+    },
+    {
+      "copybook": "BGOW0056",
+      "file": "BGOW0056.json"
+    },
+    {
+      "copybook": "BGOW0059",
+      "file": "BGOW0059.json"
+    },
+    {
+      "copybook": "BGOW0060",
+      "file": "BGOW0060.json"
+    },
+    {
+      "copybook": "BGOW0062",
+      "file": "BGOW0062.json"
+    },
+    {
+      "copybook": "BGOW0068",
+      "file": "BGOW0068.json"
+    },
+    {
+      "copybook": "BGOW0070",
+      "file": "BGOW0070.json"
+    },
+    {
+      "copybook": "BGOW0078",
+      "file": "BGOW0078.json"
+    },
+    {
+      "copybook": "BGOW9062",
+      "file": "BGOW9062.json"
+    },
+    {
+      "copybook": "BGOW9064",
+      "file": "BGOW9064.json"
+    },
+    {
+      "copybook": "BGOW9067",
+      "file": "BGOW9067.json"
+    },
+    {
+      "copybook": "BGOW9068",
+      "file": "BGOW9068.json"
+    }
+  ]
+}

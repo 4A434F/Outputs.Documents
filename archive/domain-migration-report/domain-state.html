@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Domain State Map</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="styles.css">
+    <script src="domain-state-data.js"></script>
+    <script src="domain-state.js" defer></script>
+</head>
+<body>
+    <main class="page-shell">
+        <header class="hero domain-hero">
+            <p class="eyebrow">Typed domain inventory</p>
+            <h1>Domain state map</h1>
+            <p class="lead">
+                This page shows the current reusable domain objects grouped by area. Use it to
+                inspect which objects exist, what properties they expose, and the semantic
+                descriptions used by search and copybook migration work.
+            </p>
+            <nav class="report-nav" aria-label="Report navigation">
+                <a href="index.html">Copybook migration map</a>
+                <a href="domain-state.html" aria-current="page">Domain state map</a>
+            </nav>
+        </header>
+
+        <section class="domain-overview" aria-labelledby="domain-overview-title">
+            <div class="section-heading">
+                <p class="eyebrow">Domain cards</p>
+                <h2 id="domain-overview-title">Reusable object map</h2>
+            </div>
+            <div id="domain-cards" class="domain-card-grid"></div>
+        </section>
+
+        <section class="toolbar domain-toolbar" aria-label="Domain filters">
+            <label>
+                <span>Domain</span>
+                <select id="domain-filter"></select>
+            </label>
+            <label>
+                <span>Object</span>
+                <select id="domain-object-filter"></select>
+            </label>
+            <label class="search-control">
+                <span>Search</span>
+                <input id="domain-search-filter" type="search" placeholder="Object, property, alias, tag...">
+            </label>
+        </section>
+
+        <section class="summary-strip domain-summary" aria-label="Domain summary">
+            <div><strong id="domain-summary-domains">0</strong><span>domains</span></div>
+            <div><strong id="domain-summary-objects">0</strong><span>objects</span></div>
+            <div><strong id="domain-summary-properties">0</strong><span>properties</span></div>
+            <div><strong id="domain-summary-visible">0</strong><span>visible cards</span></div>
+            <div><strong id="domain-summary-selected">All</strong><span>selected domain</span></div>
+        </section>
+
+        <section id="domain-detail" class="domain-detail-grid" aria-live="polite"></section>
+    </main>
+</body>
+</html>

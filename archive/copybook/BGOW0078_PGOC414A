@@ -1,0 +1,161 @@
+      *
+      ***************************************************************
+      *                     -------------------                     *
+      *                     ¦     REMARKS     ¦                     *
+      *                     -------------------                     *
+      *                                                             *
+      * BGOW0078: ESTRUTURA DO REGISTO DE DOCUMENTOS VIDA (CQUA,    *
+      *           (ACRE E RTES) PROVENIENTE DO FSCD:                *
+      *         - 'CQUA': CARTA CONTROLO QUALIDADE                  *
+      *         - 'ACRE': AVISO CRÉDITO                             *
+      *         - 'RTES': RECIBO POR TESOURARIA                     *
+      *                                                             *
+      * TAMANHO.: 2467 BYTES                                        *
+CEL055* TAMANHO.: 2967 BYTES (ANTIGO 2467 BYTES)                    *
+      *                                                             *
+      * ESTE COPYBOOK, REPRESENTA A ESTRUTURA DO INTERFACE SAP PARA *
+      * OS DOCUMENTOS VIDA VIA FSCD CARTA CONTROLO QUALIDADE, AVISO *
+      * CRÉDITO E RECIBO POR TESOURARIA (ODV) PARA A COMBINAÇÃO DOS *
+      * SEGUINTES INDICADORES (ID-BLOCO/TIPO-REGISTO):              *
+      *  · ODV/DV/1 - CARTA / AVISO / RECIBO                        *
+      *                                                             *
+      ***************************************************************
+      *                     -------------------                     *
+      *                     ¦ MAINTENANCE LOG ¦                     *
+      *                     -------------------                     *
+      *                                                             *
+      * PROG.      DATE    COMMENTS                                 *
+      * ------- ---------- ---------------------------------------- *
+      * NJF     2022-08-02 CRIACAO                                  *
+CEL051* NJF     2023-09-11 INCLUSÃO DO RAMO NÃO VIDA '3702'         *
+CEL055* NJF     2023-11-10 202300265 - CIRCULAR 3 ASF:              *
+CEL055*                    ALTERAÇÃO DE COPYBOOKS INTERFACE FSCD    *
+CEL055*                    PARA LRECL=3000                          *
+      *                                                             *
+      ***************************************************************
+      *
+           05  :PREFIX:-DADOS-REGISTO.
+             07  :PREFIX:-COD-DOCUMENTO            PIC X(04).
+                 88  :PREFIX:-DOC-CQUA                 VALUE 'CQUA'.
+                 88  :PREFIX:-DOC-ACRE                 VALUE 'ACRE'.
+                 88  :PREFIX:-DOC-RTES                 VALUE 'RTES'.
+             07  :PREFIX:-TIPO-REGISTO             PIC X(01).
+                 88  :PREFIX:-REG-TIPO1                VALUE '1'.
+             07  :PREFIX:-TIPO-IMPRESSAO           PIC X(01).
+                 88  :PREFIX:-IMP-ONLINE               VALUE 'I'.
+                 88  :PREFIX:-IMP-BATCH                VALUE 'O'.
+             07  :PREFIX:-USERID                   PIC X(08).
+             07  :PREFIX:-COD-COMPANHIA            PIC X(03).
+                 88  :PREFIX:-COM-VIADIRECTA           VALUE '111'.
+                 88  :PREFIX:-COM-FIDELIDADE           VALUE '128'.
+                 88  :PREFIX:-COM-IMPERIO              VALUE '138'.
+                 88  :PREFIX:-COM-MULTICARE            VALUE '148'.
+             07  :PREFIX:-COD-MARCA                PIC X(03).
+                 88  :PREFIX:-MAR-OKTELESEGURO         VALUE '001'.
+                 88  :PREFIX:-MAR-FIDELIDADE           VALUE '002'.
+                 88  :PREFIX:-MAR-IMPERIO              VALUE '003'.
+                 88  :PREFIX:-MAR-ICI                  VALUE '004'.
+                 88  :PREFIX:-MAR-SONAE                VALUE '005'.
+                 88  :PREFIX:-MAR-MULTICARE            VALUE '006'.
+                 88  :PREFIX:-MAR-EUROBIC              VALUE '028'.
+             07  :PREFIX:-AUX-MARCA                PIC X(01).
+                 88  :PREFIX:-MAR-LEVE                 VALUE 'L'.
+             07  :PREFIX:-NR-AGENTE                PIC X(10).
+             07  :PREFIX:-NR-CLIENTE               PIC X(10).
+             07  :PREFIX:-NR-APOLICE               PIC X(16).
+             07  :PREFIX:-COD-ORIGEM               PIC X(03).
+                 88  :PREFIX:-ORI-COGEN22              VALUE 'CG2'.
+                 88  :PREFIX:-ORI-COGEN33              VALUE 'CGN'.
+                 88  :PREFIX:-ORI-GIS                  VALUE 'GIS'.
+                 88  :PREFIX:-ORI-COLHEITAS            VALUE 'CLH'.
+                 88  :PREFIX:-ORI-MULTICARE            VALUE 'MHS'.
+                 88  :PREFIX:-ORI-SGF-GR               VALUE 'SPG'.
+                 88  :PREFIX:-ORI-SGF-IN               VALUE 'SPA'.
+                 88  :PREFIX:-ORI-FGS                  VALUE 'FGS'.
+                 88  :PREFIX:-ORI-FCS                  VALUE 'FCS'.
+             07  :PREFIX:-IND-FLYER                PIC X(01).
+
+CEL055*    05  :PREFIX:-DADOS-DOCUMENTO            PIC X(2406).
+CEL055     05  :PREFIX:-DADOS-DOCUMENTO            PIC X(2906).
+      *
+      *    *** TIPO-REGISTO 1: CARTA /AVISO / RECIBO ***
+           05  FILLER                REDEFINES :PREFIX:-DADOS-DOCUMENTO.
+             07  :PREFIX:-DADOS-RECIBO.
+               09  :PREFIX:-TIPO-RECIBO            PIC X(02).
+                   88  :PREFIX:-TR-INDEMNIZACAO        VALUE 'IN'.
+               09  FILLER                          PIC X(02).
+               09  :PREFIX:-NR-RECIBO              PIC X(16).
+               09  :PREFIX:-NR-SINISTRO            PIC X(16).
+               09  :PREFIX:-NR-PROCESSO            PIC X(16).
+               09  :PREFIX:-COD-RAMO               PIC X(10).
+                   88  :PREFIX:-RAM-NVIDA              VALUE '0201  '
+                         '0205  ' '0210  ' '0301  ' '0305  ' '0310  '
+                         '0350  ' '0351  ' '0352  ' '0353  ' '0354  '
+                         '0355  ' '0356  ' '0357  ' '0358  ' '0359  '
+                         '0360  ' '0370  ' '0380  ' '0390  ' '0395  '
+                         '0401  ' '0405  ' '0501  ' '0510  ' '0515  '
+                         '0520  ' '0525  ' '0601  ' '0701  ' '0705  '
+                         '0750  ' '0905  ' '2001  ' '2010  ' '2101  '
+                         '22000 ' '22002 ' '22003 ' '2201  ' '2210  '
+                         '2211  ' '2215  ' '2220  ' '2250  ' '2301  '
+                         '2401  ' '2402  ' '2501  ' '2601  ' '2605  '
+                         '2705  ' '2801  ' '3102  ' '3109  ' '3150  '
+                         '3201  ' '3205  ' '3210  ' '3215  ' '3301  '
+                         '3401  ' '3405  ' '3410  ' '3420  ' '3425  '
+                         '3430  ' '3501  ' '3505  ' '3601  ' '3605  '
+CEL051                   '3625  ' '3701  ' '3702  ' '3801  ' '3802  '
+                         '3803  ' '3901  '.
+                   88  :PREFIX:-RAM-NVIDA-CLH          VALUE '22000 '
+                         '22002 ' '22003 '.
+                   88  :PREFIX:-RAM-NVIDA-MHS          VALUE '3102  '
+                         '3109  '.
+                   88  :PREFIX:-RAM-VIDA               VALUE '11    '
+                         '13    ' '14    '.
+               09  :PREFIX:-DESCR-RAMO-PROD        PIC X(40).
+               09  :PREFIX:-IND-CONFIDENCIAL       PIC X(01).
+                   88  :PREFIX:-IND-CONF-SIM           VALUE 'S'.
+             07  :PREFIX:-DADOS-CLIENTE.
+               09  :PREFIX:-CL-NOME                PIC X(40).
+               09  :PREFIX:-CL-LOCATION-REF        PIC X(04).
+               09  :PREFIX:-CL-MORADA1             PIC X(40).
+               09  :PREFIX:-CL-MORADA2             PIC X(40).
+               09  :PREFIX:-CL-LOCALIDADE          PIC X(40).
+               09  :PREFIX:-CL-CPOSTAL             PIC X(09).
+               09  :PREFIX:-CL-CPOSTAL-DESC        PIC X(40).
+               09  :PREFIX:-CL-CPAIS               PIC X(03).
+               09  :PREFIX:-CL-CPAIS-DESC          PIC X(40).
+               09  :PREFIX:-CL-IDP                 PIC X(04).
+               09  :PREFIX:-CL-NIF                 PIC X(22).
+               09  :PREFIX:-CL-TIPO-ENTIDADE       PIC X(01).
+                   88  :PREFIX:-CL-ENT-PARTICUL        VALUE '1'.
+                   88  :PREFIX:-CL-ENT-COLETIVA        VALUE '2'.
+             07  :PREFIX:-DADOS-DATA.
+               09  :PREFIX:-DT-EMISSAO             PIC X(08).
+               09  :PREFIX:-DT-OCORRENCIA          PIC X(08).
+               09  :PREFIX:-DT-EFEITO              PIC X(08).
+             07  :PREFIX:-DADOS-VALOR.
+               09  :PREFIX:-VLR-ILIQUIDO           PIC S9(12)V99
+                                              SIGN LEADING SEPARATE.
+               09  :PREFIX:-VLR-BASE-TRIBUTAVEL    PIC S9(12)V99
+                                              SIGN LEADING SEPARATE.
+               09  :PREFIX:-VLR-IRS-IRC            PIC S9(12)V99
+                                              SIGN LEADING SEPARATE.
+               09  :PREFIX:-VLR-LIQUIDO            PIC S9(12)V99
+                                              SIGN LEADING SEPARATE.
+             07  :PREFIX:-DADOS-PAGAMENTO.
+               09  :PREFIX:-DP-IBAN                PIC X(34).
+               09  :PREFIX:-DP-SWIFT               PIC X(11).
+               09  :PREFIX:-DP-LOCAL-PAGAVEL       PIC X(04).
+                   88  :PREFIX:-DP-LOCAL-FID           VALUE 'FID '.
+                   88  :PREFIX:-DP-LOCAL-CGD           VALUE 'CGD '.
+                   88  :PREFIX:-DP-LOCAL-CTT           VALUE 'CTT '.
+                   88  :PREFIX:-DP-LOCAL-BCTT          VALUE 'BCTT'.
+             07  :PREFIX:-DADOS-OUTROS.
+               09  :PREFIX:-DO-NOME-TOMADOR        PIC X(40).
+               09  :PREFIX:-DO-DESC-TIPO-SIN       PIC X(40).
+             07  :PREFIX:-REFERENCIA-ARQUIVO.
+               09  :PREFIX:-RA-GUID                PIC X(36).
+CEL055*      07  FILLER                            PIC X(1771).
+CEL055       07  FILLER                            PIC X(2271).
+      *
+

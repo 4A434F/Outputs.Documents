@@ -1,0 +1,70 @@
+      *----------------------------------------------------------------*00050000
+      *                      MAINTENANCE  LOG                           00060000
+      *                                                                 00070000
+      *PROGRAMMER  PCR    DATE                COMMENTS                  00080000
+      *----------------------------------------------------------------*00090000
+      * R03V03                                                          00100000
+      *                                                                 00120000
+!!!!!!*  SE ESTE COPYBOOK SOFRER ALTERAÇÕES AS MESMAS TERÃO DE SER RE-  00060000
+!!!!!!*  RELECTIDAS NO COPY BGOW9012 - OUPUTS UGEN                      00060000
+      *
+      * CCR   3P0894   2010-12-20   ORIGINAL VERSION.                   00130000
+      *                             REGISTO L RECL = 500                00140000
+3P1556* RJF 3P1556  28/05/14   NOVO CAMPO NUMERO DE REPORT              00384000
+3P2123* RJF 3P2123 2019-03-01 201800299 - REFORMULAR OFERTA AUTO
+      *----------------------------------------------------------------*00281000
+       03  NZ4ACU01-PRINT-RECORD.                                       00290000
+      *----------------------------------------------------------------*00300000
+      *    SORT KEY                                                     00310000
+      *----------------------------------------------------------------*00320000
+           05  NZ4ACU01-SORT-KEY.                                       00330000
+               07  NZ4ACU01-COMPANY                PIC X(03).           00340000
+               07  NZ4ACU01-AGENT                  PIC X(10).           00350000
+               07  NZ4ACU01-PH-POST-CODE           PIC X(09).           00360000
+               07  NZ4ACU01-PH-CLIENT-REFERENCE    PIC X(10).           00370000
+               07  NZ4ACU01-PRODUCT-CODE           PIC X(05).           00370000
+               07  NZ4ACU01-PRODUCT-CODE-DESC      PIC X(30).           00370000
+               07  NZ4ACU01-POLICY-NUMBER          PIC X(16).           00390000
+               07  NZ4ACU01-D-H-SISTEMA            PIC X(14).           00391000
+               07  NZ4ACU01-DOCU-CODE              PIC X(04).           00590000
+               07  NZ4ACU01-RECORD-TYPE            PIC X(01).           00410000
+                   88  NZ4ACU01-UAR-DATA           VALUE '1'.           00470000
+                   88  NZ4ACU01-POLICY-DATA        VALUE '2'.           00420000
+3P1556     05  NZ4ACU01-PRINT-DATA                 PIC X(397).          00531000
+      *-------                                                          01220000
+      *    UAR LEVEL DATA                                               01230000
+      *-------                                                          01240000
+           05  REDEFINES NZ4ACU01-PRINT-DATA.                           01250000
+               07  NZ4ACU01-VEHICLE-TYPE           PIC X(60).           01270000
+               07  NZ4ACU01-VEH-MAKE               PIC X(60).           01280000
+               07  NZ4ACU01-VEH-REG-NUMBER         PIC X(15).           01350000
+               07  NZ4ACU01-VEH-TYPE               PIC X(03).           01382100
+               07  NZ4ACU01-UAR-ANN-NETT-PREM-TOT  PIC S9(09)V9(02).    00880000
+      *                                                   COMP-3.       00890000
+      *        07  NZ4ACU01-SUM-INSURED        PIC S9(11) COMP-3.       01800000
+               07  NZ4ACU01-SUM-INSURED        PIC S9(11).              01800000
+3P2123         07  NZ4ACU01-UAR-IND            PIC  X(01).              01800000
+3P2123*3P1556  07  FILLER                          PIC X(237).          01383000
+3P2123         07  FILLER                          PIC X(236).          01383000
+      *----------------------------------------------------------------*00540000
+      *    POLICY DATA                                                  00550000
+      *----------------------------------------------------------------*00560000
+           05  REDEFINES NZ4ACU01-PRINT-DATA.                           00570000
+               07  NZ4ACU01-PH-ADDRESSEE           PIC X(40).           00590000
+               07  NZ4ACU01-PH-ADDRESS1            PIC X(40).           00600000
+               07  NZ4ACU01-PH-ADDRESS2            PIC X(40).           00610000
+               07  NZ4ACU01-PH-TOWN-SUBURB         PIC X(40).           00620000
+               07  NZ4ACU01-PH-POSTCODE-DESC       PIC X(41).           00630000
+               07  NZ4ACU01-PH-NUM-TYPE            PIC X(01).
+               07  NZ4ACU01-PH-NUM                 PIC X(04).
+               07  NZ4ACU01-TERM-EFFECT-DATE       PIC X(10).           00910000
+               07  NZ4ACU01-ORIG-DATE-PRINTED      PIC X(10).           00980000
+               07  NZ4ACU01-REF-DOC                PIC X(15).           00983000
+               07  NZ4ACU01-ANN-NETT-PREM-TOT      PIC S9(09)V9(02).    00880000
+               07  NZ4ACU01-UAR-NUM                PIC 9(04).           00710000
+               07  NZ4ACU01-IND-CGD                PIC X(01).           00710000
+3P2123         07  NZ4ACU01-C-CNDZ-GERL-CTTO       PIC X(05).           00710000
+3P2123*3P1556  07  FILLER                          PIC X(140).          00721000
+3P2123         07  FILLER                          PIC X(135).          00721000
+3P1556     05  NZ4ACU01-TIPO-IMPRESSAO             PIC X(001).          00570000
+

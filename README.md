@@ -41,7 +41,7 @@ src/
   Outputs.Documents.Preview/
   Outputs.Documents.Templates/
   Outputs.Documents.Templates.FSCD/
-  Outputs.Documents.Templates.Doce/
+  Outputs.Documents.Templates.DOCE/
 
 tests/
   Outputs.Documents.Domain.Tests/
@@ -49,9 +49,9 @@ tests/
   Outputs.Documents.Rendering.Tests/
   Outputs.Documents.Rendering.Iron.Tests/
   Outputs.Documents.Rendering.PdfSharp.Tests/
-  Outputs.Documents.Templates.Doce.Tests/
-  Outputs.Documents.Templates.Doce.PdfSharp.IntegrationTests/
-  Outputs.Documents.Templates.Doce.Iron.IntegrationTests/
+  Outputs.Documents.Templates.DOCE.Tests/
+  Outputs.Documents.Templates.DOCE.PdfSharp.IntegrationTests/
+  Outputs.Documents.Templates.DOCE.Iron.IntegrationTests/
 
 tools/
   Outputs.Documents.Domain.VectorStore.McpServer/
@@ -124,7 +124,7 @@ Rules:
 - `Kind` says whether a record represents an entity, property, combined entity document, or alignment baseline.
 - `Declaration` is the stable source declaration identity, usually a full type/property name.
 - Alignment prompts are fixed by `DomainVectorStoreAlignmentPrompts.All`; callers pass back only embeddings for those fixed texts.
-- Detailed API and storage rules live in [Outputs.Documents.Domain.VectorStore/README.md](/Users/thepotato/Code/Outputs.Documents/src/Outputs.Documents.Domain.VectorStore/README.md).
+- Detailed API and storage rules live in [Outputs.Documents.Domain.VectorStore/README.md](/Users/thepotato/Code/Outputs.Documents/tools/Outputs.Documents.Domain.VectorStore/README.md).
 
 Example identities:
 
@@ -151,7 +151,7 @@ The server exposes vector-store CRUD, exact search, vector search, hybrid search
 Run:
 
 ```bash
-dotnet run --project tools/Outputs.Documents.Domain.VectorStore.McpServer/Outputs.Documents.Domain.VectorStore.McpServer.csproj -- --urls http://localhost:5055
+dotnet run --project apps/Outputs.Documents.Domain.VectorStore.McpServer/Outputs.Documents.Domain.VectorStore.McpServer.csproj -- --urls http://localhost:5055
 ```
 
 MCP endpoint:
@@ -160,7 +160,7 @@ MCP endpoint:
 http://localhost:5055/mcp
 ```
 
-Detailed tool notes live in [Outputs.Documents.Domain.VectorStore.McpServer/README.md](/Users/thepotato/Code/Outputs.Documents/tools/Outputs.Documents.Domain.VectorStore.McpServer/README.md).
+Detailed tool notes live in [Outputs.Documents.Domain.VectorStore.McpServer/README.md](/Users/thepotato/Code/Outputs.Documents/apps/Outputs.Documents.Domain.VectorStore.McpServer/README.md).
 
 ### Outputs.Documents.Abstractions
 
@@ -295,7 +295,7 @@ Rules:
 - If a model is a real API/domain contract, move it to `Outputs.Documents.Domain`.
 - If a component becomes reusable by another template family, move it to `Outputs.Documents.Templates`.
 
-### Outputs.Documents.Templates.Doce
+### Outputs.Documents.Templates.DOCE
 
 Purpose: DOCE-specific concrete templates, rules, assets, and preview scenarios.
 
@@ -975,19 +975,19 @@ Current known note:
 
 ### Template Tests
 
-`Outputs.Documents.Templates.Doce.Tests`:
+`Outputs.Documents.Templates.DOCE.Tests`:
 
 - verifies DOCE template registration/scanning behavior.
 
 ### Integration Tests
 
-`Outputs.Documents.Templates.Doce.PdfSharp.IntegrationTests`:
+`Outputs.Documents.Templates.DOCE.PdfSharp.IntegrationTests`:
 
 - renders DOCE document models through DI.
 - generates real PDF bytes using PdfSharp.
 - saves PDF files under test output for inspection.
 
-`Outputs.Documents.Templates.Doce.Iron.IntegrationTests`:
+`Outputs.Documents.Templates.DOCE.Iron.IntegrationTests`:
 
 - renders the same DOCE document models through DI.
 - generates real PDF bytes using IronPDF when an IronPDF license is configured.

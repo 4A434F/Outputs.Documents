@@ -1,4 +1,4 @@
-namespace Outputs.Documents.Templates.Doce;
+namespace Outputs.Documents.Templates.DOCE;
 
 public sealed class StaticFilePaths
 {

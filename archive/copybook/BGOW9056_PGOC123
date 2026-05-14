@@ -1,0 +1,88 @@
+      ******************************************************************
+      * FZ4ATS0A: COPYBOOK PARA IMPRESSAO CARTA ACORDO COSSEGURO       *00000009
+      *----------------------------------------------------------------*
+      *                         =============                          *
+      *                         A T E N C A O                          *
+      *                         =============                          *
+      *                                                                *00000005
+      * ALTERAÇÕES NESTE COPYBOOK (FZ4ATS0A) DEVERÃO SER REPLICADAS NO *00000006
+      * COPYBOOK BGOW9056 UTILIZADO NAS APLICAÇÕES DE OUTPUTS (UGEN) E *00000007
+      * INFORMAR A EQUIPA.                                             *00000008
+      *                                                                *00000009
+      ******************************************************************
+      * PROGRAMMER  PCR     DATE        COMMENTS                       *
+      * ----------  ------  ----------  ------------------------------ *
+      * CS          2P3262  2018-09-14  CHG-631355                     *
+      *                                                                *
+      ******************************************************************
+      *
+         03 FZ4ATSA-PRINT-RECORD.
+      *---- SORT KEY
+            05 FZ4ATSA-SORT-KEY.
+      *        CODIGO DE COMPANHIA
+               07 FZ4ATSA-COMPANY                PIC X(003).
+      *        CODIGO DE MARCA
+               07 FZ4ATSA-MARCA                  PIC X(003).
+      *        Nº DE CLIENTE DO TOMADOR DO SEGURO
+               07 FZ4ATSA-TM-CLIENT-REFERENCE    PIC X(010).
+      *        CÓDIGO DO RAMO
+               07 FZ4ATSA-RAMO                   PIC X(002).
+      *        CODIGO DO PRODUTO
+               07 FZ4ATSA-PRODUTO                PIC X(005).
+      *        Nº APOLICE
+               07 FZ4ATSA-POLICY-NUMBER          PIC X(016).
+      *        TIPO DOCUMENTO
+      *           ACSG - CARTA ACORDO COSSEGURO
+               07 FZ4ATSA-TIPO-DOC               PIC X(004).
+                  88 FZ4ATSA-COSSEG               VALUE 'ACSG'.
+      *        Nº TRANSACÇÃO (NO COGEN22 - DOCUMENT-NUMBER)
+               07 FZ4ATSA-POLICY-TRANSACTION     PIC X(010).
+      *        NUMERO DE SEQUÊNCIA 1
+               07 FZ4ATSA-NUM-SEQ-1              PIC 9(005).
+      *        TIPO IMPRESSAO (SOMENTE "I" - ONLINE)
+               07 FZ4ATSA-TIPO-IMPRESSAO         PIC X(001).
+      *        TIPO DE REGISTO
+      *           A - DADOS GERAIS
+      *           L - COSSEGURADORA E QUOTA PARTE
+      *           Z - FIM DOCUMENTO
+               07 FZ4ATSA-TIPO-REG               PIC X(001).
+                  88 FZ4ATSA-DADOS-GERAIS         VALUE 'A'.
+                  88 FZ4ATSA-DADOS-COSSEG         VALUE 'L'.
+                  88 FZ4ATSA-FIM-DOCUMENTO        VALUE 'Z'.
+            05 FZ4ATSA-PRINT-DATA                PIC X(440).
+      *
+      *---- REG A : DADOS GERAIS
+            05 FZ4ATSA-REG-A REDEFINES FZ4ATSA-PRINT-DATA.
+      *        NOME TOMADOR SEGURO
+               07 FZ4ATSA-TM-ADDRESSEE           PIC X(040).
+      *        PRODUTO DESCRIÇÃO
+               07 FZ4ATSA-PRODUTO-DESC           PIC X(030).
+      *        RAMO DESCRIÇÃO
+               07 FZ4ATSA-RAMO-DESC              PIC X(030).
+      *        DATA INICIO DO TERMO (AAAA-MM-DD)
+               07 FZ4ATSA-TERM-EFFECT-DATE       PIC X(010).
+      *        TAXA DE GESTÃO - % DE CARGAS GESTÃO (99,99)
+               07 FZ4ATSA-TAXA-GESTAO            PIC X(005).
+      *        DATA DE IMPRESSAO DA CARTA (AAAA-MM-DD)
+               07 FZ4ATSA-ORIG-DATE-PRINTED      PIC X(010).
+      *        USER ID IMPRESSÕES ONLINE
+               07 FZ4ATSA-USERID                 PIC X(008).
+      *        QUANTIDADE DE COSSEGURADORAS
+               07 FZ4ATSA-QT-COSSEG              PIC 9(002).
+               07 FILLER                         PIC X(305).
+      *
+      *---- REG L : COSSEGURADORA E QUOTA PARTE
+            05 FZ4ATSA-REG-L REDEFINES FZ4ATSA-PRINT-DATA.
+      *        CODIGO COSSEGURADORA
+               07 FZ4ATSA-CODIGO-COSSEG          PIC X(004).
+      *        NOME COSEGURADORA
+               07 FZ4ATSA-NOME-COSEG             PIC X(040).
+      *        QUOTA PARTE (99,99)
+               07 FZ4ATSA-QUOTA-PARTE            PIC X(005).
+               07 FILLER                         PIC X(391).
+      *
+      *---- REG Z : FIM DE DOCUMENTO
+            05 FZ4ATSA-REG-Z REDEFINES FZ4ATSA-PRINT-DATA.
+               07 FILLER                         PIC X(440).
+      *
+

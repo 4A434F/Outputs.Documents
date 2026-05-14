@@ -1,0 +1,125 @@
+      *----------------------------------------------------------------*
+      *        -----------------------------------------------          00030000
+      *        ---------   ATENÇÃO  --------------------------          00030000
+      *        -----------------------------------------------          00030000
+      *                                                                 00030000
+      * ALTERAÇÕES NESTE COPYBOOK (NY5BAU01) DEVERÃO SER REPLICADAS NO *00030000
+      * COPYBOOK BGOW9016 UTILIZADO NAS APLICAÇÕES DE OUTPUTS (UGEN) E *00030000
+      * INFORMAR A EQUIPA                                              *00030000
+      *
+      *
+      *                      MAINTENANCE  LOG
+      *
+      *PROGRAMMER  PCR    DATE                COMMENTS
+      *----------------------------------------------------------------*
+      *
+      * AS    M50187   15/03/1999   NEW COPYBOOK - HIPOTECARIO LETTER
+      *
+      * JMS   M50375   2000-04-24   TRANSACTION NUMBER ON CHIP SORT KEY
+      *
+M41572* AS    M41572 27-FEV-2003  CODIGO DE BARRAS CTT.
+      *
+      * PCS   M51431   23-11-2005   INCLUSAO DO INDICADOR DE TIPO DE    00080400
+      *                             REGIME DA APOLICE E SE MOVIMENTO E  00080500
+      *                             NOVO NEGÓCIO                        00080500
+      *
+      * PCS   M51468   03-03-2006   INCLUSAO DA DUE-DATE                00080400
+      *
+      * IAC   M51578   JAN.2007     MULTIMARCA MULTICOMPANHIA.
+      *
+      * JC    M51885   DEZ.2008     ACT200800164 - AUTOMATISMO POSTAL.
+      *
+      * PJMN  3P1529   MAR.2014     CARTA DO CREDOR HIPOTECÁRIO PARA    00014411
+      *                             RESTANTES PRODUTOS (CHG-251922)     00014412
+      *                                                                 00014420
+      * PCS   3P1568   JUL.2014     201200094 - PDS - INTEGRAR OUTPUTS  00014411
+      *                             C22 E C33 EM SGO                    00014412
+      *                                                                 00014420
+      * NCP   3P1629   DEZ.2014     201200094 - PDS - INTEGRAR OUTPUTS  00014411
+      *                             C22 E C33 EM SGO                    00014412
+      *                                                                 00014420
+      *----------------------------------------------------------------*
+           02 NY5BAU01-PRINT-RECORD.
+              03 NY5BAU01-SORT-KEY.
+                05 NY5BAU01-SORT-CRED-POST-CODE    PIC X(09).
+                05 NY5BAU01-SORT-CRED-NUMBER       PIC X(10).
+                05 NY5BAU01-SORT-POLICY-NUMBER     PIC X(16).
+M50375          05 NY5BAU01-SORT-TRAN-NUMBER       PIC X(10).
+                05 NY5BAU01-SORT-RECORD-TYPE       PIC X(01).
+                   88 NY5BAU01-REC-TYPE-1     VALUE '1'.
+                   88 NY5BAU01-REC-TYPE-2     VALUE '2'.
+                   88 NY5BAU01-REC-TYPE-3     VALUE '3'.
+M51578          05 NY5BAU01-COMPANY                PIC X(03).
+M51578          05 NY5BAU01-C-MARC-SGRA            PIC X(03).
+              03 NY5BAU01-LINE-1.
+M51578*         05 NY5BAU01-COMPANY                PIC X(03).
+                05 NY5BAU01-ISSUE-DATE             PIC X(10).
+                05 NY5BAU01-ADDRESSEE-NUMBER       PIC X(10).
+                05 NY5BAU01-ADDRESSEE-NAME         PIC X(40).
+                05 NY5BAU01-ADDRESSEE-ADDRESS-1    PIC X(40).
+                05 NY5BAU01-ADDRESSEE-ADDRESS-2    PIC X(40).
+M51885*         05 NY5BAU01-ADDRESSEE-CITY         PIC X(30).
+M51885          05 NY5BAU01-ADDRESSEE-CITY         PIC X(40).
+                05 NY5BAU01-POST-CODE              PIC X(09).
+M51885*         05 NY5BAU01-POST-CODE-DESCR        PIC X(41).
+M51885          05 NY5BAU01-POST-CODE-DESCR        PIC X(40).
+                05 NY5BAU01-PRODUCT-CODE           PIC X(05).
+                05 NY5BAU01-PRODUCT-CODE-DESC      PIC X(30).
+                05 NY5BAU01-POLICY-NUMBER          PIC X(16).
+                05 NY5BAU01-CANCELLATION-DATE      PIC X(10).
+                05 NY5BAU01-SINGLE-REPRINT         PIC X(01).
+M41572          05 NY5BAU01-CTT-CODIGO-BARRAS      PIC X(08).
+M51431          05 NY5BAU01-IND-REGIME             PIC X(01).           00089100
+M51431          05 NY5BAU01-NOVO-NEG               PIC X(01).           00089100
+M51468          05 NY5BAU01-DUE-DATE               PIC X(10).           00089100
+M51885          05 NY5BAU01-ADDRESSEE-NUM-TYPE     PIC X(01).           00089100
+M51885          05 NY5BAU01-ADDRESSEE-NUM          PIC X(04).           00089100
+3P1529          05 NY5BAU01-FISCAL-NUMBER          PIC X(09).           00089100
+3P1529*--- NIB - BANCO + BALCÃO + Nº DE CONTA + CHKD
+3P1529          05 NY5BAU01-NIB                    PIC X(21).           00089100
+M50375*M41572   05 FILLER                          PIC X(159).
+M51431*M41572   05 FILLER                          PIC X(151).
+M51468*M51431   05 FILLER                          PIC X(149).
+M51578*M51468   05 FILLER                          PIC X(139).
+M51885*M51578   05 FILLER                          PIC X(136).
+3P1529*M51885   05 FILLER                          PIC X(122).
+3P1629          05 NY5BAU01-CD-IBAN                PIC X(34).
+3P1629          05 NY5BAU01-CD-SWIFT               PIC X(11).
+3P1629*3P1568   05 FILLER                          PIC X(101).
+3P1629          05 FILLER                          PIC X(56).
+3P1568          05 NY5BAU01-TIPO-IMPRESSAO-1       PIC X(01).
+3P1568*3P1529   05 FILLER                          PIC X(092).
+              03 NY5BAU01-LINE-2.
+                05 NY5BAU01-INVOICE-DATA OCCURS 9.
+                  07 NY5BAU01-INVOICE-NUMBER       PIC X(10).
+                  07 NY5BAU01-INVOICE-START-DATE   PIC X(10).
+                  07 NY5BAU01-INVOICE-END-DATE     PIC X(10).
+                  07 NY5BAU01-INVOICE-AMOUNT       PIC S9(13)V9(2).
+M51578*M50375   05 FILLER                          PIC X(31).
+3P1568          05 FILLER                          PIC X(42).
+3P1568          05 NY5BAU01-TIPO-IMPRESSAO-2       PIC X(01).
+3P1568*M51578   05 FILLER                          PIC X(25).
+              03 NY5BAU01-LINE-3.
+                05 NY5BAU01-CREDITOR-NUMBER        PIC X(10).
+                05 NY5BAU01-CREDITOR-NAME          PIC X(40).
+                05 NY5BAU01-CREDITOR-ADDRESS-1     PIC X(40).
+                05 NY5BAU01-CREDITOR-ADDRESS-2     PIC X(40).
+M51885*         05 NY5BAU01-CREDITOR-CITY          PIC X(30).
+M51885          05 NY5BAU01-CREDITOR-CITY          PIC X(40).
+                05 NY5BAU01-CRED-POST-CODE         PIC X(09).
+M51885*         05 NY5BAU01-CRED-POST-CODE-DESCR   PIC X(41).
+M51885          05 NY5BAU01-CRED-POST-CODE-DESCR   PIC X(40).
+                05 NY5BAU01-VEHICLE-MAKE           PIC X(30).
+                05 NY5BAU01-VEHICLE-MODEL          PIC X(10).
+                05 NY5BAU01-VEHICLE-VERSION        PIC X(25).
+                05 NY5BAU01-VEHICLE-REG-NUMBER     PIC X(15).
+M51885          05 NY5BAU01-CRED-NUM-TYPE          PIC X(01).
+M51885          05 NY5BAU01-CRED-NUM               PIC X(04).
+3P1529          05 NY5BAU01-UAR-DETAIL             PIC X(65).
+M51578*M50375   05 FILLER                          PIC X(164).
+M51885*M51578   05 FILLER                          PIC X(158).
+3P1529*M51885   05 FILLER                          PIC X(144).
+3P1568          05 FILLER                          PIC X(78).
+3P1568          05 NY5BAU01-TIPO-IMPRESSAO-3       PIC X(01).
+3P1568*3P1529   05 FILLER                          PIC X(079).
+

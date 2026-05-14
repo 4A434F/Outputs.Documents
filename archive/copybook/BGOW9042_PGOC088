@@ -1,0 +1,81 @@
+      * PRINT RECORD FOR MOTOR RISK WORKSHEET                           00010000
+      *----------------------------------------------------------------*00050000
+      *                      MAINTENANCE  LOG                           00060000
+      *                                                                 00070000
+      *PROGRAMMER  PCR    DATE                COMMENTS                  00080000
+      *----------------------------------------------------------------*00090000
+      * R03V03                                                          00100000
+      * MUNDIAL                                                         00110000
+      *                         A T E N C A O                          *
+      *                         =============                          *
+      *                                                                *
+      *      ALTERACOES NO NY44WU01 DEVERAO SER REPLICADAS:            *
+      *             BGOW9042 - PARA APLICAÇÕES DE OUTPUTS (UGEN)       *
+      *----------------------------------------------------------------*00090000
+      *                                                                 00120000
+      * ALIMAC M41739  2004-05-011  ORIGINAL VERSION.                   00130000
+      *
+3P0548* JJR    3P0548  2009-05-15   200700090 - FROTAS AU FASE II
+      *
+3P1556* RJF     3P1556  28/05/14   201200094 PDS - INTEGRAR OUTPUTS     00000123
+3P1556*                            C22 E C33 EM SGO                     00000123
+      *----------------------------------------------------------------*00281000
+       03  NY44WU01-PRINT-RECORD.                                       00290000
+      *----------------------------------------------------------------*00300000
+      *    SORT KEY                                                     00310000
+      *----------------------------------------------------------------*00320000
+           05  NY44WU01-SORT-KEY.                                       00330000
+               07  NY44WU01-COMPANY                PIC X(03).           00390000
+3P1556         07  NY44WU01-C-MARC-SGRA            PIC X(03).           00390000
+               07  NY44WU01-POLICY-NUMBER          PIC X(16).           00390000
+               07  NY44WU01-POLICY-TRANSACTION     PIC X(10).           00392000
+               07  NY44WU01-PRINT-NUMBER           PIC X(03).
+               07  NY44WU01-RECORD-TYPE            PIC X(01).           00410000
+                  88  NY44WU01-HEADER             VALUE '1'.            00420000
+                  88  NY44WU01-DETALHE            VALUE '2'.            00470000
+                  88  NY44WU01-TRAILER            VALUE '3'.            00470000
+3P1556     05  NY44WU01-PRINT-DATA                 PIC X(463).          00531000
+      *----------------------------------------------------------------*00540000
+      *    POLICY BASIC LEVEL DATA                                      00550000
+      *----------------------------------------------------------------*00560000
+           05  NY44WU01-HEADER-DATA REDEFINES NY44WU01-PRINT-DATA.      00570000
+               07  NY44WU01-CLIENT-REFERENCE       PIC X(10).           00580000
+3P1556         07  NY44WU01-PRODUCT-CODE           PIC X(05).           00580000
+               07  NY44WU01-PRODUCT-CODE-DESC      PIC X(30).           00580000
+               07  NY44WU01-PH-ADDRESSEE           PIC X(40).           00590000
+               07  NY44WU01-PH-ADDRESS1            PIC X(40).           00600000
+               07  NY44WU01-PH-ADDRESS2            PIC X(40).           00610000
+               07  NY44WU01-PH-TOWN-SUBURB         PIC X(30).           00620000
+3P1556         07  NY44WU01-PH-POST-CODE           PIC X(09).           00630000
+               07  NY44WU01-PH-POSTCODE-DESC       PIC X(41).           00630000
+               07  NY44WU01-TERM-EFFECT-DATE       PIC X(10).           00910000
+               07  NY44WU01-TERM-EXPIRY-DATE       PIC X(10).           00920000
+               07  NY44WU01-ORIG-DATE-PRINTED      PIC X(10).           00980000
+3P1556         07  FILLER                          PIC X(188).          00993000
+      *-------                                                          01220000
+      *    UAR LEVEL DATA                                               01230000
+      *-------                                                          01240000
+           05  NY44WU01-DETALHE-DATA REDEFINES NY44WU01-PRINT-DATA.     01250000
+               07  NY44WU01-VEH-REG-NUMBER         PIC X(15).           01350000
+               07  NY44WU01-UAR-NUMBER             PIC X(08).           01350000
+               07  NY44WU01-RISK-START-DATE        PIC X(10).
+               07  NY44WU01-RISK-END-DATE          PIC X(10).
+               07  NY44WU01-RISK-STATUS            PIC X(01).
+               07  NY44WU01-RISK-INC-GROSS-PREM    PIC S9(9)V99 COMP-3.
+3P1556         07  FILLER                          PIC X(413).          01383000
+                                                                        02280000
+           05  NY44WU01-TRAILER-DATA REDEFINES NY44WU01-PRINT-DATA.     01250000
+               07  NY44WU01-PREMIO-CUSTA-APOL      PIC S9(11)V99 COMP-3.01350000
+               07  NY44WU01-PREMIO-PROVISORIO      PIC S9(11)V99 COMP-3.01350000
+               07  NY44WU01-PREMIO-DEPOSITO        PIC S9(11)V99 COMP-3.
+               07  NY44WU01-PREMIO-ACTUAL          PIC S9(11)V99 COMP-3.
+M41739         07  NY44WU01-TERM-DEPOSIT-IND       PIC X(01).
+M41739           88 NY44WU01-DEPOSIT-ACTIVE        VALUE 'S'.           SQLCOPYA
+M41739           88 NY44WU01-DEPOSIT-FINALIZED     VALUE 'F'.           SQLCOPYA
+M41739           88 NY44WU01-NO-DEPOSIT            VALUE 'N'.           SQLCOPYA
+M41739         07  NY44WU01-MTA-CODE               PIC X(03).
+3P0548         07  NY44WU01-PREMIO-FINAL           PIC S9(11)V99 COMP-3.01350000
+3P1556         07  FILLER                          PIC X(424).          01383000
+M41739     05  NY44WU01-TIPO-IMPRESSAO             PIC X(01).
+                                                                        02280000
+

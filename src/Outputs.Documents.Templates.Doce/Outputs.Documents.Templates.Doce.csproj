@@ -3,7 +3,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Outputs.Documents.Domain\Outputs.Documents.Domain.csproj" />
     <ProjectReference Include="..\Outputs.Documents.Abstractions\Outputs.Documents.Abstractions.csproj" />
-    <ProjectReference Include="..\Outputs.Documents.Preview.Abstractions\Outputs.Documents.Preview.Abstractions.csproj" />
     <ProjectReference Include="..\Outputs.Documents.Templates\Outputs.Documents.Templates.csproj" />
   </ItemGroup>
 

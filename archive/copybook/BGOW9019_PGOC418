@@ -1,0 +1,274 @@
+      *----------------------------------------------------------------*00010000
+      *                      MAINTENANCE  LOG                           00020000
+      *                                                                 00030000
+      *                        FZ4ATS01                                 00040000
+      *                                                                 00050000
+      *PROGRAMMER  PCR    DATE      COMMENTS                            00060000
+      *----------------------------------------------------------------*00060100
+      *        ---------   ATENÇÃO  --------------------------          00060400
+      *                                                                 00060500
+      *      ALTERACOES NO FZ4ATS01 DEVERAO SER REPLICADAS:             00060600
+      *             BGOW9019 - PARA APLICAÇÕES DE OUTPUTS (UGEN)        00060700
+      *                                                                 00060800
+      *---------------------------------------------------------------*
+      *  COPYBOOK PARA IMPRESSAO DE CONDICOES PARTICULARES DO         *
+      *  PRODUTO TIN                                                  *
+      *                                                               *
+      *------------------------ ALTERACOES ---------------------------*
+      *                                                               *
+      *  POR    ASIM       DATA     DESCRICAO                         *
+      *                                                               *
+      *  BROD  2P0763   2011-06-09  NOVO COPYBOOK.                    *
+2P2440*  RJF   2P2440   2014-06-04  201200094                         *
+      *  JM    2P3737   2022-02-28  REQ2018001-2005 ATAP201901-477 -  *
+      *                             NOVO CAMPO DE HORA INICIO DAS     *
+      *                             ALTERACOES                        *
+      *---------------------------------------------------------------*
+
+         03  FZ4ATS1-PRINT-RECORD.
+      *--- SORT KEY
+           05  FZ4ATS1-SORT-KEY.
+      *     CODIGO DE COMPANHIA
+             07  FZ4ATS1-COMPANY                 PIC X(03).
+      *     CODIGO DE MARCA
+             07  FZ4ATS1-MARCA                   PIC X(03).
+      *     CANAL DE DISTRIBUIÇÃO
+             07  FZ4ATS1-CANAL-DISTRIBUICAO      pic x(03).
+      *     Nº DE CLIENTE DO TOMADOR DO SEGURO
+             07  FZ4ATS1-TM-CLIENT-REFERENCE     PIC X(10).
+      *     CODIGO POSTAL DO TOMADOR DO SEGURO
+             07  FZ4ATS1-TM-POST-CODE            PIC X(08).
+      *     CODIGO DE MEDIADOR
+             07  FZ4ATS1-AG-CLIENT-REFERENCE     PIC X(10).
+      *     CODIGO POSTAL DO MEDIADOR
+             07  FZ4ATS1-AG-POST-CODE            PIC X(08).
+      *     CÓDIGO DO PRODUTO
+             07  FZ4ATS1-PRODUTO                 PIC X(05).
+      *     Nº APOLICE
+             07  FZ4ATS1-POLICY-NUMBER           PIC X(16).
+      *     TRANSACÇÃO
+      *     NO COGEN22 - DOCUMENT-NUMBER
+             07  FZ4ATS1-POLICY-TRANSACTION      PIC X(10).
+      *     INFORMAÇÃO DO NÚMERO DE SUB-DOCUMENTOS
+             07  FZ4ATS1-NUM-INFDOC              PIC 9(02).
+      *     UNIDADE DE RISCO
+      *     NÚMERO DE TIPO DE REGISTOS AA, BA, DA = '000000'
+      *     NÚMERO DE TIPO DE REGISTOS ZA = '999999'
+             07  FZ4ATS1-UNIT-AT-RISK            PIC X(06).
+      *     OBJECTO
+      *     NÚMERO DE TIPO DE REGISTOS AA, BA, DA = '000000'
+      *     NÚMERO DE TIPO DE REGISTOS ZA = '999999'
+             07  FZ4ATS1-OBJECT-NUM              PIC X(06).
+      *     SEQUÊNCIA
+             07  FZ4ATS1-NUM-SEQ-1               PIC 9(05).
+      *     TIPO DE REGISTO DENTRO DOS SUB-DOCUMENTOS
+             07  FZ4ATS1-TYPE-1-2.
+                09  FZ4ATS1-RECORD-TYPE-1           PIC X(02).
+                  88  FZ4ATS1-DADOS-GERAIS-APOLICE  VALUE 'AA'.
+                  88  FZ4ATS1-DADOS-VLR-APOL        VALUE 'BA'.
+                  88  FZ4ATS1-DADOS-PESSOA-SEGURA   VALUE 'FA'.
+                  88  FZ4ATS1-DADOS-COBERTURA-BASE  VALUE 'HA'.
+                  88  FZ4ATS1-DADOS-COBERTURAS      VALUE 'JA'.
+                  88  FZ4ATS1-CLAUSULAS             VALUE 'NA'.
+                  88  FZ4ATS1-CO-SEGURO             VALUE 'UA'.
+                  88  FZ4ATS1-FIM-DOCUMENTO         VALUE 'ZA'.
+      *        TIPO DE LAYOUTS POR REGISTO
+                09  FZ4ATS1-RECORD-TYPE-2           PIC X(01).
+                  88  FZ4ATS1-TYPE-A                VALUE 'A'.
+                  88  FZ4ATS1-TYPE-B                VALUE 'B'.
+                  88  FZ4ATS1-TYPE-C                VALUE 'C'.
+                  88  FZ4ATS1-TYPE-D                VALUE 'D'.
+                  88  FZ4ATS1-TYPE-E                VALUE 'E'.
+                  88  FZ4ATS1-TYPE-F                VALUE 'F'.
+                  88  FZ4ATS1-TYPE-G                VALUE 'G'.
+             07  FILLER REDEFINES FZ4ATS1-TYPE-1-2 PIC X(3).
+                  88  FZ4ATS1-VALID-TYPE-1-2     VALUE
+      * DADOS GERAIS APOLICE
+             'AAA'
+      * DADOS GERAIS COMPLEMENTARES
+             'BAA'
+      * INFORMAÇÃO PESSOAS SEGURAS
+             'FAA'
+      * COBERTURAS BASE
+             'HAA'
+      * COBERTURAS
+             'JAA'
+      * CLAÚSULAS
+             'NAA'
+      * CO-SEGURO
+             'UAA'
+      * FICHEIRO
+             'ZAA'.
+
+2P2440*    05  FZ4ATS1-PRINT-DATA                PIC X(402).
+2P2440     05  FZ4ATS1-PRINT-DATA                PIC X(401).
+      *
+      *--- LINHA AA
+      *--- DADOS GERAIS  DA APÓLICE
+           05  FZ4ATS1-LINHA-AA REDEFINES FZ4ATS1-PRINT-DATA.
+      *--- TOMADOR DO SEGURO
+      *    NOME
+             07  FZ4ATS1-ADDRESSEE               PIC X(40).
+      *    LINHA DE MORADA-1
+             07  FZ4ATS1-ADDRESS1                PIC X(40).
+      *    LINHA DE MORADA-2
+             07  FZ4ATS1-ADDRESS2                PIC X(40).
+      *    LOCALIDADE
+             07  FZ4ATS1-ADDRESS3                PIC X(40).
+      *    CODIGO POSTAL DESC
+             07  FZ4ATS1-ADDRESS4                PIC X(40).
+      *    TIPO NUM DE PORTA
+             07  FZ4ATS1-TNUM-PORTA              PIC X(01).
+      *    NUM DE PORTA
+             07  FZ4ATS1-NUM-PORTA               PIC X(04).
+      *    PRODUTO DESC
+             07  FZ4ATS1-DESC-PRODUTO            PIC X(30).
+      *    PLANO DE PAGAMENTO
+      *    ÚNICO - NAS TEMPORÁRIAS
+      *    ANUAL
+      *    FRACIONADA - MENSAL,TRIMESTRAL, SEMESTRAL
+             07  FZ4ATS1-PLANO-PAGAMENTO         PIC X(30).
+      *    CÓDIGO CONDIÇÃO GERAL
+             07  FZ4ATS1-TIPO-COND-GERAL         PIC X(03).
+      *    TIPO DE TRANSACÇÃO
+             07  FZ4ATS1-TIPO-TRANSACCAO         PIC X(02).
+                   88  FZ4ATS1-NEW-BUSINESS     VALUE '01'.
+                   88  FZ4ATS1-RENEWAL          VALUE '02' '12'.
+                   88  FZ4ATS1-ENDORSEMENT      VALUE '03' '04' '05'.
+                   88  FZ4ATS1-REVIVE           VALUE '06' '07'.
+      *    DATA ORIGINAL DE 1 PRINT
+             07  FZ4ATS1-ORIG-DATE-PRINTED       PIC X(10).
+      *    DATA DE VENCIMENTO (DDMM)
+             07  FZ4ATS1-VENCIMENTO              PIC X(04).
+      *    DATA INICIO DO TERMO (AAAA-MM-DD)
+             07  FZ4ATS1-TERM-EFFECT-DATE        PIC X(10).
+      *    DATA FIM DO TERMO (AAAA-MM-DDA)
+             07  FZ4ATS1-TERM-EXPIRY-DATE        PIC X(10).
+      *    TEMPO DE APÓLICE(ANO E SEGUINTES)
+             07  FZ4ATS1-TIPO-APOLICE            PIC X(02).
+               88  FZ4ATS1-APOL-ANUAL          VALUE 'AN'.
+               88  FZ4ATS1-APOL-TEMPORARIA     VALUE 'TE'.
+      *    INDICADOR DE PRIMEIRA IMPRESSÃO
+             07  FZ4ATS1-N-IMPRESSAO             PIC X(01).
+               88  FZ4ATS1-PRIMEIRA-IMP       VALUE '1'.
+               88  FZ4ATS1-SEGUNDA-VIA        VALUE '2'.
+      *    NÚMERO DE CÓPIAS
+             07  FZ4ATS1-NUM-COPIAS              PIC 9(01).
+2P3737*    HORA-MINUTO TRANSAÇÃO (HH:MM)
+2P3737       07  FZ4ATS1-HHMM-TRANSACAO          PIC X(05).
+2P2440*      07  FILLER                          PIC X(94).
+2P2440*      07  FILLER                          PIC X(93).
+2P3737       07  FILLER                          PIC X(88).
+      *
+      *--- LINHA BA
+      *--- DADOS DE VALORES DA APÓLICE
+           05 FZ4ATS1-LINHA-BA REDEFINES FZ4ATS1-PRINT-DATA.
+      *    CÓDIGO CONDIÇÃO GERAL ÚNICA
+             07  FZ4ATS1-COND-GERAL-UNICA        PIC X(05).
+      *    DESCRITIVO DO CÓDIGO CONDIÇÃO GERAL ÚNICO
+             07  FZ4ATS1-COND-GERAL-UNICA-DESC   PIC X(115).
+      *    VALORES ANUAL / PRÉMIO ÚNICO
+             07  FZ4ATS1-ANUAL-PR-COMERCIAL      PIC S9(11)V9(02).
+             07  FZ4ATS1-CUSTO-APOL-ANUAL        PIC S9(11)V9(02).
+             07  FZ4ATS1-ANUAL-IMPOSTO           PIC S9(11)V9(02).
+             07  FZ4ATS1-ANUAL-PR-TOTAL          PIC S9(11)V9(02).
+      *    VALORES 1ª FRACÇÃO / ADICIONAL / 1ºANO
+             07  FZ4ATS1-1F-PR-COMERCIAL         PIC S9(11)V9(02).
+             07  FZ4ATS1-CUSTO-APOL-1F           PIC S9(11)V9(02).
+             07  FZ4ATS1-1F-IMPOSTO              PIC S9(11)V9(02).
+             07  FZ4ATS1-1F-PR-TOTAL             PIC S9(11)V9(02).
+      *    VALORES FRACÇÕES SEGUINTES
+             07  FZ4ATS1-FS-PR-COMERCIAL         PIC S9(11)V9(02).
+             07  FZ4ATS1-CUSTO-APOL-FS           PIC S9(11)V9(02).
+             07  FZ4ATS1-FS-IMPOSTO              PIC S9(11)V9(02).
+             07  FZ4ATS1-FS-PR-TOTAL             PIC S9(11)V9(02).
+      *    PRÉMIO MÍNIMO ANUAL
+             07  FZ4ATS1-ANUAL-PR-MINIMO         PIC S9(11)V9(02).
+2P2440*      07  FILLER                          PIC X(113).
+2P2440       07  FILLER                          PIC X(112).
+
+      *--- LINHA FA
+      *--- DADOS DA PESSOA SEGURA
+           05 FZ4ATS1-LINHA-FA REDEFINES FZ4ATS1-PRINT-DATA.
+      *    DESCRITIVO DO OBJECTO
+             07  FZ4ATS1-OBJS-DESC               PIC X(30).
+      *    DESCRIÇÃO DA PROFISSÃO
+             07  FZ4ATS1-PROFISSAO-DESC          PIC X(60).
+      *    SALÁRIO MENSAL
+             07  FZ4ATS1-SALARIO-MENSAL          PIC S9(13)V9(02).
+      *    SALÁRIO ANUAL
+             07  FZ4ATS1-SALARIO-ANUAL           PIC S9(13)V9(02).
+      *    DATA DE NASCIMENTO(AAAA-MM-DD)
+             07  FZ4ATS1-DATA-NASCIMENTO         PIC X(10).
+      *    DESCRIÇÃO DA MODALIDADE
+             07  FZ4ATS1-MODALIDADE-DESC         PIC X(30).
+      *    DESCRIÇÃO DA ACTIVIDADE
+             07  FZ4ATS1-ACTIVIDADE-DESC         PIC X(30).
+      *    VALOR DO CAPITAL
+             07  FZ4ATS1-CAPITAL                 PIC S9(13)V9(02).
+2P2440*      07  FILLER                          PIC X(197).
+2P2440       07  FILLER                          PIC X(196).
+
+      *--- LINHA HA
+      *--- COBERTURA BASE
+           05 FZ4ATS1-LINHA-HA REDEFINES FZ4ATS1-PRINT-DATA.
+      *    DESCRITIVO DA COBERTURA BASE
+             07  FZ4ATS1-COV-BASE-DESC           PIC X(60).
+2P2440*      07  FILLER                          PIC X(342).
+2P2440       07  FILLER                          PIC X(341).
+      *
+      *--- LINHA JA
+      *--- DADOS DAS COBERTURAS
+           05 FZ4ATS1-LINHA-JA REDEFINES FZ4ATS1-PRINT-DATA.
+      *    DESCRIÇÃO DA COBERTURA
+             07  FZ4ATS1-COV-DESC                PIC X(60).
+      *    TIPO DE FRANQUIA
+             07 FZ4ATS1-TIPO-FRANQUIA            PIC X(02).
+               88  FZ4ATS1-SEM-FRANQUIA        VALUE 'SF'.
+               88  FZ4ATS1-NR-DIAS             VALUE 'N1'.
+               88  FZ4ATS1-PERC                VALUE 'N2'.
+      *    VALOR DA FRANQUIA
+             07  FZ4ATS1-VALOR-FRANQUIA-PERC     PIC 9(02)V9(06).
+             07  FZ4ATS1-VALOR-FRANQUIA-NDIAS    PIC 9(03).
+      *    VALOR DO LIMITE DE INDEMNIZAÇÃO
+             07  FZ4ATS1-LIMITE-INDEMNIZACAO     PIC S9(13)V9(02).
+2P2440*      07  FILLER                          PIC X(314).
+2P2440       07  FILLER                          PIC X(313).
+      *
+      *--- LINHA NA
+      *--- CLÁUSULAS A NÍVEL DA APÓLICE
+           05 FZ4ATS1-LINHA-NA REDEFINES FZ4ATS1-PRINT-DATA.
+      *    INDICA QUAL O NÚMERO DE FORM. PODEM FORMS COM MAIS QUE
+      *    UMA LINHA. ESTE NÚMERO APENAS MUDA QUANDO HOUVER
+      *    MUDANCA DE FORM
+      *    FORM-CONJUNTO DE CóDIGOS QUE IDENTIFICA AS CLáUSULAS
+             07  FZ4ATS1-FORM-NUMBER          PIC X(10).
+             07  FZ4ATS1-CLAUS-LINE1          PIC X(79).
+             07  FZ4ATS1-CLAUS-LINE2          PIC X(79).
+             07  FZ4ATS1-CLAUS-LINE3          PIC X(79).
+             07  FZ4ATS1-CLAUS-LINE4          PIC X(79).
+2P2440*      07  FILLER                       PIC X(76).
+2P2440       07  FILLER                       PIC X(75).
+      *
+      *--- LINHA UA
+      *--- CO-SEGURO
+           05 FZ4ATS1-LINHA-UA REDEFINES FZ4ATS1-PRINT-DATA.
+      *    INDICA QUAL O NÚMERO DE FORM. PODEM FORMS COM MAIS QUE
+      *    UMA LINHA. ESTE NÚMERO APENAS MUDA QUANDO HOUVER
+      *    MUDANCA DE FORM
+      *    FORM-CONJUNTO DE CóDIGOS QUE IDENTIFICA AS CLáUSULAS
+             07  FZ4ATS1-CO-SEG-COD           PIC X(10).
+             07  FZ4ATS1-CO-SEG-NOME          PIC X(40).
+             07  FZ4ATS1-CO-SEG-CAPITAL       PIC S9(13)V9(02).
+             07  FZ4ATS1-CO-SEG-PARTICIP      PIC 9(03)V9(06).
+             07  FZ4ATS1-CO-SEG-PREMIO        PIC S9(13)V9(02).
+2P2440*      07  FILLER                       PIC X(313).
+2P2440       07  FILLER                       PIC X(312).
+      *
+      *--- LINHA ZA
+      *--- FIM DE DOCUMENTO
+           05 FZ4ATS1-LINHA-ZA REDEFINES FZ4ATS1-PRINT-DATA.
+2P2440*      07  FILLER                          PIC X(402).
+2P2440       07  FILLER                          PIC X(401).
+2P2440     05 FZ4ATS1-TIPO-IMPRESSAO             PIC X(001).
+

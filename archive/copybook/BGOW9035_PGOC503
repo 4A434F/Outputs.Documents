@@ -1,0 +1,202 @@
+      *----------------------------------------------------------------*
+      * LINKAGE COPYBOOK FOR EXTRACT RECEIPT FOR FLEET - VERSION 2     *
+      *----------------------------------------------------------------*
+      *                                                                *
+      * ALTERAÇÕES NESTE COPYBOOK (NY5F1U0) DEVERÃO SER REPLICADAS NO  *
+      * COPYBOOK BGOW9035 UTILIZADO NAS APLICAÇÕES DE OUTPUTS (UGEN) E *
+      * INFORMAR A EQUIPA                                              *
+      *                                                                *
+      *----------------------------------------------------------------*
+      *                      MAINTENANCE  LOG
+      *----------------------------------------------------------------*
+      *
+      *PROGRAMMER  PCR    DATE                COMMENTS
+      *
+      * R03V03 - MUNDIAL CONFIANÇA
+      *
+      * ALIMAC   M50865 14/08/02  NEW COPY BOOK TO ALLOW ORDER BY
+      *                           VEHICLE REGISTRATION
+      *
+      * AT       M51378 25/07/05  INCLUSÃO DO NIF.
+      *
+      * PCS      M51426 14/11/05  INCLUSAO DO INDICADOR DE TIPO DE      00080400
+      *                           REGIME DA APOLICE.                    00080500
+      *
+      * LTC      M51563 03/10/06  INCLUSAO DO MEDIADOR NA SORT-KEY.     00080400
+      *
+      * IAC      M51578 JAN.2007  MULTIMARCA, MULTICOMPANHIA.
+      *
+      * AMM      M51674 13-08-2007 INCLUIR CODIGO DE BARRAS
+      * NJF             26-09-2007 ALTERAR POSIÇÃO DO CÓDIGO DE BARRAS
+      *
+      *
+      * DDS      M51697 OUT-2007    INCENTIVOS EFT
+      *
+      * JC       M51885 12-12-2008  ACT200800164 - AUTOMATISMO POSTAL.
+      *
+      * PCS      3P1568 JUL-2014    201200094 - PDS - INTEGRAR OUTPUTS
+      *                             C22 E C33 EM SGO
+      *
+      *----------------------------------------------------------------*
+      * FLEET POLICY COPYBOOK
+
+       03 NY5F1U0-LINK-DATA.
+      *----------------------------------------------------------------*
+      *    SORT KEY - 16 BYTES
+      *----------------------------------------------------------------*
+          05 NY5F1U0-SORT-KEY.
+M51563       10  NY5F1U0-ACCOUNT-COLL-SORT         PIC X(10).
+             10  NY5F1U0-RECEIPT-SORT              PIC X(10).
+             10  NY5F1U0-INSTAL-NUMBER-SORT        PIC X(03).
+M50865       10  NY5F1U0-Y5DS-SEQ-NUM              PIC S9(7) COMP-3.
+M51578       10  NY5F1U0-COMPANY-CODE              PIC X(03).
+M51578       10  NY5F1U0-C-MARC-SGRA               PIC X(03).
+
+      *----------------------------------------------------------------*
+      *    COMMON FIELDS - 38 BYTES
+      *----------------------------------------------------------------*
+          05 NY5F1U0-COMMON-FIELDS.
+             10  NY5F1U0-RECORD-TYPE               PIC X(01).
+                 88 NY5F1U0-HEADER          VALUE '1'.
+                 88 NY5F1U0-ADJUSTMENT      VALUE '2'.
+                 88 NY5F1U0-CURRENT         VALUE '3'.
+             10  NY5F1U0-POLICY-TRANSACTION        PIC X(10).
+             10  NY5F1U0-VEH-REG-TYPE              PIC X(01).
+               88  NY5F1U0-VEH-REG-VEHICLE         VALUE 'M', 'V'.
+               88  NY5F1U0-VEH-REG-VIN             VALUE 'V'.
+             10  NY5F1U0-VEH-REG-NUMBER            PIC X(15).
+M51578*      10  NY5F1U0-COMPANY-CODE              PIC X(03).
+             10  NY5F1U0-DOCUMENT-CODE             PIC X(04).
+                 88 NY5F1U0-FROTA           VALUE 'FRT1'.
+                 88 NY5F1U0-CANCEL-FROTA    VALUE 'CNF1'.
+             10  NY5F1U0-ISSUE-DATE                PIC X(10).
+             10  NY5F1U0-REPRINT-INDICATOR         PIC X(01).
+                 88 NY5F1U0-ORIGINAL        VALUE 'S'.
+                 88 NY5F1U0-REPRINT         VALUE 'R'.
+             10  NY5F1U0-POLICY-NUMBER             PIC X(16).
+             10  NY5F1U0-INSTALMENT-NUMBER         PIC X(03).
+3P1568*   05 NY5F1U0-PRINT-DATA                    PIC X(422).
+3P1568    05 NY5F1U0-PRINT-DATA                    PIC X(405).
+      *----------------------------------------------------------------*
+      *    HEADER RECORD 316 BYTES
+      *----------------------------------------------------------------*
+          05 NY5F1U0-HEADER-RECORD
+                        REDEFINES  NY5F1U0-PRINT-DATA.
+             10  NY5F1U0-HEADER-USED-SPACE.
+               15  NY5F1U0-PRODUCT-CODE              PIC X(05).
+               15  NY5F1U0-PRODUCT-CODE-DESC         PIC X(30).
+               15  NY5F1U0-RECEIPT-NUMBER            PIC X(10).
+               15  NY5F1U0-RECEIPT-START-DATE        PIC X(10).
+               15  NY5F1U0-RECEIPT-END-DATE          PIC X(10).
+               15  NY5F1U0-RECEIPT-TOTAL             PIC S9(13)V99
+                                                        COMP-3.
+               15  NY5F1U0-TERM-START-DATE           PIC X(10).
+               15  NY5F1U0-TERM-END-DATE             PIC X(10).
+               15  NY5F1U0-USER-DEPARTMENT           PIC X(03).
+               15  NY5F1U0-CLIENT-NUMBER             PIC X(10).
+               15  NY5F1U0-CLIENT-NAME               PIC X(40).
+               15  NY5F1U0-CLIENT-ADDRESS-1          PIC X(40).
+               15  NY5F1U0-CLIENT-ADDRESS-2          PIC X(40).
+M51885*        15  NY5F1U0-CLIENT-LOCALITY           PIC X(30).
+M51885         15  NY5F1U0-CLIENT-LOCALITY           PIC X(40).
+               15  NY5F1U0-CLIENT-POST-CODE          PIC X(09).
+M51885*        15  NY5F1U0-CLIENT-POST-CODE-DESC     PIC X(41).
+M51885         15  NY5F1U0-CLIENT-POST-CODE-DESC     PIC X(40).
+               15  NY5F1U0-DATA-EXTRACCAO            PIC X(10).
+M51378         15  NY5F1U0-FISCAL-NUMBER             PIC X(09).
+M51426         15  NY5F1U0-IND-REGIME                PIC X(01).
+M51885         15  NY5F1U0-CLIENT-NUM-TYPE           PIC X(01).
+M51885         15  NY5F1U0-CLIENT-NUM                PIC X(04).
+M51378*      10  FILLER                              PIC X(103).
+M51426*      10  FILLER                              PIC X(094).
+M51885*M5142610  FILLER                              PIC X(093).
+3P1568       10  FILLER                              PIC X(65).
+3P1568*M5188510  FILLER                              PIC X(079).
+
+      *----------------------------------------------------------------*
+      *    ADJUSTMENT + CURRENT  RECORD - 81 BYTES
+      *----------------------------------------------------------------*
+          05 NY5F1U0-OTHER-DATA-RECORD
+                      REDEFINES NY5F1U0-PRINT-DATA.
+             10  NY5F1U0-OTHER-DATA-USED-SPACE.
+               15  NY5F1U0-POL-TRAN-TYPE             PIC X(02).
+               15  NY5F1U0-PROCESS-DATE              PIC X(10).
+               15  NY5F1U0-APPROVAL-DATE             PIC X(10).
+               15  NY5F1U0-RISK-START-DATE           PIC X(10).
+               15  NY5F1U0-RISK-END-DATE             PIC X(10).
+               15  NY5F1U0-ANN-GROSS-PREM            PIC S9(9)V9(2)
+                                                             COMP-3.
+               15  NY5F1U0-INC-GROSS-PREM            PIC S9(9)V9(2)
+                                                             COMP-3.
+               15  NY5F1U0-ANN-COMMERC-PREM          PIC S9(9)V9(2)
+                                                             COMP-3.
+               15  NY5F1U0-INC-COMMERC-PREM          PIC S9(9)V9(2)
+                                                             COMP-3.
+3P1568       10  FILLER                              PIC X(339).
+3P1568*      10  FILLER                              PIC X(338).
+      *----------------------------------------------------------------*
+      *    AGENTE DATA  - 257 BYTES
+      *----------------------------------------------------------------*
+          05 NY5F1U0-AGENT-DATA-RECORD
+                      REDEFINES NY5F1U0-PRINT-DATA.
+             10 NY5F1U0-AGENT-DATA-USED-SPACE.
+               15  NY5F1U0-COLLECTING-AGENT          PIC X(10).
+               15  NY5F1U0-AGENT-NAME                PIC X(40).
+               15  NY5F1U0-AGENT-ADDRESS-1           PIC X(40).
+               15  NY5F1U0-AGENT-ADDRESS-2           PIC X(40).
+M51885*        15  NY5F1U0-AGENT-LOCALITY            PIC X(30).
+M51885         15  NY5F1U0-AGENT-LOCALITY            PIC X(40).
+               15  NY5F1U0-AGENT-POST-CODE           PIC X(09).
+M51885*        15  NY5F1U0-AGENT-POST-CODE-DESC      PIC X(41).
+M51885         15  NY5F1U0-AGENT-POST-CODE-DESC      PIC X(40).
+               15  NY5F1U0-COLLECTING-COMMISSION     PIC S9(11)V9(02)
+                                                       COMP-3.
+               15  NY5F1U0-MAX-CAPITAL-RCO           PIC S9(09)V9(02)
+                                                       COMP-3.
+               15  NY5F1U0-DUE-DATE                  PIC X(10).
+               15  NY5F1U0-SELLING-AGENT             PIC X(10).
+               15  NY5F1U0-SELLING-COMMISSION        PIC S9(11)V9(02)
+                                                       COMP-3.
+               15  NY5F1U0-SPECIAL-AG-COMMISSION     PIC S9(11)V9(02)
+                                                       COMP-3.
+M51674         15  NY5F1U0-COD-BARRAS                PIC X(20).
+M51674*      10  FILLER                            PIC X(162).
+M51697*      10  FILLER                            PIC X(142).
+M51697         15 NY5F1U0-TIPO-CARTA-1        PIC X(01).
+M51697            88 NY5F1U0-TIPO-CARTA-1-ESPACO
+M51697                                        VALUE ' '.
+M51697            88 NY5F1U0-TIPO-CARTA-1-A   VALUE 'A'.
+M51697
+M51697         15 NY5F1U0-TIPO-CARTA-2        PIC X(01).
+M51697            88 NY5F1U0-TIPO-CARTA-2-ESPACO
+M51697                                        VALUE ' '.
+M51697            88 NY5F1U0-TIPO-CARTA-2-A   VALUE 'A'.
+M51697            88 NY5F1U0-TIPO-CARTA-2-B   VALUE 'B'.
+M51697            88 NY5F1U0-TIPO-CARTA-2-C   VALUE 'C'.
+M51697            88 NY5F1U0-TIPO-CARTA-2-D   VALUE 'D'.
+M51697
+M51697         15 NY5F1U0-TIPO-RECIBO         PIC X(01).
+M51697            88 NY5F1U0-TIPO-RECIBO-N    VALUE 'N'.
+M51697            88 NY5F1U0-TIPO-RECIBO-A    VALUE 'A'.
+M51697            88 NY5F1U0-TIPO-RECIBO-C    VALUE 'C'.
+M51697            88 NY5F1U0-TIPO-RECIBO-M    VALUE 'M'.
+M51697            88 NY5F1U0-TIPO-RECIBO-F    VALUE 'F'.
+M51697            88 NY5F1U0-TIPO-RECIBO-L    VALUE 'L'.
+M51697
+M51697         15 NY5F1U0-TIPO-COBRANCA       PIC X(01).
+M51697            88 NY5F1U0-TIPO-COBRANCA-A VALUE 'A'.
+M51697            88 NY5F1U0-TIPO-COBRANCA-C VALUE 'C'.
+M51697            88 NY5F1U0-TIPO-COBRANCA-E VALUE 'E'.
+M51697
+M51697         15 NY5F1U0-TIPO-CARTA-RECIBO   PIC X(01).
+M51697            88 NY5F1U0-TIPO-CARTA-RECIBO-A VALUE 'A'.
+M51697            88 NY5F1U0-TIPO-CARTA-RECIBO-C VALUE 'C'.
+M51697            88 NY5F1U0-TIPO-CARTA-RECIBO-B VALUE 'B'.
+M51697
+M51885         15 NY5F1U0-AGENT-NUM           PIC X(01).
+M51885         15 NY5F1U0-AGENT-NUM-TYPE      PIC X(04).
+M51885*M5169710  FILLER                       PIC X(137).
+3P1568       10  FILLER                       PIC X(109).
+3P1568*M5188510  FILLER                       PIC X(123).
+3P1568    05 NY5F1U0-TIPO-IMPRESSAO           PIC X(01).
+

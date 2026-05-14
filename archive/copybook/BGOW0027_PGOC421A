@@ -1,0 +1,93 @@
+      *****************************************************************
+      *----------------------------------------------------------------*00010000
+      *                      MAINTENANCE  LOG                           00020000
+      *                                                                 00030000
+      *                        BGOW0027                                 00040000
+      *                                                                 00050000
+      *PROGRAMMER  PCR    DATE      COMMENTS                            00060000
+      *---------------------------------------------------------------*
+      *  COPYBOOK PARA IMPRESSAO CARTAS DE ANULAÇÃO DE APÓLICES DE    *
+      *  VIDA RISCO DA DCO                                            *
+      *                                                               *
+      *------------------------ ALTERACOES ---------------------------*
+      *                                                               *
+      *  POR    ASIM       DATA     DESCRICAO                         *
+      *                                                               *
+      *  MJE            2012-09-27  NOVO COPYBOOK.                    *
+      *---------------------------------------------------------------*
+
+         02  BGOW0027-PRINT-RECORD.
+      *
+      *     LINHA DE REPORT
+           03 BGOW0027-REPORT-LINE1.
+      *     TIPO DE CARTA
+             05  BGOW0027-TIPO-CARTA             PIC X(01).
+                 88  BGOW0027-TIPO-CARTA-1       VALUE '1'.
+                 88  BGOW0027-TIPO-CARTA-2       VALUE '2'.
+                 88  BGOW0027-TIPO-CARTA-3       VALUE '3'.
+                 88  BGOW0027-TIPO-CARTA-4       VALUE '4'.
+      *     TIPO DE REGISTO
+             05  BGOW0027-TIPO-REGISTO           PIC X(01).
+                 88  BGOW0027-REG-A              VALUE 'A'.
+                 88  BGOW0027-REG-B              VALUE 'B'.
+      *     CODIGO DE COMPANHIA
+             05  BGOW0027-COMPANY                PIC X(04).
+      *     CODIGO DE MARCA
+             05  BGOW0027-MARCA                  PIC X(03).
+      *     CODIGO POSTAL ENTIDADE DESTINATÁRIA
+             05  BGOW0027-COD-POSTAL             PIC X(08).
+      *      ENTIDADE DESTINATÁRIA
+             05  BGOW0027-ENTIDADE               PIC X(10).
+      *      APOLICE/GRUPO
+             05  BGOW0027-APOLICE-GRUPO          PIC X(08).
+      *      CERTIFICADO INDIVIDUAL
+             05  BGOW0027-CERTIF-INDIV           PIC X(08).
+      *      SEQUENCIA
+             05  BGOW0027-NUM-SEQ                PIC 9(03).
+      *--- ENDEREÇAMENTO
+      *    NOME
+             05  BGOW0027-ADDRESSEE              PIC X(40).
+      *    LINHA DE MORADA-1
+             05  BGOW0027-ADDRESS1               PIC X(40).
+      *    LINHA DE MORADA-2
+             05  BGOW0027-ADDRESS2               PIC X(40).
+      *    LOCALIDADE
+             05  BGOW0027-ADDRESS3               PIC X(40).
+      *    CODIGO POSTAL DESC
+             05  BGOW0027-ADDRESS4               PIC X(40).
+      *    TIPO NUM DE PORTA
+             05  BGOW0027-TNUM-PORTA             PIC X(01).
+      *    NUM DE PORTA
+             05  BGOW0027-NUM-PORTA              PIC X(04).
+      *    DATA DE ENVIO
+             05  BGOW0027-DATA-ENVIO             PIC X(10).
+      *    BENEFICIÁRIO ACEITANTE
+             05  BGOW0027-BENEFICIARIO           PIC X(40).
+      *    RAMO
+             05  BGOW0027-RAMO                   PIC X(30).
+      *    MOME DE PESSOA SEGURA 1
+             05  BGOW0027-PESSOA-SEGURA1         PIC X(40).
+      *    MOME DE PESSOA SEGURA 2
+             05  BGOW0027-PESSOA-SEGURA2         PIC X(40).
+      *    NIF PESSOA SEGURA 1
+             05  BGOW0027-NIF-PESSOA-SEGURA1     PIC X(09).
+      *    NIB ASSOCIADOA AO CONTRATO
+             05  BGOW0027-NIB-CONTRATO           PIC X(21).
+      *    VALOR EM DÍVIDA
+             05  BGOW0027-VLR-DIVIDA             PIC 9(9),99+.
+      *    DATA DE ANULAÇÃO
+             05  BGOW0027-DT-ANUL                PIC X(10).
+      *    DATA EFEITO ANULAÇAO
+             05  BGOW0027-DT-EFEITO-ANUL         PIC X(10).
+      *    TIPO QUANTIDADE DE RECIBOS
+             05  BGOW0027-NR-RECIBOS             PIC 9(02).
+      *--- DADOS DO RECIBO
+      *    DATA INÍCIO
+             05  BGOW0027-DT-INIC-RECIBO         PIC X(10).
+      *    DATA TERMO
+             05  BGOW0027-DT-TERMO-RECIBO        PIC X(10).
+      *    VALOR RECIBO
+             05  BGOW0027-VALOR-RECIBO           PIC 9(9),99+.
+      *    NUM DO RECIBO
+             05  BGOW0027-NUM-RECIBO             PIC X(08).
+

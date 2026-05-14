@@ -1,0 +1,247 @@
+{
+  "copybook": "BGOW0044",
+  "originSystem": "FSCD",
+  "title": "FSCD BGOW0044 cancellation letter structural migration",
+  "contractType": "Outputs.Documents.Domain.Contracts.FSCD.FS000CancelationLetter",
+  "description": "BGOW0044 is represented by the final FS000 cancellation-letter contract. The workbook sheet available in merged_copybooks.xlsx is a relation sheet, so the structure decision is based on the cancellation copybook analysis already migrated into FS000CancelationLetter.",
+  "mappings": [
+    {
+      "title": "Document selector",
+      "sourceGroup": "Document identification values",
+      "targetType": "FS000CancelationLetter",
+      "targetPath": "DocumentIdentification",
+      "targetLabel": ".NET contract",
+      "decision": "selector",
+      "description": "Each cancellation document id selects a concrete FSCD template while sharing the same final cancellation-letter contract.",
+      "rows": [
+        {
+          "source": null,
+          "sourceField": "1037",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1037."
+        },
+        {
+          "source": null,
+          "sourceField": "1038",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1038."
+        },
+        {
+          "source": null,
+          "sourceField": "1039",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1039."
+        },
+        {
+          "source": null,
+          "sourceField": "1040",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1040."
+        },
+        {
+          "source": null,
+          "sourceField": "1041",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1041."
+        },
+        {
+          "source": null,
+          "sourceField": "1042",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1042."
+        },
+        {
+          "source": null,
+          "sourceField": "1043",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1043."
+        },
+        {
+          "source": null,
+          "sourceField": "1044",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1044."
+        },
+        {
+          "source": null,
+          "sourceField": "1045",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1045."
+        },
+        {
+          "source": null,
+          "sourceField": "1046",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1046."
+        },
+        {
+          "source": null,
+          "sourceField": "1047",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1047."
+        },
+        {
+          "source": null,
+          "sourceField": "1176",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1176."
+        },
+        {
+          "source": null,
+          "sourceField": "1177",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1177."
+        },
+        {
+          "source": null,
+          "sourceField": "1178",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1178."
+        },
+        {
+          "source": null,
+          "sourceField": "1179",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1179."
+        },
+        {
+          "source": null,
+          "sourceField": "1180",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1180."
+        },
+        {
+          "source": null,
+          "sourceField": "1181",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1181."
+        },
+        {
+          "source": null,
+          "sourceField": "1182",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1182."
+        },
+        {
+          "source": null,
+          "sourceField": "1183",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1183."
+        },
+        {
+          "source": null,
+          "sourceField": "1184",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1184."
+        },
+        {
+          "source": null,
+          "sourceField": "1185",
+          "target": "DocumentIdentification",
+          "status": "selector",
+          "reason": "Template/document id 1185."
+        }
+      ]
+    },
+    {
+      "title": "Cancellation document envelope",
+      "sourceGroup": "DADOS-REGISTO / DADOS-CARTA-CANC",
+      "targetType": "FS000CancelationLetter",
+      "targetPath": "Document and policy metadata",
+      "decision": "mapped",
+      "description": "The registration header, document code, print data, product reference, issue type, dates, and cancellation reason are kept as explicit cancellation-letter fields because this is the final domain contract for all BGOW0044 cancellation variants.",
+      "rows": [
+        {
+          "source": "05 :PREFIX:-DADOS-REGISTO.",
+          "target": "DocumentCode / RecordType / PrintType / OnlinePrintUserId / Policy",
+          "status": "mapped"
+        },
+        {
+          "source": "07 :PREFIX:-DADOS-CARTA-CANC.",
+          "target": "DocumentNumber / IssueTypeCode / Product / CancelationReasonCode",
+          "status": "mapped"
+        },
+        {
+          "source": "07 :PREFIX:-DADOS-DATA.",
+          "target": "PolicyStartDate / PolicyEndDate / IssueDate / CancelationDate / ClaimDate",
+          "status": "mapped"
+        }
+      ]
+    },
+    {
+      "title": "Reusable parties, payment, and risk structures",
+      "sourceGroup": "DADOS-CLIENTE / DADOS-AGENTE / DADOS-CREDORHIP / PAGAMENTO / OBJSEGURO",
+      "targetType": "FS000CancelationLetter",
+      "targetPath": "Client / Agent / MortgageCreditor / BankAccount / AtmPaymentReference / RiskUnit",
+      "decision": "mapped",
+      "description": "Party, payment, mortgage-creditor, and risk-unit groups were matched to existing common domain objects and composed by FS000CancelationLetter.",
+      "rows": [
+        {
+          "source": "07 :PREFIX:-DADOS-CLIENTE.",
+          "target": "Client : Entity",
+          "status": "mapped"
+        },
+        {
+          "source": "07 :PREFIX:-DADOS-AGENTE.",
+          "target": "Agent : Entity?",
+          "status": "mapped"
+        },
+        {
+          "source": "07 :PREFIX:-DADOS-CREDORHIP.",
+          "target": "MortgageCreditor : Entity?",
+          "status": "mapped"
+        },
+        {
+          "source": "09 :PREFIX:-PG-CONTA / PG-ATM / PG-DEBITO.",
+          "target": "PaymentAccount / AtmPayment / DebitAccount",
+          "status": "mapped"
+        },
+        {
+          "source": "07 :PREFIX:-DADOS-OBJSEGURO / DADOS-UR.",
+          "target": "RiskUnit : RiskUnit?",
+          "status": "mapped"
+        }
+      ]
+    },
+    {
+      "title": "Receipt list records",
+      "sourceGroup": "DETALHE-LISTA / FOOTER-LISTA",
+      "targetType": "FS000CancelationLetter",
+      "targetPath": "ReceiptDetails / ReceiptFooter",
+      "decision": "candidate",
+      "description": "Receipt detail and footer rows are document list/table records. They remain explicit on FS000 until enough copybooks confirm the final reusable table shape.",
+      "rows": [
+        {
+          "source": "07 :PREFIX:-DETALHE-LISTA.",
+          "target": "ReceiptDetails",
+          "status": "candidate"
+        },
+        {
+          "source": "07 :PREFIX:-FOOTER-LISTA.",
+          "target": "ReceiptFooter",
+          "status": "candidate"
+        }
+      ]
+    }
+  ]
+}

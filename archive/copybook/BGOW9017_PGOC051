@@ -1,0 +1,161 @@
+      *----------------------------------------------------------------*00000001
+      *        -----------------------------------------------          00000002
+      *        ---------   ATENÇÃO  --------------------------          00000003
+      *        -----------------------------------------------          00000004
+      *                                                                 00000005
+      * ALTERAÇÕES NESTE COPYBOOK (NZ5B8U01) DEVERÃO SER REPLICADAS NO *00000006
+      * COPYBOOK BGOW9017 UTILIZADO NAS APLICAÇÕES DE OUTPUTS (UGEN) E *00000007
+      * INFORMAR A EQUIPA                                              *00000008
+      *                                                                 00000009
+      *----------------------------------------------------------------*00000010
+      *                      MAINTENANCE  LOG                           00000011
+      *                                                                 00000012
+      *PROGRAMMER  PCR    DATE                COMMENTS                  00000013
+      *----------------------------------------------------------------*00000014
+      *                                                                 00000015
+      * LPC   W50037   1998-02-18   ADD COPYBOOK TO PROGRAM PZ5B8U0     00000016
+      * AMM   M50162   1999-01-27   ADD NEW FIELDS - PRODUCT CODE       00000017
+      *                                              AND DESCRIPTION    00000018
+      *                                                                 00000019
+      * SM    W50179   19-02-1999   INCLUDE ADDRESS-2                   00000020
+      *                                                                 00000021
+      * LPC   M50299   1999-11-13   ADD NEW FIELDS                      00000022
+M50901* AS    M50901 14-NOV-2002  DOC.CANCELAMENTO ESTORNO.             00000023
+      *                                                                 00000024
+      * LPC   M51416   2005-12-21   DECRETO LEI 122/2005                00000025
+      *                             INCLUI REGIME DA APÓLICE            00000026
+      *                                                                 00000027
+      * DDS        M51697 OUT-2007    INCENTIVOS EFT                    00000028
+      *                                                                 00000029
+      * JC         M51885 DEZ-2008    ACT200800164 - AUTOMATISMO POSTAL.00000030
+      *                                                                 00000031
+      * LPC        3P0785 AGO-2010    20080091                          00000032
+      *                               ALTERA COPYBOOK                   00000033
+      *                                                                 00000034
+      * LPC        3P1024 MAI-2011    ALTERA COPYBOOK                   00000035
+      *                                                                 00000036
+      * NMMB       3P1096 AGO-2011    INCLUIR MARCA EM COPYBOOK         00000037
+      *                                                                 00000038
+      * PCS        3P1568 JUL-2014    201200094 - PDS - INTEGRAR OUTPUTS00000039
+      *                               C22 E C33 EM SGO                  00000040
+      *                                                                 00000041
+      *----------------------------------------------------------------*00000042
+M50299                                                                  00000043
+M50299     03  NZ5B8U01-PRINT-RECORD.                                   00000044
+M50299         05  NZ5B8U01-SORT-KEY.                                   00000045
+M50299             07  NZ5B8U01-COMPANY-CODE           PIC X(03).       00000046
+M50299             07  NZ5B8U01-AGENT                  PIC X(10).       00000047
+W50179             07  NZ5B8U01-AGENT-POST-CODE        PIC X(09).       00000048
+M50299             07  NZ5B8U01-CLIENT-POST-CODE       PIC X(09).       00000049
+M50299             07  NZ5B8U01-CLIENT-REFERENCE       PIC X(10).       00000050
+M50299             07  NZ5B8U01-PRODUCT-CODE           PIC X(05).       00000051
+M50299             07  NZ5B8U01-POLICY-NUMBER          PIC X(16).       00000052
+M50299             07  NZ5B8U01-LETTER-NUMBER          PIC X(10).       00000053
+M50299             07  NZ5B8U01-RECORD-TYPE            PIC X(01).       00000054
+M50299                 88 NZ5B8U01-NOTICE-BASIC-DATA   VALUE '1'.       00000055
+M50299                 88 NZ5B8U01-AGENT-BASIC-DATA    VALUE '2'.       00000056
+3P0785                 88 NZ5B8U01-NOTICE-LIST-DATA    VALUE '3'.       00000057
+3P1568*M50299  05  NZ5B8U01-PRINT-DATA                 PIC X(427).      00000058
+3P1568         05  NZ5B8U01-PRINT-DATA                 PIC X(426).      00000059
+M50299*----------------------------------------------------------------*00000060
+M50299*    NOTICE BASIC LEVEL DATA                                      00000061
+M50299*----------------------------------------------------------------*00000062
+M50299         05  REDEFINES NZ5B8U01-PRINT-DATA.                       00000063
+M50299             07  NZ5B8U01-SINGLE-REPRINT         PIC X(01).       00000064
+M50299             07  NZ5B8U01-ISSUE-DATE             PIC X(10).       00000065
+M50299             07  NZ5B8U01-CLIENT-ADDRESSEE       PIC X(40).       00000066
+M50299             07  NZ5B8U01-CLIENT-ADDRESS         PIC X(40).       00000067
+M50299             07  NZ5B8U01-CLIENT-ADDRESS-2       PIC X(40).       00000068
+M51885*M50299      07  NZ5B8U01-CLIENT-CITY            PIC X(30).       00000069
+M51885             07  NZ5B8U01-CLIENT-CITY            PIC X(40).       00000070
+M51885*M50299      07  NZ5B8U01-POST-CODE-DESCR        PIC X(41).       00000071
+M51885             07  NZ5B8U01-POST-CODE-DESCR        PIC X(40).       00000072
+M50299             07  NZ5B8U01-VEHICLE-REG-NUMBER     PIC X(15).       00000073
+M50299             07  NZ5B8U01-CANCELL-DATE           PIC X(10).       00000074
+M50299             07  NZ5B8U01-CANCELL-DUE-DATE       PIC X(10).       00000075
+M50299             07  NZ5B8U01-PREMIUM-AMOUNT         PIC S9(11)V99.   00000076
+M50299             07  NZ5B8U01-PENALTY-AMOUNT         PIC S9(11)V99.   00000077
+M50299             07  NZ5B8U01-INTEREST-AMOUNT        PIC S9(11)V99.   00000078
+M50299             07  NZ5B8U01-TOTAL-AMOUNT           PIC S9(11)V99.   00000079
+M50299             07  NZ5B8U01-SYSTEM-CODE            PIC X(02).       00000080
+M50299             07  NZ5B8U01-EFFECTIVE-DATE         PIC X(10).       00000081
+M50299             07  NZ5B8U01-PRODUCT-CODE-DESC      PIC X(30).       00000082
+M50901             07  NZ5B8U01-EXPIRY-DATE            PIC X(10).       00000083
+M51416             07  NZ5B8U01-IND-REGIME             PIC X(01).       00000084
+M50299*M50901      07                                  PIC X(96).       00000085
+M50901*            07                                  PIC X(86).       00000086
+M51697*            07                                  PIC X(85).       00000087
+M51697             07  NZ5B8U01-TIPO-CARTA-1           PIC X(01).       00000088
+M51697                 88 NZ5B8U01-TIPO-CARTA-1-ESPACO VALUE ' '.       00000089
+M51697                 88 NZ5B8U01-TIPO-CARTA-1-A      VALUE 'A'.       00000090
+M51697                                                                  00000091
+M51697             07  NZ5B8U01-TIPO-CARTA-2           PIC X(01).       00000092
+M51697                 88 NZ5B8U01-TIPO-CARTA-2-ESPACO VALUE ' '.       00000093
+M51697                 88 NZ5B8U01-TIPO-CARTA-2-A      VALUE 'A'.       00000094
+M51697                 88 NZ5B8U01-TIPO-CARTA-2-B      VALUE 'B'.       00000095
+M51697                 88 NZ5B8U01-TIPO-CARTA-2-C      VALUE 'C'.       00000096
+M51697                 88 NZ5B8U01-TIPO-CARTA-2-D      VALUE 'D'.       00000097
+M51697                                                                  00000098
+M51697             07  NZ5B8U01-TIPO-RECIBO            PIC X(01).       00000099
+M51697                 88 NZ5B8U01-TIPO-RECIBO-N       VALUE 'N'.       00000100
+M51697                 88 NZ5B8U01-TIPO-RECIBO-A       VALUE 'A'.       00000101
+M51697                 88 NZ5B8U01-TIPO-RECIBO-C       VALUE 'C'.       00000102
+M51697                 88 NZ5B8U01-TIPO-RECIBO-M       VALUE 'M'.       00000103
+M51697                 88 NZ5B8U01-TIPO-RECIBO-F       VALUE 'F'.       00000104
+M51697                 88 NZ5B8U01-TIPO-RECIBO-L       VALUE 'L'.       00000105
+M51697                                                                  00000106
+M51697             07  NZ5B8U01-TIPO-COBRANCA          PIC X(01).       00000107
+M51697                 88 NZ5B8U01-TIPO-COBRANCA-A     VALUE 'A'.       00000108
+M51697                 88 NZ5B8U01-TIPO-COBRANCA-C     VALUE 'C'.       00000109
+M51697                 88 NZ5B8U01-TIPO-COBRANCA-E     VALUE 'E'.       00000110
+M51697                                                                  00000111
+M51697             07  NZ5B8U01-TIPO-CARTA-RECIBO      PIC X(01).       00000112
+M51697                 88 NZ5B8U01-TIPO-CARTA-RECIBO-A VALUE 'A'.       00000113
+M51697                 88 NZ5B8U01-TIPO-CARTA-RECIBO-C VALUE 'C'.       00000114
+M51697                 88 NZ5B8U01-TIPO-CARTA-RECIBO-B VALUE 'B'.       00000115
+M51885             07  NZ5B8U01-CLIENT-NUM-TYPE        PIC X(01).       00000116
+M51885             07  NZ5B8U01-CLIENT-NUM             PIC X(04).       00000117
+3P1024             07  NZ5B8U01-C-TIPO-CTAD            PIC X(01).       00000118
+3P1024             07  NZ5B8U01-CANC-RCIB-PEND         PIC S9(11)V99.   00000119
+3P1096             07  NZ5B8U01-C-MARC-SGRA            PIC X(03).       00000120
+3P1568             07  FILLER                          PIC X(48).       00000121
+3P1568*3P1096      07                                  PIC X(49).       00000122
+3P1096*3P1024      07                                  PIC X(52).       00000123
+M51885*M51697      07                                  PIC X(80).       00000124
+3P1024*M51885      07                                  PIC X(66).       00000125
+M50299*----------------------------------------------------------------*00000126
+M50299*    AGENT BASIC LEVEL DATA                                       00000127
+M50299*----------------------------------------------------------------*00000128
+M50299         05  REDEFINES NZ5B8U01-PRINT-DATA.                       00000129
+W50179             07  NZ5B8U01-AGENT-NAME             PIC X(40).       00000130
+W50179             07  NZ5B8U01-AGENT-ADDRESS          PIC X(40).       00000131
+W50179             07  NZ5B8U01-AGENT-ADDRESS-2        PIC X(40).       00000132
+M51885*W50179      07  NZ5B8U01-AGENT-CITY             PIC X(30).       00000133
+M51885             07  NZ5B8U01-AGENT-CITY             PIC X(40).       00000134
+M51885*W50179      07  NZ5B8U01-AGENT-POST-DESCR       PIC X(41).       00000135
+M51885             07  NZ5B8U01-AGENT-POST-DESCR       PIC X(40).       00000136
+M51885             07  NZ5B8U01-AGENT-NUM-TYPE         PIC X(01).       00000137
+M51885             07  NZ5B8U01-AGENT-NUM              PIC X(04).       00000138
+3P1568             07  FILLER                          PIC X(221).      00000139
+3P1568*3P0785      07                                  PIC X(222).      00000140
+3P0785*W50179      07  NZ5B8U01-NOTICES OCCURS 5 TIMES.                 00000141
+3P0785*W50179          09  NZ5B8U01-NOTICE-NUMBER      PIC X(10).       00000142
+3P0785*W50179          09  NZ5B8U01-START-DATE         PIC X(10).       00000143
+3P0785*W50179          09  NZ5B8U01-END-DATE           PIC X(10).       00000144
+3P0785*W50179          09  NZ5B8U01-AMOUNT             PIC S9(11)V99.   00000145
+M51885*W50179      07                                  PIC X(21).       00000146
+3P0785*M51885      07                                  PIC X(07).       00000147
+M50299                                                                  00000148
+3P0785*----------------------------------------------------------------*00000149
+3P0785*    NOTICE LIST DATA                                             00000150
+3P0785*----------------------------------------------------------------*00000151
+M50299         05  REDEFINES NZ5B8U01-PRINT-DATA.                       00000152
+3P0785             07  NZ5B8U01-NOTICES OCCURS 10 TIMES.                00000153
+3P0785                 09  NZ5B8U01-NOTICE-NUMBER      PIC X(10).       00000154
+3P0785                 09  NZ5B8U01-START-DATE         PIC X(10).       00000155
+3P0785                 09  NZ5B8U01-END-DATE           PIC X(10).       00000156
+3P0785                 09  NZ5B8U01-AMOUNT             PIC S9(10)V99.   00000157
+3P1568             07  FILLER                          PIC X(06).       00000158
+3P1568*3P0785      07                                  PIC X(07).       00000160
+3P1568         05  NZ5B8U01-TIPO-IMPRESSAO             PIC X(01).       00000200
+

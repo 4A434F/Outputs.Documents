@@ -1,0 +1,147 @@
+           03  :PREFIX:-DADOS-REGISTO.
+             05  :PREFIX:-COD-COMPANHIA        PIC X(003).
+                 88  :PREFIX:-C-VIADIRECTA         VALUE '111'.
+                 88  :PREFIX:-C-FIDELIDADEMUNDIAL  VALUE '128'.
+                 88  :PREFIX:-C-IMPERIOBONANCA     VALUE '138'.
+                 88  :PREFIX:-C-MULTICARE          VALUE '148'.
+             05  :PREFIX:-COD-MARCA            PIC X(003).
+                 88  :PREFIX:-M-OKTELESEGURO       VALUE '001'.
+                 88  :PREFIX:-M-FIDELIDADEMUNDIAL  VALUE '002'.
+                 88  :PREFIX:-M-IMPERIOBONANCA     VALUE '003'.
+                 88  :PREFIX:-M-ICI                VALUE '004'.
+                 88  :PREFIX:-M-CONTINENTE         VALUE '005'.
+                 88  :PREFIX:-M-MULTICARE          VALUE '006'.
+                 88  :PREFIX:-M-REAL-VIDA          VALUE '008'.
+                 88  :PREFIX:-M-UNIVERSAL          VALUE '010'.
+                 88  :PREFIX:-M-EUROBIC            VALUE '028'.
+             05  :PREFIX:-COD-TIPO             PIC X(010).
+                 88  :PREFIX:-O-MHSMARCA           VALUE 'MHSMARCA  '.
+             05  :PREFIX:-COD-ORIGEM           PIC X(003).
+                 88  :PREFIX:-O-MULTICARE          VALUE 'MHS'.
+             05  :PREFIX:-CODPOSTAL            PIC X(007).
+             05  :PREFIX:-CLIENTE              PIC X(010).
+             05  :PREFIX:-APOLICE              PIC X(016).
+             05  :PREFIX:-CERTIFICADO          PIC X(009).
+      * ORDENAÇÕES POSSIVEIS:
+      * 'A' COMBINA COM 'A' OU 'D'         * DADOS GERAIS E MENSAGENS
+      * 'D' COMBINA COM 'A' OU 'E' OU 'I'  * MOVIMENTOS (REDE/REEMB...)
+      * 'G' COMBINA COM 'A'                * REFERENCIAS
+      * 'J' COMBINA COM 'A'                * PAGAMENTOS
+      * 'M' COMBINA COM 'A'                * RESUMO
+      * 'Z' COMBINA COM 'A'                * FIM DOCUMENTO
+             05  :PREFIX:-ORDENA               PIC X(002).
+                 88  :PREFIX:-OR-AA            VALUE 'AA'.
+                 88  :PREFIX:-OR-AD            VALUE 'AD'.
+                 88  :PREFIX:-OR-DA            VALUE 'DA'.
+                 88  :PREFIX:-OR-DE            VALUE 'DE'.
+                 88  :PREFIX:-OR-DI            VALUE 'DI'.
+                 88  :PREFIX:-OR-GA            VALUE 'GA'.
+                 88  :PREFIX:-OR-JA            VALUE 'JA'.
+                 88  :PREFIX:-OR-MA            VALUE 'MA'.
+                 88  :PREFIX:-OR-ZA            VALUE 'ZA'.
+             05  :PREFIX:-LIVRE                PIC X(037).
+             05  :PREFIX:-PARTE-VARIAVEL       PIC X(400).
+      *
+             05 :PREFIX:-DADOS-GERAIS REDEFINES
+                :PREFIX:-PARTE-VARIAVEL.
+               07  :PREFIX:-AA-NOME            PIC X(040).
+               07  :PREFIX:-AA-MORADA1         PIC X(040).
+               07  :PREFIX:-AA-MORADA2         PIC X(040).
+               07  :PREFIX:-AA-MORADA3         PIC X(040).
+               07  :PREFIX:-AA-MORADA4         PIC X(040).
+               07  :PREFIX:-AA-TIPO-NR-PORTA   PIC X(001).
+               07  :PREFIX:-AA-NR-PORTA        PIC X(004).
+               07  :PREFIX:-AA-MORADA-C41      PIC X(004).
+               07  :PREFIX:-AA-SMS             PIC X(001).
+                 88  :PREFIX:-AA-SMS-SIM           VALUE 'S'.
+                 88  :PREFIX:-AA-SMS-NAO           VALUE 'N'.
+               07  :PREFIX:-AA-ASSUNTO         PIC X(100).
+               07  FILLER                      PIC X(090).
+      *
+      * O CAMPO AD-SEQUENCIA É REPRESENTADO COM AS OPÇÕES:
+      *'BI ','BN ','NB ','NI ','IN ','IB ' (INCIAL DO TIPO DE FONTE)
+      * E NO 1º REGISTO O TIPO DE LETRA + '0' PARA INDICAR INICIO TEXTO
+      * E NO ÚLTIMO REGISTO O TIPO DE LETRA + '9' PARA INDICAR FIM TEXTO
+      * OS REGISTOS DO MEIO, O ÚLTIMO BYTE DEVE FICAR A ESPAÇOS.
+      *
+             05 :PREFIX:-MENSAGENS REDEFINES
+                :PREFIX:-PARTE-VARIAVEL.
+               07  :PREFIX:-AD-SEQUENCIA       PIC X(003).
+               07  :PREFIX:-AD-MENSAGENS       PIC X(397).
+      *
+             05 :PREFIX:-MOV-SEGURADO REDEFINES
+                :PREFIX:-PARTE-VARIAVEL.
+               07  :PREFIX:-DA-TIPO-MOV        PIC X(004).
+                 88  :PREFIX:-DA-REDE              VALUE 'REDE'.
+                 88  :PREFIX:-DA-REEM              VALUE 'REEM'.
+               07  :PREFIX:-DA-PESSOA-SEGURA   PIC X(040).
+               07  FILLER                      PIC X(356).
+      *
+             05 :PREFIX:-MOV-INSTITUICAO REDEFINES
+                :PREFIX:-PARTE-VARIAVEL.
+               07  :PREFIX:-DE-TIPO-MOV        PIC X(004).
+                 88  :PREFIX:-DE-REDE              VALUE 'REDE'.
+               07  :PREFIX:-DE-INSTITUICAO     PIC X(100).
+               07  FILLER                      PIC X(296).
+      *
+             05 :PREFIX:-MOV-DETALHE REDEFINES
+                :PREFIX:-PARTE-VARIAVEL.
+               07  :PREFIX:-DI-TIPO-MOV        PIC X(004).
+                 88  :PREFIX:-DI-REDE              VALUE 'REDE'.
+                 88  :PREFIX:-DI-REEM              VALUE 'REEM'.
+                 88  :PREFIX:-DI-ACER              VALUE 'ACER'.
+               07  :PREFIX:-DI-REFERENCIA      PIC X(008).
+               07  :PREFIX:-DI-DT-REALIZACAO   PIC X(010).
+               07  :PREFIX:-DI-DT-MOVIMENTO    PIC X(010).
+               07  :PREFIX:-DI-LEGENDA         PIC X(003).
+               07  :PREFIX:-DI-DESCRICAO       PIC X(100).
+               07  :PREFIX:-DI-VLR-DESPESA     PIC X(013).
+               07  :PREFIX:-DI-VLR-FRAN-COPAG  PIC X(013).
+               07  :PREFIX:-DI-VLR-PERC-COMP   PIC X(007).
+               07  :PREFIX:-DI-VLR-CARGO-CLI   PIC X(013).
+               07  :PREFIX:-DI-VLR-CARGO-COMP  PIC X(013).
+               07  :PREFIX:-DI-LINHA-TOT       PIC X(001).
+                 88  :PREFIX:-DI-FAZ-TOT           VALUE 'S'.
+                 88  :PREFIX:-DI-NFAZ-TOT          VALUE 'N'.
+               07  :PREFIX:-DI-MOEDA           PIC X(003).
+               07  :PREFIX:-DI-TVLR-DESPESA    PIC X(013).
+               07  :PREFIX:-DI-TVLR-FRAN-COPAG PIC X(013).
+               07  :PREFIX:-DI-TVLR-CARGO-CLI  PIC X(013).
+               07  :PREFIX:-DI-TVLR-CARGO-COMP PIC X(013).
+               07  FILLER                      PIC X(150).
+      *
+             05 :PREFIX:-REFERENCIA REDEFINES
+                :PREFIX:-PARTE-VARIAVEL.
+               07  :PREFIX:-GA-REFERENCIA      PIC X(100).
+               07  FILLER                      PIC X(300).
+      *
+             05 :PREFIX:-PAGAMENTOS REDEFINES
+                :PREFIX:-PARTE-VARIAVEL.
+               07  :PREFIX:-JA-DT-REALIZACAO   PIC X(010).
+               07  :PREFIX:-JA-DT-MOVIMENTO    PIC X(010).
+               07  :PREFIX:-JA-RECIBO          PIC X(030).
+               07  :PREFIX:-JA-IBAN            PIC X(030).
+               07  :PREFIX:-JA-VLR-CARGO-COMP  PIC X(013).
+               07  :PREFIX:-JA-LINHA-TOT       PIC X(001).
+                 88  :PREFIX:-JA-FAZ-TOT           VALUE 'S'.
+                 88  :PREFIX:-JA-NFAZ-TOT          VALUE 'N'.
+               07  :PREFIX:-JA-MOEDA           PIC X(003).
+               07  :PREFIX:-JA-TVLR-CARGO-COMP PIC X(013).
+               07  FILLER                      PIC X(290).
+      *
+             05 :PREFIX:-RESUMO REDEFINES
+                :PREFIX:-PARTE-VARIAVEL.
+               07  :PREFIX:-MA-DESCR-VLR-FAVOR PIC X(020).
+               07  :PREFIX:-MA-VLR-A-FAVOR     PIC X(013).
+               07  :PREFIX:-MA-VLR-REEMBOLSO   PIC X(013).
+               07  :PREFIX:-MA-VLR-ACERTOS     PIC X(013).
+               07  :PREFIX:-MA-VLR-PAGAR-CLI   PIC X(013).
+               07  :PREFIX:-MA-VLR-PAG-EFETUA  PIC X(013).
+               07  :PREFIX:-MA-VLR-TRANSITAR   PIC X(013).
+               07  FILLER                      PIC X(302).
+      *
+             05 :PREFIX:-FIM-DOCUMENTO REDEFINES
+                :PREFIX:-PARTE-VARIAVEL.
+               07  FILLER                      PIC X(400).
+      *
+
