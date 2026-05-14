@@ -15,6 +15,8 @@ The solution is organized around a few strict ideas:
 This repository currently contains:
 
 - Shared document contracts.
+- Domain semantic annotations and local vector-store repository.
+- Domain vector-store MCP server tool.
 - Razor component to HTML rendering.
 - Template scanning, registry, and selection.
 - Document rendering to PDF through pluggable PDF generators.
@@ -30,6 +32,7 @@ This repository currently contains:
 ```text
 src/
   Outputs.Documents.Domain/
+  Outputs.Documents.Domain.VectorStore/
   Outputs.Documents.Abstractions/
   Outputs.Documents.Rendering/
   Outputs.Documents.Rendering.Iron/
@@ -41,6 +44,8 @@ src/
   Outputs.Documents.Templates.Doce/
 
 tests/
+  Outputs.Documents.Domain.Tests/
+  Outputs.Documents.Domain.VectorStore.Tests/
   Outputs.Documents.Rendering.Tests/
   Outputs.Documents.Rendering.Iron.Tests/
   Outputs.Documents.Rendering.PdfSharp.Tests/
@@ -49,7 +54,11 @@ tests/
   Outputs.Documents.Templates.Doce.Iron.IntegrationTests/
 
 tools/
+  Outputs.Documents.Domain.VectorStore.McpServer/
   Outputs.Documents.PreviewHost/
+
+data/
+  domain-vector-dbs/
 ```
 
 ## Project Responsibilities
@@ -61,6 +70,7 @@ Purpose: pure document model contracts and shared API-facing models.
 Contains:
 
 - `IDocumentModel`
+- `DomainSearchAttribute`
 - DOCE models such as `CoverPage`, `DeliveryNote`, `DoceCourtesyLetter`, `CttDispatchSheet`, `Divider`, `RegTicketPage`
 - DOCE shared submodels such as `Header`, `Footer`, `Address`, `DocumentTraceId`, `GenericTable`, `SingleRegisterTicket`
 
@@ -69,7 +79,88 @@ Rules:
 - Domain models must not reference Razor, rendering, PDF, DI, storage, preview, or template selection.
 - Domain models must not have render attributes.
 - Domain models should represent the document data contract only.
+- Domain models may use `DomainSearchAttribute` to describe semantic meaning for developer search.
 - Do not add template keys, template versions, metadata, storage IDs, or persistence concerns here.
+
+Example:
+
+```csharp
+[DomainSearch(
+    "Postal address",
+    "Postal address block for a recipient or business entity.",
+    Aliases = new[] { "morada", "recipient address", "destination address" },
+    Tags = new[] { "address", "postal", "recipient" })]
+public sealed record Address(
+    [property: DomainSearch(
+        "Address line 1",
+        "First postal address line.",
+        Aliases = new[] { "addr1", "morada linha 1" },
+        Tags = new[] { "address-line" })]
+    string Line1);
+```
+
+### Outputs.Documents.Domain.VectorStore
+
+Purpose: local SQLite persistence for domain semantic search records.
+
+This project does not encode text. It receives already-generated embeddings plus the embedding model name, stores them in model-specific SQLite files, and provides exact, vector, hybrid, CRUD, and alignment operations.
+
+Contains:
+
+- `IDomainVectorStore`
+- `DomainVectorStore`
+- `EmbeddingRecord`
+- `AlignmentEmbedding`
+- `DomainVectorStoreAlignmentPrompts`
+- `ExactSearchResult`
+- `VectorSearchResult`
+- `HybridSearchResult`
+- `EmbeddingRecordKinds`
+
+Rules:
+
+- The vector store is storage only.
+- Embedding generation belongs outside this project.
+- `Kind` says whether a record represents an entity, property, combined entity document, or alignment baseline.
+- `Declaration` is the stable source declaration identity, usually a full type/property name.
+- Alignment prompts are fixed by `DomainVectorStoreAlignmentPrompts.All`; callers pass back only embeddings for those fixed texts.
+- Detailed API and storage rules live in [Outputs.Documents.Domain.VectorStore/README.md](/Users/thepotato/Code/Outputs.Documents/src/Outputs.Documents.Domain.VectorStore/README.md).
+
+Example identities:
+
+```text
+Kind: Entity
+Declaration: Outputs.Documents.Domain.Doce.Address
+
+Kind: Property
+Declaration: Outputs.Documents.Domain.Doce.Address.Line1
+
+Kind: EntityDocument
+Declaration: Outputs.Documents.Domain.Doce.Address
+
+Kind: Alignment
+Declaration: address
+```
+
+### Outputs.Documents.Domain.VectorStore.McpServer
+
+Purpose: development MCP server for the domain vector store.
+
+The server exposes vector-store CRUD, exact search, vector search, hybrid search, and alignment checks over MCP HTTP by default. It does not generate embeddings; callers pass already encoded vectors.
+
+Run:
+
+```bash
+dotnet run --project tools/Outputs.Documents.Domain.VectorStore.McpServer/Outputs.Documents.Domain.VectorStore.McpServer.csproj -- --urls http://localhost:5055
+```
+
+MCP endpoint:
+
+```text
+http://localhost:5055/mcp
+```
+
+Detailed tool notes live in [Outputs.Documents.Domain.VectorStore.McpServer/README.md](/Users/thepotato/Code/Outputs.Documents/tools/Outputs.Documents.Domain.VectorStore.McpServer/README.md).
 
 ### Outputs.Documents.Abstractions
 
@@ -849,6 +940,19 @@ Current known note:
 
 ### Unit Tests
 
+`Outputs.Documents.Domain.Tests` covers:
+
+- domain semantic search attribute metadata.
+
+`Outputs.Documents.Domain.VectorStore.Tests` covers:
+
+- SQLite DB routing by embedding model.
+- CRUD operations.
+- exact name and alias search.
+- vector similarity search.
+- hybrid exact/vector search.
+- five-record alignment baseline checks.
+
 `Outputs.Documents.Rendering.Tests` covers:
 
 - DI registration
@@ -1258,6 +1362,8 @@ http://localhost:5179/preview
 Implemented:
 
 - Domain marker and DOCE domain models.
+- Domain semantic search attribute.
+- Domain vector store with CRUD, exact search, vector search, hybrid search, and alignment checks.
 - Rendering abstractions.
 - Razor component HTML renderer.
 - Template scanner.
@@ -1283,4 +1389,4 @@ Not implemented yet:
 - Visual regression testing.
 - Screenshot comparison.
 - Editable scenario models in UI.
-- Database/sample data storage.
+- Domain scanner/indexer that generates embeddings from annotated models.
