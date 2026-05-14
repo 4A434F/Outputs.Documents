@@ -18,7 +18,21 @@ public sealed class ModelDatabaseRouter
         ArgumentException.ThrowIfNullOrWhiteSpace(modelName);
 
         Directory.CreateDirectory(_databaseDirectory);
+        return BuildDatabasePath(modelName);
+    }
 
+    public string? GetExistingDatabasePath(string modelName)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(modelName);
+
+        var databasePath = BuildDatabasePath(modelName);
+        return File.Exists(databasePath)
+            ? databasePath
+            : null;
+    }
+
+    private string BuildDatabasePath(string modelName)
+    {
         var sanitizedName = SanitizeModelName(modelName);
         var hash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(modelName)))
             .ToLowerInvariant()[..12];

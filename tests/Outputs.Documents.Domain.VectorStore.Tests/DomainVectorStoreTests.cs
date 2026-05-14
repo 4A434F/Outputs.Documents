@@ -42,6 +42,23 @@ public sealed class DomainVectorStoreTests
     }
 
     [Fact]
+    public async Task ReadOperations_DoNotCreateDatabaseForUnknownModel()
+    {
+        using var scope = StoreScope.Create();
+
+        var stored = await scope.Store.GetAsync(Model, "missing");
+        var records = await scope.Store.ListAsync(Model);
+        var exactResults = await scope.Store.ExactSearchAsync(Model, "user");
+        var vectorResults = await scope.Store.VectorSearchAsync(Model, [1, 0]);
+
+        Assert.Null(stored);
+        Assert.Empty(records);
+        Assert.Empty(exactResults);
+        Assert.Empty(vectorResults);
+        Assert.False(Directory.Exists(scope.DirectoryPath));
+    }
+
+    [Fact]
     public async Task ListModelsAsync_ReturnsModelNamesFromCreatedDatabases()
     {
         using var scope = StoreScope.Create();

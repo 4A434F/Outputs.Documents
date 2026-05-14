@@ -1,4 +1,4 @@
-namespace Outputs.Documents.Domain.VectorStore.McpServer;
+namespace Outputs.Documents.Domain.VectorStore.McpServer.Utilities;
 
 internal enum VectorStoreMcpTransport
 {

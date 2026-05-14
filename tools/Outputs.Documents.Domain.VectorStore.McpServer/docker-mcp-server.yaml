@@ -1,0 +1,28 @@
+name: outputs-documents-vector-store
+title: Outputs Documents Domain Vector Store
+type: server
+image: outputs-documents-vectorstore-mcp:latest
+description: Stores and searches precomputed domain concept embeddings for Outputs.Documents.
+command:
+  - --transport
+  - stdio
+  - --db-dir
+  - /data/domain-vector-dbs
+volumes:
+  - "{{outputs-documents-vector-store.dbDir|volume|target:/data/domain-vector-dbs}}"
+config:
+  - description: Host folder containing the domain vector store SQLite databases.
+    name: outputs-documents-vector-store
+    properties:
+      dbDir:
+        type: string
+    required:
+      - dbDir
+    type: object
+metadata:
+  category: data
+  tags:
+    - documents
+    - embeddings
+    - vector-search
+    - domain-modeling

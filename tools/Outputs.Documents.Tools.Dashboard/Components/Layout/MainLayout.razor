@@ -1,0 +1,30 @@
+﻿@inherits LayoutComponentBase
+
+<div class="tool-shell">
+    <aside class="tool-sidebar">
+        <NavMenu />
+    </aside>
+
+    <main class="tool-main">
+        <header class="tool-topbar">
+            <div>
+                <p class="eyebrow">Outputs.Documents</p>
+                <h1>Tool Dashboard</h1>
+            </div>
+            <div class="topbar-status">
+                <span class="status-dot"></span>
+                <span>Local</span>
+            </div>
+        </header>
+
+        <section class="tool-content">
+            @Body
+        </section>
+    </main>
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>

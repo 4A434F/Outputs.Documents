@@ -61,9 +61,16 @@ public sealed class DomainVectorStore : IDomainVectorStore
         string id,
         CancellationToken cancellationToken = default)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(modelName);
         ArgumentException.ThrowIfNullOrWhiteSpace(id);
 
-        await using var connection = await OpenConnectionAsync(modelName, cancellationToken);
+        await using var connection = await OpenExistingConnectionAsync(modelName, cancellationToken);
+
+        if (connection is null)
+        {
+            return null;
+        }
+
         await using var command = connection.CreateCommand();
         command.CommandText = """
             SELECT
@@ -93,7 +100,15 @@ public sealed class DomainVectorStore : IDomainVectorStore
         string? kind = null,
         CancellationToken cancellationToken = default)
     {
-        await using var connection = await OpenConnectionAsync(modelName, cancellationToken);
+        ArgumentException.ThrowIfNullOrWhiteSpace(modelName);
+
+        await using var connection = await OpenExistingConnectionAsync(modelName, cancellationToken);
+
+        if (connection is null)
+        {
+            return [];
+        }
+
         return await ListInternalAsync(connection, kind, cancellationToken);
     }
 
@@ -306,7 +321,14 @@ public sealed class DomainVectorStore : IDomainVectorStore
     {
         var embeddingList = ValidateAlignmentEmbeddings(modelName, embeddings);
 
-        await using var connection = await OpenConnectionAsync(modelName, cancellationToken);
+        await using var connection = await OpenExistingConnectionAsync(modelName, cancellationToken);
+
+        if (connection is null)
+        {
+            throw new InvalidOperationException(
+                $"No vector store database exists for model '{modelName}'.");
+        }
+
         var storedRecords = await ReadAlignmentEmbeddingsAsync(connection, cancellationToken);
         var storedByKey = storedRecords.ToDictionary(record => record.Key, StringComparer.Ordinal);
         var results = new List<AlignmentCheckResult>(embeddingList.Count);
@@ -340,6 +362,24 @@ public sealed class DomainVectorStore : IDomainVectorStore
         var connection = new SqliteConnection($"Data Source={databasePath}");
         await connection.OpenAsync(cancellationToken);
         await EnsureSchemaAsync(connection, modelName, cancellationToken);
+        return connection;
+    }
+
+    private async Task<SqliteConnection?> OpenExistingConnectionAsync(
+        string modelName,
+        CancellationToken cancellationToken)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(modelName);
+
+        var databasePath = _router.GetExistingDatabasePath(modelName);
+
+        if (databasePath is null)
+        {
+            return null;
+        }
+
+        var connection = new SqliteConnection($"Data Source={databasePath}");
+        await connection.OpenAsync(cancellationToken);
         return connection;
     }
 

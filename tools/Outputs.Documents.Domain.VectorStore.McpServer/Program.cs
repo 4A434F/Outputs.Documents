@@ -1,5 +1,6 @@
 using Outputs.Documents.Domain.VectorStore;
 using Outputs.Documents.Domain.VectorStore.McpServer;
+using Outputs.Documents.Domain.VectorStore.McpServer.Utilities;
 using Outputs.Documents.Domain.VectorStore.Storage;
 
 var transport = VectorStoreMcpTransportResolver.Resolve(args);

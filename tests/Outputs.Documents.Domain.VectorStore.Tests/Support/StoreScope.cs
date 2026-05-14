@@ -14,6 +14,8 @@ internal sealed class StoreScope : IDisposable
 
     public DomainVectorStore Store { get; }
 
+    public string DirectoryPath => _directory;
+
     public static StoreScope Create()
     {
         var directory = Path.Combine(
