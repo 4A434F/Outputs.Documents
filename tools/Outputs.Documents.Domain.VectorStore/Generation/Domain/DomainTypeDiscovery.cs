@@ -5,20 +5,33 @@ namespace Outputs.Documents.Domain.VectorStore.Generation.Domain;
 
 public static class DomainTypeDiscovery
 {
+    private static readonly Assembly[] DomainAssemblies =
+    [
+        typeof(DomainSearchAttribute).Assembly,
+        typeof(Outputs.Documents.DOCE.Contracts.DC000CoverPage).Assembly,
+        typeof(Outputs.Documents.FSCD.Contracts.BGOW0044Contract).Assembly
+    ];
+
     public static IReadOnlyList<Type> GetDomainTypes()
     {
-        return typeof(DomainSearchAttribute).Assembly
+        return DomainAssemblies
+            .SelectMany(assembly => assembly
             .GetExportedTypes()
             .Where(type => type is { IsClass: true, IsAbstract: false })
             .Where(IsSearchableDomainNamespace)
-            .Where(type => type.GetCustomAttribute<DomainSearchAttribute>() is not null)
+                .Where(type => type.GetCustomAttribute<DomainSearchAttribute>() is not null))
             .OrderBy(type => type.FullName, StringComparer.Ordinal)
             .ToArray();
     }
 
     private static bool IsSearchableDomainNamespace(Type type)
     {
-        return type.Namespace?.StartsWith("Outputs.Documents.Domain.Contracts", StringComparison.Ordinal) == true ||
+        if (type.Namespace?.Contains(".Samples", StringComparison.Ordinal) == true)
+        {
+            return false;
+        }
+
+        return type.Namespace?.Contains(".Contracts", StringComparison.Ordinal) == true ||
             type.Namespace?.StartsWith("Outputs.Documents.Domain.Documents", StringComparison.Ordinal) == true ||
             type.Namespace?.StartsWith("Outputs.Documents.Domain.Entities", StringComparison.Ordinal) == true ||
             type.Namespace?.StartsWith("Outputs.Documents.Domain.Expedition", StringComparison.Ordinal) == true ||

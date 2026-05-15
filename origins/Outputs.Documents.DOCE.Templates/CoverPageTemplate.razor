@@ -1,0 +1,179 @@
+@namespace Outputs.Documents.DOCE.Templates
+@attribute [DocumentTemplate(isDefault: true, Key = "doce-cover-page", Name = "Cover Page", Group = "DOCE")]
+<A4Layout>
+      <TestOverlayComponent></TestOverlayComponent>
+
+    <!-- Title -->
+    <div class="section-text">
+        <div class="title bold">Envelopagem @Model?.PostalObjectType</div>
+        <div class="subtitle bold">@Model?.Title - @Model?.SegmentNumber</div>
+        <div class="subtitle bold">@Model?.Description</div>
+    </div>
+
+    <!-- Subtexts -->
+    <div class="section-text">Expedição @Model?.ProviderCode</div>
+
+    <!-- Destinations -->
+    <div class="section-text">
+        @if (!string.IsNullOrWhiteSpace(Model?.Department) ||
+                !string.IsNullOrWhiteSpace(Model?.Addr1) ||
+                !string.IsNullOrWhiteSpace(Model?.Addr2) ||
+                !string.IsNullOrWhiteSpace(Model?.Addr3) ||
+                !string.IsNullOrWhiteSpace(Model?.Addr4))
+        {
+                <div class="section-heading bold">Destino</div> 
+           @if (!string.IsNullOrWhiteSpace(Model.Department))
+            {
+                <div>@Model.Department</div>
+            }
+            @if (!string.IsNullOrWhiteSpace(Model.Addr1))
+            {
+                <div>@Model.Addr1</div>
+            }
+            @if (!string.IsNullOrWhiteSpace(Model.Addr2))
+            {
+                <div>@Model.Addr2</div>
+            }
+            @if (!string.IsNullOrWhiteSpace(Model.Addr3))
+            {
+                <div>@Model.Addr3</div>
+            }
+            @if (!string.IsNullOrWhiteSpace(Model.Addr4))
+            {
+                <div>@Model.Addr4</div>
+            }
+        }
+    </div>
+
+    <!-- Totals Box -->
+    <div class="totals-container">
+        <div class="totals-box">
+            <div class="line"><span>Tipo Papel..........: </span><span>@Model?.PaperType</span></div>
+            <div class="line"><span>Total de folhas.....: </span><span>@Model?.TotalSheets</span></div>
+            <div class="line"><span>Paginas impressas...: </span><span>@Model?.TotalPrintedPages</span></div>
+            <div class="line"><span>Total de envelopes..: </span><span>@Model?.TotalPostalObjects</span></div>
+
+            @if (Model?.TotalAdicional1 is not null || 
+                 Model?.TotalAdicional2 is not null || 
+                 Model?.TotalAdicional3 is not null || 
+                 Model?.TotalAdicional4 is not null || 
+                 Model?.TotalAdicional5 is not null )
+            {    
+            <div class="line spacer"></div> <!-- small gap -->
+
+            <div class="line"><strong><span>Anexos:</span></strong></div>
+            @if (Model.TotalAdicional1 is not null)
+            {   
+            <div class="line"><span>Total adicional tipo 1:</span><span>@Model.TotalAdicional1</span></div>
+            }
+            @if (Model.TotalAdicional2 is not null)
+            {   
+            <div class="line"><span>Total adicional tipo 2:</span><span>@Model.TotalAdicional2</span></div>
+            }
+            @if (Model.TotalAdicional3 is not null)
+            {   
+            <div class="line"><span>Total adicional tipo 3:</span><span>@Model.TotalAdicional3</span></div>
+            }
+            @if (Model.TotalAdicional4 is not null)
+            {   
+            <div class="line"><span>Total adicional tipo 4:</span><span>@Model.TotalAdicional4</span></div>
+            }
+            @if (Model.TotalAdicional5 is not null)
+            {   
+            <div class="line"><span>Total adicional tipo 5:</span><span>@Model.TotalAdicional5</span></div>
+            }
+            }
+        </div>
+        @if (Model?.DividerCount is not null)
+        {    
+            <div class="totals-footer">
+                Inclui @Model.DividerCount?.ToString("D2") separadores
+            </div>
+        }
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-right">
+        Documento de @Model?.DocumentDate.ToString("dd.MM.yyyy")<br />
+        @Model?.DocumentDate.ToString("HH:mm:ss")
+    </div>
+
+    <style>
+ 
+        .title {
+            font-size: 52px;
+            font-weight: bold;
+            text-align: center;
+            padding-bottom:0;
+            line-height: 1.05;
+        }
+
+        .subtitle {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 18px;
+            padding-bottom : 0;
+            line-height: 1.05;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .section-text{
+            margin-bottom:2cm;
+        }
+
+        .totals-container {
+            margin: 32px auto 0; /* sits in the flow, centered */
+            text-align: center;
+            width: fit-content; /* so it only wraps the box */
+        }
+
+        .totals-box {
+            border: 1px solid #000;
+            padding: 12px 24px;
+            font-family: monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            display: inline-block;
+            text-align: left;
+        }
+
+        .line {
+            display: flex;
+            justify-content: space-between;
+            white-space: nowrap;
+            gap: 8px;
+        }
+
+        .totals-footer {
+            margin-top: 6px;
+            font-size: 11px;
+            text-align: end;
+            font-family: Arial, sans-serif;
+        }
+
+        .spacer {
+            height: 8px;
+        }
+
+ 
+        .footer-right {
+            position: fixed;
+            bottom: 0px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            border-top: 1px solid #000;
+            padding: 5px 30px;
+            font-size: 10px;
+            text-align: right; 
+        }
+    </style>
+</A4Layout>
+
+@code {
+    [Parameter]
+    public DC000CoverPage? Model { get; set; }
+}

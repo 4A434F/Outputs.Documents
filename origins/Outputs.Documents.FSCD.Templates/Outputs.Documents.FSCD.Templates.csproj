@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Outputs.Documents.FSCD.Contracts\Outputs.Documents.FSCD.Contracts.csproj" />
+    <ProjectReference Include="..\..\src\Outputs.Documents.Domain\Outputs.Documents.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Outputs.Documents.Abstractions\Outputs.Documents.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\Outputs.Documents.Templates\Outputs.Documents.Templates.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

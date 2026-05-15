@@ -1,9 +1,9 @@
 using Outputs.Documents.Dashboard.Components;
-using Outputs.Documents.Domain.Samples;
+using Outputs.Documents.Samples;
 using Outputs.Documents.Rendering;
 using Outputs.Documents.Templates;
-using Outputs.Documents.Templates.DOCE;
-using Outputs.Documents.Templates.FSCD;
+using Outputs.Documents.DOCE.Templates;
+using Outputs.Documents.FSCD.Templates;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +16,8 @@ builder.Services
     .AddRazorDocumentRendering()
     .WithDocumentsFromAssembly(typeof(CourtesyLetterTemplate).Assembly)
     .WithDocumentsFromAssembly(typeof(FS1040CancellationCdc1PremiumTemplate).Assembly)
-    .WithSamplesFromAssembly(typeof(IDocumentModelSample<>).Assembly);
+    .WithSamplesFromAssembly(typeof(Outputs.Documents.DOCE.Contracts.DC000CoverPage).Assembly)
+    .WithSamplesFromAssembly(typeof(Outputs.Documents.FSCD.Contracts.BGOW0044Contract).Assembly);
 
 var app = builder.Build();
 

@@ -29,7 +29,7 @@ public static class VectorStoreMcpTools
     [Description("Describes the embedding inputs for a loaded C# domain type. Encode each descriptor text outside this server, then call UpsertDomainTypeAsync.")]
     public static IReadOnlyList<DomainEmbeddingDescriptor> DescribeDomainType(
         IDomainVectorStore store,
-        [Description("Full type name or assembly-qualified name, for example 'Outputs.Documents.Domain.Contracts.FSCD.FS000CancelationLetter'.")]
+        [Description("Full type name or assembly-qualified name, for example 'Outputs.Documents.FSCD.Contracts.FS000CancelationLetter'.")]
         string domainTypeName)
     {
         return store.Describe(ResolveDomainType(domainTypeName));

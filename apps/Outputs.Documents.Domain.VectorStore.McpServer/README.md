@@ -60,7 +60,7 @@ dotnet run --project apps/Outputs.Documents.Domain.VectorStore.McpServer/Outputs
 
 The normal registration flow is:
 
-1. Call `DescribeDomainType` with a full type name such as `Outputs.Documents.Domain.Contracts.FSCD.FS000CancelationLetter`.
+1. Call `DescribeDomainType` with a full type name such as `Outputs.Documents.FSCD.Contracts.FS000CancelationLetter`.
 2. Embed each returned `DomainEmbeddingDescriptor.Text` with your selected embedding model.
 3. Call `UpsertDomainTypeAsync` with the same type name, model name, and `DomainEmbeddingValue[]` keyed by descriptor id.
 

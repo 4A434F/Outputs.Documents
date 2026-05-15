@@ -5,14 +5,22 @@ namespace Outputs.Documents.Domain.Tests;
 
 public sealed class DomainSearchCoverageTests
 {
+    private static readonly Assembly[] DomainAssemblies =
+    [
+        typeof(DomainSearchAttribute).Assembly,
+        typeof(Outputs.Documents.DOCE.Contracts.DC000CoverPage).Assembly,
+        typeof(Outputs.Documents.FSCD.Contracts.BGOW0044Contract).Assembly
+    ];
+
     [Fact]
     public void PublicDomainObjects_DeclareDomainSearchAttribute()
     {
-        var missingTypes = typeof(DomainSearchAttribute).Assembly
+        var missingTypes = DomainAssemblies
+            .SelectMany(assembly => assembly
             .GetExportedTypes()
             .Where(IsDomainObject)
             .Where(type => type.GetCustomAttribute<DomainSearchAttribute>() is null)
-            .Select(type => type.FullName)
+                .Select(type => type.FullName))
             .Order(StringComparer.Ordinal)
             .ToArray();
 
@@ -28,7 +36,12 @@ public sealed class DomainSearchCoverageTests
 
     private static bool IsSearchableDomainNamespace(Type type)
     {
-        return type.Namespace?.StartsWith("Outputs.Documents.Domain.Contracts", StringComparison.Ordinal) == true ||
+        if (type.Namespace?.Contains(".Samples", StringComparison.Ordinal) == true)
+        {
+            return false;
+        }
+
+        return type.Namespace?.Contains(".Contracts", StringComparison.Ordinal) == true ||
             type.Namespace?.StartsWith("Outputs.Documents.Domain.Documents", StringComparison.Ordinal) == true ||
             type.Namespace?.StartsWith("Outputs.Documents.Domain.Entities", StringComparison.Ordinal) == true ||
             type.Namespace?.StartsWith("Outputs.Documents.Domain.Expedition", StringComparison.Ordinal) == true ||

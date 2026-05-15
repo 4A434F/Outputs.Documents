@@ -2,11 +2,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Outputs.Documents.Abstractions\Outputs.Documents.Abstractions.csproj" />
+    <ProjectReference Include="..\..\origins\Outputs.Documents.DOCE.Contracts\Outputs.Documents.DOCE.Contracts.csproj" />
+    <ProjectReference Include="..\..\origins\Outputs.Documents.FSCD.Contracts\Outputs.Documents.FSCD.Contracts.csproj" />
     <ProjectReference Include="..\..\src\Outputs.Documents.Domain\Outputs.Documents.Domain.csproj" />
-    <ProjectReference Include="..\..\src\Outputs.Documents.Domain.Samples\Outputs.Documents.Domain.Samples.csproj" />
+    <ProjectReference Include="..\..\src\Outputs.Documents.Samples\Outputs.Documents.Samples.csproj" />
     <ProjectReference Include="..\..\src\Outputs.Documents.Rendering\Outputs.Documents.Rendering.csproj" />
-    <ProjectReference Include="..\..\src\Outputs.Documents.Templates.DOCE\Outputs.Documents.Templates.DOCE.csproj" />
-    <ProjectReference Include="..\..\src\Outputs.Documents.Templates.FSCD\Outputs.Documents.Templates.FSCD.csproj" />
+    <ProjectReference Include="..\..\origins\Outputs.Documents.DOCE.Templates\Outputs.Documents.DOCE.Templates.csproj" />
+    <ProjectReference Include="..\..\origins\Outputs.Documents.FSCD.Templates\Outputs.Documents.FSCD.Templates.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
