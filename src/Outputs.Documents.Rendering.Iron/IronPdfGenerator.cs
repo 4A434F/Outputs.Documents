@@ -46,8 +46,33 @@ public sealed class IronPdfGenerator(IOptions<IronPdfGeneratorOptions> options) 
         renderingOptions.HtmlHeader = new HtmlHeaderFooter { HtmlFragment = headerHtml ?? string.Empty };
         renderingOptions.HtmlFooter = new HtmlHeaderFooter { HtmlFragment = footerHtml ?? string.Empty };
 
-        using var pdf = renderer.RenderHtmlAsPdf(bodyHtml);
+        using var pdf = renderer.RenderHtmlAsPdf(WrapHtml(bodyHtml));
         return Task.FromResult(pdf.BinaryData);
+    }
+
+    private static string WrapHtml(string bodyHtml)
+    {
+        if (bodyHtml.Contains("<html", StringComparison.OrdinalIgnoreCase))
+        {
+            return bodyHtml;
+        }
+
+        return $$"""
+            <!doctype html>
+            <html>
+            <head>
+                <meta charset="utf-8">
+                <style>
+                    html,
+                    body {
+                        margin: 0;
+                        padding: 0;
+                    }
+                </style>
+            </head>
+            <body>{{bodyHtml}}</body>
+            </html>
+            """;
     }
 
     private static void ApplyLicense(IronPdfGeneratorOptions options)

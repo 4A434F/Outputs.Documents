@@ -8,6 +8,19 @@
     HeightCm = 29.7)]
 
 <div class="calibration-page">
+    <div class="page-grid" aria-hidden="true">
+        @for (var column = 0; column < 21; column++)
+        {
+            <i class="page-grid-line page-grid-line-vertical" style="@($"left: {column * 10}mm")"></i>
+        }
+        <i class="page-grid-line page-grid-line-vertical" style="@($"left: 209.75mm")"></i>
+        
+        @for (var row = 0; row < 30; row++)
+        {
+            <i class="page-grid-line page-grid-line-horizontal" style="@($"top: {row * 10}mm")"></i>
+        }
+    </div>
+
     <header class="calibration-header">
         <div>
             <p class="eyebrow">Print Calibration</p>
@@ -29,6 +42,10 @@
     </section>
 
     <div class="element-anchor">
+        <i class="anchor-edge anchor-edge-top"></i>
+        <i class="anchor-edge anchor-edge-right"></i>
+        <i class="anchor-edge anchor-edge-bottom"></i>
+        <i class="anchor-edge anchor-edge-left"></i>
         <i class="inner-box from-tl inner-row-0 inner-col-0"></i>
         <i class="inner-box from-tl inner-row-0 inner-col-1"></i>
         <i class="inner-box from-tl inner-row-0 inner-col-2"></i>
@@ -130,24 +147,40 @@
             <div class="baseline-sample baseline-4mm">
                 <strong>line-height: 4 mm</strong>
                 <div class="baseline-block">
+                    @for (var line = 0; line < 6; line++)
+                    {
+                        <i class="baseline-rule" style="@($"top: {4 + (line * 4)}mm")"></i>
+                    }
                     <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
                 </div>
             </div>
             <div class="baseline-sample baseline-6mm">
                 <strong>line-height: 6 mm</strong>
                 <div class="baseline-block">
+                    @for (var line = 0; line < 4; line++)
+                    {
+                        <i class="baseline-rule" style="@($"top: {5 + (line * 6)}mm")"></i>
+                    }
                     <p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged, and more recently with desktop publishing software.</p>
                 </div>
             </div>
             <div class="baseline-sample baseline-5mm">
                 <strong>line-height: 5 mm</strong>
                 <div class="baseline-block">
+                    @for (var line = 0; line < 5; line++)
+                    {
+                        <i class="baseline-rule" style="@($"top: {4.5 + (line * 5)}mm")"></i>
+                    }
                     <p>The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.</p>
                 </div>
             </div>
             <div class="baseline-sample baseline-mixed">
                 <strong>mixed sizes / line-height: 5 mm</strong>
                 <div class="baseline-block">
+                    @for (var line = 0; line < 5; line++)
+                    {
+                        <i class="baseline-rule" style="@($"top: {4.5 + (line * 5)}mm")"></i>
+                    }
                     <p><span class="mixed-small">Contrary to</span> <span class="mixed-mid">popular belief, Lorem Ipsum is not simply </span> <span class="mixed-large">random text.</span> <span class="mixed-mid">It has roots in a piece of classical Latin literature from 45 BC, </span> <span class="mixed-large">making it over 2000 years old. </span> <span class="mixed-small">Lorem Ipsum comes from The Extremes of Good and Evil by Cicero.</span></p>
                 </div>
             </div>
@@ -169,7 +202,7 @@
         </div>
     </section>
 
-    <section class="gradient-fill" aria-label="Remaining page grid fill"></section>
+    <section class="grid-fill" aria-label="Remaining page grid fill"></section>
 </div>
 
 <style>
@@ -186,28 +219,53 @@
         --position-box: 5mm;
         --position-step: 10mm;
         --element-width: 130mm;
-        --element-height: 50mm;
+        --element-height: 45mm;
+        --element-border: 0.4mm;
         --inner-box: 5mm;
         --inner-start: 5mm;
         --inner-step: 10mm;
         position: relative;
         width: var(--page-width);
         height: var(--page-height);
+        overflow: hidden;
         box-sizing: border-box;
         padding: var(--page-padding-y) var(--page-padding-x);
         background-color: #fff;
-        background-image:
-            linear-gradient(to right, rgba(0, 0, 0, 0.11) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0, 0, 0, 0.11) 1px, transparent 1px);
-        background-size: 10mm 10mm;
         color: #111;
         font-family: Arial, sans-serif;
         font-size: 9pt;
         line-height: 1.2;
     }
 
+    .page-grid {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .page-grid-line {
+        position: absolute;
+        display: block;
+        background: rgba(0, 0, 0, 0.11);
+    }
+
+    .page-grid-line-vertical {
+        top: 0;
+        bottom: 0;
+        width: 0.25mm;
+    }
+
+    .page-grid-line-horizontal {
+        left: 0;
+        right: 0;
+        height: 0.25mm;
+    }
+
     .calibration-header {
         position: relative;
+        z-index: 1;
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
@@ -223,7 +281,7 @@
     }
     
     .section-spacer {
-        height: 58mm;
+        height: 53mm;
     }
 
     .eyebrow {
@@ -275,6 +333,7 @@
 
     .calibration-section {
         position: relative;
+        z-index: 1;
         display: grid;
         grid-template-columns: 34mm 1fr;
         gap: 4mm;
@@ -332,9 +391,49 @@
         width: var(--element-width);
         height: var(--element-height);
         box-sizing: border-box;
-        border: 0.4mm solid #111;
+        border: 0;
         background: rgba(255, 255, 255, 0.52);
         z-index: 2;
+    }
+
+    .anchor-edge {
+        position: absolute;
+        display: block;
+        background: #111;
+    }
+
+    .anchor-edge-top,
+    .anchor-edge-bottom {
+        left: 0;
+        width: 100%;
+        height: var(--element-border);
+    }
+
+    .anchor-edge-left,
+    .anchor-edge-right {
+        top: 0;
+        width: var(--element-border);
+        height: 100%;
+    }
+
+    .anchor-edge-top {
+        top: 0;
+        transform: translateY(-50%);
+    }
+
+    .anchor-edge-right {
+        right: 0;
+        transform: translateX(50%);
+    }
+
+    .anchor-edge-bottom {
+        bottom: 0;
+        transform: translateY(50%);
+    }
+
+    .anchor-edge-left {
+        left: 0;
+        transform: translateX(-50%);
     }
 
     .element-anchor p {
@@ -389,13 +488,7 @@
         display: block;
         height: 3mm;
         border: 0.2mm solid #111;
-        background: repeating-linear-gradient(
-            90deg,
-            #ddd 0,
-            #ddd 1mm,
-            #fff 1mm,
-            #fff 2mm
-        );
+        background: #f2f2f2;
     }
 
     .width-10mm { width: 10mm; }
@@ -425,13 +518,7 @@
         display: block;
         width: 5mm;
         border: 0.2mm solid #111;
-        background: repeating-linear-gradient(
-            0deg,
-            #ddd 0,
-            #ddd 1mm,
-            #fff 1mm,
-            #fff 2mm
-        );
+        background: #f2f2f2;
     }
 
     .height-96px { height: 96px; }
@@ -477,22 +564,27 @@
     }
 
     .baseline-block {
+        position: relative;
         min-height: 27mm;
         box-sizing: border-box;
         border: 0.25mm dashed #111;
         padding: 1mm 2mm;
         overflow: hidden;
         background-color: rgba(255, 255, 255, 0.74);
-        background-image: repeating-linear-gradient(
-            to bottom,
-            rgba(0, 0, 0, 0.24) 0,
-            rgba(0, 0, 0, 0.24) 0.2mm,
-            transparent 0.2mm,
-            transparent var(--baseline-step)
-        );
+    }
+
+    .baseline-rule {
+        position: absolute;
+        left: 0;
+        right: 0;
+        z-index: 0;
+        display: block;
+        border-top: 0.25mm solid #000;
     }
 
     .baseline-block p {
+        position: relative;
+        z-index: 1;
         margin: 0;
         font-size: 8pt;
         line-height: var(--baseline-step);
@@ -511,9 +603,9 @@
         font-size: 8pt;
     }
 
-    .mixed-small { font-size: 8pt; }
-    .mixed-mid { font-size: 12pt; }
-    .mixed-large { font-size: 16px; }
+    .mixed-small { font-size: 6pt; }
+    .mixed-mid { font-size: 8pt; }
+    .mixed-large { font-size: 11px; }
 
     .line-grid {
         display: grid;
@@ -533,7 +625,7 @@
     .line-pt-1 { border-top: 1pt solid #111; }
     .line-dashed { border-top: 0.5mm dashed #111; }
 
-    .gradient-fill {
+    .grid-fill {
         height: 24mm;
     }
 </style>
