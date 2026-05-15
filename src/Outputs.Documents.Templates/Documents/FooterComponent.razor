@@ -1,0 +1,56 @@
+@namespace Outputs.Documents.Templates.Documents
+<div class="pdf-footer" aria-hidden="true">
+    <div class="pdf-footer__left">
+        <strong>Fidelidade - Companhia de Seguros, S.A.</strong>
+        &nbsp;- NIPC e Matrícula 500 918 880, na CRC Lisboa -
+        Sede: Largo do Calhariz, 30 1249-001 Lisboa - Portugal -
+        Capital Social EUR 509.263.524 -
+        <a href="https://www.fidelidade.pt" target="_blank" rel="noopener noreferrer">www.fidelidade.pt</a>
+        <br />
+        Apoio ao Cliente: Dias úteis das 9h às 20h. T. 217 94 87 01
+        Chamada para a rede fixa nacional.
+        E. <a href="mailto:apoiocliente@fidelidade.pt">apoiocliente@fidelidade.pt</a>
+    </div>
+
+    <div class="pdf-footer__right">
+        página {page} de {total-pages}
+    </div>
+</div>
+
+<style>
+    .pdf-footer {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0mm 10mm 10mm 12mm;
+        font-family: Arial, sans-serif;
+        color: #000;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 6mm;
+    }
+
+    .pdf-footer__left {
+        font-size: 5pt;
+        line-height: 1.2;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .pdf-footer__right {
+        font-size: 7pt;
+        white-space: nowrap;
+        flex: 0 0 auto;
+        text-align: right;
+        margin-bottom: 5mm;
+    }
+
+    .pdf-footer a {
+        color: #000;
+        text-decoration: none;
+    }
+</style>
+
+@code {
+    [Parameter] public Footer? Model { get; set; }
+}

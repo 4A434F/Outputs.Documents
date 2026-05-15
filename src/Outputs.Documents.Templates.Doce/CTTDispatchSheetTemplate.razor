@@ -1,0 +1,181 @@
+@namespace Outputs.Documents.Templates.DOCE
+@attribute [DocumentTemplate(isDefault: true, Key = "doce-ctt-dispatch-sheet", Name = "CTT Dispatch Sheet", Group = "DOCE", HeaderTemplate = typeof(HeaderComponent), FooterTemplate = typeof(FooterOnlyPagComponent), HeaderPropertyName = nameof(DC003CttDispatchSheet.Header), FooterPropertyName = nameof(DC003CttDispatchSheet.Footer))]
+
+<A4Layout>
+    <TestOverlayComponent></TestOverlayComponent>
+
+    <DocumentTraceIdComponent TraceText="@Model?.TraceID"/>
+    
+    <header class="header-grid-container dotted-item">
+        <div class="dotted-item-bottom dotted-item-right center-content">
+            <strong class="text-title single-lines">@Model?.AuthorizationLabel</strong>
+            <p class="text-subtitle single-line">@Model?.AuthorizationCode</p>
+        </div>
+        <div class="dotted-item-bottom center-content">
+            <strong class="text-title two-lines">@Model?.Title</strong>
+            <p class="text-subtitle">@Model?.RelationLabel : @Model?.RelationNumber</p>
+            <p class="text-content" style="align-self: end; margin-right: 15px;">@Model?.Date</p>
+        </div>
+        <div class="dotted-item-left" style="grid-row: span 2;">
+            <p class="text-subtitle" style="padding-top: 20px; text-align: center;">@Model?.EmployeeLabel</p>
+        </div>
+        <div class="center-content" style="grid-column: span 2; justify-content: center; align-items: start; padding-left: 10px;">
+            <p class="text-subtitle">REMETENTE : @Model?.SenderName</p>
+            <p class="text-subtitle">MORADA : @Model?.SenderAddress</p>
+        </div>
+    </header>
+    <table style="padding:0; margin: 15px 0 0;border: none; width: 100%;">
+        <colgroup>
+            <col style="width: 40%;">
+            <col style="width: 35%;">
+            <col style="width: 10%;">
+            <col style="width: 15%;">
+        </colgroup>
+        <thead>
+            <tr>
+                <th class="text-subtitle dotted-item-right dotted-item-top dotted-item-bottom dotted-item-left table-cell p-start" style="text-align: start;">NOME E<br/>MORADA DO DESTINATÁRIO</th>
+                <th class="text-subtitle dotted-item-right dotted-item-top dotted-item-bottom table-cell " style="text-align: start;">CÓDIGO POSTAL</th>
+                <th class="text-subtitle dotted-item-right dotted-item-top dotted-item-bottom table-cell " style="text-align: start;">APÓLICE</th>
+                <th class="text-subtitle dotted-item-right dotted-item-top dotted-item-bottom table-cell" style="text-align: start;">NÚMERO DE<br/>REGISTO SIMPLES</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model?.Entries != null)
+        {
+            @foreach (var entry in Model.Entries)
+            {
+                <tr>
+                    <td class="text-content dotted-item-right dotted-item-bottom dotted-item-left table-cell"
+                        style="padding-left: 0;">
+                        <div class="p-start">
+                            @entry.RecipientName<br/>
+                            @entry.RecipientAddress
+                        </div>
+                    </td>
+                    <td class="text-content dotted-item-right dotted-item-bottom table-cell ">@entry.PostalCode</td>
+                    <td class="text-content dotted-item-right dotted-item-bottom table-cell ">@entry.PolicyNumber</td>
+                    <td class="text-content dotted-item-right dotted-item-bottom table-cell ">@entry.RegistrationNumber</td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+
+
+    <style>
+        .header-grid-container {
+            display: grid;
+            grid-template-columns: 170px 400px 130px;
+            grid-template-rows: 70px 45px;
+        }
+
+        .dotted-item {
+            border: 1px dotted #000;
+            border-collapse: separate;
+            border-spacing: 2px 0;
+        }
+
+        .dotted-item-bottom {
+            border-bottom: 1px dotted #000;
+            border-collapse: separate;
+            border-spacing: 2px 0;
+        }
+
+        .dotted-item-top {
+            border-top: 1px dotted #000;
+            border-collapse: separate;
+            border-spacing: 2px 0;
+        }
+
+        .dotted-item-right {
+            border-right: 1px dotted #000;
+            border-collapse: separate;
+            border-spacing: 2px 0;
+        }
+
+        .dotted-item-left {
+            border-left: 1px dotted #000;
+            border-collapse: separate;
+            border-spacing: 2px 0;
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+            height: 100%;
+        }
+
+        .single-line {
+            white-space: nowrap;
+            max-width: 95%;
+            overflow: hidden;
+        }
+
+        .two-lines {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 80%;
+            line-height: 1.2em;
+            max-height: 2.4em;
+        }
+
+        .text-title {
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .text-subtitle {
+            font-size: 11px;
+            font-weight: normal;
+            text-transform: uppercase;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .text-content {
+            font-size: 8px;
+            font-weight: bolder;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .table-cell {
+            height: 30px;
+        }
+
+        .p-start {
+            padding-left: 10px;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        thead {
+            display: table-header-group;
+        }
+
+        tfoot {
+            display: table-footer-group;
+        }
+
+        tr {
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+    </style>
+</A4Layout>
+
+@code {
+    [Parameter]
+    public DC003CttDispatchSheet? Model { get; set; }
+}

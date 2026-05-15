@@ -46,14 +46,13 @@ public sealed class OtherModelTemplate : ComponentBase
     public OtherDocumentModel Model { get; set; } = default!;
 }
 
-[DocumentTemplate]
-[DocumentLayout(
-    headerTemplate: typeof(TestHeaderComponent),
-    footerTemplate: typeof(TestFooterComponent),
-    headerPropertyName: nameof(TestDocumentModel.Header),
-    footerPropertyName: nameof(TestDocumentModel.Footer),
-    widthCm: 21,
-    heightCm: 29.7)]
+[DocumentTemplate(
+    HeaderTemplate = typeof(TestHeaderComponent),
+    FooterTemplate = typeof(TestFooterComponent),
+    HeaderPropertyName = nameof(TestDocumentModel.Header),
+    FooterPropertyName = nameof(TestDocumentModel.Footer),
+    WidthCm = 21,
+    HeightCm = 29.7)]
 public sealed class LayoutTestTemplate : ComponentBase
 {
     [Parameter]

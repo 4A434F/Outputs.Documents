@@ -1,5 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Outputs.Documents.Abstractions\Outputs.Documents.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\Outputs.Documents.Domain\Outputs.Documents.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Outputs.Documents.Domain.Samples\Outputs.Documents.Domain.Samples.csproj" />
+    <ProjectReference Include="..\..\src\Outputs.Documents.Rendering\Outputs.Documents.Rendering.csproj" />
+    <ProjectReference Include="..\..\src\Outputs.Documents.Templates.DOCE\Outputs.Documents.Templates.DOCE.csproj" />
+    <ProjectReference Include="..\..\src\Outputs.Documents.Templates.FSCD\Outputs.Documents.Templates.FSCD.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>

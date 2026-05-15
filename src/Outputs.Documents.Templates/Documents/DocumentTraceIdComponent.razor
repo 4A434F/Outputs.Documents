@@ -1,0 +1,33 @@
+@namespace Outputs.Documents.Templates.Documents
+@if(TraceText is not null)
+{
+    <div class="trace-id">
+        <div>@TraceText.Line1</div>
+        <div>@TraceText.Line2</div>
+    </div>
+}
+<style>
+    .trace-id {
+        position: fixed;
+        bottom: 0cm;
+        left: 1cm;
+        transform: rotate(-90deg);
+        transform-origin: top left;
+        font-size: 10px;
+        font-family: monospace;
+        font-weight: 200; /* lighter than bold; try 300 if your font supports it */
+        z-index: 1000;
+        white-space: nowrap;
+    }
+
+        .trace-id > div {
+            margin: 0;
+            padding: 0;
+            line-height: 1; /* keeps them right on top of each other */
+        }
+</style>
+
+@code {
+    [Parameter]
+    public DocumentTraceId? TraceText { get; set; }
+}

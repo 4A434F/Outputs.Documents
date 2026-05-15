@@ -9,4 +9,6 @@ public interface IDocumentTemplateRegistry
     DocumentTemplateDescriptor GetDefault(Type modelType);
 
     IReadOnlyList<DocumentTemplateDescriptor> GetAll(Type modelType);
+
+    IReadOnlyList<DocumentTemplateDescriptor> GetAll();
 }

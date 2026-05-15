@@ -68,27 +68,29 @@ public static class DocumentScanner
                 $"Document template '{componentType.FullName}' model property '{modelParameterName}' has unusable type '{modelType.FullName}'.");
         }
 
-        var layout = componentType.GetCustomAttribute<DocumentLayoutAttribute>();
-        ValidateComponent(layout?.HeaderTemplateType, componentType, "header");
-        ValidateComponent(layout?.FooterTemplateType, componentType, "footer");
+        ValidateComponent(template.HeaderTemplate, componentType, "header");
+        ValidateComponent(template.FooterTemplate, componentType, "footer");
+
+        var widthCm = template.WidthCm > 0 ? template.WidthCm : (double?)null;
+        var heightCm = template.HeightCm > 0 ? template.HeightCm : (double?)null;
 
         return new DocumentTemplateDescriptor(
             modelType,
             componentType,
             template.IsDefault,
-            layout?.HeaderTemplateType,
-            layout?.FooterTemplateType,
-            layout?.HeaderPropertyName,
-            layout?.FooterPropertyName,
-            layout?.WidthCm,
-            layout?.HeightCm,
+            template.HeaderTemplate,
+            template.FooterTemplate,
+            template.HeaderPropertyName,
+            template.FooterPropertyName,
+            widthCm,
+            heightCm,
             modelParameterName)
         {
             Key = string.IsNullOrWhiteSpace(template.Key) ? CreateKey(componentType) : template.Key,
             Name = string.IsNullOrWhiteSpace(template.Name) ? componentType.Name : template.Name,
             Group = string.IsNullOrWhiteSpace(template.Group) ? "Documents" : template.Group,
-            HeaderPropertyAccessor = CreateAccessor(modelType, layout?.HeaderPropertyName, componentType, "header"),
-            FooterPropertyAccessor = CreateAccessor(modelType, layout?.FooterPropertyName, componentType, "footer")
+            HeaderPropertyAccessor = CreateAccessor(modelType, template.HeaderPropertyName, componentType, "header"),
+            FooterPropertyAccessor = CreateAccessor(modelType, template.FooterPropertyName, componentType, "footer")
         };
     }
 

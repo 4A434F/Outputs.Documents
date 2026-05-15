@@ -1,0 +1,200 @@
+@page "/templates"
+@page "/templates/{TemplateKey}"
+@rendermode InteractiveServer
+@inject IDocumentTemplateRegistry Templates
+@inject IDocumentModelSampleCatalog Samples
+@inject IServiceProvider Services
+@inject NavigationManager Navigation
+
+<PageTitle>Template Preview</PageTitle>
+
+<div class="dashboard-page">
+    <section class="page-title-frame">
+        <div>
+            <p class="eyebrow">Template Preview</p>
+            <h2>Dynamic Razor document preview</h2>
+            <p class="page-subtitle">Discovered descriptors render directly through Blazor <code>DynamicComponent</code>.</p>
+        </div>
+    </section>
+
+    @if (Descriptors.Count == 0)
+    {
+        <section class="empty-shell-panel">
+            <span class="material-symbols-outlined" aria-hidden="true">description</span>
+            <div>
+                <h3>No templates registered</h3>
+                <p>Register a template assembly in the dashboard host before opening this page.</p>
+            </div>
+        </section>
+    }
+    else
+    {
+        <section class="preview-workspace">
+            <aside class="template-list" aria-label="Registered templates">
+                @foreach (var group in Descriptors.GroupBy(descriptor => descriptor.Group))
+                {
+                    <div class="template-group">
+                        <p class="nav-section-title">@group.Key</p>
+                        @foreach (var descriptor in group)
+                        {
+                            <NavLink class="template-link" href="@TemplateHref(descriptor)">
+                                <strong>@descriptor.Name</strong>
+                                <small>@descriptor.ModelType.Name</small>
+                            </NavLink>
+                        }
+                    </div>
+                }
+            </aside>
+
+            <main class="preview-panel">
+                @if (SelectedDescriptor is null)
+                {
+                    <div class="empty-shell-panel">
+                        <span class="material-symbols-outlined" aria-hidden="true">touch_app</span>
+                        <div>
+                            <h3>Select a template</h3>
+                            <p>Choose a template from the list to render it with sample data.</p>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="preview-toolbar">
+                        <div>
+                            <p class="eyebrow">@SelectedDescriptor.Group</p>
+                            <h3>@SelectedDescriptor.Name</h3>
+                        </div>
+                        <div class="template-meta">
+                            <span>@SelectedDescriptor.Key</span>
+                            <span>@SelectedDescriptor.BodyTemplateType.Name</span>
+                            @if (SelectedSample is not null)
+                            {
+                                <span>@SelectedSample.Name</span>
+                            }
+                        </div>
+                    </div>
+
+                    @if (SampleModel is null)
+                    {
+                        <div class="empty-shell-panel">
+                            <span class="material-symbols-outlined" aria-hidden="true">data_object</span>
+                            <div>
+                                <h3>No sample model available</h3>
+                                <p>@SampleError</p>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="document-preview-frame">
+                            <DynamicComponent Type="SelectedDescriptor.BodyTemplateType" Parameters="ComponentParameters" />
+                        </div>
+                    }
+                }
+            </main>
+        </section>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string? TemplateKey { get; set; }
+
+    private IReadOnlyList<DocumentTemplateDescriptor> Descriptors { get; set; } = [];
+
+    private DocumentTemplateDescriptor? SelectedDescriptor { get; set; }
+
+    private object? SampleModel { get; set; }
+
+    private DocumentModelSampleDescriptor? SelectedSample { get; set; }
+
+    private string? SampleError { get; set; }
+
+    private Dictionary<string, object?> ComponentParameters =>
+        SelectedDescriptor is null || SampleModel is null
+            ? new Dictionary<string, object?>()
+            : new Dictionary<string, object?>
+            {
+                [SelectedDescriptor.ModelParameterName] = SampleModel
+            };
+
+    protected override void OnParametersSet()
+    {
+        Descriptors = Templates.GetAll();
+        SelectedDescriptor = SelectDescriptor();
+
+        if (SelectedDescriptor is null)
+        {
+            SampleModel = null;
+            SelectedSample = null;
+            SampleError = null;
+            return;
+        }
+
+        SelectedSample = Samples.GetSamples(SelectedDescriptor.ModelType).FirstOrDefault();
+        (SampleModel, SampleError) = SelectedSample is null
+            ? CreateEmptySample(SelectedDescriptor.ModelType)
+            : CreateSample(SelectedSample);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender && TemplateKey is null && Descriptors.Count > 0)
+        {
+            Navigation.NavigateTo(TemplateHref(Descriptors[0]), replace: true);
+        }
+    }
+
+    private DocumentTemplateDescriptor? SelectDescriptor()
+    {
+        if (Descriptors.Count == 0)
+        {
+            return null;
+        }
+
+        if (!string.IsNullOrWhiteSpace(TemplateKey))
+        {
+            return Descriptors.FirstOrDefault(descriptor =>
+                string.Equals(descriptor.Key, TemplateKey, StringComparison.OrdinalIgnoreCase));
+        }
+
+        return Descriptors[0];
+    }
+
+    private static string TemplateHref(DocumentTemplateDescriptor descriptor)
+    {
+        return $"templates/{Uri.EscapeDataString(descriptor.Key)}";
+    }
+
+    private (object? Model, string? Error) CreateSample(DocumentModelSampleDescriptor sample)
+    {
+        try
+        {
+            var source = ActivatorUtilities.CreateInstance(Services, sample.SampleType);
+            var createMethod = sample.SampleType.GetMethod(nameof(IDocumentModelSample<IDocumentModel>.Create), Type.EmptyTypes);
+
+            if (createMethod is null)
+            {
+                return (null, $"Sample '{sample.SampleType.FullName}' does not expose a public Create method.");
+            }
+
+            return (createMethod.Invoke(source, null), null);
+        }
+        catch (Exception exception)
+        {
+            return (null, $"Could not create sample '{sample.Name}' for '{sample.ModelType.FullName}': {exception.Message}");
+        }
+    }
+
+    private (object? Model, string? Error) CreateEmptySample(Type modelType)
+    {
+        try
+        {
+            return (Samples.GetEmpty(modelType), null);
+        }
+        catch (Exception exception)
+        {
+            return (null, $"No sample was registered for '{modelType.FullName}', and an empty instance could not be created: {exception.Message}");
+        }
+    }
+}

@@ -72,4 +72,16 @@ public sealed class DocumentTemplateCatalogTests
 
         Assert.Contains("not registered", exception.Message);
     }
+
+    [Fact]
+    public void GetAll_ReturnsAllRegisteredTemplatesOrderedForDisplay()
+    {
+        var first = TestDescriptors.Create<TestDocumentModel, DefaultTestTemplate>();
+        var second = TestDescriptors.Create<OtherDocumentModel, OtherModelTemplate>();
+        var registry = new DocumentTemplateCatalog([second, first]);
+
+        Assert.Equal(
+            [typeof(DefaultTestTemplate), typeof(OtherModelTemplate)],
+            registry.GetAll().Select(descriptor => descriptor.BodyTemplateType));
+    }
 }
