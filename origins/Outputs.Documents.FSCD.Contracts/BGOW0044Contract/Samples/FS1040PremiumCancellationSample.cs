@@ -1,6 +1,6 @@
 using Outputs.Documents.FSCD.Contracts;
 
-using Outputs.Documents.Samples;
+using Outputs.Documents.SampleFinder;
 
 namespace Outputs.Documents.FSCD.Contracts.Samples.BGOW0044Contract;
 

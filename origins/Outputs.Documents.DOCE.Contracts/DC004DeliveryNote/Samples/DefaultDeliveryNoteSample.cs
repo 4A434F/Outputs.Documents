@@ -3,7 +3,7 @@ using Outputs.Documents.Domain.Documents.Primitives;
 using Outputs.Documents.Domain.Locations;
 using DeliveryNoteContract = Outputs.Documents.DOCE.Contracts.DC004DeliveryNote;
 
-using Outputs.Documents.Samples;
+using Outputs.Documents.SampleFinder;
 
 namespace Outputs.Documents.DOCE.Contracts.Samples.DC004DeliveryNote;
 

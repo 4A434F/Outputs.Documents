@@ -1,6 +1,6 @@
 using DividerContract = Outputs.Documents.DOCE.Contracts.DC002Divider;
 
-using Outputs.Documents.Samples;
+using Outputs.Documents.SampleFinder;
 
 namespace Outputs.Documents.DOCE.Contracts.Samples.DC002Divider;
 

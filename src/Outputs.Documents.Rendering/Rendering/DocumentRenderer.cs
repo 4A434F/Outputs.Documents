@@ -6,9 +6,37 @@ namespace Outputs.Documents.Rendering;
 public sealed class DocumentRenderer(
     IRazorComponentRenderer components,
     IDocumentTemplateSelector templates,
+    IDocumentTemplateRegistry registry,
     IPdfGenerator pdfs)
     : IDocumentRenderer
 {
+    public async Task<byte[]> RenderAsync(
+        Type templateType,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(templateType);
+
+        var descriptor = registry.GetByTemplateType(templateType);
+        if (descriptor.ModelType != typeof(NoDocumentModel))
+        {
+            throw new InvalidOperationException(
+                $"Document template '{templateType.FullName}' requires model '{descriptor.ModelType.FullName}'. Use the model-based render method for this template.");
+        }
+
+        var bodyHtml = await components.RenderAsync(
+            descriptor.BodyTemplateType,
+            parameters: null,
+            cancellationToken);
+
+        return await pdfs.GenerateAsync(
+            bodyHtml,
+            headerHtml: null,
+            footerHtml: null,
+            descriptor.WidthCm,
+            descriptor.HeightCm,
+            cancellationToken);
+    }
+
     public Task<byte[]> RenderAsync<TModel>(
         TModel model,
         CancellationToken cancellationToken = default)

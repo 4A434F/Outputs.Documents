@@ -1,7 +1,7 @@
 using Outputs.Documents.Domain.Expedition;
 using RegTicketPageContract = Outputs.Documents.DOCE.Contracts.DC005RegTicketPage;
 
-using Outputs.Documents.Samples;
+using Outputs.Documents.SampleFinder;
 
 namespace Outputs.Documents.DOCE.Contracts.Samples.DC005RegTicketPage;
 

@@ -2,6 +2,10 @@ namespace Outputs.Documents.Abstractions;
 
 public interface IDocumentRenderer
 {
+    Task<byte[]> RenderAsync(
+        Type templateType,
+        CancellationToken cancellationToken = default);
+
     Task<byte[]> RenderAsync<TModel>(
         TModel model,
         RenderSource source,

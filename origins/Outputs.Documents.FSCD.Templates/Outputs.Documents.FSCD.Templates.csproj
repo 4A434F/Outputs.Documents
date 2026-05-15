@@ -4,7 +4,7 @@
     <ProjectReference Include="..\Outputs.Documents.FSCD.Contracts\Outputs.Documents.FSCD.Contracts.csproj" />
     <ProjectReference Include="..\..\src\Outputs.Documents.Domain\Outputs.Documents.Domain.csproj" />
     <ProjectReference Include="..\..\src\Outputs.Documents.Abstractions\Outputs.Documents.Abstractions.csproj" />
-    <ProjectReference Include="..\..\src\Outputs.Documents.Templates\Outputs.Documents.Templates.csproj" />
+    <ProjectReference Include="..\..\src\Outputs.Documents.Components\Outputs.Documents.Components.csproj" />
   </ItemGroup>
 
   <ItemGroup>

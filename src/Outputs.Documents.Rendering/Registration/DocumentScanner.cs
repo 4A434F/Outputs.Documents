@@ -51,6 +51,32 @@ public static class DocumentScanner
 
         if (modelParameter is null)
         {
+            if (string.Equals(modelParameterName, "Model", StringComparison.Ordinal))
+            {
+                ValidateComponent(template.HeaderTemplate, componentType, "header");
+                ValidateComponent(template.FooterTemplate, componentType, "footer");
+
+                var noModelWidthCm = template.WidthCm > 0 ? template.WidthCm : (double?)null;
+                var noModelHeightCm = template.HeightCm > 0 ? template.HeightCm : (double?)null;
+
+                return new DocumentTemplateDescriptor(
+                    typeof(NoDocumentModel),
+                    componentType,
+                    template.IsDefault,
+                    template.HeaderTemplate,
+                    template.FooterTemplate,
+                    template.HeaderPropertyName,
+                    template.FooterPropertyName,
+                    noModelWidthCm,
+                    noModelHeightCm,
+                    modelParameterName)
+                {
+                    Key = string.IsNullOrWhiteSpace(template.Key) ? CreateKey(componentType) : template.Key,
+                    Name = string.IsNullOrWhiteSpace(template.Name) ? componentType.Name : template.Name,
+                    Group = string.IsNullOrWhiteSpace(template.Group) ? "Documents" : template.Group
+                };
+            }
+
             throw new InvalidOperationException(
                 $"Document template '{componentType.FullName}' declares model parameter '{modelParameterName}', but no public property with that name exists.");
         }

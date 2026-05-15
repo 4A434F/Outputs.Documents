@@ -1,0 +1,33 @@
+@namespace Outputs.Documents.Components.Documents
+@if (DocumentsFlags.IsProduction)
+{
+    <div class="watermark-fixed" aria-hidden="true"></div>
+
+    <style>
+        .watermark-fixed {
+            position: fixed;
+            inset: 0;
+            pointer-events: none; /* can't click */
+            user-select: none; /* can't select */
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            z-index: -999; /* behind content */
+        }
+
+            .watermark-fixed::before {
+                content: "TESTES";
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%) rotate(-55deg);
+                font: 900 clamp(260px, 34vw, 520px) / 1 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+                letter-spacing: 0.10em;
+                opacity: 0.10;
+                /* prevents weird selection/callouts */
+                user-select: none;
+                -webkit-user-select: none;
+                -webkit-touch-callout: none;
+                /* if the word gets too wide, allow wrapping instead of forcing overflow */
+            }
+    </style>    
+}

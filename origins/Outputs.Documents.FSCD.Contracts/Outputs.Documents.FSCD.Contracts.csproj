@@ -2,7 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Outputs.Documents.Abstractions\Outputs.Documents.Abstractions.csproj" />
-    <ProjectReference Include="..\..\src\Outputs.Documents.Samples\Outputs.Documents.Samples.csproj" />
+    <ProjectReference Include="..\..\tools\Outputs.Documents.SampleFinder\Outputs.Documents.SampleFinder.csproj" />
     <ProjectReference Include="..\..\src\Outputs.Documents.Domain\Outputs.Documents.Domain.csproj" />
   </ItemGroup>
 

@@ -2,7 +2,7 @@ using Outputs.Documents.Domain.Documents;
 using CttDispatchSheetContract = Outputs.Documents.DOCE.Contracts.DC003CttDispatchSheet;
 using CttDispatchSheetEntryContract = Outputs.Documents.DOCE.Contracts.DC003CttDispatchEntry;
 
-using Outputs.Documents.Samples;
+using Outputs.Documents.SampleFinder;
 
 namespace Outputs.Documents.DOCE.Contracts.Samples.DC003CttDispatchSheet;
 

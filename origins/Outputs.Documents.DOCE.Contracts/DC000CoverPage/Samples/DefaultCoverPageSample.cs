@@ -1,6 +1,6 @@
 using Outputs.Documents.DOCE.Contracts;
 
-using Outputs.Documents.Samples;
+using Outputs.Documents.SampleFinder;
 
 namespace Outputs.Documents.DOCE.Contracts.Samples.DC000CoverPage;
 

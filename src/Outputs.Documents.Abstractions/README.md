@@ -25,6 +25,7 @@ Shared document model contracts.
 Files:
 
 - `IDocumentModel`: marker contract for renderable document models.
+- `NoDocumentModel`: shared empty model for templates that intentionally do not receive document data, such as diagnostics and calibration pages.
 
 Rules:
 

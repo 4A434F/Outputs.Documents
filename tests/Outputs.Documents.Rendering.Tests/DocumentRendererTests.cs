@@ -134,6 +134,6 @@ public sealed class DocumentRendererTests
     {
         var registry = new DocumentTemplateCatalog([descriptor]);
         var selector = new DocumentTemplateSelector(registry, []);
-        return new DocumentRenderer(components, selector, pdfs);
+        return new DocumentRenderer(components, selector, registry, pdfs);
     }
 }

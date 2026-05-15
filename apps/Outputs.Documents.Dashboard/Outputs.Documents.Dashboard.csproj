@@ -5,7 +5,7 @@
     <ProjectReference Include="..\..\origins\Outputs.Documents.DOCE.Contracts\Outputs.Documents.DOCE.Contracts.csproj" />
     <ProjectReference Include="..\..\origins\Outputs.Documents.FSCD.Contracts\Outputs.Documents.FSCD.Contracts.csproj" />
     <ProjectReference Include="..\..\src\Outputs.Documents.Domain\Outputs.Documents.Domain.csproj" />
-    <ProjectReference Include="..\..\src\Outputs.Documents.Samples\Outputs.Documents.Samples.csproj" />
+    <ProjectReference Include="..\..\tools\Outputs.Documents.SampleFinder\Outputs.Documents.SampleFinder.csproj" />
     <ProjectReference Include="..\..\src\Outputs.Documents.Rendering\Outputs.Documents.Rendering.csproj" />
     <ProjectReference Include="..\..\origins\Outputs.Documents.DOCE.Templates\Outputs.Documents.DOCE.Templates.csproj" />
     <ProjectReference Include="..\..\origins\Outputs.Documents.FSCD.Templates\Outputs.Documents.FSCD.Templates.csproj" />

@@ -1,7 +1,8 @@
 using Outputs.Documents.Dashboard.Components;
-using Outputs.Documents.Samples;
+using Outputs.Documents.SampleFinder;
 using Outputs.Documents.Rendering;
-using Outputs.Documents.Templates;
+using Outputs.Documents.Components;
+using Outputs.Documents.Components.Documents.Calibration;
 using Outputs.Documents.DOCE.Templates;
 using Outputs.Documents.FSCD.Templates;
 
@@ -14,6 +15,7 @@ builder.Services.AddOptions<StaticFilePaths>();
 
 builder.Services
     .AddRazorDocumentRendering()
+    .WithDocumentsFromAssembly(typeof(PrinterCalibrationPage).Assembly)
     .WithDocumentsFromAssembly(typeof(CourtesyLetterTemplate).Assembly)
     .WithDocumentsFromAssembly(typeof(FS1040CancellationCdc1PremiumTemplate).Assembly)
     .WithSamplesFromAssembly(typeof(Outputs.Documents.DOCE.Contracts.DC000CoverPage).Assembly)

@@ -2,7 +2,7 @@ using Outputs.Documents.Domain.Documents;
 using Outputs.Documents.Domain.Locations;
 using CourtesyLetterContract = Outputs.Documents.DOCE.Contracts.DC001CourtesyLetter;
 
-using Outputs.Documents.Samples;
+using Outputs.Documents.SampleFinder;
 
 namespace Outputs.Documents.DOCE.Contracts.Samples.DC001CourtesyLetter;
 

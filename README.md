@@ -21,8 +21,8 @@ src/
   Outputs.Documents.Domain/
   Outputs.Documents.Rendering/
   Outputs.Documents.Rendering.Iron/
-  Outputs.Documents.Samples/
-  Outputs.Documents.Templates/
+  Outputs.Documents.SampleFinder/
+  Outputs.Documents.Components/
 
 origins/
   Outputs.Documents.DOCE.Contracts/
@@ -60,7 +60,7 @@ Examples:
 
 ```text
 Outputs.Documents.Rendering
-Outputs.Documents.Samples
+Outputs.Documents.SampleFinder
 Outputs.Documents.DOCE.Contracts
 Outputs.Documents.FSCD.Templates
 ```
@@ -141,19 +141,19 @@ IronPDF provider for `IPdfGenerator`.
 
 See [src/Outputs.Documents.Rendering.Iron/README.md](src/Outputs.Documents.Rendering.Iron/README.md).
 
-### Outputs.Documents.Samples
+### Outputs.Documents.SampleFinder
 
 Sample model discovery and catalog infrastructure.
 
-See [src/Outputs.Documents.Samples/README.md](src/Outputs.Documents.Samples/README.md).
+See [tools/Outputs.Documents.SampleFinder/README.md](tools/Outputs.Documents.SampleFinder/README.md).
 
 Important: this project does not contain actual sample data. Actual samples live beside the contract they construct.
 
-### Outputs.Documents.Templates
+### Outputs.Documents.Components
 
 Shared Razor components and layouts.
 
-See [src/Outputs.Documents.Templates/README.md](src/Outputs.Documents.Templates/README.md).
+See [src/Outputs.Documents.Components/README.md](src/Outputs.Documents.Components/README.md).
 
 Concrete origin templates do not live here.
 
@@ -206,7 +206,7 @@ Rules:
 
 - Put concrete DOCE templates here.
 - Reference `Outputs.Documents.DOCE.Contracts`.
-- Reference shared components from `Outputs.Documents.Templates`.
+- Reference shared components from `Outputs.Documents.Components`.
 - Do not put sample data here.
 
 ### Outputs.Documents.FSCD.Contracts
@@ -238,7 +238,7 @@ Rules match DOCE templates:
 
 - Put concrete FSCD templates here.
 - Reference `Outputs.Documents.FSCD.Contracts`.
-- Reference shared components from `Outputs.Documents.Templates`.
+- Reference shared components from `Outputs.Documents.Components`.
 - Do not put sample data here.
 
 ## Apps
@@ -340,5 +340,5 @@ dotnet test Outputs.Documents.sln --no-restore /m:1 /nr:false
 If project paths changed, restore the affected project first. Static graph restore may report a local macOS `CSSM_ModuleLoad()` message while still generating assets:
 
 ```bash
-dotnet restore src/Outputs.Documents.Samples/Outputs.Documents.Samples.csproj /p:RestoreUseStaticGraphEvaluation=true
+dotnet restore tools/Outputs.Documents.SampleFinder/Outputs.Documents.SampleFinder.csproj /p:RestoreUseStaticGraphEvaluation=true
 ```

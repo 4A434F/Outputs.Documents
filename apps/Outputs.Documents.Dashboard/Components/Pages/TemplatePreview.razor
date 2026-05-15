@@ -111,7 +111,9 @@
     private string? SampleError { get; set; }
 
     private Dictionary<string, object?> ComponentParameters =>
-        SelectedDescriptor is null || SampleModel is null
+        SelectedDescriptor is null || SelectedDescriptor.ModelType == typeof(NoDocumentModel)
+            ? new Dictionary<string, object?>()
+            : SampleModel is null
             ? new Dictionary<string, object?>()
             : new Dictionary<string, object?>
             {
@@ -126,6 +128,14 @@
         if (SelectedDescriptor is null)
         {
             SampleModel = null;
+            SelectedSample = null;
+            SampleError = null;
+            return;
+        }
+
+        if (SelectedDescriptor.ModelType == typeof(NoDocumentModel))
+        {
+            SampleModel = NoDocumentModel.Instance;
             SelectedSample = null;
             SampleError = null;
             return;
