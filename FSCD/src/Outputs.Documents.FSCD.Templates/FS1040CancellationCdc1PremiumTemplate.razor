@@ -1,0 +1,104 @@
+@namespace Outputs.Documents.FSCD.Templates
+@using Microsoft.AspNetCore.Components
+@using Outputs.Documents.Abstractions
+@using Outputs.Documents.Components.Formatting
+@using Outputs.Documents.Components.Layouts
+@using Outputs.Documents.Components.Payments
+@using Outputs.Documents.Components.Signatures
+@using Outputs.Documents.Domain.Documents
+@using Outputs.Documents.FSCD.Contracts
+
+@attribute [DocumentTemplate(
+                Key = "fs1040-cdc1-cancellation-letter-premium",
+                Name = "CDC1 Cancellation Letter (FSCD) - Premium",
+                Group = "FSCD")
+            ]
+
+<LetterLayout
+    Address="@Model.Client.Address"
+    Subject="Anulação de apólice"
+    Date="@ToDateTime(Model.IssueDate)"
+    ShowDate="true"
+    TraceText="@TraceText">
+    <SubjectDetails>
+        <div>Tomador do Seguro: @ValueOrDash(Model.Client.Name)</div>
+        <div>NIF: @ValueOrDash(Model.Client.TaxIdentificationNumber)</div>
+        <div>Apólice / Produto: @PolicyProductText</div>
+        <div>Risco Seguro: @ValueOrDash(Model.RiskUnit?.Description)</div>
+    </SubjectDetails>
+
+    <BodyContent>
+        <p class="greeting">Exmo.(s) Senhor(es),</p>
+
+        <p>
+            Informamos que, satisfazendo as indicações que nos foram enviadas, procedemos à anulação da apólice acima indicada
+            com efeitos a partir do dia <strong>@Model.CancellationDate.ToPortugueseShortDate()</strong>.
+        </p>
+
+        <p>
+            De acordo com o contrato de seguro, da anulação resulta um prémio a pagar no montante de
+            <strong>@Model.DebtAmount.ToPortugueseMoney()</strong> Euros.
+        </p>
+
+        <p class="fscd-tax-line">
+            I.V.A. Isento (n.º 28 do Art.º 9.º do CIVA). <span>SELO, INEM e SNB regularizados por guia.</span>
+        </p>
+
+        <p>
+            O valor acima indicado pode ser pago conforme as instruções do Aviso Recibo que em breve irá receber.
+        </p>
+
+        <p>
+            Colocamo-nos à sua disposição para qualquer esclarecimento adicional, através da Linha de Apoio ao Cliente
+            (ver contactos abaixo). Em alternativa, pode contatar o seu mediador ou qualquer uma das nossas agências.
+        </p>
+
+        <SignatureComponent
+            Greeting="Com os nossos cumprimentos,"
+            ImageName="Pedro_Mortagua.png"
+            Name="Pedro Mortágua"
+            Department="DFN - Departamento Gestão de Cobranças" />
+        
+    </BodyContent>
+</LetterLayout>
+
+@code {
+    [Parameter]
+    public BGOW0044Contract Model { get; set; } = default!;
+
+    private static DocumentTraceId TraceText => new()
+    {
+        Id = "FS1040",
+        Environment = "Env",
+        Program = "Program",
+        User = "User"
+    };
+
+    private string PolicyProductText =>
+        string.Join(" / ", new[]
+        {
+            Model.Policy.PolicyNumber,
+            Model.Product.BranchProductDescription
+        }.Where(value => !string.IsNullOrWhiteSpace(value)));
+
+    private static DateTime? ToDateTime(DateOnly? date)
+    {
+        return date?.ToDateTime(TimeOnly.MinValue);
+    }
+
+    private static string ValueOrDash(string? value)
+    {
+        return string.IsNullOrWhiteSpace(value) ? "____" : value;
+    }
+}
+
+<style>
+    .fscd-tax-line {
+        font-size: 5.6pt;
+        font-weight: 700;
+    }
+
+    .fscd-tax-line span {
+        margin-left: 8mm;
+    }
+</style>

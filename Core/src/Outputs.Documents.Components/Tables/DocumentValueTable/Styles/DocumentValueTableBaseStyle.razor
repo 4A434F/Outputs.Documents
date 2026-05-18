@@ -1,0 +1,83 @@
+@namespace Outputs.Documents.Components.Tables
+
+<style>
+    .document-value-table {
+        --dvt-font-size: inherit;
+        --dvt-header-font-size: var(--dvt-font-size);
+        --dvt-font-family: inherit;
+        --dvt-cell-padding: 4px 6px;
+        --dvt-header-padding: 6px 6px;
+        --dvt-row-height: 22px;
+        --dvt-line-height: 1.2;
+        --dvt-row-rule: 1px solid #cfcfcf;
+        --dvt-header-rule: 1px solid #cfcfcf;
+        --dvt-outer-border: none;
+        --dvt-cell-border: 1px dotted #000;
+        --dvt-header-bg: transparent;
+        --dvt-rule-inset: 6px;
+
+        width: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
+        font-size: var(--dvt-font-size);
+        font-family: var(--dvt-font-family);
+        border: var(--dvt-outer-border);
+    }
+
+    .document-value-table th,
+    .document-value-table td {
+        position: relative;
+        padding: var(--dvt-cell-padding);
+        vertical-align: middle;
+        height: var(--dvt-row-height);
+        line-height: var(--dvt-line-height);
+        word-break: break-word;
+        background: transparent;
+    }
+
+    .document-value-table th {
+        padding: var(--dvt-header-padding);
+        background: var(--dvt-header-bg);
+        font-weight: 700;
+        font-size: var(--dvt-header-font-size);
+    }
+
+    .document-value-table .left {
+        text-align: left;
+    }
+
+    .document-value-table .center {
+        text-align: center;
+    }
+
+    .document-value-table .right {
+        text-align: right;
+    }
+
+    .document-value-table tfoot .total-row td {
+        font-weight: 700;
+        text-transform: uppercase;
+        background: transparent;
+    }
+
+    @@media print {
+        .document-value-table thead {
+            display: table-header-group;
+        }
+
+        .document-value-table tfoot {
+            display: table-row-group;
+        }
+
+        .document-value-table tfoot.keep-block {
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+
+        .document-value-table tfoot.keep-block tr,
+        .document-value-table tfoot.keep-block td {
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+    }
+</style>

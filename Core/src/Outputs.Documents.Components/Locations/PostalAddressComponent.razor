@@ -1,0 +1,55 @@
+@namespace Outputs.Documents.Components.Locations
+@using Microsoft.Extensions.Options
+@using Microsoft.AspNetCore.Components
+@using Outputs.Documents.Domain.Locations
+
+@inject IOptions<StaticFilePaths>  StaticFiles
+
+<div class="address-container">
+    <div class="address-block">
+        @foreach (var line in Address?.GetLines() ?? Enumerable.Empty<string>())
+        {
+            <div>@line.ToUpper()</div>
+        }
+    </div>
+</div>
+
+<style>
+    @@font-face {
+        font-family: 'LucidaConsole';
+        src: url('data:font/ttf;base64,@Base64Font') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+    .address-container {
+        position: absolute;
+        top: 39mm;
+        right: 18mm;
+        width: 100mm;
+        height: 55mm;
+        box-sizing: border-box;
+        padding: 10mm;
+        margin: 0;
+/*         border: 1px dashed #999; */
+    }
+
+    .address-block {
+        width: 100%;
+        line-height: 1.3;
+        font-family: 'LucidaConsole', monospace;
+        font-size: 10pt;
+        /* border: 1px dashed #999; */
+    }
+</style>
+
+@code {
+    [Parameter] public PostalAddress? Address { get; set; }
+
+    public string? Base64Font { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Base64Font = StaticFiles.Value.TryReadFontBase64("lucon.ttf");
+    }
+}

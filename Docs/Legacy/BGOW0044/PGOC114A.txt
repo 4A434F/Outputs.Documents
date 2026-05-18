@@ -1,0 +1,2768 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID.    PGOC114A.
+
+      ***************************************************************
+      *                                                             *
+      * OUTPUTS: EMISSAO DE DOCUMENTOS 'CARTA DE CANCELAMENTO'.     *
+      *                                                             *
+      * ESTE PROGRAMA RECEBE MOVIMENTOS PROVENIENTES DO SAP, PARA A *
+      * EMISSAO DE CARTAS DE CANCELAMENTO.                          *
+      * AS CARTAS DE CANCELAMENTO, PODEM SER DOS SEGUINTES TIPOS:   *
+      *  - CDC1: CARTA DE CANCELAMENTO - CARTA DIRIGIDA AO CLIENTE  *
+      *          (PÁGINA ÚNICA)                                     *
+      *          '1037' - PERDA TOTAL                               *
+      *          '1038' - SOLICITADO CLIENTE - VALOR ZEROS          *
+      *          '1039' - SOLICITADO CLIENTE - ESTORNO              *
+      *          '1040' - SOLICITADO CLIENTE - PRÉMIO               *
+      *  - ENTI: CARTA À ENTIDADE INTERESSADA - CARTA DIRIGIDA AO   *
+      *          CREDOR HIPOTECÁRIO (PÁGINA ÚNICA)                  *
+      *          '1041' - RESOLUÇÃO DO CONTRATO SEGURO              *
+      *          '1042' - CANCELAMENTO DE AVERBAMENTO               *
+      *  - CTAD: CARTA DE PRE-CONTENCIOSO (ADVOGADO) - CARTA        *
+      *          DIRIGIDA AO CLIENTE (PÁGINA ÚNICA)                 *
+      *          '1043' - PRE-CONTENCIOSO                           *
+      *          '1044' - PRE-CONTENCIOSO COM RECIBOS PENDENTES     *
+      *          CARTA DIRIGIDA AO MEDIADOR (LISTA DE RECIBOS COM   *
+      *          PAGINAÇÃO), COM CARTA DE CORTESIA                  *
+      *          '1045' - PRE-CONTENCIOSO COM RECIBOS PENDENTES     *
+      *  - CHIP: CARTA AO CREDOR HIPOTECÁRIO - CARTA DIRIGIDA AO    *
+      *          CREDOR HIPOTECÁRIO (LISTA RECIBOS COM PAGINAÇÃO)   *
+      *          '1046' - FALTA PAGAMENTO PREMIO - FRACÇÃO INICIAL  *
+      *          '1047' - FALTA PAGAMENTO PREMIO - SEGUINTES        *
+      *                                                             *
+CEL015*    CARTAS DE GESTÃO DE NÃO COBRANÇA VIDA RISCO (GIS)        *
+CEL015*  - FP01: CARTA DE FALTA DE PAGAMENTO PARA TOMADOR DE SEGURO *
+CEL015*          (COM Crédito) - 1176                               *
+CEL015*  - FP02: CARTA DE FALTA DE PAGAMENTO PARA TOMADOR DE SEGURO *
+CEL015*          (SEM Crédito) - 1177                               *
+CEL015*  - FP05: CARTA DE FALTA DE PAGAMENTO PARA TOMADOR DE SEGURO *
+CEL015*          (SEM Crédito - Anulação de Coberturas) - 1178      *
+CEL015*  - FP07: CARTA DE FALTA DE PAGAMENTO PARA TOMADOR DE SEGURO *
+CEL015*          (SEM Crédito - Redução de Contrato) - 1179         *
+CEL015*  - FP12: CARTA DE FALTA DE PAGAMENTO PARA BENEFICIÁRIO      *
+CEL015*          INTERVENTOR (COM Crédito NÃO CGD) - 1180           *
+CEL015*  - FP21: CARTA DE FALTA DE PAGAMENTO PARA PESSOA SEGURA     *
+CEL015*          (COM Crédito) - 1181                               *
+CEL015*  - FP03: CARTA DE ANULAÇÃO PARA TOMADOR DE SEGURO           *
+CEL015*          (COM Crédito) - 1182                               *
+CEL015*  - FP04: CARTA DE ANULAÇÃO PARA TOMADOR DE SEGURO           *
+CEL015*          (SEM Crédito) - 1183                               *
+CEL015*  - FP06: CARTA DE ANULAÇÃO DE COBERTURAS P/A TOMADOR SEGURO *
+CEL015*          (SEM Crédito) - 1184                               *
+CEL015*  - FP23: CARTA DE ANULAÇÃO PARA PESSOA SEGURA               *
+CEL015*          (COM Crédito) - 1185                               *
+CEL076*  - FP13: CARTA DE ANULAÇÃO PARA BENEFICIÁRIO INTERVENTOR    *
+CEL076*          (COM Crédito) - 1186                               *
+      ***************************************************************
+      *                     -------------------                     *
+      *                     | MAINTENANCE LOG |                     *
+      *                     -------------------                     *
+      *                                                             *
+      * PROG.    PCR       DATE    COMMENTS                         *
+      * ----- --------- ---------- -------------------------------- *
+      * PJG   201400133 2016-06-01 CRIACAO DO PROGRAMA.             *
+      *                                                                *
+#01   * JADS  CHG848805 2020-06-17 Alt ass Nuno Fernandes > Maria MMelo*
+      *                                                                *
+#02   * JADS  TRPR201901-2486 2021-02-24 Pedro Cordeiro > João Casimiro*
+      *                                                                *
+#04   * JADS            2021-03-23 Alteração solicitada por Paulo Graça*
+      *                            email Revalidação apólice 754748858 *
+      *                                                                *
+CEL015* NJF   202000036 2021-03-03 GESTÃO NÃO COBRANÇA VIDA RISCO   *
+CEL015*                            (GIS)                            *
+      *                                                             *
+CEL017* NJF   202000045 2022-01-07 ALTERAÇÃO DE COPYBOOKS INTERFACE *
+CEL017*                            FSCD PARA LRECL=2500             *
+      *                                                             *
+GO7246* ACP   TRPR201901-6226 INCLUSÃO TEXTO PARA ANULAÇÃO AUTO     *
+GO7246*                 2023-03-20                                  *
+      *                                                                *
+#08   * JADS  OUT-1523  2023-07-18 Alteração da assinatura Maria M Melo*
+      *                            para Pedro Manuel Martins Mortágua. *
+      *                                                                *
+CEL055* NJF   202300265 2023-11-10 ALTERAÇÃO DE COPYBOOKS INTERFACE *
+CEL055*                            FSCD PARA LRECL=3000             *
+      *                                                                *
+#10   * 2024.10.30  JADS  OUT-000092 Mascara do User.                  *
+      *                                                                *
+CEL073* NJF   202300264 2025-02-11 202300264 - COMUNICAÇÃO AUTOMÁ-  *
+CEL073*                            TICA CIRCUITO DE NÃO PAGAMENTO:  *
+CEL073*                            OUT-2714 - PERMITIR TIPO DE IM-  *
+CEL073*                            PRESSAO 'E' EM DOCUMENTOS FINAN- *
+CEL073*                            CEIROS PARA SÓ ARQUIVO           *
+      *                                                                *
+#12   * 2025.04.16  JADS  202400189 OUT-2921 Inclusão do NIF a seguir  *
+      *                   à Pessoa Segura na Carta de Falta de Pagamen-*
+      *                   to FP12 (chapão 1180).                       *
+      *                   (problema estava no ficheiro enviado pelo SO,*
+      *                   campos mal formatados e deslocados)          *
+      *                                                                *
+#13   * 2025.04.21  JADS  202500139 OUT-2924 Alt assinat Pedro Mortágua*
+      *                   'DCI - Departamento Gestão de Cobranças' ->  *
+      *                   'DFN - Departamento Gestão de Cobranças'     *
+      *                                                                *
+CEL076* 2025.06.16  NJF   202400189 - AUTOMATIZAR ANULAÇÕES FALTA      *
+CEL076*                   PAGAMENTO (EMPRESAS):                        *
+CEL076*                   OUT-3000 - ALTERAÇÃO INTERFACE CANCELAMENTO  *
+CEL076*                   (BLOCO UR VIDA)                              *
+CEL076*                   OUT-2921 - ALTERAÇÃO CARTA DE FALTA DE PAGA- *
+CEL076*                   MENTO PARA O BENEFICIÁRIO INTERVENTOR        *
+      *                                                                *
+#15   * 2025.06.11  JADS  TRPR201901-7395 Alt. da assinatura e nome Dir*
+      *      João B Casimiro -> Fernanda Godinho e Direção de Operações*
+      *                                                                *
+CEL076* 2025.06.26  NJF   202400189 - AUTOMATIZAR ANULAÇÕES FALTA      *
+CEL076*                   PAGAMENTO (EMPRESAS):                        *
+CEL076*                   OUT-2920 - NOVA CARTA PARA O BENEFICIÁRIO    *
+CEL076*                   INTERVENTOR                                  *
+CEL076* 2025.08.06  NJF   202400189 - AUTOMATIZAR ANULAÇÕES FALTA      *
+CEL076*                   PAGAMENTO (EMPRESAS):                        *
+CEL076*                   P202400189-35 - A CARTA PARA O BENEFICIÁRIO  *
+CEL076*                   INTERVENTOR PC 24 NÃO FOI GERADA:            *
+CEL076*                   Correção da formatação do chapão             *
+CEL076* 2025.11.05  NJF   202400189 - AUTOMATIZAR ANULAÇÕES FALTA      *
+CEL076*                   PAGAMENTO (EMPRESAS):                        *
+CEL076*                   Permitir que o campo nº processo bancário    *
+CEL076*                   tenha espaços pelo meio                      *
+CEL087* 2025.11.27  NJF   202400208 - Offload Agrupada:                *
+CEL087*                   Correção dos Indices do CODBAR para Documen- *
+CEL087*                   tos endereçados ao Credor Hipotecário        *
+CEL087*                   Deixar de criar cartas de Cortesia para movi-*
+CEL087*                   mento Só Arquivo                             *
+      *                                                                *
+      ******************************************************************
+
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       SPECIAL-NAMES.
+           DECIMAL-POINT IS COMMA.
+
+      *
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT QZTEMP   ASSIGN TO QZTEMP
+               FILE STATUS IS W400-ST-QZTEMP.
+
+           SELECT QZCOPY   ASSIGN TO QZCOPY
+               FILE STATUS IS W400-ST-QZCOPY.
+
+           SELECT QZOUTPUT ASSIGN TO QZOUTPUT
+               FILE STATUS IS W400-ST-QZOUTPUT.
+
+      *
+       DATA DIVISION.
+       FILE SECTION.
+
+      *............................................ - FICH. INPUT -
+      *  >> REGISTOS DO FICH QZTEMP <<
+       FD  QZTEMP
+           RECORDING MODE V
+           BLOCK CONTAINS 0 RECORDS
+CEL017*    RECORD VARYING 1 TO 2200 DEPENDING ON W400-QZTLEN
+CEL055*    RECORD VARYING 1 TO 2467 DEPENDING ON W400-QZTLEN
+CEL055     RECORD VARYING 1 TO 2967 DEPENDING ON W400-QZTLEN
+           LABEL RECORDS ARE STANDARD.
+
+       01  QZTEMP-RECORD.
+CEL017*  03  FILLER                      PIC X OCCURS 1 TO 2200
+CEL055*  03  FILLER                      PIC X OCCURS 1 TO 2467
+CEL055   03  FILLER                      PIC X OCCURS 1 TO 2967
+                                             DEPENDING ON W400-QZTLEN.
+
+
+      *............................................ - FICH. I/O -
+      *  >> REGISTOS DO FICH QZCOPY <<
+       FD  QZCOPY
+           RECORDING MODE V
+           BLOCK CONTAINS 0 RECORDS
+CEL017*    RECORD VARYING 1 TO 2229 DEPENDING ON W400-QZCLEN
+CEL055*    RECORD VARYING 1 TO 2520 DEPENDING ON W400-QZCLEN
+CEL055     RECORD VARYING 1 TO 3020 DEPENDING ON W400-QZCLEN
+           LABEL RECORDS ARE STANDARD.
+
+       01  QZCOPY-RECORD.
+CEL017*  03  FILLER                      PIC X OCCURS 1 TO 2229
+CEL055*  03  FILLER                      PIC X OCCURS 1 TO 2520
+CEL055   03  FILLER                      PIC X OCCURS 1 TO 3020
+                                             DEPENDING ON W400-QZCLEN.
+
+
+      *............................................ - FICH. OUTPUT -
+      *  >> REGISTOS DO FICH QZOUTPUT <<
+       FD  QZOUTPUT
+           RECORDING MODE V
+           BLOCK CONTAINS 0 RECORDS
+           RECORD VARYING 1 TO 4096 DEPENDING ON W400-QZOLEN
+           LABEL RECORDS ARE STANDARD.
+
+       01  QZOUTPUT-RECORD.
+         03  FILLER                      PIC X OCCURS 1 TO 4096
+                                             DEPENDING ON W400-QZOLEN.
+
+
+      *
+       WORKING-STORAGE SECTION.
+      ***************************************************************
+      *  W100-PROGRAM-SWITCHES - USED TO CONTROL PROGRAM LOGIC      *
+      ***************************************************************
+       01  W100-SYSTEM-SWITCHES.
+
+         03  W100-ERROR                  PIC X(01)  VALUE SPACES.
+             88 W100-ERROR-OCCURRED                 VALUE 'Y'.
+             88 W100-NO-ERROR                       VALUE 'N'.
+
+         03  W100-ESCREVER               PIC X(01)  VALUE SPACES.
+             88 W100-ESCREVER-SIM                   VALUE '*'.
+             88 W100-ESCREVER-NAO                   VALUE SPACES.
+
+         03  W100-ENDERECO               PIC X(01)  VALUE SPACES.
+             88 W100-ENDERECO-CL                    VALUE 'C'.
+             88 W100-ENDERECO-CH                    VALUE 'H'.
+             88 W100-ENDERECO-AG                    VALUE 'A'.
+
+         03  W100-LAYOUT                 PIC X(01)  VALUE SPACES.
+             88 W100-F-P-SELECT                     VALUE 'F'.
+             88 W100-B-P-SELECT                     VALUE 'B'.
+
+         03  W100-ASSINATURA             PIC X(03)  VALUE SPACES.
+   #02*      88 W100-ASS-F071386                    VALUE 'PAC'.
+             88 W100-ASS-F003835                    VALUE 'JBC'.
+#15          88 W100-ASS-F071397                    VALUE 'MFG'.
+   #01*      88 W100-ASS-F071668                    VALUE 'NF '.
+#01#08*      88 W100-ASS-X871955                    VALUE 'MMM'.
+#08          88 W100-ASS-F083216                    VALUE 'MMM'.
+             88 W100-ASS-X890130                    VALUE 'AFS'.
+
+      ***************************************************************
+      *  W400 MISCELLANEOUS WORK AREAS                              *
+      ***************************************************************
+       01  W400-FILE-STATUS.
+
+         03  W400-ST-QZTEMP              PIC X(02)  VALUE ZEROS.
+             88 W400-ST-QZTEMP-OK                   VALUE '00' '04'.
+             88 W400-ST-QZTEMP-FIM                  VALUE '10'.
+
+         03  W400-ST-QZCOPY              PIC X(02)  VALUE ZEROS.
+             88 W400-ST-QZCOPY-OK                   VALUE '00' '04'.
+             88 W400-ST-QZCOPY-FIM                  VALUE '10'.
+
+         03  W400-ST-QZOUTPUT            PIC X(02)  VALUE ZEROS.
+             88 W400-ST-QZOUTPUT-OK                 VALUE '00'.
+
+      *
+       01  W400-AUXILIARES.
+         03  W400-QZTLEN                 PIC 9(08) COMP  VALUE ZEROS.
+         03  W400-QZCLEN                 PIC 9(08) COMP  VALUE ZEROS.
+         03  W400-QZOLEN                 PIC 9(08) COMP  VALUE ZEROS.
+
+         03  W400-AUXLEN                 PIC S9(04) COMP  VALUE +0.
+
+      *
+       01  W400-LOCAL-VARIABLES.
+         03  W400-AUX-TIMESTAMP.
+           05  W400-AUX-TSDIA            PIC 9(02).
+           05                            PIC X(01)  VALUE '/'.
+           05  W400-AUX-TSMES            PIC 9(02).
+           05                            PIC X(01)  VALUE '/'.
+           05  W400-AUX-TSANO            PIC 9(04).
+           05                            PIC X(01)  VALUE SPACE.
+           05  W400-AUX-TSHH             PIC 9(02).
+           05                            PIC X(01)  VALUE ':'.
+           05  W400-AUX-TSMM             PIC 9(02).
+           05                            PIC X(01)  VALUE ':'.
+           05  W400-AUX-TSSS             PIC 9(02).
+
+         03  W400-MOUNTH                 PIC 9(02)  VALUE ZEROS.
+         03  W400-MOUNTH-DESC            PIC X(09)  VALUE SPACES.
+
+CEL015   03  W400-DT-VENC-TXT            PIC X(37).
+CEL015   03  W400-DIV-LIM-PAG            PIC X(52).
+CEL015   03  W400-DT-ANUL-TXT            PIC X(12).
+CEL015
+CEL015   03  W400-VLR-DIVIDA             PIC ---.---.---.--9,99
+CEL015                                                 BLANK WHEN ZEROS.
+CEL015   03  W400-VLR-DIVIDA-X     REDEFINES W400-VLR-DIVIDA
+CEL015                                   PIC X(18).
+CEL015   03  W400-VLR-DIVIDA-TXT         PIC X(18) VALUE SPACES.
+CEL015
+CEL076*CEL015   03  W400-VR-PSEGURA1-NIF        PIC X(28) VALUE SPACES.
+CEL076*CEL015   03  W400-VR-PSEGURA2-NIF        PIC X(28) VALUE SPACES.
+CEL076   03  W400-PS-1-NIF               PIC X(28) VALUE SPACES.
+CEL076   03  W400-PS-2-NIF               PIC X(28) VALUE SPACES.
+
+      *
+      *** TABELA COM DESCRITIVOS DOS MESES ***
+       01  W400-MOUNTH-TABLE.
+         03  FILLER                      PIC X(12) VALUE '01 janeiro  '.
+         03  FILLER                      PIC X(12) VALUE '02 fevereiro'.
+         03  FILLER                      PIC X(12) VALUE '03 março    '.
+         03  FILLER                      PIC X(12) VALUE '04 abril    '.
+         03  FILLER                      PIC X(12) VALUE '05 maio     '.
+         03  FILLER                      PIC X(12) VALUE '06 junho    '.
+         03  FILLER                      PIC X(12) VALUE '07 julho    '.
+         03  FILLER                      PIC X(12) VALUE '08 agosto   '.
+         03  FILLER                      PIC X(12) VALUE '09 setembro '.
+         03  FILLER                      PIC X(12) VALUE '10 outubro  '.
+         03  FILLER                      PIC X(12) VALUE '11 novembro '.
+         03  FILLER                      PIC X(12) VALUE '12 dezembro '.
+       01  FILLER  REDEFINES  W400-MOUNTH-TABLE.
+         03  W400-ENTRANCE OCCURS 12 TIMES
+                           ASCENDING KEY IS W400-NR-MOUNTH
+                           INDEXED BY INDICE.
+           05  W400-NR-MOUNTH            PIC 9(02).
+           05  FILLER                    PIC X(01).
+           05  W400-DESCRIPTION          PIC X(09).
+
+      *
+      *** TABELA COM DIMENSAO DOS LAYOUTS ***
+       01  W400-LAYOUT-TABLE.
+         03  FILLER                 PIC X(17) VALUE 'X014ASSAFS 031000'.
+#02      03  FILLER                 PIC X(17) VALUE 'X014ASSJBC 031000'.
+#01      03  FILLER                 PIC X(17) VALUE 'X014ASSMMM 031000'.
+         03  FILLER                 PIC X(17) VALUE 'X014HDRLST 004000'.
+         03  FILLER                 PIC X(17) VALUE 'X014LISTA  003000'.
+       01  FILLER  REDEFINES  W400-LAYOUT-TABLE.
+         03  W400-LAYOUT-SIZE OCCURS 5 TIMES
+                           ASCENDING KEY IS W400-LAYOUT-NAME
+                           INDEXED BY LYT.
+           05  W400-LAYOUT-NAME          PIC X(10).
+           05  FILLER                    PIC X(01).
+           05  W400-LAYOUT-HEIGHT        PIC 9(03)V9(03).
+
+      ***************************************************************
+      *  W500-VARIAVEIS                                             *
+      ***************************************************************
+       01  W500-VARIAVEIS.
+         03  W500-COMP-CODE              PIC S9(4) COMP  VALUE +255.
+         03  W500-IND                    PIC S9(4) COMP  VALUE +0.
+
+         03  W500-NR-PAG                 PIC 9(07)  VALUE ZEROS.
+         03  W500-NR-TOT-PAG             PIC 9(07)  VALUE ZEROS.
+         03  W500-FRMT-PAG               PIC Z(07)  VALUE SPACES.
+         03  W500-FRMT-TOT-PAG           PIC Z(07)  VALUE SPACES.
+
+         03  W500-MAXSPACE               PIC S9(03)V9(03)  VALUE +251.
+         03  W500-AUX-AVAILABLE          PIC S9(03)V9(03)  VALUE ZEROS.
+         03  W500-AVAILABLE              PIC S9(03)V9(03)  VALUE ZEROS.
+
+         03  W500-LAYOUT-NAME            PIC X(10)  VALUE SPACES.
+         03  W500-LAYOUT-ALTURA          PIC 9(03)V9(03)  VALUE ZEROS.
+
+         03  W500-GUARDA-DATA            PIC X(23)  VALUE SPACES.
+         03  W500-GUARDA-RAMO            PIC X(06)  VALUE SPACES.
+         03  W500-RAMO                   PIC X(04)  VALUE SPACES.
+         03  W500-GUARDA-OBJECTO         PIC X(72)  VALUE SPACES.
+         03  W500-GUARDA-MES1            PIC X(09)  VALUE SPACES.
+         03  W500-GUARDA-MES2            PIC X(09)  VALUE SPACES.
+         03  W500-GUARDA-QZTLEN          PIC 9(08) COMP  VALUE ZEROS.
+         03  W500-GUARDA-CODBAR          PIC X(200)  VALUE SPACES.
+
+      *
+       01  W500-IDENT-LINE.
+         03  W500-IDLINE-DEST-NR         PIC X(10)  VALUE SPACES.
+         03  FILLER                      PIC X(01)  VALUE '-'.
+         03  W500-IDLINE-DEST-LREF       PIC X(04)  VALUE SPACES.
+         03  FILLER                      PIC X(01)  VALUE ' '.
+         03  W500-IDLINE-ID-DOC          PIC X(04)  VALUE SPACES.
+         03  FILLER                      PIC X(03)  VALUE ' S-'.
+         03  W500-IDLINE-COD-DOC         PIC X(04)  VALUE SPACES.
+         03  FILLER                      PIC X(01)  VALUE '-'.
+         03  W500-IDLINE-UR-TIPO         PIC X(02)  VALUE SPACES.
+         03  W500-IDLINE-MOT-CANC        PIC X(05)  VALUE SPACES.
+
+      *
+       01  W500-SUBJECT-LINES.
+         03  W500-SUBJECT-LINE1          PIC X(90)  VALUE SPACES.
+         03  W500-SUBJECT-LINE2          PIC X(90)  VALUE SPACES.
+         03  W500-SUBJECT-LINE3          PIC X(90)  VALUE SPACES.
+         03  W500-SUBJECT-LINE4          PIC X(90)  VALUE SPACES.
+         03  W500-SUBJECT-LINE5          PIC X(90)  VALUE SPACES.
+         03  W500-SUBJECT-LINE6          PIC X(90)  VALUE SPACES.
+         03  W500-SUBJECT-LINE7          PIC X(90)  VALUE SPACES.
+         03  W500-SUBJECT-LINE8          PIC X(90)  VALUE SPACES.
+         03  W500-SUBJECT-LINE9          PIC X(90)  VALUE SPACES.
+CEL015   03  W500-SUBJECT-LINE10         PIC X(90)  VALUE SPACES.
+CEL015   03  W500-SUBJECT-LINE11         PIC X(90)  VALUE SPACES.
+
+      *
+       01  W500-TOTAL-REGS.
+         03  W500-REG-LIDOS              PIC 9(15)  VALUE ZEROS.
+         03  W500-REG-TMP-ESCRI          PIC 9(15)  VALUE ZEROS.
+         03  W500-REG-TMP-LIDOS          PIC 9(15)  VALUE ZEROS.
+         03  W500-REG-ESCRI              PIC 9(15)  VALUE ZEROS.
+
+      ***************************************************************
+      *  W600-LITERALS                                              *
+      ***************************************************************
+       01  W600-LITERALS.
+         03  W600-LITERAL-THIS-PROG      PIC X(08)  VALUE 'PGOC114A'.
+
+         03  W600-LT-TOMADOR-TAB         PIC X(30)  VALUE SPACES.
+
+#10   ***  Área de ligação com a rotina da Mascara do USER
+#10    01  LS-PYOXAU25.
+#10        03  LS-INPUT-DATE             PIC X(08).
+#10        03  LS-INPUT-CODE             PIC X(05).
+#10        03  LS-INPUT-USER             PIC X(08).
+#10        03  LS-OUTPUT-USER            PIC X(08).
+
+      *** ROTINA DE ENDERECAMENTO ***
+       01  BGOW0037-AREA.
+           COPY BGOW0037.
+
+      *
+      *** CARTA CANCELAMENTO - AREA INPUT ***
+CEL017*01  WORK-INPUT                    PIC X(2200)  VALUE SPACES.
+CEL055*01  WORK-INPUT                    PIC X(2467)  VALUE SPACES.
+CEL055 01  WORK-INPUT                    PIC X(2967)  VALUE SPACES.
+       01  REDEFINES WORK-INPUT.
+           COPY BGOW0044 REPLACING ==:PREFIX:== BY ==CANC==.
+
+      *
+      *** CARTA CANCELAMENTO - AREA INTERMEDIA (QZCOPY) ***
+CEL015*01  WORK-TEMP                     PIC X(2245)  VALUE SPACES.
+CEL017*01  WORK-TEMP                     PIC X(2259)  VALUE SPACES.
+CEL055*01  WORK-TEMP                     PIC X(2520)  VALUE SPACES.
+CEL055 01  WORK-TEMP                     PIC X(3020)  VALUE SPACES.
+       01  REDEFINES WORK-TEMP.
+         03  WORK-TEMP-TOT-REG-DET       PIC 9(07).
+         03  WORK-TEMP-TOT-VLR           PIC S9(12)V9(2)
+                                             SIGN LEADING SEPARATE.
+         03  WORK-TEMP-DT-INI-REC        PIC X(08).
+         03  WORK-TEMP-DT-FIM-REC        PIC X(08).
+         03  WORK-TEMP-DT-DEVIDO         PIC X(08).
+         03  WORK-TEMP-TOT-PAG           PIC 9(07).
+         03  WORK-TEMP-REG-INIC.
+           COPY BGOW0044 REPLACING ==:PREFIX:== BY ==WORK-TEMP==.
+
+      *
+      *** CARTA CANCELAMENTO - LAYOUTS ***
+           COPY BGOW0053 REPLACING ==:X:== BY ==A==.
+           COPY BGOW0001.
+           COPY BGOW0048 REPLACING ==:X:== BY ==A==.
+
+      *
+       PROCEDURE DIVISION.
+       A10-MAINLINE SECTION.
+      ***************************************************************
+      *  SECTION'S PURPOSE                                          *
+      *  THIS SECTION CONTAINS THE MAIN LOGIC OF THE MODULE         *
+      ***************************************************************
+       A10-START.
+           DISPLAY '* * * * * * * * * * * * * * * * * * * *'.
+           DISPLAY '* PROG: ' W600-LITERAL-THIS-PROG
+                   '                      *'.
+           DISPLAY '* * * * * * * * * * * * * * * * * * * *'.
+
+           PERFORM B00-1ST-PASSAGEM         THRU B00-EXIT.
+
+           PERFORM B10-INICIAL              THRU B10-EXIT.
+
+           PERFORM B20-PROCESSO             THRU B20-EXIT
+             UNTIL W400-ST-QZTEMP-FIM
+                OR W100-ERROR-OCCURRED.
+
+           PERFORM B30-FINAL                THRU B30-EXIT.
+
+           DISPLAY '* NUMERO DE REGISTOS:                 *'.
+           DISPLAY '*  - LIDOS....: ' W500-REG-LIDOS '       *'.
+           DISPLAY '*  - FICHEIRO TEMPORARIO:             *'.
+           DISPLAY '*     - ESCRITOS.: ' W500-REG-TMP-ESCRI '    *'.
+           DISPLAY '*     - LIDOS....: ' W500-REG-TMP-LIDOS '    *'.
+           DISPLAY '*  - ESCRITOS.: ' W500-REG-ESCRI '       *'.
+           DISPLAY '* * * * * * * * * * * * * * * * * * * *'.
+           DISPLAY '* FIM PROCESSAMENTO DO PROG: '
+                   W600-LITERAL-THIS-PROG ' *'.
+           DISPLAY '* * * * * * * * * * * * * * * * * * * *'.
+
+           IF W100-ERROR-OCCURRED
+              MOVE 01                         TO RETURN-CODE
+           END-IF.
+
+       A10-EXIT.
+           GOBACK.
+
+      *
+       B00-1ST-PASSAGEM SECTION.
+      ***************************************************************
+      *  SECTION'S PURPOSE                                          *
+      *      BLOCO DA 1a PASSAGEM (CARREGA QZCOPY)                  *
+      ***************************************************************
+       B00-START.
+      *** INICIALIZACOES ***
+           SET W100-ESCREVER-NAO              TO TRUE.
+
+      *** ABRE FICHEIRO DE INPUT ***
+           OPEN INPUT  QZTEMP.
+
+           IF NOT W400-ST-QZTEMP-OK
+              DISPLAY 'ERRO DE OPEN <FICH QZTEMP>..: ' W400-ST-QZTEMP
+              PERFORM Z10-CALL-ABEND
+           END-IF.
+
+      *** ABRE FICHEIRO DE OUTPUT ***
+           OPEN OUTPUT QZCOPY.
+
+           IF NOT W400-ST-QZCOPY-OK
+              DISPLAY 'ERRO DE OPEN <FICH QZCOPY>..: ' W400-ST-QZCOPY
+              PERFORM Z10-CALL-ABEND
+           END-IF.
+
+      *** LE PRIMEIRO REGISTO DO FICH DE INPUT ***
+           PERFORM X10-READ-QZTEMP          THRU X10-EXIT.
+
+      *** CICLO: PROCESSO DA 1a PASSAGEM ***
+           PERFORM B20-PROCESSO             THRU B20-EXIT
+             UNTIL W400-ST-QZTEMP-FIM
+                OR W100-ERROR-OCCURRED.
+
+      *** FECHA OS FICHEIROS ***
+           CLOSE QZTEMP
+                 QZCOPY.
+
+           IF NOT W400-ST-QZTEMP-OK
+              DISPLAY 'ERRO CLOSE <FICH QZTEMP>....: ' W400-ST-QZTEMP
+              PERFORM Z10-CALL-ABEND
+           END-IF.
+
+           IF NOT W400-ST-QZCOPY-OK
+              DISPLAY 'ERRO CLOSE <FICH QZCOPY>....: ' W400-ST-QZCOPY
+              PERFORM Z10-CALL-ABEND
+           END-IF.
+
+       B00-EXIT.
+           EXIT.
+
+
+       B10-INICIAL SECTION.
+      ***************************************************************
+      *  SECTION'S PURPOSE                                          *
+      *      BLOCO INICIAL DO PROGRAMA                              *
+      ***************************************************************
+       B10-START.
+      *** INICIALIZACOES ***
+           MOVE SPACES                        TO CODBAR.
+           MOVE ZEROS                         TO CODBAR-NSEQ-DOC.
+           MOVE W600-LITERAL-THIS-PROG        TO CODBAR-PROGRAMA.
+
+           SET W100-ESCREVER-SIM              TO TRUE.
+
+      *** FORMATA COM DATA DE EXECUCAO ***
+           MOVE FUNCTION CURRENT-DATE         TO CODBAR-TIMESTAMP.
+           MOVE CODBAR-TIMESTAMP(07:02)       TO W400-AUX-TSDIA.
+           MOVE CODBAR-TIMESTAMP(05:02)       TO W400-AUX-TSMES
+                                                 W400-MOUNTH.
+           PERFORM D10-FRMT-DESC-MES        THRU D10-EXIT.
+           MOVE CODBAR-TIMESTAMP(01:04)       TO W400-AUX-TSANO.
+           MOVE CODBAR-TIMESTAMP(09:02)       TO W400-AUX-TSHH.
+           MOVE CODBAR-TIMESTAMP(11:02)       TO W400-AUX-TSMM.
+           MOVE CODBAR-TIMESTAMP(13:02)       TO W400-AUX-TSSS.
+
+           STRING CODBAR-TIMESTAMP(07:02) ' de ' DELIMITED BY SIZE
+                  W400-MOUNTH-DESC DELIMITED BY SPACES ' de '
+                  CODBAR-TIMESTAMP(01:04) DELIMITED BY SIZE
+                                            INTO W500-GUARDA-DATA.
+
+      *** ABRE FICHEIRO DE INPUT ***
+           OPEN INPUT  QZTEMP.
+
+           IF NOT W400-ST-QZTEMP-OK
+              DISPLAY 'ERRO DE OPEN <FICH QZTEMP>..: ' W400-ST-QZTEMP
+              PERFORM Z10-CALL-ABEND
+           END-IF.
+
+           OPEN INPUT  QZCOPY.
+
+           IF NOT W400-ST-QZCOPY-OK
+              DISPLAY 'ERRO DE OPEN <FICH QZCOPY>..: ' W400-ST-QZCOPY
+              PERFORM Z10-CALL-ABEND
+           END-IF.
+
+      *** ABRE FICHEIRO DE OUTPUT ***
+           OPEN OUTPUT QZOUTPUT.
+
+           IF NOT W400-ST-QZOUTPUT-OK
+              DISPLAY 'ERRO DE OPEN <FICH QZOUTPUT>: ' W400-ST-QZOUTPUT
+              PERFORM Z10-CALL-ABEND
+           END-IF.
+
+      *** LE PRIMEIRO REGISTO DO FICH DE INPUT ***
+           PERFORM X10-READ-QZTEMP          THRU X10-EXIT.
+
+       B10-EXIT.
+           EXIT.
+
+
+       B20-PROCESSO SECTION.
+      ***************************************************************
+      *  SECTION'S PURPOSE                                          *
+      *      BLOCO PRINCIPAL DO PROGRAMA                            *
+      ***************************************************************
+       B20-START.
+      *** VALIDA TIPO DE REGISTO A TRATAR ***
+           EVALUATE TRUE
+               WHEN CANC-REG-TIPO1
+                  MOVE +0                     TO W500-AVAILABLE
+                  MOVE 1                      TO W500-NR-PAG
+                                                 W500-NR-TOT-PAG
+                  IF W100-ESCREVER-NAO
+                     MOVE WORK-INPUT          TO WORK-TEMP-REG-INIC
+                     MOVE W400-QZTLEN         TO W500-GUARDA-QZTLEN
+                     MOVE ZEROS               TO WORK-TEMP-TOT-REG-DET
+                                                 WORK-TEMP-TOT-PAG
+                     MOVE CANC-VLR-DIVIDA     TO WORK-TEMP-TOT-VLR
+                     MOVE SPACES              TO WORK-TEMP-DT-INI-REC
+                                                 WORK-TEMP-DT-FIM-REC
+                                                 WORK-TEMP-DT-DEVIDO
+                     MOVE CANC-ATM-ENTIDADE   TO WORK-TEMP-ATM-ENTIDADE
+                     MOVE CANC-ATM-REF        TO WORK-TEMP-ATM-REF
+                  ELSE
+                     PERFORM X30-READ-QZCOPY THRU X30-EXIT
+                     MOVE WORK-TEMP-TOT-PAG   TO W500-NR-TOT-PAG
+                  END-IF
+
+                  PERFORM T100-CODBAR-210BYTES THRU T100-EXIT
+
+                  MOVE SPACES                 TO W100-ENDERECO
+                                                 W100-ASSINATURA
+                  EVALUATE TRUE
+                     WHEN CANC-DOC-CRT-CDC1
+                        SET W100-ENDERECO-CL  TO TRUE
+                        PERFORM T300-CARTA-CABECALHO THRU T300-EXIT
+                        PERFORM V100-FRMT-CDC1 THRU V100-EXIT
+
+                     WHEN CANC-DOC-CRT-ENTI
+                     WHEN CANC-DOC-CRT-ENT1
+                     WHEN CANC-DOC-CRT-ENT2
+                        SET W100-ENDERECO-CH  TO TRUE
+                        PERFORM T300-CARTA-CABECALHO THRU T300-EXIT
+                        PERFORM V200-FRMT-ENTI THRU V200-EXIT
+
+                     WHEN CANC-DOC-CRT-CTAD
+                        SET W100-ENDERECO-CL  TO TRUE
+                        PERFORM T300-CARTA-CABECALHO THRU T300-EXIT
+                        PERFORM V300-FRMT-CTAD-CL THRU V300-EXIT
+
+                        IF CANC-NR-AGENTE NOT EQUAL SPACES
+                           INITIALIZE WORK-A-VARIABLE
+                           PERFORM T700-CARTA-ASSINATURA THRU T700-EXIT
+                           MOVE LENGTH OF L-ONLY-210-A TO W400-QZOLEN
+                           PERFORM X40-WRITE-QZOUTPUT THRU X40-EXIT
+
+                           IF W100-F-P-SELECT
+                              PERFORM T500-LAYOUT-B-P-SELECT
+                                                          THRU T500-EXIT
+                           END-IF
+
+                           ADD 1              TO CODBAR-NSEQ-DOC
+                           MOVE ZEROS         TO CODBAR-NLIN-DOC
+
+                           MOVE CANC-AG-CPOSTAL(1:4)
+                                              TO CODBAR-COD-POSTALM(1:4)
+                           MOVE CANC-AG-CPOSTAL(6:3)
+                                              TO CODBAR-COD-POSTALM(5:3)
+                           MOVE CANC-NR-AGENTE TO CODBAR-MEDIADOR
+                           MOVE LENGTH OF CODBAR-MEDIADOR
+                                              TO W400-AUXLEN
+                           CALL 'PGOU001A' USING W400-AUXLEN,
+                                                 CODBAR-MEDIADOR
+                           END-CALL
+                           MOVE '1045'        TO CODBAR-IDENTIF-DOCUM
+
+                           PERFORM T200-CARTA-CORTESIA THRU T200-EXIT
+                           SET W100-ENDERECO-AG TO TRUE
+                           PERFORM T300-CARTA-CABECALHO THRU T300-EXIT
+                           PERFORM V400-FRMT-CTAD-AG THRU V400-EXIT
+                           MOVE +126          TO W500-AVAILABLE
+                           PERFORM T800-LAYOUT-HDR-LISTA THRU T800-EXIT
+                        END-IF
+
+                     WHEN CANC-DOC-CRT-CHIP
+                        SET W100-ENDERECO-CH  TO TRUE
+                        PERFORM T300-CARTA-CABECALHO THRU T300-EXIT
+                        PERFORM V500-FRMT-CHIP THRU V500-EXIT
+                        MOVE +121             TO W500-AVAILABLE
+                        PERFORM T800-LAYOUT-HDR-LISTA THRU T800-EXIT
+
+CEL015               WHEN CANC-DOC-CRT-FP01
+CEL015               WHEN CANC-DOC-CRT-FP02
+CEL015               WHEN CANC-DOC-CRT-FP05
+CEL015               WHEN CANC-DOC-CRT-FP07
+CEL015               WHEN CANC-DOC-CRT-FP21
+CEL015                  SET  W100-ENDERECO-CL      TO TRUE
+CEL015                  PERFORM T300-CARTA-CABECALHO  THRU T300-EXIT
+CEL015                  PERFORM V1000-FRMT-FPXX       THRU V1000-EXIT
+CEL015
+CEL015                  EVALUATE TRUE
+CEL015                  WHEN CANC-DOC-CRT-FP01
+CEL015                     MOVE +103               TO W500-AVAILABLE
+CEL015                  WHEN CANC-DOC-CRT-FP02
+CEL015                     MOVE +108               TO W500-AVAILABLE
+CEL015                  WHEN CANC-DOC-CRT-FP05
+CEL015                     MOVE +108               TO W500-AVAILABLE
+CEL015                  WHEN CANC-DOC-CRT-FP07
+CEL015                     MOVE +99                TO W500-AVAILABLE
+CEL015                  WHEN CANC-DOC-CRT-FP21
+CEL015                     MOVE +126               TO W500-AVAILABLE
+CEL015                  END-EVALUATE
+CEL015
+CEL015                  PERFORM T800-LAYOUT-HDR-LISTA THRU T800-EXIT
+CEL015
+CEL015               WHEN CANC-DOC-CRT-FP12
+CEL015                  SET W100-ENDERECO-CH       TO TRUE
+CEL015                  PERFORM T300-CARTA-CABECALHO  THRU T300-EXIT
+CEL015                  PERFORM V1000-FRMT-FPXX       THRU V1000-EXIT
+CEL015                  MOVE +125                  TO W500-AVAILABLE
+CEL015                  PERFORM T800-LAYOUT-HDR-LISTA THRU T800-EXIT
+CEL015
+CEL015               WHEN CANC-DOC-CRT-FP03
+CEL015               WHEN CANC-DOC-CRT-FP04
+CEL015               WHEN CANC-DOC-CRT-FP06
+CEL015               WHEN CANC-DOC-CRT-FP23
+CEL076               WHEN CANC-DOC-CRT-FP13
+CEL076                  IF CANC-DOC-CRT-FP13
+CEL076                     SET  W100-ENDERECO-CH   TO TRUE
+CEL076                  ELSE
+CEL015                     SET  W100-ENDERECO-CL   TO TRUE
+CEL076                  END-IF
+CEL015                  PERFORM T300-CARTA-CABECALHO  THRU T300-EXIT
+CEL015                  PERFORM V2000-FRMT-FPXX       THRU V2000-EXIT
+CEL015
+CEL015                  MOVE +126                  TO W500-AVAILABLE
+CEL015
+CEL015                  IF W100-ESCREVER-NAO
+CEL015                     MOVE W500-NR-TOT-PAG     TO WORK-TEMP-TOT-PAG
+CEL015                     COMPUTE W400-QZCLEN = 45 + W500-GUARDA-QZTLEN
+CEL015                     PERFORM X20-WRITE-QZCOPY THRU X20-EXIT
+CEL015                  END-IF
+CEL015
+CEL015*      *** FAZ A ASSINATURA ***
+CEL015                  INITIALIZE WORK-A-VARIABLE
+CEL015                  PERFORM T700-CARTA-ASSINATURA THRU T700-EXIT
+CEL015                  MOVE LENGTH OF L-ONLY-210-A TO W400-QZOLEN
+CEL015                  PERFORM X40-WRITE-QZOUTPUT THRU X40-EXIT
+CEL015
+CEL015*      *** FAZ ULTIMA PAGINAÇÃO ***
+CEL015                  PERFORM T900-LAYOUT-PAG   THRU T900-EXIT
+CEL015
+CEL015*      *** FAZ VERSO ***
+CEL015                  IF W100-F-P-SELECT
+CEL015                     PERFORM T500-LAYOUT-B-P-SELECT THRU T500-EXIT
+CEL015                  END-IF
+                  END-EVALUATE
+
+               WHEN CANC-REG-TIPO2
+                  IF W100-ESCREVER-NAO
+                     ADD 1                    TO WORK-TEMP-TOT-REG-DET
+                     IF WORK-TEMP-TOT-REG-DET EQUAL 1
+                        MOVE CANC-LST-DT-INI-REC TO WORK-TEMP-DT-INI-REC
+                        MOVE CANC-LST-DT-FIM-REC TO WORK-TEMP-DT-FIM-REC
+                        MOVE CANC-LST-DT-DEVIDO  TO WORK-TEMP-DT-DEVIDO
+                     END-IF
+                  END-IF
+
+                  EVALUATE TRUE
+                     WHEN CANC-DOC-CRT-CTAD AND
+                          CODBAR-MEDIADOR NOT EQUAL SPACES
+                     WHEN CANC-DOC-CRT-CHIP
+CEL015               WHEN CANC-DOC-CRT-FP01
+CEL015               WHEN CANC-DOC-CRT-FP02
+CEL015               WHEN CANC-DOC-CRT-FP05
+CEL015               WHEN CANC-DOC-CRT-FP07
+CEL015               WHEN CANC-DOC-CRT-FP12
+CEL015               WHEN CANC-DOC-CRT-FP21
+                        PERFORM V600-FRMT-QUEBRA THRU V600-EXIT
+                        PERFORM V700-FRMT-LISTA THRU V700-EXIT
+                  END-EVALUATE
+
+               WHEN CANC-REG-TIPO3
+CEL015            IF CANC-DOC-CRT-FP03
+CEL015            OR CANC-DOC-CRT-FP04
+CEL015            OR CANC-DOC-CRT-FP06
+CEL015            OR CANC-DOC-CRT-FP23
+CEL015               CONTINUE
+CEL015            ELSE
+                     IF W100-ESCREVER-NAO
+                        MOVE W500-NR-TOT-PAG     TO WORK-TEMP-TOT-PAG
+                        COMPUTE W400-QZCLEN = 45 + W500-GUARDA-QZTLEN
+                        PERFORM X20-WRITE-QZCOPY THRU X20-EXIT
+                     END-IF
+
+      *      *** FAZ A ASSINATURA ***
+                     INITIALIZE WORK-A-VARIABLE
+                     PERFORM T700-CARTA-ASSINATURA THRU T700-EXIT
+                     MOVE LENGTH OF L-ONLY-210-A TO W400-QZOLEN
+                     PERFORM X40-WRITE-QZOUTPUT THRU X40-EXIT
+
+CEL015* ---
+CEL015*    ESCREVER LAYOUT CORRESPONDENTE INFORMAÇÃO PAGAMENTO ATM NAS
+CEL015*    CARTAS FP01, FP02, FP05 E FP07
+CEL015               IF CANC-DOC-CRT-FP01
+CEL015               OR CANC-DOC-CRT-FP02
+CEL015               OR CANC-DOC-CRT-FP05
+CEL015               OR CANC-DOC-CRT-FP07
+CEL015                  INITIALIZE WORK-A-VARIABLE
+CEL015
+CEL015                  MOVE WORK-TEMP-ATM-ENTIDADE
+CEL015                                    TO X014REFMB-A-ENTIDADE-ATM
+CEL015                  STRING WORK-TEMP-ATM-REF(1:3)
+CEL015                         DELIMITED BY SIZE ' '
+CEL015                         WORK-TEMP-ATM-REF(4:3)
+CEL015                         DELIMITED BY SIZE ' '
+CEL015                         WORK-TEMP-ATM-REF(7:3)
+CEL015                  DELIMITED BY SIZE
+CEL015                                  INTO X014REFMB-A-REFERENCIA-ATM
+CEL015                  MOVE W400-VLR-DIVIDA-TXT
+CEL015                                    TO X014REFMB-A-VLR-RECIBO-ATM
+CEL015
+CEL015                  MOVE 'X014REFMB '          TO WORK-A-LAYOUT-NAME
+CEL015                  MOVE LENGTH OF LX014REFMB-A  TO W400-QZOLEN
+CEL015                  PERFORM X40-WRITE-QZOUTPUT THRU X40-EXIT
+CEL015               END-IF
+CEL015
+
+      *      *** FAZ ULTIMA PAGINAÇÃO ***
+                     PERFORM T900-LAYOUT-PAG   THRU T900-EXIT
+
+      *      *** FAZ VERSO ***
+                     IF W100-F-P-SELECT
+                        PERFORM T500-LAYOUT-B-P-SELECT THRU T500-EXIT
+                     END-IF
+CEL015            END-IF
+           END-EVALUATE.
+
+      *** LE PROXIMO REGISTO DO FICH DE INPUT ***
+           PERFORM X10-READ-QZTEMP          THRU X10-EXIT.
+
+       B20-EXIT.
+           EXIT.
+
+
+       B30-FINAL SECTION.
+      ***************************************************************
+      *  SECTION'S PURPOSE                                          *
+      *      BLOCO QUE TERMINA O PROGRAMA                           *
+      ***************************************************************
+       B30-START.
+      *** FECHA OS FICHEIROS ***
+           CLOSE QZTEMP
+                 QZCOPY
+                 QZOUTPUT.
+
+           IF NOT W400-ST-QZTEMP-OK
+              DISPLAY 'ERRO CLOSE <FICH QZTEMP>....: ' W400-ST-QZTEMP
+              PERFORM Z10-CALL-ABEND
+           END-IF.
+
+           IF NOT W400-ST-QZCOPY-OK
+              DISPLAY 'ERRO CLOSE <FICH QZCOPY>....: ' W400-ST-QZCOPY
+              PERFORM Z10-CALL-ABEND
+           END-IF.
+
+           IF NOT W400-ST-QZOUTPUT-OK
+              DISPLAY 'ERRO CLOSE <FICH QZOUTPUT>..: ' W400-ST-QZOUTPUT
+              PERFORM Z10-CALL-ABEND
+           END-IF.
+
+       B30-EXIT.
+           EXIT.
+
+
+      *
+       D10-FRMT-DESC-MES SECTION.
+      ***************************************************************
+      *  FORMATA O DESCRITIVO DO MES                                *
+      ***************************************************************
+       D10-START.
+           SEARCH ALL W400-ENTRANCE
+               AT END
+                  DISPLAY 'ERRO: MES <' W400-MOUNTH '> INVALIDO'
+                  MOVE '#ERRO#'               TO W400-MOUNTH-DESC
+             WHEN W400-NR-MOUNTH(INDICE) EQUAL W400-MOUNTH
+                MOVE W400-DESCRIPTION(INDICE) TO W400-MOUNTH-DESC
+           END-SEARCH.
+
+       D10-EXIT.
+           EXIT.
+
+
+       D20-FRMT-MORADA-CL SECTION.
+      ***************************************************************
+      *  FORMATA O ENDERECO DO CLIENTE                              *
+      ***************************************************************
+       D20-START.
+           MOVE CANC-CL-MORADA1               TO BGOW0037-I-MORADA1.
+           MOVE CANC-CL-MORADA2               TO BGOW0037-I-MORADA2.
+           MOVE CANC-CL-LOCALIDADE            TO BGOW0037-I-LOCALIDADE.
+           MOVE CANC-CL-CPOSTAL-DESC          TO BGOW0037-I-CPOSTAL-DESC
+           MOVE CANC-CL-CPAIS-DESC            TO BGOW0037-I-CPAIS-DESC.
+           MOVE CANC-CL-CPOSTAL               TO BGOW0037-I-CPOSTAL.
+           MOVE CANC-CL-CPAIS                 TO BGOW0037-I-CPAIS.
+           MOVE CANC-CL-IDP                   TO BGOW0037-I-IDP.
+
+           CALL 'PYOXAU15'                 USING BGOW0037-AREA.
+
+       D20-EXIT.
+           EXIT.
+
+
+       D30-FRMT-MORADA-CH SECTION.
+      ***************************************************************
+      *  FORMATA O ENDERECO DO CREDOR HIPOTECARIO                   *
+      ***************************************************************
+       D30-START.
+           MOVE CANC-CH-MORADA1               TO BGOW0037-I-MORADA1.
+           MOVE CANC-CH-MORADA2               TO BGOW0037-I-MORADA2.
+           MOVE CANC-CH-LOCALIDADE            TO BGOW0037-I-LOCALIDADE.
+           MOVE CANC-CH-CPOSTAL-DESC          TO BGOW0037-I-CPOSTAL-DESC
+           MOVE CANC-CH-CPAIS-DESC            TO BGOW0037-I-CPAIS-DESC.
+           MOVE CANC-CH-CPOSTAL               TO BGOW0037-I-CPOSTAL.
+           MOVE CANC-CH-CPAIS                 TO BGOW0037-I-CPAIS.
+           MOVE CANC-CH-IDP                   TO BGOW0037-I-IDP.
+
+           CALL 'PYOXAU15'                 USING BGOW0037-AREA.
+
+       D30-EXIT.
+           EXIT.
+
+
+       D40-FRMT-MORADA-AG SECTION.
+      ***************************************************************
+      *  FORMATA O ENDERECO DO MEDIADOR                             *
+      ***************************************************************
+       D40-START.
+           MOVE CANC-AG-MORADA1               TO BGOW0037-I-MORADA1.
+           MOVE CANC-AG-MORADA2               TO BGOW0037-I-MORADA2.
+           MOVE CANC-AG-LOCALIDADE            TO BGOW0037-I-LOCALIDADE.
+           MOVE CANC-AG-CPOSTAL-DESC          TO BGOW0037-I-CPOSTAL-DESC
+           MOVE CANC-AG-CPAIS-DESC            TO BGOW0037-I-CPAIS-DESC.
+           MOVE CANC-AG-CPOSTAL               TO BGOW0037-I-CPOSTAL.
+           MOVE CANC-AG-CPAIS                 TO BGOW0037-I-CPAIS.
+           MOVE CANC-AG-IDP                   TO BGOW0037-I-IDP.
+
+           CALL 'PYOXAU15'                 USING BGOW0037-AREA.
+
+       D40-EXIT.
+           EXIT.
+
+
+       D50-FRMT-SUBJECT SECTION.
+      ***************************************************************
+      *  FORMATA LINHAS DE ASSUNTO                                  *
+      ***************************************************************
+       D50-START.
+
+           MOVE SPACES                    TO W500-SUBJECT-LINES.
+
+CEL015     IF CANC-DOC-CRT-FP21
+CEL015     OR CANC-DOC-CRT-FP23
+CEL015        STRING 'Tomador do Seguro: '
+CEL015               DELIMITED BY SIZE CANC-VA-NOME-TOMADOR
+CEL015        DELIMITED BY SIZE         INTO W500-SUBJECT-LINE1
+CEL015     ELSE
+              STRING 'Tomador do Seguro: '
+                     DELIMITED BY SIZE CANC-CL-NOME
+              DELIMITED BY SIZE         INTO W500-SUBJECT-LINE1
+CEL015     END-IF.
+
+           IF (CANC-DOC-CRT-ENTI OR CANC-DOC-CRT-ENT1 OR
+                                    CANC-DOC-CRT-ENT2) OR
+              (CANC-DOC-CRT-CTAD AND W100-ENDERECO-AG) OR
+              (CANC-DOC-CRT-CHIP)
+              PERFORM D20-FRMT-MORADA-CL    THRU D20-EXIT
+              STRING W600-LT-TOMADOR-TAB DELIMITED BY SIZE
+                     BGOW0037-O-MORADA1 DELIMITED BY SIZE
+                                            INTO W500-SUBJECT-LINE2
+              STRING W600-LT-TOMADOR-TAB DELIMITED BY SIZE
+                     BGOW0037-O-MORADA2 DELIMITED BY SIZE
+                                            INTO W500-SUBJECT-LINE3
+              STRING W600-LT-TOMADOR-TAB DELIMITED BY SIZE
+                     BGOW0037-O-MORADA3 DELIMITED BY SIZE
+                                            INTO W500-SUBJECT-LINE4
+              STRING W600-LT-TOMADOR-TAB DELIMITED BY SIZE
+                     BGOW0037-O-MORADA4 DELIMITED BY SIZE
+                                            INTO W500-SUBJECT-LINE5
+           END-IF.
+
+           IF CANC-DOC-CRT-CHIP AND
+              CANC-DEB-IBAN NOT EQUAL SPACES
+              IF CANC-CL-NIF(01:02) EQUAL 'PT'
+                 IF W500-SUBJECT-LINE5 EQUAL SPACES
+                    STRING 'NIF: ' DELIMITED BY SIZE
+                           CANC-CL-NIF(03:09) DELIMITED BY SIZE
+                                            INTO W500-SUBJECT-LINE5
+                    STRING 'IBAN: ' CANC-DEB-IBAN DELIMITED BY SIZE
+                           '     BIC SWIFT: '
+                           CANC-DEB-SWIFT DELIMITED BY SIZE
+                                            INTO W500-SUBJECT-LINE6
+                 ELSE
+                    STRING 'NIF: ' DELIMITED BY SIZE
+                           CANC-CL-NIF(03:09) DELIMITED BY SIZE
+                           '     IBAN: '
+                           CANC-DEB-IBAN DELIMITED BY SIZE
+                           '     BIC SWIFT: '
+                           CANC-DEB-SWIFT DELIMITED BY SIZE
+                                            INTO W500-SUBJECT-LINE6
+                 END-IF
+              ELSE
+                 STRING 'IBAN: ' CANC-DEB-IBAN DELIMITED BY SIZE
+                        '     BIC SWIFT: '
+                        CANC-DEB-SWIFT DELIMITED BY SIZE
+                                            INTO W500-SUBJECT-LINE6
+              END-IF
+           ELSE
+              IF CANC-CL-NIF(01:02) EQUAL 'PT'
+                 STRING 'NIF: ' DELIMITED BY SIZE
+                        CANC-CL-NIF(03:09) DELIMITED BY SIZE
+                                            INTO W500-SUBJECT-LINE6
+              END-IF
+           END-IF.
+
+CEL015     IF CANC-DOC-CRT-FP01
+CEL015     OR CANC-DOC-CRT-FP02
+CEL015     OR CANC-DOC-CRT-FP05
+CEL015     OR CANC-DOC-CRT-FP07
+CEL015     OR CANC-DOC-CRT-FP12
+CEL015     OR CANC-DOC-CRT-FP21
+CEL015     OR CANC-DOC-CRT-FP03
+CEL015     OR CANC-DOC-CRT-FP04
+CEL015     OR CANC-DOC-CRT-FP06
+CEL015     OR CANC-DOC-CRT-FP23
+CEL076     OR CANC-DOC-CRT-FP13
+CEL076*       IF CANC-VR-PSEGURA1-NOME NOT = (SPACES AND LOW-VALUES)
+CEL076*       AND CANC-VR-PSEGURA2-NOME NOT = (SPACES AND LOW-VALUES)
+CEL076*          IF CANC-VR-PSEGURA1-NIF(1:2) = 'PT'
+CEL076*             STRING ' / NIF: ' DELIMITED BY SIZE
+CEL076*                    CANC-VR-PSEGURA1-NIF(3:20)
+CEL076*             DELIMITED BY SIZE   INTO W400-VR-PSEGURA1-NIF
+CEL076*          ELSE
+CEL076*             MOVE SPACES           TO W400-VR-PSEGURA1-NIF
+CEL076*          END-IF
+CEL076*
+CEL076*          IF CANC-VR-PSEGURA2-NIF(1:2) = 'PT'
+CEL076*             STRING ' / NIF: ' DELIMITED BY SIZE
+CEL076*                    CANC-VR-PSEGURA2-NIF(3:20)
+CEL076*             DELIMITED BY SIZE   INTO W400-VR-PSEGURA2-NIF
+CEL076*          ELSE
+CEL076*             MOVE SPACES           TO W400-VR-PSEGURA2-NIF
+CEL076*          END-IF
+CEL076*
+CEL076*          STRING 'Pessoas Seguras: '
+CEL076*                 DELIMITED BY SIZE CANC-VR-PSEGURA1-NOME
+CEL076*                 DELIMITED BY '  ' W400-VR-PSEGURA1-NIF
+CEL076*          DELIMITED BY SIZE      INTO W500-SUBJECT-LINE7
+CEL076*
+CEL076*          STRING '                         '
+CEL076*                 DELIMITED BY SIZE CANC-VR-PSEGURA2-NOME
+CEL076*                 DELIMITED BY '  ' W400-VR-PSEGURA2-NIF
+CEL076*          DELIMITED BY SIZE      INTO W500-SUBJECT-LINE8
+CEL076*       ELSE
+CEL076*          IF CANC-VR-PSEGURA1-NIF(1:2) = 'PT'
+CEL076*             STRING ' / NIF: ' DELIMITED BY SIZE
+CEL076*                    CANC-VR-PSEGURA1-NIF(3:20)
+CEL076*             DELIMITED BY SIZE   INTO W400-VR-PSEGURA1-NIF
+CEL076*          ELSE
+CEL076*             MOVE SPACES           TO W400-VR-PSEGURA1-NIF
+CEL076*          END-IF
+CEL076*
+CEL076*          IF CANC-VR-PSEGURA1-NOME NOT = (SPACES AND LOW-VALUES)
+CEL076*             STRING 'Pessoa Segura: '
+CEL076*                    DELIMITED BY SIZE CANC-VR-PSEGURA1-NOME
+CEL076*                    DELIMITED BY '  ' W400-VR-PSEGURA1-NIF
+CEL076*             DELIMITED BY SIZE   INTO W500-SUBJECT-LINE7
+CEL076*          ELSE
+CEL076*             STRING 'Pessoas Seguras: Vários'
+CEL076*             DELIMITED BY SIZE   INTO W500-SUBJECT-LINE7
+CEL076*          END-IF
+CEL076*       END-IF
+CEL076
+CEL076        IF CANC-PS-1-NOME NOT = (SPACES AND LOW-VALUES)
+CEL076        AND CANC-PS-2-NOME NOT = (SPACES AND LOW-VALUES)
+CEL076           IF CANC-PS-1-NIF(1:2) = 'PT'
+CEL076              STRING ' / NIF: ' DELIMITED BY SIZE
+CEL076                     CANC-PS-1-NIF(3:20)
+CEL076              DELIMITED BY SIZE   INTO W400-PS-1-NIF
+CEL076           ELSE
+CEL076              MOVE SPACES           TO W400-PS-1-NIF
+CEL076           END-IF
+CEL076
+CEL076           IF CANC-PS-2-NIF(1:2) = 'PT'
+CEL076              STRING ' / NIF: ' DELIMITED BY SIZE
+CEL076                     CANC-PS-2-NIF(3:20)
+CEL076              DELIMITED BY SIZE   INTO W400-PS-2-NIF
+CEL076           ELSE
+CEL076              MOVE SPACES           TO W400-PS-2-NIF
+CEL076           END-IF
+CEL076
+CEL076           STRING 'Pessoas Seguras: '
+CEL076                  DELIMITED BY SIZE CANC-PS-1-NOME
+CEL076                  DELIMITED BY '  ' W400-PS-1-NIF
+CEL076           DELIMITED BY SIZE      INTO W500-SUBJECT-LINE7
+CEL076
+CEL076           STRING '                         '
+CEL076                  DELIMITED BY SIZE CANC-PS-2-NOME
+CEL076                  DELIMITED BY '  ' W400-PS-2-NIF
+CEL076           DELIMITED BY SIZE      INTO W500-SUBJECT-LINE8
+CEL076        ELSE
+CEL076           IF CANC-PS-1-NIF(1:2) = 'PT'
+CEL076              STRING ' / NIF: ' DELIMITED BY SIZE
+CEL076                     CANC-PS-1-NIF(3:20)
+CEL076              DELIMITED BY SIZE   INTO W400-PS-1-NIF
+CEL076           ELSE
+CEL076              MOVE SPACES           TO W400-PS-1-NIF
+CEL076           END-IF
+CEL076
+CEL076           IF CANC-PS-1-NOME NOT = (SPACES AND LOW-VALUES)
+CEL076              STRING 'Pessoa Segura: '
+CEL076                     DELIMITED BY SIZE CANC-PS-1-NOME
+CEL076                     DELIMITED BY '  ' W400-PS-1-NIF
+CEL076              DELIMITED BY SIZE   INTO W500-SUBJECT-LINE7
+CEL076           ELSE
+CEL076              STRING 'Pessoas Seguras: Vários'
+CEL076              DELIMITED BY SIZE   INTO W500-SUBJECT-LINE7
+CEL076           END-IF
+CEL076        END-IF
+CEL015
+CEL015        IF CANC-DOC-CRT-FP01
+CEL015        OR CANC-DOC-CRT-FP12
+CEL015        OR CANC-DOC-CRT-FP21
+CEL015        OR CANC-DOC-CRT-FP03
+CEL015        OR CANC-DOC-CRT-FP23
+CEL076        OR CANC-DOC-CRT-FP13
+CEL015           STRING 'Beneficiário Interventor: '
+CEL015                  DELIMITED BY SIZE CANC-CH-NOME
+CEL015           DELIMITED BY SIZE      INTO W500-SUBJECT-LINE9
+CEL015
+CEL015           IF CANC-VA-PROC-BANC NOT = SPACES
+CEL015              STRING 'Processo Bancário: '
+CEL015                     DELIMITED BY SIZE CANC-VA-PROC-BANC
+CEL076*             DELIMITED BY SPACES INTO W500-SUBJECT-LINE10
+CEL076              DELIMITED BY SIZE   INTO W500-SUBJECT-LINE10
+CEL015           END-IF
+CEL015        END-IF
+CEL015
+CEL015        STRING 'Apólice / Produto: '
+CEL015               DELIMITED BY SIZE CANC-NR-APOLICE
+CEL015               DELIMITED BY SPACES ' / '
+CEL015               DELIMITED BY SIZE CANC-DESCR-RAMO-PROD
+CEL015        DELIMITED BY SIZE         INTO W500-SUBJECT-LINE11
+CEL015     ELSE
+              STRING 'Apólice / Produto: ' DELIMITED BY SIZE
+                     CANC-NR-APOLICE DELIMITED BY SPACES
+                     ' / ' DELIMITED BY SIZE
+                     CANC-DESCR-RAMO-PROD DELIMITED BY SIZE
+                                        INTO W500-SUBJECT-LINE7
+
+              PERFORM D60-FRMT-OBJ-SEGURO   THRU D60-EXIT
+              STRING 'Risco Seguro: ' DELIMITED BY SIZE
+                     W500-GUARDA-OBJECTO DELIMITED BY SIZE
+                                        INTO W500-SUBJECT-LINE8
+
+              IF CANC-DOC-CRT-CDC1 AND
+                 CANC-DT-SINISTRO NOT EQUAL SPACES
+                 MOVE CANC-DT-SINISTRO(5:2)      TO W400-MOUNTH
+                 PERFORM D10-FRMT-DESC-MES     THRU D10-EXIT
+                 STRING 'Data do Sinistro: ' DELIMITED BY SIZE
+                        CANC-DT-SINISTRO(7:2) '-'
+                        W400-MOUNTH-DESC(1:3) '-'
+                        CANC-DT-SINISTRO(1:4) DELIMITED BY SIZE
+                                        INTO W500-SUBJECT-LINE9
+              END-IF
+CEL015     END-IF.
+
+           PERFORM D70-DEL-LINES-EMPTY  THRU D70-EXIT
+           VARYING W500-IND FROM 1 BY 1
+CEL015*      UNTIL W500-IND GREATER 10.
+CEL015       UNTIL W500-IND GREATER 12.
+
+       D50-EXIT.
+           EXIT.
+
+
+       D60-FRMT-OBJ-SEGURO SECTION.
+      ***************************************************************
+      *  FORMATA DESCRITIVO DO OBJECTO SEGURO                       *
+      ***************************************************************
+       D60-START.
+           MOVE SPACES                        TO W500-GUARDA-OBJECTO
+
+           IF CANC-UR-QUANT EQUAL 1
+              EVALUATE TRUE
+                 WHEN CANC-UR-TIP-GERAL
+                    MOVE CANC-GR-DETAIL       TO W500-GUARDA-OBJECTO
+                 WHEN CANC-UR-TIP-AU-GARAGISTA
+                    STRING CANC-VG-CARTA-COND DELIMITED BY '  '
+                           ' ' DELIMITED BY SIZE
+                           CANC-VG-CATEGORIA DELIMITED BY SIZE
+                                            INTO W500-GUARDA-OBJECTO
+                 WHEN CANC-UR-TIP-AU-VEICULO
+                    STRING CANC-VH-MARCA DELIMITED BY '  '
+                           ' ' DELIMITED BY SIZE
+                           CANC-VH-VERSAO DELIMITED BY '  '
+                           ' ' DELIMITED BY SIZE
+                           CANC-VH-MATRICULA DELIMITED BY SIZE
+                                            INTO W500-GUARDA-OBJECTO
+                 WHEN CANC-UR-TIP-AU-OUTROS
+                    MOVE CANC-VO-OBJETO       TO W500-GUARDA-OBJECTO
+                 WHEN CANC-UR-TIP-MULTIRISCO
+                    MOVE CANC-MR-MORADA1      TO W500-GUARDA-OBJECTO
+                 WHEN CANC-UR-TIP-AT
+                    MOVE CANC-AT-OBJETO       TO W500-GUARDA-OBJECTO
+              END-EVALUATE
+           ELSE
+              MOVE 'Conforme Condições Particulares'
+                                              TO W500-GUARDA-OBJECTO
+           END-IF.
+
+           IF W500-GUARDA-OBJECTO EQUAL SPACES OR
+              W500-GUARDA-OBJECTO EQUAL 'DIVERSOS'
+              MOVE 'Conforme Condições Particulares'
+                                              TO W500-GUARDA-OBJECTO
+           END-IF.
+
+       D60-EXIT.
+           EXIT.
+
+
+       D70-DEL-LINES-EMPTY SECTION.
+      ***************************************************************
+      *  REMOVE LINHAS EM BRANCO NO SUBJECT                         *
+      ***************************************************************
+       D70-START.
+
+           EVALUATE TRUE
+              WHEN W500-SUBJECT-LINE1 EQUAL SPACES
+                 MOVE W500-SUBJECT-LINE2      TO W500-SUBJECT-LINE1
+                 MOVE W500-SUBJECT-LINE3      TO W500-SUBJECT-LINE2
+                 MOVE W500-SUBJECT-LINE4      TO W500-SUBJECT-LINE3
+                 MOVE W500-SUBJECT-LINE5      TO W500-SUBJECT-LINE4
+                 MOVE W500-SUBJECT-LINE6      TO W500-SUBJECT-LINE5
+                 MOVE W500-SUBJECT-LINE7      TO W500-SUBJECT-LINE6
+                 MOVE W500-SUBJECT-LINE8      TO W500-SUBJECT-LINE7
+                 MOVE W500-SUBJECT-LINE9      TO W500-SUBJECT-LINE8
+CEL015*          MOVE SPACES                  TO W500-SUBJECT-LINE9
+CEL015           MOVE W500-SUBJECT-LINE10     TO W500-SUBJECT-LINE9
+CEL015           MOVE W500-SUBJECT-LINE11     TO W500-SUBJECT-LINE10
+CEL015           MOVE SPACES                  TO W500-SUBJECT-LINE11
+              WHEN W500-SUBJECT-LINE2 EQUAL SPACES
+                 MOVE W500-SUBJECT-LINE3      TO W500-SUBJECT-LINE2
+                 MOVE W500-SUBJECT-LINE4      TO W500-SUBJECT-LINE3
+                 MOVE W500-SUBJECT-LINE5      TO W500-SUBJECT-LINE4
+                 MOVE W500-SUBJECT-LINE6      TO W500-SUBJECT-LINE5
+                 MOVE W500-SUBJECT-LINE7      TO W500-SUBJECT-LINE6
+                 MOVE W500-SUBJECT-LINE8      TO W500-SUBJECT-LINE7
+                 MOVE W500-SUBJECT-LINE9      TO W500-SUBJECT-LINE8
+CEL015*          MOVE SPACES                  TO W500-SUBJECT-LINE9
+CEL015           MOVE W500-SUBJECT-LINE10     TO W500-SUBJECT-LINE9
+CEL015           MOVE W500-SUBJECT-LINE11     TO W500-SUBJECT-LINE10
+CEL015           MOVE SPACES                  TO W500-SUBJECT-LINE11
+              WHEN W500-SUBJECT-LINE3 EQUAL SPACES
+                 MOVE W500-SUBJECT-LINE4      TO W500-SUBJECT-LINE3
+                 MOVE W500-SUBJECT-LINE5      TO W500-SUBJECT-LINE4
+                 MOVE W500-SUBJECT-LINE6      TO W500-SUBJECT-LINE5
+                 MOVE W500-SUBJECT-LINE7      TO W500-SUBJECT-LINE6
+                 MOVE W500-SUBJECT-LINE8      TO W500-SUBJECT-LINE7
+                 MOVE W500-SUBJECT-LINE9      TO W500-SUBJECT-LINE8
+CEL015*          MOVE SPACES                  TO W500-SUBJECT-LINE9
+CEL015           MOVE W500-SUBJECT-LINE10     TO W500-SUBJECT-LINE9
+CEL015           MOVE W500-SUBJECT-LINE11     TO W500-SUBJECT-LINE10
+CEL015           MOVE SPACES                  TO W500-SUBJECT-LINE11
+              WHEN W500-SUBJECT-LINE4 EQUAL SPACES
+                 MOVE W500-SUBJECT-LINE5      TO W500-SUBJECT-LINE4
+                 MOVE W500-SUBJECT-LINE6      TO W500-SUBJECT-LINE5
+                 MOVE W500-SUBJECT-LINE7      TO W500-SUBJECT-LINE6
+                 MOVE W500-SUBJECT-LINE8      TO W500-SUBJECT-LINE7
+                 MOVE W500-SUBJECT-LINE9      TO W500-SUBJECT-LINE8
+CEL015*          MOVE SPACES                  TO W500-SUBJECT-LINE9
+CEL015           MOVE W500-SUBJECT-LINE10     TO W500-SUBJECT-LINE9
+CEL015           MOVE W500-SUBJECT-LINE11     TO W500-SUBJECT-LINE10
+CEL015           MOVE SPACES                  TO W500-SUBJECT-LINE11
+              WHEN W500-SUBJECT-LINE5 EQUAL SPACES
+                 MOVE W500-SUBJECT-LINE6      TO W500-SUBJECT-LINE5
+                 MOVE W500-SUBJECT-LINE7      TO W500-SUBJECT-LINE6
+                 MOVE W500-SUBJECT-LINE8      TO W500-SUBJECT-LINE7
+                 MOVE W500-SUBJECT-LINE9      TO W500-SUBJECT-LINE8
+CEL015*          MOVE SPACES                  TO W500-SUBJECT-LINE9
+CEL015           MOVE W500-SUBJECT-LINE10     TO W500-SUBJECT-LINE9
+CEL015           MOVE W500-SUBJECT-LINE11     TO W500-SUBJECT-LINE10
+CEL015           MOVE SPACES                  TO W500-SUBJECT-LINE11
+              WHEN W500-SUBJECT-LINE6 EQUAL SPACES
+                 MOVE W500-SUBJECT-LINE7      TO W500-SUBJECT-LINE6
+                 MOVE W500-SUBJECT-LINE8      TO W500-SUBJECT-LINE7
+                 MOVE W500-SUBJECT-LINE9      TO W500-SUBJECT-LINE8
+CEL015*          MOVE SPACES                  TO W500-SUBJECT-LINE9
+CEL015           MOVE W500-SUBJECT-LINE10     TO W500-SUBJECT-LINE9
+CEL015           MOVE W500-SUBJECT-LINE11     TO W500-SUBJECT-LINE10
+CEL015           MOVE SPACES                  TO W500-SUBJECT-LINE11
+              WHEN W500-SUBJECT-LINE7 EQUAL SPACES
+                 MOVE W500-SUBJECT-LINE8      TO W500-SUBJECT-LINE7
+                 MOVE W500-SUBJECT-LINE9      TO W500-SUBJECT-LINE8
+CEL015*          MOVE SPACES                  TO W500-SUBJECT-LINE9
+CEL015           MOVE W500-SUBJECT-LINE10     TO W500-SUBJECT-LINE9
+CEL015           MOVE W500-SUBJECT-LINE11     TO W500-SUBJECT-LINE10
+CEL015           MOVE SPACES                  TO W500-SUBJECT-LINE11
+              WHEN W500-SUBJECT-LINE8 EQUAL SPACES
+                 MOVE W500-SUBJECT-LINE9      TO W500-SUBJECT-LINE8
+CEL015*          MOVE SPACES                  TO W500-SUBJECT-LINE9
+CEL015           MOVE W500-SUBJECT-LINE10     TO W500-SUBJECT-LINE9
+CEL015           MOVE W500-SUBJECT-LINE11     TO W500-SUBJECT-LINE10
+CEL015           MOVE SPACES                  TO W500-SUBJECT-LINE11
+CEL015        WHEN W500-SUBJECT-LINE9 EQUAL SPACES
+CEL015           MOVE W500-SUBJECT-LINE10     TO W500-SUBJECT-LINE9
+CEL015           MOVE W500-SUBJECT-LINE11     TO W500-SUBJECT-LINE10
+CEL015           MOVE SPACES                  TO W500-SUBJECT-LINE11
+CEL015        WHEN W500-SUBJECT-LINE10 EQUAL SPACES
+CEL015           MOVE W500-SUBJECT-LINE11     TO W500-SUBJECT-LINE10
+CEL015           MOVE SPACES                  TO W500-SUBJECT-LINE11
+              WHEN OTHER
+CEL015           MOVE +12                     TO W500-IND
+CEL015*          MOVE +10                     TO W500-IND
+           END-EVALUATE.
+
+       D70-EXIT.
+           EXIT.
+
+
+       D80-FRMT-DIMENSAO SECTION.
+      ***************************************************************
+      *  FORMATA A DIMENSAO DO LAYOUT                               *
+      ***************************************************************
+       D80-START.
+           SEARCH ALL W400-LAYOUT-SIZE
+               AT END
+                  MOVE ZEROS                  TO W500-LAYOUT-ALTURA
+             WHEN W400-LAYOUT-NAME(LYT) EQUAL W500-LAYOUT-NAME
+                MOVE W400-LAYOUT-HEIGHT(LYT)  TO W500-LAYOUT-ALTURA
+           END-SEARCH.
+
+       D80-EXIT.
+           EXIT.
+
+
+CEL015 D90-FRMT-VAR-NUM SECTION.
+CEL015***************************************************************
+CEL015*  FORMATA VARIÁVEL NUMÉRICA ALINHADA À ESQUERDA              *
+CEL015***************************************************************
+CEL015 D90-START.
+CEL015
+CEL015     IF W400-VLR-DIVIDA-X(1:1) = SPACES
+CEL015      IF W400-VLR-DIVIDA-X(1:2) = SPACES
+CEL015       IF W400-VLR-DIVIDA-X(1:3) = SPACES
+CEL015        IF W400-VLR-DIVIDA-X(1:4) = SPACES
+CEL015         IF W400-VLR-DIVIDA-X(1:5) = SPACES
+CEL015          IF W400-VLR-DIVIDA-X(1:6) = SPACES
+CEL015           IF W400-VLR-DIVIDA-X(1:7) = SPACES
+CEL015            IF W400-VLR-DIVIDA-X(1:8) = SPACES
+CEL015             IF W400-VLR-DIVIDA-X(1:9) = SPACES
+CEL015              IF W400-VLR-DIVIDA-X(1:10) = SPACES
+CEL015               IF W400-VLR-DIVIDA-X(1:11) = SPACES
+CEL015                IF W400-VLR-DIVIDA-X(1:12) = SPACES
+CEL015                 IF W400-VLR-DIVIDA-X(1:13) = SPACES
+CEL015                  IF W400-VLR-DIVIDA-X(1:14) = SPACES
+CEL015                   IF W400-VLR-DIVIDA-X(1:15) = SPACES
+CEL015                    IF W400-VLR-DIVIDA-X(1:16) = SPACES
+CEL015                     SET W100-ERROR-OCCURRED
+CEL015                                    TO TRUE
+CEL015                    ELSE
+CEL015                     MOVE W400-VLR-DIVIDA-X(16:3)
+CEL015                                    TO W400-VLR-DIVIDA-TXT
+CEL015                    END-IF
+CEL015                   ELSE
+CEL015                    MOVE W400-VLR-DIVIDA-X(15:4)
+CEL015                                    TO W400-VLR-DIVIDA-TXT
+CEL015                   END-IF
+CEL015                  ELSE
+CEL015                   MOVE W400-VLR-DIVIDA-X(14:5)
+CEL015                                    TO W400-VLR-DIVIDA-TXT
+CEL015                  END-IF
+CEL015                 ELSE
+CEL015                  MOVE W400-VLR-DIVIDA-X(13:6)
+CEL015                                    TO W400-VLR-DIVIDA-TXT
+CEL015                 END-IF
+CEL015                ELSE
+CEL015                 MOVE W400-VLR-DIVIDA-X(12:7)
+CEL015                                    TO W400-VLR-DIVIDA-TXT
+CEL015                END-IF
+CEL015               ELSE
+CEL015                MOVE W400-VLR-DIVIDA-X(11:8)
+CEL015                                    TO W400-VLR-DIVIDA-TXT
+CEL015               END-IF
+CEL015              ELSE
+CEL015               MOVE W400-VLR-DIVIDA-X(10:9)
+CEL015                                    TO W400-VLR-DIVIDA-TXT
+CEL015              END-IF
+CEL015             ELSE
+CEL015              MOVE W400-VLR-DIVIDA-X(9:10)
+CEL015                                    TO W400-VLR-DIVIDA-TXT
+CEL015             END-IF
+CEL015            ELSE
+CEL015             MOVE W400-VLR-DIVIDA-X(8:11)
+CEL015                                    TO W400-VLR-DIVIDA-TXT
+CEL015            END-IF
+CEL015           ELSE
+CEL015            MOVE W400-VLR-DIVIDA-X(7:12)
+CEL015                                    TO W400-VLR-DIVIDA-TXT
+CEL015           END-IF
+CEL015          ELSE
+CEL015           MOVE W400-VLR-DIVIDA-X(6:13)
+CEL015                                    TO W400-VLR-DIVIDA-TXT
+CEL015          END-IF
+CEL015         ELSE
+CEL015          MOVE W400-VLR-DIVIDA-X(5:14)
+CEL015                                    TO W400-VLR-DIVIDA-TXT
+CEL015         END-IF
+CEL015        ELSE
+CEL015         MOVE W400-VLR-DIVIDA-X(4:15)
+CEL015                                    TO W400-VLR-DIVIDA-TXT
+CEL015        END-IF
+CEL015       ELSE
+CEL015        MOVE W400-VLR-DIVIDA-X(3:16)
+CEL015                                    TO W400-VLR-DIVIDA-TXT
+CEL015       END-IF
+CEL015      ELSE
+CEL015       MOVE W400-VLR-DIVIDA-X(2:17) TO W400-VLR-DIVIDA-TXT
+CEL015      END-IF
+CEL015     ELSE
+CEL015      MOVE W400-VLR-DIVIDA-X        TO W400-VLR-DIVIDA-TXT
+CEL015     END-IF.
+CEL015
+CEL015 D90-EXIT.
+CEL015     EXIT.
+CEL015
+CEL015
+       T100-CODBAR-210BYTES SECTION.
+      ***************************************************************
+      *  CODBAR (210 BYTES) DA CARTA DE CANCELAMENTO                *
+      ***************************************************************
+       T100-START.
+      *** FORMATA CANAL ***
+           IF CANC-IMP-ONLINE
+              SET CODBAR-ONLINE               TO TRUE
+           ELSE
+CEL073        IF CANC-IMP-ARQ-IMED
+CEL073           SET CODBAR-ARCHIVE-ONLY      TO TRUE
+CEL073        ELSE
+                 SET CODBAR-EXPEDIR           TO TRUE
+CEL073        END-IF
+           END-IF.
+
+      *** FORMATA COMPANHIA/MARCA ***
+           EVALUATE TRUE
+              WHEN CANC-MAR-FIDELIDADE
+                 SET CODBAR-FIDMUNDIAL        TO TRUE
+              WHEN CANC-MAR-IMPERIO
+                 SET CODBAR-IMPERIO           TO TRUE
+              WHEN CANC-MAR-ICI
+                 SET CODBAR-ICI               TO TRUE
+              WHEN CANC-MAR-MULTICARE
+                 SET CODBAR-MULTICARE         TO TRUE
+              WHEN CANC-MAR-EUROBIC
+                 SET CODBAR-EUROBIC           TO TRUE
+           END-EVALUATE.
+
+      *** FORMATA DADOS MEDIADOR ***
+           MOVE SPACES                        TO CODBAR-COD-POSTALM
+                                                 CODBAR-MEDIADOR.
+
+      *** FORMATA DADOS CLIENTE ***
+           IF CANC-DOC-CRT-CHIP OR CANC-DOC-CRT-ENTI
+           OR CANC-DOC-CRT-ENT1 OR CANC-DOC-CRT-ENT2
+CEL087     OR CANC-DOC-CRT-FP12 OR CANC-DOC-CRT-FP13
+              MOVE CANC-CH-CPOSTAL(1:4)       TO CODBAR-COD-POSTALC(1:4)
+              MOVE CANC-CH-CPOSTAL(6:3)       TO CODBAR-COD-POSTALC(5:3)
+              MOVE CANC-CH-NUMBER             TO CODBAR-CLIENTE
+           ELSE
+              MOVE CANC-CL-CPOSTAL(1:4)       TO CODBAR-COD-POSTALC(1:4)
+              MOVE CANC-CL-CPOSTAL(6:3)       TO CODBAR-COD-POSTALC(5:3)
+              MOVE CANC-NR-CLIENTE            TO CODBAR-CLIENTE
+           END-IF.
+           MOVE LENGTH OF CODBAR-CLIENTE      TO W400-AUXLEN.
+           CALL 'PGOU001A'                 USING W400-AUXLEN,
+                                                 CODBAR-CLIENTE
+           END-CALL.
+
+      *** FORMATA PRODUTO ***
+           IF CANC-COD-PRODUTO GREATER SPACES
+              MOVE CANC-COD-PRODUTO           TO W500-GUARDA-RAMO
+           ELSE
+              IF CANC-COD-RAMO GREATER SPACES
+                 MOVE CANC-COD-RAMO           TO W500-GUARDA-RAMO
+              ELSE
+                 MOVE SPACES                  TO W500-GUARDA-RAMO
+              END-IF
+           END-IF.
+
+           MOVE W500-GUARDA-RAMO              TO CODBAR-PRODUTO.
+
+GO7246*** GUARDA RAMO ***
+           MOVE CANC-COD-RAMO (1:4)           TO W500-RAMO
+
+      *** FORMATA APOLICE ***
+           MOVE CANC-NR-APOLICE               TO CODBAR-APOLICE.
+           MOVE LENGTH OF CODBAR-APOLICE      TO W400-AUXLEN.
+           CALL 'PGOU001A'                 USING W400-AUXLEN,
+                                                 CODBAR-APOLICE
+           END-CALL.
+
+      *** FORMATA CODIGOS DE AGRUPAMENTO ***
+           SET CODBAR-AG1-GERAL               TO TRUE.
+           SET CODBAR-AG2-CARTAS              TO TRUE.
+
+      *** FORMATA CODIGO DOCUMENTO/CODIGO SISTEMA ORIGEM ***
+           MOVE 'X014'                        TO CODBAR-COD-DOC.
+           MOVE CANC-COD-ORIGEM               TO CODBAR-SIST-ORIGEM.
+
+      *** FORMATA IDENTIFICACAO DOCUMENTO (CHAPAO) ***
+           EVALUATE TRUE
+              WHEN CANC-DOC-CRT-CDC1
+                 IF CANC-DT-SINISTRO NOT EQUAL SPACES
+                    MOVE '1037'               TO CODBAR-IDENTIF-DOCUM
+                 ELSE
+                    IF W100-ESCREVER-SIM
+                       EVALUATE TRUE
+                          WHEN WORK-TEMP-TOT-VLR EQUAL ZEROS
+                             MOVE '1038'      TO CODBAR-IDENTIF-DOCUM
+                          WHEN WORK-TEMP-TOT-VLR LESS ZEROS
+                             MOVE '1039'      TO CODBAR-IDENTIF-DOCUM
+                          WHEN WORK-TEMP-TOT-VLR GREATER ZEROS
+                             MOVE '1040'      TO CODBAR-IDENTIF-DOCUM
+                       END-EVALUATE
+                    END-IF
+                 END-IF
+              WHEN CANC-DOC-CRT-ENTI
+              WHEN CANC-DOC-CRT-ENT1
+                 MOVE '1041'                  TO CODBAR-IDENTIF-DOCUM
+              WHEN CANC-DOC-CRT-ENT2
+                 MOVE '1042'                  TO CODBAR-IDENTIF-DOCUM
+              WHEN CANC-DOC-CRT-CTAD
+                 IF W100-ESCREVER-SIM
+                    IF WORK-TEMP-TOT-VLR EQUAL ZEROS
+                       MOVE '1043'            TO CODBAR-IDENTIF-DOCUM
+                    ELSE
+                       MOVE '1044'            TO CODBAR-IDENTIF-DOCUM
+                    END-IF
+                 END-IF
+              WHEN CANC-DOC-CRT-CHIP
+                 IF CANC-EMI-NOVO-NEGOCIO
+                    MOVE '1046'               TO CODBAR-IDENTIF-DOCUM
+                 ELSE
+                    MOVE '1047'               TO CODBAR-IDENTIF-DOCUM
+                 END-IF
+CEL015        WHEN CANC-DOC-CRT-FP01
+CEL015           MOVE '1176'                  TO CODBAR-IDENTIF-DOCUM
+CEL015        WHEN CANC-DOC-CRT-FP02
+CEL015           MOVE '1177'                  TO CODBAR-IDENTIF-DOCUM
+CEL015        WHEN CANC-DOC-CRT-FP05
+CEL015           MOVE '1178'                  TO CODBAR-IDENTIF-DOCUM
+CEL015        WHEN CANC-DOC-CRT-FP07
+CEL015           MOVE '1179'                  TO CODBAR-IDENTIF-DOCUM
+CEL015        WHEN CANC-DOC-CRT-FP12
+CEL015           MOVE '1180'                  TO CODBAR-IDENTIF-DOCUM
+CEL015        WHEN CANC-DOC-CRT-FP21
+CEL015           MOVE '1181'                  TO CODBAR-IDENTIF-DOCUM
+CEL015        WHEN CANC-DOC-CRT-FP03
+CEL015           MOVE '1182'                  TO CODBAR-IDENTIF-DOCUM
+CEL015        WHEN CANC-DOC-CRT-FP04
+CEL015           MOVE '1183'                  TO CODBAR-IDENTIF-DOCUM
+CEL015        WHEN CANC-DOC-CRT-FP06
+CEL015           MOVE '1184'                  TO CODBAR-IDENTIF-DOCUM
+CEL015        WHEN CANC-DOC-CRT-FP23
+CEL015           MOVE '1185'                  TO CODBAR-IDENTIF-DOCUM
+CEL076        WHEN CANC-DOC-CRT-FP13
+CEL076           MOVE '1186'                  TO CODBAR-IDENTIF-DOCUM
+           END-EVALUATE.
+
+      *** FORMATA SEQUENCIA DOCUMENTO ***
+           COMPUTE CODBAR-NSEQ-DOC = CODBAR-NSEQ-DOC + 1.
+           MOVE 1                             TO CODBAR-NPAG-DOC.
+           MOVE ZEROS                         TO CODBAR-NLIN-DOC.
+
+       T100-EXIT.
+           EXIT.
+
+
+       T200-CARTA-CORTESIA SECTION.
+      ***************************************************************
+      *  ESCREVE CARTA DE CORTESIA AO MEDIADOR (APENAS EM BATCH)    *
+      ***************************************************************
+       T200-START.
+CEL087*    IF (NOT CANC-IMP-ONLINE) AND W100-ESCREVER-SIM
+CEL087     IF (NOT CANC-IMP-ONLINE AND NOT CANC-IMP-ARQ-IMED)
+CEL087     AND W100-ESCREVER-SIM
+              MOVE CODBAR                     TO W500-GUARDA-CODBAR
+
+      *  *** LAYOUT INICIAL DA CARTA DE CORTESIA ***
+              INITIALIZE WORK-A-VARIABLE
+              MOVE SPACES                     TO CODBAR-COD-POSTALC
+                                                 CODBAR-CLIENTE
+                                                 CODBAR-PRODUTO
+                                                 CODBAR-APOLICE
+                                                 CODBAR-RECIBO
+              SET CODBAR-AG1-NE-CARTA         TO TRUE
+              SET CODBAR-AG2-NE-CARTA         TO TRUE
+              MOVE 'X003'                     TO CODBAR-COD-DOC
+              MOVE '1001'                     TO CODBAR-IDENTIF-DOCUM
+
+              PERFORM T400-LAYOUT-F-P-SELECT THRU T400-EXIT
+
+      *  *** LAYOUT COM LOGOTIPO DA CARTA DE CORTESIA ***
+              INITIALIZE WORK-A-VARIABLE
+              IF CODBAR-MULTICARE
+                 MOVE 'X001BNLOG6'            TO WORK-A-LAYOUT-NAME
+                 MOVE LENGTH OF L-ONLY-210-A  TO W400-QZOLEN
+              ELSE
+                 IF CODBAR-EUROBIC
+                    MOVE 'X001BNLOG5'         TO WORK-A-LAYOUT-NAME
+                    MOVE LENGTH OF L-ONLY-210-A TO W400-QZOLEN
+                 ELSE
+                    MOVE 'X001BNLOG7'         TO WORK-A-LAYOUT-NAME
+                    MOVE LENGTH OF L-ONLY-210-A TO W400-QZOLEN
+                 END-IF
+              END-IF
+              PERFORM X40-WRITE-QZOUTPUT    THRU X40-EXIT
+
+      *  *** LAYOUT COM AREA ENDERECAMENTO DA CARTA DE CORTESIA ***
+              INITIALIZE WORK-A-VARIABLE
+              MOVE CODBAR-COMP-MARCA          TO WORK-A-COMP-MARC
+              MOVE CANC-AG-NOME               TO WORK-A-NOME
+              PERFORM D40-FRMT-MORADA-AG    THRU D40-EXIT
+              MOVE BGOW0037-O-MORADA1         TO WORK-A-MORADA1
+              MOVE BGOW0037-O-MORADA2         TO WORK-A-MORADA2
+              MOVE BGOW0037-O-MORADA3         TO WORK-A-MORADA3
+              MOVE BGOW0037-O-MORADA4         TO WORK-A-MORADA4
+              MOVE BGOW0037-O-CBARRAS         TO WORK-A-CB-CTT
+              STRING CODBAR-COD-DOC DELIMITED BY SIZE
+                     ' ' DELIMITED BY SIZE
+                     W400-AUX-TIMESTAMP DELIMITED BY SIZE
+                                            INTO WORK-A-ID-DOC-LIN1
+              END-STRING
+              STRING CODBAR-MEDIADOR DELIMITED BY SIZE '      '
+                     CODBAR-IDENTIF-DOCUM DELIMITED BY SIZE ' '
+                     CODBAR-PROGRAMA DELIMITED BY SIZE
+                                            INTO WORK-A-ID-DOC-LIN2
+              END-STRING
+
+              MOVE 'ENDERECO  '               TO WORK-A-LAYOUT-NAME
+              MOVE LENGTH OF L-ENDERECO-A     TO W400-QZOLEN
+              PERFORM X40-WRITE-QZOUTPUT    THRU X40-EXIT
+
+      *  *** LAYOUT COM CORPO DA CARTA DE CORTESIA ***
+              INITIALIZE WORK-A-VARIABLE
+              IF CODBAR-MULTICARE
+                 MOVE W500-GUARDA-DATA        TO X001BNCM03-A-DATADODIA
+                 MOVE 'X001BNCM03'            TO WORK-A-LAYOUT-NAME
+                 MOVE LENGTH OF LX001BNCM03-A TO W400-QZOLEN
+              ELSE
+                 MOVE W500-GUARDA-DATA        TO X001BNCM01-A-DATADODIA
+                 MOVE 'X001BNCM01'            TO WORK-A-LAYOUT-NAME
+                 MOVE LENGTH OF LX001BNCM01-A TO W400-QZOLEN
+              END-IF
+              PERFORM X40-WRITE-QZOUTPUT    THRU X40-EXIT
+
+      *  *** REPOE VALORES PARA ESCREVER PROXIMO DOCUMENTO ***
+              MOVE W500-GUARDA-CODBAR         TO CODBAR
+              ADD 1                           TO CODBAR-NSEQ-DOC
+           END-IF.
+
+       T200-EXIT.
+           EXIT.
+
+
+       T300-CARTA-CABECALHO SECTION.
+      ***************************************************************
+      *  ESCREVE DADOS GERAIS DA CARTA CANCELAMENTO                 *
+      ***************************************************************
+       T300-START.
+
+      *** LAYOUT INICIAL ***
+           INITIALIZE                        WORK-A-VARIABLE.
+           PERFORM T400-LAYOUT-F-P-SELECT THRU T400-EXIT.
+
+      *** LAYOUT COM LOGOTIPO DAS CARTAS DE CANCELAMENTO ***
+           PERFORM T600-LAYOUT-LOGOTIPO   THRU T600-EXIT.
+
+      *** LAYOUT COM AREA ENDERECAMENTO DA CARTA DE CANCELAMENTO ***
+           INITIALIZE                        WORK-A-VARIABLE.
+
+           MOVE CODBAR-COMP-MARCA             TO WORK-A-COMP-MARC.
+
+           EVALUATE TRUE
+              WHEN W100-ENDERECO-CL
+                 MOVE CANC-NR-CLIENTE         TO W500-IDLINE-DEST-NR
+                 MOVE CANC-CL-LOCATION-REF    TO W500-IDLINE-DEST-LREF
+                 MOVE CANC-CL-NOME            TO WORK-A-NOME
+                 PERFORM D20-FRMT-MORADA-CL THRU D20-EXIT
+              WHEN W100-ENDERECO-CH
+                 MOVE CANC-CH-NUMBER          TO W500-IDLINE-DEST-NR
+                 MOVE CANC-CH-LOCATION-REF    TO W500-IDLINE-DEST-LREF
+                 MOVE CANC-CH-NOME            TO WORK-A-NOME
+                 PERFORM D30-FRMT-MORADA-CH THRU D30-EXIT
+              WHEN W100-ENDERECO-AG
+                 MOVE CANC-NR-AGENTE          TO W500-IDLINE-DEST-NR
+                 MOVE CANC-AG-LOCATION-REF    TO W500-IDLINE-DEST-LREF
+                 MOVE CANC-AG-NOME            TO WORK-A-NOME
+                 PERFORM D40-FRMT-MORADA-AG THRU D40-EXIT
+           END-EVALUATE.
+
+           MOVE LENGTH OF W500-IDLINE-DEST-NR TO W400-AUXLEN.
+           CALL 'PGOU001A'                 USING W400-AUXLEN,
+                                                 W500-IDLINE-DEST-NR
+           END-CALL.
+
+           MOVE BGOW0037-O-MORADA1            TO WORK-A-MORADA1
+           MOVE BGOW0037-O-MORADA2            TO WORK-A-MORADA2
+           MOVE BGOW0037-O-MORADA3            TO WORK-A-MORADA3
+           MOVE BGOW0037-O-MORADA4            TO WORK-A-MORADA4
+           MOVE BGOW0037-O-CBARRAS            TO WORK-A-CB-CTT
+
+#10   *------------------------------------------------------*
+#10   *    Chamada à rotina da Mascara do USER
+#10        IF CANC-USERID = SPACES OR LOW-VALUES
+#10           MOVE SPACES                TO LS-OUTPUT-USER
+#10        ELSE
+#10   *       MOVE campo-data            TO LS-INPUT-DATE
+#10           STRING W400-AUX-TIMESTAMP(1:2) DELIMITED BY SIZE
+#10                  W400-AUX-TIMESTAMP(4:2) DELIMITED BY SIZE
+#10                  W400-AUX-TIMESTAMP(7:4) DELIMITED BY SIZE
+#10                  INTO LS-INPUT-DATE
+#10           END-STRING
+#10           MOVE CODBAR-COD-DOC        TO LS-INPUT-CODE
+#10           MOVE CANC-USERID           TO LS-INPUT-USER
+#10           CALL 'PYOXAU25'            USING LS-PYOXAU25
+#10   *       MOVE LS-OUTPUT-USER        TO campo-destino
+#10        END-IF.
+#10   *------------------------------------------------------*
+
+           STRING CODBAR-COD-DOC DELIMITED BY SIZE
+                  ' ' DELIMITED BY SIZE
+                  W400-AUX-TIMESTAMP DELIMITED BY SIZE
+                  ' ' DELIMITED BY SIZE
+   #10*           CANC-USERID DELIMITED BY SIZE
+#10               LS-OUTPUT-USER DELIMITED BY SIZE
+                                            INTO WORK-A-ID-DOC-LIN1.
+
+           MOVE CODBAR-IDENTIF-DOCUM          TO W500-IDLINE-ID-DOC.
+           MOVE CANC-COD-DOCUMENTO            TO W500-IDLINE-COD-DOC.
+           MOVE CANC-UR-TIPO                  TO W500-IDLINE-UR-TIPO.
+           IF CANC-COD-MOTIVO NOT EQUAL SPACES AND LOW-VALUES
+              STRING '-' DELIMITED BY SIZE
+                     CANC-COD-MOTIVO DELIMITED BY SIZE
+                                            INTO W500-IDLINE-MOT-CANC
+           ELSE
+              MOVE SPACES                     TO W500-IDLINE-MOT-CANC
+           END-IF.
+           MOVE W500-IDENT-LINE               TO WORK-A-ID-DOC-LIN2.
+
+           IF CANC-DEB-IBAN(01:04) EQUAL 'PT50'
+              IF CANC-IMP-BATCH AND
+                 (CANC-DOC-CRT-CHIP OR CANC-DOC-CRT-ENTI OR
+                  CANC-DOC-CRT-ENT1 OR CANC-DOC-CRT-ENT2)
+                 STRING CANC-DEB-IBAN(05:04) DELIMITED BY SIZE
+                        ' / '
+                        CANC-NR-APOLICE DELIMITED BY SIZE
+                                            INTO WORK-A-JANELA-INF1
+              ELSE
+                 MOVE CANC-DEB-IBAN(05:04)    TO WORK-A-JANELA-INF1
+              END-IF
+           END-IF.
+
+           MOVE 'ENDERECO  '                  TO WORK-A-LAYOUT-NAME
+           MOVE LENGTH OF L-ENDERECO-A        TO W400-QZOLEN.
+           PERFORM X40-WRITE-QZOUTPUT       THRU X40-EXIT.
+
+      *** LAYOUT COM AREA DE CABECALHO DA CARTA DE CANCELAMENTO ***
+           INITIALIZE WORK-A-VARIABLE.
+
+           IF CANC-DOC-CRT-CDC1
+              MOVE 'ANULAÇÃO DE APÓLICE'      TO X014CAB000-A-TITULO1
+           ELSE
+              MOVE SPACES                     TO X014CAB000-A-TITULO1
+           END-IF.
+           MOVE SPACES                        TO X014CAB000-A-TITULO2.
+
+           MOVE CANC-DT-EMISSAO(5:2)          TO W400-MOUNTH.
+           PERFORM D10-FRMT-DESC-MES        THRU D10-EXIT.
+           STRING 'Lisboa, ' DELIMITED BY SIZE
+                  CANC-DT-EMISSAO(7:2) ' de ' DELIMITED BY SIZE
+                  W400-MOUNTH-DESC DELIMITED BY SPACES
+                  ' de ' DELIMITED BY SIZE
+                  CANC-DT-EMISSAO(1:4) ' ' DELIMITED BY SIZE
+                                            INTO X014CAB000-A-DATA.
+
+           MOVE 'X014CAB000'                  TO WORK-A-LAYOUT-NAME.
+           MOVE LENGTH OF LX014CAB000-A       TO W400-QZOLEN.
+           PERFORM X40-WRITE-QZOUTPUT       THRU X40-EXIT.
+
+       T300-EXIT.
+           EXIT.
+
+
+       T400-LAYOUT-F-P-SELECT SECTION.
+      ***************************************************************
+      *  ESCREVE LAYOUT DE FRENTE DE DOCUMENTO (F_P_SELECT)         *
+      ***************************************************************
+       T400-START.
+           MOVE '00000'                       TO CODBAR-COD-INSERT.
+
+           MOVE 'F_P_SELECT'                  TO WORK-A-LAYOUT-NAME.
+           MOVE LENGTH OF L-ONLY-210-A        TO W400-QZOLEN.
+           PERFORM X40-WRITE-QZOUTPUT       THRU X40-EXIT.
+
+           MOVE SPACES                        TO CODBAR-COD-INSERT.
+           SET W100-F-P-SELECT                TO TRUE.
+
+       T400-EXIT.
+           EXIT.
+
+
+       T500-LAYOUT-B-P-SELECT SECTION.
+      ***************************************************************
+      *  ESCREVE LAYOUT DE VERSO DE DOCUMENTO (B_P_SELECT)          *
+      ***************************************************************
+       T500-START.
+           INITIALIZE WORK-A-VARIABLE.
+           MOVE 'B_P_SELECT'                  TO WORK-A-LAYOUT-NAME.
+           MOVE LENGTH OF L-ONLY-210-A        TO W400-QZOLEN.
+           PERFORM X40-WRITE-QZOUTPUT       THRU X40-EXIT.
+
+           SET W100-B-P-SELECT                TO TRUE.
+
+       T500-EXIT.
+           EXIT.
+
+
+       T600-LAYOUT-LOGOTIPO SECTION.
+      ***************************************************************
+      *  ESCREVE LAYOUT COM LOGOTIPO DA COMPANHIA                   *
+      ***************************************************************
+       T600-START.
+           INITIALIZE WORK-A-VARIABLE.
+           IF CODBAR-MULTICARE
+              MOVE 'X014LOGOMC'               TO WORK-A-LAYOUT-NAME
+           ELSE
+              IF WORK-TEMP-MAR-LEVE
+                 MOVE 'X014LOGOLV'            TO WORK-A-LAYOUT-NAME
+              ELSE
+                 IF CODBAR-EUROBIC
+                    MOVE 'X014LOGOEB'         TO WORK-A-LAYOUT-NAME
+                 ELSE
+                    MOVE 'X014LOGOFS'         TO WORK-A-LAYOUT-NAME
+                 END-IF
+              END-IF
+           END-IF.
+           MOVE LENGTH OF L-ONLY-210-A        TO W400-QZOLEN.
+           PERFORM X40-WRITE-QZOUTPUT       THRU X40-EXIT.
+
+       T600-EXIT.
+           EXIT.
+
+
+       T700-CARTA-ASSINATURA SECTION.
+      ***************************************************************
+      *  ESCREVE ASSINATURA DA CARTA CANCELAMENTO                   *
+      ***************************************************************
+       T700-START.
+
+           EVALUATE TRUE
+#02   *  *** F003835: João Bento Casimiro                ***
+#15   *  *** F071397: Fernanda Godinho                   ***
+#02   *  ***          Direção de Operações e Qualidade   ***
+#15   *  ***          Direção de Operações               ***
+#02           WHEN W100-ASS-F003835
+#15           WHEN W100-ASS-F071397
+#02              MOVE 'X014ASSJBC'            TO WORK-A-LAYOUT-NAME
+#08   *  *** F083216: Pedro Mortágua
+#08#13*  ***          DFN - Departamento Gestão de Cobranças
+#08           WHEN W100-ASS-F083216
+#01              MOVE 'X014ASSMMM'            TO WORK-A-LAYOUT-NAME
+      *  *** X890130: Ana Filomena Salvado               ***
+      *  ***          Direção Negócio Empresas           ***
+              WHEN W100-ASS-X890130
+                 MOVE 'X014ASSAFS'            TO WORK-A-LAYOUT-NAME
+           END-EVALUATE.
+
+           MOVE WORK-A-LAYOUT-NAME            TO W500-LAYOUT-NAME.
+
+       T700-EXIT.
+           EXIT.
+
+
+       T800-LAYOUT-HDR-LISTA SECTION.
+      ***************************************************************
+      *  ESCREVE LAYOUT REFERENTE AO HEADER DA LISTA                *
+      ***************************************************************
+       T800-START.
+
+           INITIALIZE                        WORK-A-VARIABLE.
+
+           MOVE 'X014HDRLST'              TO WORK-A-LAYOUT-NAME.
+           MOVE LENGTH OF L-ONLY-210-A    TO W400-QZOLEN.
+           PERFORM X40-WRITE-QZOUTPUT   THRU X40-EXIT.
+
+       T800-EXIT.
+           EXIT.
+
+
+       T900-LAYOUT-PAG SECTION.
+      ***************************************************************
+      *  ESCREVE LAYOUT COM PAGINAÇÃO (Pág. x/y)                    *
+      ***************************************************************
+       T900-START.
+      *** SO ESCREVE PAGINAÇÃO QUANDO MAIS QUE UMA FOLHA ***
+           IF W100-ESCREVER-SIM AND W500-NR-TOT-PAG GREATER 1
+              MOVE W500-NR-PAG                TO W500-FRMT-PAG
+              MOVE ZEROS                      TO W500-FRMT-TOT-PAG
+              PERFORM
+                 VARYING W500-IND FROM 1 BY 1
+                   UNTIL W500-IND GREATER 7
+                 IF W500-NR-TOT-PAG(W500-IND:1) NOT EQUAL ZERO
+                    MOVE W500-NR-TOT-PAG(W500-IND:8 - W500-IND)
+                                   TO W500-FRMT-TOT-PAG(1:8 - W500-IND)
+                    MOVE +7                   TO W500-IND
+                 END-IF
+              END-PERFORM
+
+              INITIALIZE WORK-A-VARIABLE
+              MOVE 'X014PAG   '               TO WORK-A-LAYOUT-NAME
+              STRING 'Pág. ' DELIMITED BY SIZE
+                     W500-FRMT-PAG DELIMITED BY SIZE
+                     '/' DELIMITED BY SIZE
+                     W500-FRMT-TOT-PAG DELIMITED BY SIZE
+                                            INTO X014PAG000-A-PAGINA
+              MOVE LENGTH OF LX014PAG000-A    TO W400-QZOLEN
+              PERFORM X40-WRITE-QZOUTPUT    THRU X40-EXIT
+           END-IF.
+
+       T900-EXIT.
+           EXIT.
+
+
+      *
+       V100-FRMT-CDC1 SECTION.
+      ***************************************************************
+      *  FORMATA CARTA DE CANCELAMENTO - CDC1                       *
+      ***************************************************************
+       V100-START.
+           INITIALIZE WORK-A-VARIABLE.
+
+           PERFORM D50-FRMT-SUBJECT         THRU D50-EXIT.
+           MOVE W500-SUBJECT-LINE1            TO X014CDC100-A-SUBJECT1.
+           MOVE W500-SUBJECT-LINE2            TO X014CDC100-A-SUBJECT2.
+           MOVE W500-SUBJECT-LINE3            TO X014CDC100-A-SUBJECT3.
+           MOVE W500-SUBJECT-LINE4            TO X014CDC100-A-SUBJECT4.
+           MOVE W500-SUBJECT-LINE5            TO X014CDC100-A-SUBJECT5.
+           MOVE W500-SUBJECT-LINE6            TO X014CDC100-A-SUBJECT6.
+           MOVE W500-SUBJECT-LINE7            TO X014CDC100-A-SUBJECT7.
+           MOVE W500-SUBJECT-LINE8            TO X014CDC100-A-SUBJECT8.
+
+           MOVE CANC-DT-ANULACAO(5:2)         TO W400-MOUNTH.
+           PERFORM D10-FRMT-DESC-MES        THRU D10-EXIT.
+           STRING CANC-DT-ANULACAO(7:2) '-'
+                  W400-MOUNTH-DESC(1:3) '-'
+                  CANC-DT-ANULACAO(1:4) '.' DELIMITED BY SIZE
+                                            INTO X014CDC100-A-DT-CANCEL.
+
+           IF W100-ESCREVER-SIM
+              MOVE WORK-TEMP-TOT-VLR           TO X014CDC100-A-VALOR
+           END-IF.
+
+           IF CANC-DT-SINISTRO NOT EQUAL SPACES
+GO7246        IF W500-RAMO EQUAL '0601'
+.                MOVE 'X014CDC1TA'             TO WORK-A-LAYOUT-NAME
+.             ELSE
+                 MOVE 'X014CDC1T1'             TO WORK-A-LAYOUT-NAME
+              END-IF
+           ELSE
+              IF W100-ESCREVER-SIM
+                IF WORK-TEMP-TOT-VLR EQUAL ZEROS
+GO7246             IF W500-RAMO EQUAL '0601'
+GO7246                MOVE 'X014CDC1TB'   TO WORK-A-LAYOUT-NAME
+                   ELSE
+                      MOVE 'X014CDC1T2'   TO WORK-A-LAYOUT-NAME
+                   END-IF
+                END-IF
+                IF WORK-TEMP-TOT-VLR LESS ZEROS
+GO7246             IF W500-RAMO EQUAL '0601'
+GO7246                MOVE 'X014CDC1TC'   TO WORK-A-LAYOUT-NAME
+                   ELSE
+                      MOVE 'X014CDC1T3'   TO WORK-A-LAYOUT-NAME
+                   END-IF
+                END-IF
+                IF WORK-TEMP-TOT-VLR GREATER ZEROS
+GO7246             IF W500-RAMO EQUAL '0601'
+.                     MOVE 'X014CDC1TD'   TO WORK-A-LAYOUT-NAME
+.                  ELSE
+                      MOVE 'X014CDC1T4'   TO WORK-A-LAYOUT-NAME
+                   END-IF
+GO7246          END-IF
+              END-IF
+           END-IF.
+           MOVE LENGTH OF LX014CDC100-A       TO W400-QZOLEN.
+           PERFORM X40-WRITE-QZOUTPUT       THRU X40-EXIT.
+      *
+           INITIALIZE WORK-A-VARIABLE.
+           IF CANC-DT-SINISTRO NOT EQUAL SPACES
+   #02*       SET W100-ASS-F071386            TO TRUE
+#02#15*       SET W100-ASS-F003835            TO TRUE
+#15           SET W100-ASS-F071397            TO TRUE
+
+GO7246        IF W500-RAMO EQUAL '0601'
+GO7246          MOVE 'X014CDC1P6'             TO WORK-A-LAYOUT-NAME
+              ELSE
+                MOVE 'X014CDC1P1'             TO WORK-A-LAYOUT-NAME
+              END-IF
+           ELSE
+   #01*       SET W100-ASS-F071668            TO TRUE
+#01#08*       SET W100-ASS-X871955            TO TRUE
+#08           SET W100-ASS-F083216            TO TRUE
+              IF W100-ESCREVER-SIM
+                 IF WORK-TEMP-TOT-VLR EQUAL ZEROS
+GO7246              IF W500-RAMO EQUAL '0601'
+                       MOVE 'X014CDC1P5'      TO WORK-A-LAYOUT-NAME
+                    ELSE
+                       MOVE 'X014CDC1P2'      TO WORK-A-LAYOUT-NAME
+                    END-IF
+                 ELSE
+GO7246              IF W500-RAMO EQUAL '0601'
+                       MOVE 'X014CDC1P4'      TO WORK-A-LAYOUT-NAME
+                    ELSE
+                       MOVE 'X014CDC1P3'      TO WORK-A-LAYOUT-NAME
+                    END-IF
+                 END-IF
+              END-IF
+           END-IF.
+           MOVE LENGTH OF L-ONLY-210-A        TO W400-QZOLEN.
+           PERFORM X40-WRITE-QZOUTPUT       THRU X40-EXIT.
+      *
+           INITIALIZE WORK-A-VARIABLE.
+           IF CODBAR-MULTICARE
+              MOVE 'X014LINEMC'               TO WORK-A-LAYOUT-NAME
+           ELSE
+              MOVE 'X014LINEFS'               TO WORK-A-LAYOUT-NAME
+           END-IF.
+           MOVE LENGTH OF L-ONLY-210-A        TO W400-QZOLEN.
+           PERFORM X40-WRITE-QZOUTPUT       THRU X40-EXIT.
+
+       V100-EXIT.
+           EXIT.
+
+
+       V200-FRMT-ENTI SECTION.
+      ***************************************************************
+      *  FORMATA CARTA DE CANCELAMENTO - ENTI/ENT1/ENT2             *
+      ***************************************************************
+       V200-START.
+           INITIALIZE WORK-A-VARIABLE.
+
+           PERFORM D50-FRMT-SUBJECT         THRU D50-EXIT.
+           MOVE W500-SUBJECT-LINE1            TO X014ENTI00-A-SUBJECT1.
+           MOVE W500-SUBJECT-LINE2            TO X014ENTI00-A-SUBJECT2.
+           MOVE W500-SUBJECT-LINE3            TO X014ENTI00-A-SUBJECT3.
+           MOVE W500-SUBJECT-LINE4            TO X014ENTI00-A-SUBJECT4.
+           MOVE W500-SUBJECT-LINE5            TO X014ENTI00-A-SUBJECT5.
+           MOVE W500-SUBJECT-LINE6            TO X014ENTI00-A-SUBJECT6.
+           MOVE W500-SUBJECT-LINE7            TO X014ENTI00-A-SUBJECT7.
+           MOVE W500-SUBJECT-LINE8            TO X014ENTI00-A-SUBJECT8.
+
+           MOVE CANC-DT-ANULACAO(5:2)         TO W400-MOUNTH.
+           PERFORM D10-FRMT-DESC-MES        THRU D10-EXIT.
+           STRING CANC-DT-ANULACAO(7:2) '-'
+                  W400-MOUNTH-DESC(1:3) '-'
+                  CANC-DT-ANULACAO(1:4) DELIMITED BY SIZE
+                                            INTO X014ENTI00-A-DT-CANCEL.
+
+           EVALUATE TRUE
+              WHEN CANC-DOC-CRT-ENTI
+              WHEN CANC-DOC-CRT-ENT1
+                 STRING CANC-DT-ANULACAO(7:2) '-'
+                        W400-MOUNTH-DESC(1:3) '-'
+                        CANC-DT-ANULACAO(1:4) '.' DELIMITED BY SIZE
+                                            INTO X014ENTI00-A-DT-CANCEL
+                 MOVE 'X014ENTIT1'            TO WORK-A-LAYOUT-NAME
+              WHEN CANC-DOC-CRT-ENT2
+                 STRING CANC-DT-ANULACAO(7:2) '-'
+                        W400-MOUNTH-DESC(1:3) '-'
+                        CANC-DT-ANULACAO(1:4) ' ' DELIMITED BY SIZE
+                                            INTO X014ENTI00-A-DT-CANCEL
+                 MOVE 'X014ENTIT2'            TO WORK-A-LAYOUT-NAME
+           END-EVALUATE.
+           MOVE LENGTH OF LX014ENTI00-A       TO W400-QZOLEN.
+           PERFORM X40-WRITE-QZOUTPUT       THRU X40-EXIT.
+      *
+           INITIALIZE WORK-A-VARIABLE.
+           MOVE 'X014ENTIP1'                  TO WORK-A-LAYOUT-NAME.
+           MOVE LENGTH OF L-ONLY-210-A        TO W400-QZOLEN.
+           PERFORM X40-WRITE-QZOUTPUT       THRU X40-EXIT.
+      *
+           IF CANC-UR-TIP-AUTOMOVEL
+   #02*       SET W100-ASS-F071386            TO TRUE
+#02#15*       SET W100-ASS-F003835            TO TRUE
+#15           SET W100-ASS-F071397            TO TRUE
+           ELSE
+              SET W100-ASS-X890130            TO TRUE
+           END-IF.
+
+       V200-EXIT.
+           EXIT.
+
+
+       V300-FRMT-CTAD-CL SECTION.
+      ***************************************************************
+      *  FORMATA CARTA DE CANCELAMENTO - CTAD (CLIENTE)             *
+      ***************************************************************
+       V300-START.
+           INITIALIZE WORK-A-VARIABLE.
+
+           PERFORM D50-FRMT-SUBJECT         THRU D50-EXIT.
+           MOVE W500-SUBJECT-LINE1            TO X014CTAD00-A-SUBJECT1.
+           MOVE W500-SUBJECT-LINE2            TO X014CTAD00-A-SUBJECT2.
+           MOVE W500-SUBJECT-LINE3            TO X014CTAD00-A-SUBJECT3.
+           MOVE W500-SUBJECT-LINE4            TO X014CTAD00-A-SUBJECT4.
+           MOVE W500-SUBJECT-LINE5            TO X014CTAD00-A-SUBJECT5.
+           MOVE W500-SUBJECT-LINE6            TO X014CTAD00-A-SUBJECT6.
+           MOVE W500-SUBJECT-LINE7            TO X014CTAD00-A-SUBJECT7.
+           MOVE W500-SUBJECT-LINE8            TO X014CTAD00-A-SUBJECT8.
+
+           IF CANC-NR-AGENTE NOT EQUAL SPACES
+              MOVE CANC-NR-AGENTE             TO X014CTAD00-A-MEDIADOR
+           END-IF.
+
+           MOVE CANC-DT-ANULACAO(5:2)         TO W400-MOUNTH.
+           PERFORM D10-FRMT-DESC-MES        THRU D10-EXIT.
+           STRING CANC-DT-ANULACAO(7:2) '-'
+                  W400-MOUNTH-DESC(1:3) '-'
+                  CANC-DT-ANULACAO(1:4) DELIMITED BY SIZE
+                                            INTO X014CTAD00-A-DT-CANCEL.
+
+           IF W100-ESCREVER-SIM
+              IF WORK-TEMP-TOT-VLR EQUAL ZEROS
+GO7246           IF W500-RAMO EQUAL '0601'
+.                   MOVE 'X014CTADTA'            TO WORK-A-LAYOUT-NAME
+.                   MOVE LENGTH OF LX014CTAD00-A TO W400-QZOLEN
+.                   PERFORM X40-WRITE-QZOUTPUT THRU X40-EXIT
+.
+.                   INITIALIZE WORK-A-VARIABLE
+.                   MOVE 'X014CTADP2'            TO WORK-A-LAYOUT-NAME
+.                   MOVE LENGTH OF L-ONLY-210-A  TO W400-QZOLEN
+.                   PERFORM X40-WRITE-QZOUTPUT THRU X40-EXIT
+GO7246           ELSE
+                    MOVE 'X014CTADT1'            TO WORK-A-LAYOUT-NAME
+                    MOVE LENGTH OF LX014CTAD00-A TO W400-QZOLEN
+                    PERFORM X40-WRITE-QZOUTPUT THRU X40-EXIT
+
+                    INITIALIZE WORK-A-VARIABLE
+                    MOVE 'X014CTADP1'            TO WORK-A-LAYOUT-NAME
+                    MOVE LENGTH OF L-ONLY-210-A  TO W400-QZOLEN
+                    PERFORM X40-WRITE-QZOUTPUT THRU X40-EXIT
+GO7246           END-IF
+              ELSE
+GO7246           IF W500-RAMO EQUAL '0601'
+.                   MOVE WORK-TEMP-TOT-VLR       TO X014CTAD00-A-VALOR
+.                   MOVE 'X014CTADTB'            TO WORK-A-LAYOUT-NAME
+.                   MOVE LENGTH OF LX014CTAD00-A TO W400-QZOLEN
+.                   PERFORM X40-WRITE-QZOUTPUT THRU X40-EXIT
+.
+.                   INITIALIZE WORK-A-VARIABLE
+.                   MOVE 'X014CTADP4'            TO WORK-A-LAYOUT-NAME
+.                   MOVE LENGTH OF L-ONLY-210-A  TO W400-QZOLEN
+.                   PERFORM X40-WRITE-QZOUTPUT THRU X40-EXIT
+                 ELSE
+                    MOVE WORK-TEMP-TOT-VLR       TO X014CTAD00-A-VALOR
+                    MOVE 'X014CTADT2'            TO WORK-A-LAYOUT-NAME
+                    MOVE LENGTH OF LX014CTAD00-A TO W400-QZOLEN
+                    PERFORM X40-WRITE-QZOUTPUT THRU X40-EXIT
+
+                    INITIALIZE WORK-A-VARIABLE
+                    MOVE 'X014CTADP2'            TO WORK-A-LAYOUT-NAME
+                    MOVE LENGTH OF L-ONLY-210-A  TO W400-QZOLEN
+                    PERFORM X40-WRITE-QZOUTPUT THRU X40-EXIT
+                 END-IF
+              END-IF
+           END-IF.
+      *
+           INITIALIZE WORK-A-VARIABLE.
+           IF CODBAR-MULTICARE
+              MOVE 'X014LINEMC'               TO WORK-A-LAYOUT-NAME
+           ELSE
+              MOVE 'X014LINEFS'               TO WORK-A-LAYOUT-NAME
+           END-IF.
+           MOVE LENGTH OF L-ONLY-210-A        TO W400-QZOLEN.
+           PERFORM X40-WRITE-QZOUTPUT       THRU X40-EXIT.
+      *
+   #01*    SET W100-ASS-F071668               TO TRUE.
+#01#08*    SET W100-ASS-X871955               TO TRUE.
+#08        SET W100-ASS-F083216               TO TRUE.
+
+       V300-EXIT.
+           EXIT.
+
+
+       V400-FRMT-CTAD-AG SECTION.
+      ***************************************************************
+      *  FORMATA CARTA DE CANCELAMENTO - CTAD (MEDIADOR)            *
+      ***************************************************************
+       V400-START.
+           INITIALIZE WORK-A-VARIABLE.
+
+           PERFORM D50-FRMT-SUBJECT         THRU D50-EXIT.
+           MOVE W500-SUBJECT-LINE1            TO X014CTAD00-A-SUBJECT1.
+           MOVE W500-SUBJECT-LINE2            TO X014CTAD00-A-SUBJECT2.
+           MOVE W500-SUBJECT-LINE3            TO X014CTAD00-A-SUBJECT3.
+           MOVE W500-SUBJECT-LINE4            TO X014CTAD00-A-SUBJECT4.
+           MOVE W500-SUBJECT-LINE5            TO X014CTAD00-A-SUBJECT5.
+           MOVE W500-SUBJECT-LINE6            TO X014CTAD00-A-SUBJECT6.
+           MOVE W500-SUBJECT-LINE7            TO X014CTAD00-A-SUBJECT7.
+           MOVE W500-SUBJECT-LINE8            TO X014CTAD00-A-SUBJECT8.
+
+           IF CANC-NR-AGENTE NOT EQUAL SPACES
+              MOVE CANC-NR-AGENTE             TO X014CTAD00-A-MEDIADOR
+           END-IF.
+
+           MOVE CANC-DT-ANULACAO(5:2)         TO W400-MOUNTH.
+           PERFORM D10-FRMT-DESC-MES        THRU D10-EXIT.
+           STRING CANC-DT-ANULACAO(7:2) '-'
+                  W400-MOUNTH-DESC(1:3) '-'
+                  CANC-DT-ANULACAO(1:4) DELIMITED BY SIZE
+                                            INTO X014CTAD00-A-DT-CANCEL.
+
+           MOVE 'X014CTADT3'                  TO WORK-A-LAYOUT-NAME.
+           MOVE LENGTH OF LX014CTAD00-A       TO W400-QZOLEN.
+           PERFORM X40-WRITE-QZOUTPUT       THRU X40-EXIT.
+      *
+           INITIALIZE WORK-A-VARIABLE.
+           MOVE 'X014CTADP3'                  TO WORK-A-LAYOUT-NAME.
+           MOVE LENGTH OF L-ONLY-210-A        TO W400-QZOLEN.
+           PERFORM X40-WRITE-QZOUTPUT       THRU X40-EXIT.
+      *
+   #01*    SET W100-ASS-F071668               TO TRUE.
+#01#08*    SET W100-ASS-X871955               TO TRUE.
+#08        SET W100-ASS-F083216               TO TRUE.
+
+       V400-EXIT.
+           EXIT.
+
+
+       V500-FRMT-CHIP SECTION.
+      ***************************************************************
+      *  FORMATA CARTA DE CANCELAMENTO - CHIP                       *
+      ***************************************************************
+       V500-START.
+           INITIALIZE WORK-A-VARIABLE.
+
+           PERFORM D50-FRMT-SUBJECT         THRU D50-EXIT.
+           MOVE W500-SUBJECT-LINE1            TO X014CHIP00-A-SUBJECT1.
+           MOVE W500-SUBJECT-LINE2            TO X014CHIP00-A-SUBJECT2.
+           MOVE W500-SUBJECT-LINE3            TO X014CHIP00-A-SUBJECT3.
+           MOVE W500-SUBJECT-LINE4            TO X014CHIP00-A-SUBJECT4.
+           MOVE W500-SUBJECT-LINE5            TO X014CHIP00-A-SUBJECT5.
+           MOVE W500-SUBJECT-LINE6            TO X014CHIP00-A-SUBJECT6.
+           MOVE W500-SUBJECT-LINE7            TO X014CHIP00-A-SUBJECT7.
+           MOVE W500-SUBJECT-LINE8            TO X014CHIP00-A-SUBJECT8.
+
+           MOVE WORK-TEMP-DT-DEVIDO(5:2)      TO W400-MOUNTH.
+           PERFORM D10-FRMT-DESC-MES        THRU D10-EXIT.
+
+           IF W100-ESCREVER-SIM
+              IF W500-NR-TOT-PAG EQUAL 1
+                 MOVE ':'                     TO X014CTAD00-A-MORE-TEXT
+              ELSE
+                 MOVE ' e nas página(s) seguinte(s):'
+                                              TO X014CTAD00-A-MORE-TEXT
+              END-IF
+           END-IF.
+
+           IF CANC-EMI-NOVO-NEGOCIO
+              STRING WORK-TEMP-DT-DEVIDO(7:2) '-'
+                     W400-MOUNTH-DESC(1:3) '-'
+                     WORK-TEMP-DT-DEVIDO(1:4) ' ' DELIMITED BY SIZE
+                                            INTO X014CTAD00-A-DT-DEVIDO
+   #04*       MOVE 'X014CHIPT1'               TO WORK-A-LAYOUT-NAME
+#04           MOVE 'X014CHIPT2'               TO WORK-A-LAYOUT-NAME
+           ELSE
+              STRING WORK-TEMP-DT-DEVIDO(7:2) '-'
+                     W400-MOUNTH-DESC(1:3) '-'
+                     WORK-TEMP-DT-DEVIDO(1:4) '.' DELIMITED BY SIZE
+                                            INTO X014CTAD00-A-DT-DEVIDO
+   #04*       MOVE 'X014CHIPT2'               TO WORK-A-LAYOUT-NAME
+#04           MOVE 'X014CHIPT1'               TO WORK-A-LAYOUT-NAME
+           END-IF.
+           MOVE LENGTH OF LX014CHIP00-A       TO W400-QZOLEN.
+           PERFORM X40-WRITE-QZOUTPUT       THRU X40-EXIT.
+      *
+           INITIALIZE WORK-A-VARIABLE.
+           MOVE 'X014CHIPP1'                  TO WORK-A-LAYOUT-NAME.
+           MOVE LENGTH OF L-ONLY-210-A        TO W400-QZOLEN.
+           PERFORM X40-WRITE-QZOUTPUT       THRU X40-EXIT.
+      *
+   #01*    SET W100-ASS-F071668               TO TRUE.
+#01#08*    SET W100-ASS-X871955               TO TRUE.
+#08        SET W100-ASS-F083216               TO TRUE.
+
+       V500-EXIT.
+           EXIT.
+
+
+       V600-FRMT-QUEBRA SECTION.
+      ***************************************************************
+      *  FORMATA QUEBRA DE LINHA (LISTA)                            *
+      ***************************************************************
+       V600-START.
+
+      *** VALIDA SE CABE LINHA DE DETALHE + ASSINATURA ***
+           MOVE 'X014LISTA '                  TO W500-LAYOUT-NAME.
+           PERFORM D80-FRMT-DIMENSAO        THRU D80-EXIT.
+           COMPUTE W500-AUX-AVAILABLE = W500-AVAILABLE -
+                                        W500-LAYOUT-ALTURA.
+
+           PERFORM T700-CARTA-ASSINATURA    THRU T700-EXIT.
+           PERFORM D80-FRMT-DIMENSAO        THRU D80-EXIT.
+           COMPUTE W500-AUX-AVAILABLE = W500-AUX-AVAILABLE -
+                                        W500-LAYOUT-ALTURA.
+
+      *** SE NÃO COUBER, FAZ QUEBRA DE PÁGINA ***
+           IF W500-AUX-AVAILABLE LESS ZERO
+              PERFORM T900-LAYOUT-PAG       THRU T900-EXIT
+
+              COMPUTE W500-NR-PAG = W500-NR-PAG + 1
+              IF W100-ESCREVER-NAO
+                 MOVE W500-NR-PAG             TO W500-NR-TOT-PAG
+              END-IF
+
+      *  *** VERIFICA SE FAZ UMA FOLHA NOVA OU UM VERSO ***
+              EVALUATE TRUE
+                 WHEN W100-F-P-SELECT
+                    PERFORM T500-LAYOUT-B-P-SELECT THRU T500-EXIT
+                 WHEN W100-B-P-SELECT
+                    ADD 1                     TO CODBAR-NPAG-DOC
+
+                    INITIALIZE WORK-A-VARIABLE
+                    PERFORM T400-LAYOUT-F-P-SELECT THRU T400-EXIT
+
+                    PERFORM T600-LAYOUT-LOGOTIPO THRU T600-EXIT
+              END-EVALUATE
+
+              INITIALIZE WORK-A-VARIABLE
+              MOVE 'X014POSTOP'               TO WORK-A-LAYOUT-NAME
+              MOVE LENGTH OF L-ONLY-210-A     TO W400-QZOLEN
+              PERFORM X40-WRITE-QZOUTPUT    THRU X40-EXIT
+
+              MOVE W500-MAXSPACE              TO W500-AVAILABLE
+
+              PERFORM T800-LAYOUT-HDR-LISTA THRU T800-EXIT
+           END-IF.
+
+       V600-EXIT.
+           EXIT.
+
+
+       V700-FRMT-LISTA SECTION.
+      ***************************************************************
+      *  FORMATA LINHA DE DETALHE (LISTA)                           *
+      ***************************************************************
+       V700-START.
+
+           INITIALIZE WORK-A-VARIABLE.
+
+           MOVE CANC-LST-NR-RECIBO            TO X014LIST00-A-RECIBO.
+
+           MOVE CANC-LST-DT-INI-REC(5:2)      TO W400-MOUNTH.
+           PERFORM D10-FRMT-DESC-MES        THRU D10-EXIT.
+           MOVE W400-MOUNTH-DESC              TO W500-GUARDA-MES1.
+           MOVE CANC-LST-DT-FIM-REC(5:2)      TO W400-MOUNTH.
+           PERFORM D10-FRMT-DESC-MES        THRU D10-EXIT.
+           MOVE W400-MOUNTH-DESC              TO W500-GUARDA-MES2.
+           STRING CANC-LST-DT-INI-REC(7:2) '-'
+                  W500-GUARDA-MES1(1:3) '-'
+                  CANC-LST-DT-INI-REC(1:4) ' a '
+                  CANC-LST-DT-FIM-REC(7:2) '-'
+                  W500-GUARDA-MES2(1:3) '-'
+                  CANC-LST-DT-FIM-REC(1:4) DELIMITED BY SIZE
+                                            INTO X014LIST00-A-PERIODO-R.
+
+           MOVE CANC-LST-VLR-RECIBO           TO X014LIST00-A-PREMIO-R.
+
+           MOVE 'X014LISTA '                  TO WORK-A-LAYOUT-NAME.
+           MOVE LENGTH OF LX014LIST00-A       TO W400-QZOLEN.
+           PERFORM X40-WRITE-QZOUTPUT       THRU X40-EXIT.
+
+       V700-EXIT.
+           EXIT.
+
+
+CEL015 V1000-FRMT-FPXX  SECTION.
+CEL015***************************************************************
+CEL015*    FORMATA CARTAS DE FALTA DE PAGAMENTO:                    *
+CEL015*    - FP01: FALTA PAGAMENTO Tomador Seguro COM Crédito       *
+CEL015*    - FP02: FALTA PAGAMENTO Tomador Seguro SEM Crédito       *
+CEL015*    - FP05: FALTA PAGAMENTO Tomador Seguro SEM Crédito       *
+CEL015*                            - Anulação Coberturas            *
+CEL015*    - FP07: FALTA PAGAMENTO Tomador Seguro SEM Crédito       *
+CEL015*                            - Redução Contrato               *
+CEL015*    - FP12: FALTA PAGAMENTO Beneficiário Interventor COM     *
+CEL015*                            Crédito NÃO CGD                  *
+CEL015*    - FP21: FALTA PAGAMENTO Pessoa Segura COM Crédito        *
+CEL015***************************************************************
+CEL015 V1000-START.
+CEL015
+CEL015     INITIALIZE                        WORK-A-VARIABLE.
+CEL015
+CEL015     PERFORM D50-FRMT-SUBJECT     THRU D50-EXIT.
+CEL015
+CEL015     MOVE W500-SUBJECT-LINE1        TO X014FP00AS-A-SUBJECT1.
+CEL015     MOVE W500-SUBJECT-LINE2        TO X014FP00AS-A-SUBJECT2.
+CEL015     MOVE W500-SUBJECT-LINE3        TO X014FP00AS-A-SUBJECT3.
+CEL015     MOVE W500-SUBJECT-LINE4        TO X014FP00AS-A-SUBJECT4.
+CEL015     MOVE W500-SUBJECT-LINE5        TO X014FP00AS-A-SUBJECT5.
+CEL015     MOVE W500-SUBJECT-LINE6        TO X014FP00AS-A-SUBJECT6.
+CEL015     MOVE W500-SUBJECT-LINE7        TO X014FP00AS-A-SUBJECT7.
+CEL015     MOVE W500-SUBJECT-LINE8        TO X014FP00AS-A-SUBJECT8.
+CEL015     MOVE W500-SUBJECT-LINE9        TO X014FP00AS-A-SUBJECT9.
+CEL015     MOVE W500-SUBJECT-LINE10       TO X014FP00AS-A-SUBJECT10.
+CEL015     MOVE W500-SUBJECT-LINE11       TO X014FP00AS-A-SUBJECT11.
+CEL015
+CEL015     IF W100-ESCREVER-SIM
+CEL015        MOVE SPACES                  TO W400-DT-VENC-TXT
+CEL015        MOVE CANC-VA-DT-VENCMNTO(5:2) TO W400-MOUNTH
+CEL015        PERFORM D10-FRMT-DESC-MES  THRU D10-EXIT
+CEL015        STRING CANC-VA-DT-VENCMNTO(7:2) '-'
+CEL015               W400-MOUNTH-DESC(1:3) '-'
+CEL015               CANC-VA-DT-VENCMNTO(1:4)
+CEL015               ', data do seu vencimento.'
+CEL015        DELIMITED BY SIZE         INTO W400-DT-VENC-TXT
+CEL015        MOVE W400-DT-VENC-TXT       TO X014FP00AS-A-DT-VENCIMENTO
+CEL015
+CEL015        MOVE WORK-TEMP-TOT-VLR      TO W400-VLR-DIVIDA
+CEL015
+CEL015        IF NOT CANC-DOC-CRT-FP12
+CEL015* ---
+CEL015*    FORMATA VARIÁVEL NUMÉRICA ALINHADA À ESQUERDA
+CEL015           PERFORM D90-FRMT-VAR-NUM
+CEL015
+CEL015           MOVE SPACES              TO W400-DIV-LIM-PAG
+CEL015           MOVE CANC-VA-DT-LIM-PAGTO(5:2)
+CEL015                                    TO W400-MOUNTH
+CEL015           PERFORM D10-FRMT-DESC-MES THRU D10-EXIT
+CEL015           STRING W400-VLR-DIVIDA-TXT DELIMITED BY SPACES
+CEL015                 ' Euros e deverá ser pago até ' DELIMITED BY SIZE
+CEL015                  CANC-VA-DT-LIM-PAGTO(7:2) '-'
+CEL015                  W400-MOUNTH-DESC(1:3) '-'
+CEL015                  CANC-VA-DT-LIM-PAGTO(1:4) '.'
+CEL015           DELIMITED BY SIZE      INTO W400-DIV-LIM-PAG
+CEL015           MOVE W400-DIV-LIM-PAG    TO X014FP00AS-A-DIV-LIM-PAG
+CEL015        END-IF
+CEL015     END-IF.
+CEL015
+CEL015* ---
+CEL015*    FORMATA TEXTO DA CARTA DEPENDENDO DO CÓDIGO DA CARTA
+CEL015     EVALUATE TRUE
+CEL015
+CEL015     WHEN CANC-DOC-CRT-FP01
+CEL015        MOVE 'X014FP01T0'           TO WORK-A-LAYOUT-NAME
+CEL015
+CEL015     WHEN CANC-DOC-CRT-FP02
+CEL015        MOVE 'X014FP02T0'           TO WORK-A-LAYOUT-NAME
+CEL015
+CEL015     WHEN CANC-DOC-CRT-FP05
+CEL015        MOVE 'X014FP05T0'           TO WORK-A-LAYOUT-NAME
+CEL015
+CEL015     WHEN CANC-DOC-CRT-FP07
+CEL015        MOVE 'X014FP07T0'           TO WORK-A-LAYOUT-NAME
+CEL015
+CEL015     WHEN CANC-DOC-CRT-FP12
+CEL015        MOVE 'X014FP12T0'           TO WORK-A-LAYOUT-NAME
+CEL015
+CEL015     WHEN CANC-DOC-CRT-FP21
+CEL015        MOVE 'X014FP21T0'           TO WORK-A-LAYOUT-NAME
+CEL015
+CEL015     END-EVALUATE.
+CEL015
+CEL015     MOVE LENGTH OF LX014FP00AS-A   TO W400-QZOLEN.
+CEL015     PERFORM X40-WRITE-QZOUTPUT   THRU X40-EXIT.
+CEL015*
+CEL015     INITIALIZE                        WORK-A-VARIABLE.
+CEL015
+CEL015* ---
+CEL015*    POSICIONA DEPENDENDO DO CÓDIGO DA CARTA
+CEL015     EVALUATE TRUE
+CEL015
+CEL015     WHEN CANC-DOC-CRT-FP01
+CEL015        MOVE 'X014FP01P0'           TO WORK-A-LAYOUT-NAME
+CEL015
+CEL015     WHEN CANC-DOC-CRT-FP02
+CEL015        MOVE 'X014FP02P0'           TO WORK-A-LAYOUT-NAME
+CEL015
+CEL015     WHEN CANC-DOC-CRT-FP05
+CEL015        MOVE 'X014FP05P0'           TO WORK-A-LAYOUT-NAME
+CEL015
+CEL015     WHEN CANC-DOC-CRT-FP07
+CEL015        MOVE 'X014FP07P0'           TO WORK-A-LAYOUT-NAME
+CEL015
+CEL015     WHEN CANC-DOC-CRT-FP12
+CEL015        MOVE 'X014FP12P0'           TO WORK-A-LAYOUT-NAME
+CEL015
+CEL015     WHEN CANC-DOC-CRT-FP21
+CEL015        MOVE 'X014FP21P0'           TO WORK-A-LAYOUT-NAME
+CEL015
+CEL015     END-EVALUATE.
+CEL015
+CEL015     MOVE LENGTH OF L-ONLY-210-A    TO W400-QZOLEN.
+CEL015     PERFORM X40-WRITE-QZOUTPUT   THRU X40-EXIT.
+CEL015
+CEL015* ---
+CEL015*    ESCREVER LAYOUT CORRESPONDENTE PARÁGRAFO LISTA RECIBOS
+CEL015     INITIALIZE                        WORK-A-VARIABLE.
+CEL015
+CEL015     MOVE 'X014FP00LR'              TO WORK-A-LAYOUT-NAME.
+CEL015
+CEL015     MOVE LENGTH OF L-ONLY-210-A    TO W400-QZOLEN.
+CEL015     PERFORM X40-WRITE-QZOUTPUT   THRU X40-EXIT.
+CEL015
+CEL015* ---
+CEL015*    SELECCIONA ASSINATURA
+CEL015*#08 SET  W100-ASS-X871955          TO TRUE.
+#08        SET  W100-ASS-F083216          TO TRUE.
+CEL015
+CEL015 V1000-EXIT.
+CEL015     EXIT.
+CEL015/
+CEL015 V2000-FRMT-FPXX  SECTION.
+CEL015***************************************************************
+CEL015*    FORMATA CARTAS DE ANULAÇÃO:                              *
+CEL015*    - FP03: ANULAÇÃO Tomador Seguro COM Crédito              *
+CEL015*    - FP04: ANULAÇÃO Tomador Seguro SEM Crédito              *
+CEL015*    - FP06: ANULAÇÃO Tomador Seguro SEM Crédito              *
+CEL015*                     - Anulação Coberturas                   *
+CEL015*    - FP23: ANULAÇÃO Pessoa Segura SEM Crédito               *
+CEL076*    - FP13: ANULAÇÃO Beneficiário Interventor COM Crédito    *
+CEL015***************************************************************
+CEL015 V2000-START.
+CEL015
+CEL015     INITIALIZE                        WORK-A-VARIABLE.
+CEL015
+CEL015     PERFORM D50-FRMT-SUBJECT     THRU D50-EXIT.
+CEL015
+CEL015     MOVE W500-SUBJECT-LINE1        TO X014FP00AS-A-SUBJECT1.
+CEL015     MOVE W500-SUBJECT-LINE2        TO X014FP00AS-A-SUBJECT2.
+CEL015     MOVE W500-SUBJECT-LINE3        TO X014FP00AS-A-SUBJECT3.
+CEL015     MOVE W500-SUBJECT-LINE4        TO X014FP00AS-A-SUBJECT4.
+CEL015     MOVE W500-SUBJECT-LINE5        TO X014FP00AS-A-SUBJECT5.
+CEL015     MOVE W500-SUBJECT-LINE6        TO X014FP00AS-A-SUBJECT6.
+CEL015     MOVE W500-SUBJECT-LINE7        TO X014FP00AS-A-SUBJECT7.
+CEL015     MOVE W500-SUBJECT-LINE8        TO X014FP00AS-A-SUBJECT8.
+CEL015     MOVE W500-SUBJECT-LINE9        TO X014FP00AS-A-SUBJECT9.
+CEL015     MOVE W500-SUBJECT-LINE10       TO X014FP00AS-A-SUBJECT10.
+CEL015     MOVE W500-SUBJECT-LINE11       TO X014FP00AS-A-SUBJECT11.
+CEL015
+CEL015     IF W100-ESCREVER-SIM
+CEL015        MOVE SPACES                  TO W400-DT-ANUL-TXT
+CEL015        MOVE CANC-DT-ANULACAO(5:2)   TO W400-MOUNTH
+CEL015        PERFORM D10-FRMT-DESC-MES  THRU D10-EXIT
+CEL076        IF CANC-DOC-CRT-FP13
+CEL076           STRING CANC-DT-ANULACAO(7:2) '-'
+CEL076                  W400-MOUNTH-DESC(1:3) '-'
+CEL076                  CANC-DT-ANULACAO(1:4)
+CEL076           DELIMITED BY SIZE      INTO W400-DT-ANUL-TXT
+CEL076        ELSE
+CEL015           STRING CANC-DT-ANULACAO(7:2) '-'
+CEL015                  W400-MOUNTH-DESC(1:3) '-'
+CEL015                  CANC-DT-ANULACAO(1:4) '.'
+CEL015           DELIMITED BY SIZE      INTO W400-DT-ANUL-TXT
+CEL076        END-IF
+CEL015        MOVE W400-DT-ANUL-TXT       TO X014FP00AS-A-DT-ANULACAO
+CEL015
+CEL015* ---
+CEL015*    FORMATA TEXTO DA CARTA DEPENDENDO DO CÓDIGO DA CARTA
+CEL015     EVALUATE TRUE
+CEL015
+CEL015     WHEN CANC-DOC-CRT-FP03
+CEL015        MOVE 'X014FP03T0'           TO WORK-A-LAYOUT-NAME
+CEL015
+CEL015     WHEN CANC-DOC-CRT-FP04
+CEL015        MOVE 'X014FP04T0'           TO WORK-A-LAYOUT-NAME
+CEL015
+CEL015     WHEN CANC-DOC-CRT-FP06
+CEL015        MOVE 'X014FP06T0'           TO WORK-A-LAYOUT-NAME
+CEL015
+CEL076     WHEN CANC-DOC-CRT-FP13
+CEL076        MOVE 'X014FP13T0'           TO WORK-A-LAYOUT-NAME
+CEL076
+CEL015     WHEN CANC-DOC-CRT-FP23
+CEL015        MOVE 'X014FP23T0'           TO WORK-A-LAYOUT-NAME
+CEL015
+CEL015     END-EVALUATE.
+CEL015
+CEL015     MOVE LENGTH OF LX014FP00AS-A   TO W400-QZOLEN.
+CEL015     PERFORM X40-WRITE-QZOUTPUT   THRU X40-EXIT.
+CEL015*
+CEL015     INITIALIZE                        WORK-A-VARIABLE.
+CEL015
+CEL015* ---
+CEL015*    POSICIONA DEPENDENDO DO CÓDIGO DA CARTA
+CEL015     EVALUATE TRUE
+CEL015
+CEL015     WHEN CANC-DOC-CRT-FP03
+CEL015        MOVE 'X014FP03P0'           TO WORK-A-LAYOUT-NAME
+CEL015
+CEL015     WHEN CANC-DOC-CRT-FP04
+CEL015        MOVE 'X014FP04P0'           TO WORK-A-LAYOUT-NAME
+CEL015
+CEL015     WHEN CANC-DOC-CRT-FP06
+CEL015        MOVE 'X014FP06P0'           TO WORK-A-LAYOUT-NAME
+CEL015
+CEL076     WHEN CANC-DOC-CRT-FP13
+CEL076        MOVE 'X014FP13P0'           TO WORK-A-LAYOUT-NAME
+CEL076
+CEL015     WHEN CANC-DOC-CRT-FP23
+CEL015        MOVE 'X014FP23P0'           TO WORK-A-LAYOUT-NAME
+CEL015
+CEL015     END-EVALUATE.
+CEL015
+CEL015     MOVE LENGTH OF L-ONLY-210-A    TO W400-QZOLEN.
+CEL015     PERFORM X40-WRITE-QZOUTPUT   THRU X40-EXIT.
+CEL015
+CEL015* ---
+CEL015*    ESCREVER LAYOUT CORRESPONDENTE PARÁGRAFO LINHA DE APOIO
+CEL076     IF NOT CANC-DOC-CRT-FP13
+CEL015        INITIALIZE                      WORK-A-VARIABLE
+CEL015
+CEL015        MOVE 'X014FP00LA'            TO WORK-A-LAYOUT-NAME
+CEL015
+CEL015        MOVE LENGTH OF L-ONLY-210-A  TO W400-QZOLEN
+CEL015        PERFORM X40-WRITE-QZOUTPUT THRU X40-EXIT
+CEL076     END-IF.
+CEL015
+CEL015* ---
+CEL015*    SELECCIONA ASSINATURA
+CEL015*#08 SET  W100-ASS-X871955          TO TRUE.
+#08        SET  W100-ASS-F083216          TO TRUE.
+CEL015
+CEL015 V2000-EXIT.
+CEL015     EXIT.
+CEL015/
+       X10-READ-QZTEMP SECTION.
+      ***************************************************************
+      *  LEITURA DO FICHEIRO DE INPUT                               *
+      ***************************************************************
+       X10-START.
+
+           READ QZTEMP                  INTO WORK-INPUT
+             AT END
+              SET  W400-ST-QZTEMP-FIM     TO TRUE.
+
+           IF W400-ST-QZTEMP-OK
+              COMPUTE W500-REG-LIDOS = W500-REG-LIDOS + 1
+
+              IF NOT CANC-DOC-CRT-CDC1 AND
+                 NOT CANC-DOC-CRT-CHIP AND
+                 NOT CANC-DOC-CRT-ENTI AND
+                 NOT CANC-DOC-CRT-ENT1 AND
+                 NOT CANC-DOC-CRT-ENT2 AND
+                 NOT CANC-DOC-CRT-CTAD AND
+CEL015           NOT CANC-DOC-CRT-FP01 AND
+CEL015           NOT CANC-DOC-CRT-FP02 AND
+CEL015           NOT CANC-DOC-CRT-FP03 AND
+CEL015           NOT CANC-DOC-CRT-FP04 AND
+CEL015           NOT CANC-DOC-CRT-FP05 AND
+CEL015           NOT CANC-DOC-CRT-FP06 AND
+CEL015           NOT CANC-DOC-CRT-FP07 AND
+CEL015           NOT CANC-DOC-CRT-FP12 AND
+CEL076           NOT CANC-DOC-CRT-FP13 AND
+CEL015           NOT CANC-DOC-CRT-FP21 AND
+CEL015           NOT CANC-DOC-CRT-FP23
+                 DISPLAY 'ERRO: CODIGO DOCUMENTO INVALIDO: '
+                                                    CANC-COD-DOCUMENTO
+                 PERFORM Z10-CALL-ABEND
+              END-IF
+           ELSE
+              IF NOT W400-ST-QZTEMP-FIM
+                 DISPLAY 'ERRO READ <FICH QZTEMP>...: ' W400-ST-QZTEMP
+                 PERFORM Z10-CALL-ABEND
+              END-IF
+           END-IF.
+
+       X10-EXIT.
+           EXIT.
+
+
+       X20-WRITE-QZCOPY SECTION.
+      ***************************************************************
+      *  ESCREVE FICHEIRO TEMPORARIO                                *
+      ***************************************************************
+       X20-START.
+           WRITE QZCOPY-RECORD              FROM WORK-TEMP.
+
+           IF NOT W400-ST-QZCOPY-OK
+              DISPLAY 'ERRO WRITE <FICH QZCOPY>....: ' W400-ST-QZCOPY
+              PERFORM Z10-CALL-ABEND
+           ELSE
+              COMPUTE W500-REG-TMP-ESCRI = W500-REG-TMP-ESCRI + 1
+           END-IF.
+
+       X20-EXIT.
+           EXIT.
+
+
+       X30-READ-QZCOPY SECTION.
+      ***************************************************************
+      *  LEITURA DO FICHEIRO TEMPORARIO                             *
+      ***************************************************************
+       X30-START.
+           READ QZCOPY                      INTO WORK-TEMP
+              AT END SET W400-ST-QZCOPY-FIM   TO TRUE.
+
+           IF W400-ST-QZCOPY-OK
+              COMPUTE W500-REG-TMP-LIDOS = W500-REG-TMP-LIDOS + 1
+           ELSE
+              IF NOT W400-ST-QZCOPY-FIM
+                 DISPLAY 'ERRO READ <FICH QZCOPY>...: ' W400-ST-QZCOPY
+                 PERFORM Z10-CALL-ABEND
+              END-IF
+           END-IF.
+
+       X30-EXIT.
+           EXIT.
+
+
+       X40-WRITE-QZOUTPUT SECTION.
+      ***************************************************************
+      *  ESCREVE FICHEIRO DE OUTPUT                                 *
+      ***************************************************************
+       X40-START.
+           COMPUTE CODBAR-NLIN-DOC = CODBAR-NLIN-DOC + 1.
+
+           MOVE WORK-A-LAYOUT-NAME            TO W500-LAYOUT-NAME.
+           PERFORM D80-FRMT-DIMENSAO        THRU D80-EXIT.
+           COMPUTE W500-AVAILABLE = W500-AVAILABLE - W500-LAYOUT-ALTURA.
+
+           IF W100-ESCREVER-SIM
+              WRITE QZOUTPUT-RECORD         FROM WORK-A-AREA
+
+              IF NOT W400-ST-QZOUTPUT-OK
+                 DISPLAY 'ERRO WRITE <FICH QZOUTPUT>..: '
+                                                       W400-ST-QZOUTPUT
+                 PERFORM Z10-CALL-ABEND
+              ELSE
+                 COMPUTE W500-REG-ESCRI = W500-REG-ESCRI + 1
+              END-IF
+           END-IF.
+
+       X40-EXIT.
+           EXIT.
+
+       Z10-CALL-ABEND SECTION.
+      ***************************************************************
+      *  THIS SECTION CALLS THE ABEND ROUTINE                       *
+      ***************************************************************
+       Z10-START.
+
+           DISPLAY 'VAI SAIR POR ABEND <ANALISAR MENSAGENS>'.
+           SET W100-ERROR-OCCURRED            TO TRUE.
+
+           CALL 'ILBOABN0'                 USING W500-COMP-CODE.
+
+       Z10-EXIT.
+           EXIT.
+
+       END PROGRAM PGOC114A.
+

@@ -1,0 +1,41 @@
+@namespace Outputs.Documents.Components.Layouts
+@using Outputs.Documents.Components.Diagnostics
+@using Outputs.Documents.Domain.Documents
+
+<div class="a4-layout">
+    <DocumentTraceIdComponent TraceText="@TraceText" />
+
+    @ChildContent
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public DocumentTraceId? TraceText { get; set; }
+}
+
+<style>
+    @@page {
+        size: A4;
+        margin: 0;
+    }
+
+    .a4-layout {
+        position: relative;
+        width: 210mm;
+        min-height: 297mm;
+        overflow: hidden;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0 8.5mm 0 18.5mm; /* top, right, bottom, left */
+        font-family: "Arial", sans-serif;
+        font-size: 8pt;
+        line-height: 1.35;
+        color: #000;
+        background-color: #fff;
+        /* border: 1px solid #000; */
+    }
+
+</style>

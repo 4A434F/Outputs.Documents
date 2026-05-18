@@ -1,0 +1,76 @@
+@namespace Outputs.Documents.Components.Branding
+@using Microsoft.Extensions.Options
+@using Microsoft.AspNetCore.Components
+
+@inject IOptions<StaticFilePaths> StaticFiles
+
+@if (Model is not null)
+{
+    <div class="header">
+        @if (!string.IsNullOrWhiteSpace(Image))
+        {
+            <img src="@Image" alt="Logo" class="logo" />
+        }
+
+        <div class="header-text">
+            @if (!string.IsNullOrWhiteSpace(Model.Title))
+            {
+                <div class="title">@Model.Title</div>
+            }
+            @if (!string.IsNullOrWhiteSpace(Model.Subtitle))
+            {
+                <div class="subtitle">@Model.Subtitle</div>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public Header? Model { get; set; }
+    public string? Image { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (Model is null)
+            return;
+
+        base.OnInitialized();
+        Image = StaticFiles.Value.TryReadLogoDataUri(Model.LogoPath);
+    }
+}
+
+
+<style>
+
+    .header {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 12mm 10mm 10mm 10mm;
+        box-sizing: border-box;
+        text-align: left;
+    }
+
+    .logo {
+        height: 45px;
+        display: block;
+    }
+
+    .header-text {
+        text-align: right;
+        font-family: Arial, sans-serif;
+        font-size: 10pt;
+    }
+
+    .title {
+        font-weight: bold;
+    }
+
+    .subtitle {
+        font-weight: normal;
+        font-size: 12pt;
+        margin-top: 0.1rem;
+    }
+
+</style>

@@ -1,0 +1,44 @@
+@namespace Outputs.Documents.Components.Tables
+
+<style>
+    .document-value-table--horizontal-lines th,
+    .document-value-table--horizontal-lines td {
+        border: none;
+    }
+
+    .document-value-table--horizontal-lines tbody td::after {
+        content: "";
+        position: absolute;
+        left: var(--dvt-rule-inset);
+        right: var(--dvt-rule-inset);
+        bottom: 0;
+        border-bottom: var(--dvt-row-rule);
+    }
+
+    .document-value-table--horizontal-lines thead th::after {
+        content: "";
+        position: absolute;
+        left: var(--dvt-rule-inset);
+        right: var(--dvt-rule-inset);
+        bottom: 0;
+        border-bottom: var(--dvt-header-rule);
+    }
+
+    .document-value-table--horizontal-lines tfoot td::after {
+        content: "";
+        position: absolute;
+        left: var(--dvt-rule-inset);
+        right: var(--dvt-rule-inset);
+        bottom: 0;
+        border-bottom: var(--dvt-row-rule);
+    }
+
+    .document-value-table--horizontal-lines tfoot tr:first-child td::before {
+        content: "";
+        position: absolute;
+        left: var(--dvt-rule-inset);
+        right: var(--dvt-rule-inset);
+        top: 0;
+        border-top: var(--dvt-row-rule);
+    }
+</style>

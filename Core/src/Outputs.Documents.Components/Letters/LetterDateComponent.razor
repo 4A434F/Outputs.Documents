@@ -1,0 +1,26 @@
+@namespace Outputs.Documents.Components.Letters
+@using Outputs.Documents.Components.Formatting
+
+@if (ShowDate)
+{
+    <div class="letter-date">
+        @((Date ?? DateTime.Now).ToPortugueseLetterDate())
+    </div>
+}
+
+@code {
+    [Parameter]
+    public DateTime? Date { get; set; }
+
+    [Parameter]
+    public bool ShowDate { get; set; }
+}
+
+<style>
+    .letter-date {
+        margin-top: 4mm;
+        margin-left: 83.5mm;
+        line-height: inherit;
+        white-space: nowrap;
+    }
+</style>

@@ -1,0 +1,49 @@
+@namespace Outputs.Documents.DOCE.Templates
+@attribute [DocumentTemplate(isDefault: true, Key = "doce-delivery-note", Name = "Delivery Note", Group = "DOCE", HeaderTemplate = typeof(HeaderComponent), FooterTemplate = typeof(FooterComponent), HeaderPropertyName = nameof(DC004DeliveryNote.Header), FooterPropertyName = nameof(DC004DeliveryNote.Footer))]
+
+<LetterLayout
+    Address="Model.Address"
+    Subject="Relação de recibos a cobrar"
+    Date="@Model.Date"
+    ShowDate="true"
+    TraceText="@TraceText">
+    <SubjectDetails>
+        Nº de agente - <span class="highlight">@((Model.AgentNumber ?? ""))</span>
+    </SubjectDetails>
+
+    <BodyContent>
+        <p class="greeting">Exmo.(s) Senhor(es),</p>
+
+        <p>
+            <strong>Enviamos documentação relativa à sua conta</strong><br />
+            Relembramos que os recibos são contabilizados no extrato mensal.
+        </p>
+
+        <p>
+            <strong>Contacte-nos se precisar de algum esclarecimento</strong><br />
+            Estamos ao seu dispor para o ajudar e esclarecer.
+        </p>
+
+        <SignatureComponent
+            Greeting="Com os nossos cumprimentos,"
+            ImageName="X970384_Sandra_Faro_4web8.png"
+            Name="Sandra Faro"
+            Department="Centro de Formação e Envolvimento Comercial" />
+
+        <GenericTableComponent Data="Model.Table" />
+        <TestOverlayComponent></TestOverlayComponent>
+    </BodyContent>
+</LetterLayout>
+
+@code {
+    [Parameter] 
+    public DC004DeliveryNote Model { get; set; } = default!;
+
+    private static DocumentTraceId TraceText => new()
+    {
+        Id = "DC004",
+        Environment = "Env",
+        Program = "Program",
+        User = "User"
+    };
+}

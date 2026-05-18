@@ -1,0 +1,92 @@
+@namespace Outputs.Documents.Components.Signatures
+@using Microsoft.Extensions.Options
+
+@inject IOptions<StaticFilePaths> StaticFiles
+
+@if (HasContent)
+{
+    <section class="signature">
+        @if (!string.IsNullOrWhiteSpace(Greeting))
+        {
+            <p class="signature-greeting">@Greeting</p>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Image))
+        {
+            <div class="signature-image-frame">
+                <img src="@Image" alt="" class="signature-image" />
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Name) || !string.IsNullOrWhiteSpace(Department))
+        {
+            <div class="signature-identification">
+                @if (!string.IsNullOrWhiteSpace(Name))
+                {
+                    <div>@Name</div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Department))
+                {
+                    <div>@Department</div>
+                }
+            </div>
+        }
+    </section>
+}
+
+@code {
+    [Parameter] public string? Greeting { get; set; }
+    [Parameter] public string? ImageName { get; set; }
+    [Parameter] public string? Name { get; set; }
+    [Parameter] public string? Department { get; set; }
+
+    private string? Image { get; set; }
+
+    private bool HasContent =>
+        !string.IsNullOrWhiteSpace(Greeting)
+        || !string.IsNullOrWhiteSpace(Image)
+        || !string.IsNullOrWhiteSpace(Name)
+        || !string.IsNullOrWhiteSpace(Department);
+
+    protected override void OnParametersSet()
+    {
+        Image = string.IsNullOrWhiteSpace(ImageName)
+            ? null
+            : StaticFiles.Value.TryReadSignatureDataUri(ImageName);
+    }
+}
+
+<style>
+    .signature {
+        margin: 0;
+    }
+
+    .signature-greeting {
+        margin: 0 0 3mm;
+    }
+
+    .signature-image-frame {
+        width: 45mm;
+        height: 18mm;
+        margin: 0;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-start;
+    }
+
+    .signature-image {
+        display: block;
+        max-width: 45mm;
+        max-height: 18mm;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: left center;
+    }
+
+    .signature-identification {
+        margin: 0 0 8mm;
+        line-height: 1.1;
+    }
+</style>

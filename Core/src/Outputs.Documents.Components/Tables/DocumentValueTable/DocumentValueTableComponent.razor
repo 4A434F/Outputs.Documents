@@ -1,0 +1,96 @@
+@namespace Outputs.Documents.Components.Tables
+@using Outputs.Documents.Domain.Documents.Primitives
+
+@if (Data is not null)
+{
+    <DocumentValueTableBaseStyle />
+
+    @switch (Style)
+    {
+        case DocumentValueTableStyle.HeaderUnderline:
+            <DocumentValueTableHeaderUnderlineStyle />
+            break;
+        case DocumentValueTableStyle.HorizontalLines:
+            <DocumentValueTableHorizontalLinesStyle />
+            break;
+        case DocumentValueTableStyle.Grid:
+            <DocumentValueTableGridStyle />
+            break;
+        default:
+            <DocumentValueTableNoneStyle />
+            break;
+    }
+
+    <table class="@TableClass">
+        @if (ColumnDefinitions.Count > 0)
+        {
+            <colgroup>
+                @foreach (var column in ColumnDefinitions)
+                {
+                    <col style="@column.WidthStyle" />
+                }
+            </colgroup>
+        }
+
+        <thead>
+            <tr>
+                @foreach (var column in ColumnDefinitions)
+                {
+                    <th class="@column.AlignmentClass">@column.Header</th>
+                }
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var row in Data.Rows)
+            {
+                <tr>
+                    @for (var column = 0; column < ColumnDefinitions.Count; column++)
+                    {
+                        <td class="@ColumnDefinitions[column].AlignmentClass">@GetCell(row, column)</td>
+                    }
+                </tr>
+            }
+        </tbody>
+
+        @if (Data.Totals.Count > 0)
+        {
+            <tfoot class="keep-block">
+                @foreach (var row in Data.Totals)
+                {
+                    <tr>
+                        @for (var column = 0; column < ColumnDefinitions.Count; column++)
+                        {
+                            <td class="@ColumnDefinitions[column].AlignmentClass">@GetCell(row, column)</td>
+                        }
+                    </tr>
+                }
+            </tfoot>
+        }
+    </table>
+}
+
+@code
+{
+    [Parameter] public DocumentValueTable? Data { get; set; }
+
+    [Parameter] public IReadOnlyList<DocumentValueTableColumnDefinition> ColumnDefinitions { get; set; } = [];
+
+    [Parameter] public DocumentValueTableStyle Style { get; set; }
+
+    private string TableClass => $"document-value-table {StyleClass}";
+
+    private string StyleClass => Style switch
+    {
+        DocumentValueTableStyle.HeaderUnderline => "document-value-table--header-underline",
+        DocumentValueTableStyle.HorizontalLines => "document-value-table--horizontal-lines",
+        DocumentValueTableStyle.Grid => "document-value-table--grid",
+        _ => "document-value-table--none"
+    };
+
+    private static object? GetCell(DocumentValueTableRow row, int columnIndex)
+    {
+        return columnIndex < row.Cells.Count ? row.Cells[columnIndex] : null;
+    }
+}
+

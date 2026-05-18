@@ -1,0 +1,63 @@
+@namespace Outputs.Documents.Components.Layouts
+@using Outputs.Documents.Components.Letters
+@using Outputs.Documents.Domain.Documents
+@using Outputs.Documents.Domain.Locations
+
+<A4Layout TraceText="@TraceText">
+    <PostalAddressComponent Address="Address" />
+    
+    <div class="letter-heading">
+        @if (!string.IsNullOrEmpty(Subject))
+        {
+                <LetterSubjectComponent
+                    Subject="@Subject"
+                    SubjectDetails="@SubjectDetails" />
+        }
+        
+        <LetterDateComponent
+            Date="@Date"
+            ShowDate="@ShowDate" />
+    </div>
+    
+    <div class="letter-body">
+        @BodyContent
+    </div>
+</A4Layout>
+
+@code {
+    [Parameter] public PostalAddress? Address { get; set; }
+    [Parameter] public string Subject { get; set; } = string.Empty;
+    [Parameter] public DateTime? Date { get; set; }
+    [Parameter] public bool ShowDate { get; set; } = true;
+    [Parameter] public DocumentTraceId? TraceText { get; set; }
+    [Parameter] public RenderFragment? SubjectDetails { get; set; }
+    [Parameter] public RenderFragment? BodyContent { get; set; }
+}
+
+<style>
+    .letter-heading,
+    .letter-body {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .letter-heading {
+        padding-top: 90mm;
+    }
+
+    .letter-body {
+        margin-top: 4mm;
+        font-family: "Arial", sans-serif;
+        font-size: 8pt;
+        line-height: 1.35;
+    }
+
+    .letter-body p {
+        margin: 0 0 2mm;
+    }
+
+    .letter-body p.greeting {
+        margin-bottom: 4mm;
+    }
+
+</style>

@@ -1,0 +1,110 @@
+@page "/components"
+@page "/components/{SampleKey}"
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+
+<PageTitle>Component Preview</PageTitle>
+
+<div class="dashboard-page">
+    <section class="page-title-frame">
+        <div>
+            <p class="eyebrow">Component Preview</p>
+            <h2>Reusable component workbench</h2>
+            <p class="page-subtitle">Dashboard samples render directly through Blazor <code>DynamicComponent</code>.</p>
+        </div>
+    </section>
+
+    <section class="preview-workspace">
+        <aside class="template-list" aria-label="Component samples">
+            @foreach (var group in Samples.GroupBy(sample => sample.Group))
+            {
+                <div class="template-group">
+                    <p class="nav-section-title">@group.Key</p>
+                    @foreach (var sample in group)
+                    {
+                        <NavLink class="template-link" href="@SampleHref(sample)">
+                            <strong>@sample.Name</strong>
+                            <small>@sample.ComponentType.Name</small>
+                        </NavLink>
+                    }
+                </div>
+            }
+        </aside>
+
+        <main class="preview-panel">
+            @if (SelectedSample is null)
+            {
+                <div class="empty-shell-panel">
+                    <span class="material-symbols-outlined" aria-hidden="true">widgets</span>
+                    <div>
+                        <h3>Select a component sample</h3>
+                        <p>Choose a sample from the list to render it inside the dashboard preview shell.</p>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="preview-toolbar">
+                    <div>
+                        <p class="eyebrow">@SelectedSample.Group</p>
+                        <h3>@SelectedSample.Name</h3>
+                        <p class="page-subtitle">@SelectedSample.Description</p>
+                    </div>
+                    <div class="template-meta">
+                        <span>@SelectedSample.Key</span>
+                        <span>@SelectedSample.ComponentType.Name</span>
+                        <span>@SelectedSample.PageSize</span>
+                    </div>
+                </div>
+
+                <div class="component-preview-frame">
+                    <ComponentPreviewShell PageSize="@SelectedSample.PageSize">
+                        <DynamicComponent Type="SelectedSample.ComponentType" Parameters="SelectedSample.Parameters" />
+                    </ComponentPreviewShell>
+                </div>
+            }
+        </main>
+    </section>
+</div>
+
+@code {
+    [Parameter] public string? SampleKey { get; set; }
+
+    private IReadOnlyList<ComponentSampleDescriptor> Samples => ComponentSampleCatalog.All;
+
+    private ComponentSampleDescriptor? SelectedSample { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        SelectedSample = SelectSample();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender && SampleKey is null && Samples.Count > 0)
+        {
+            Navigation.NavigateTo(SampleHref(Samples[0]), replace: true);
+        }
+    }
+
+    private ComponentSampleDescriptor? SelectSample()
+    {
+        if (Samples.Count == 0)
+        {
+            return null;
+        }
+
+        if (!string.IsNullOrWhiteSpace(SampleKey))
+        {
+            return Samples.FirstOrDefault(sample =>
+                string.Equals(sample.Key, SampleKey, StringComparison.OrdinalIgnoreCase));
+        }
+
+        return Samples[0];
+    }
+
+    private static string SampleHref(ComponentSampleDescriptor sample)
+    {
+        return $"components/{Uri.EscapeDataString(sample.Key)}";
+    }
+}

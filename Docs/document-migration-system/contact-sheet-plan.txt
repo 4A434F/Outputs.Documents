@@ -1,0 +1,19 @@
+Slide macro-layout plan:
+1. Cover pipeline with audience rail
+2. Legacy-to-report funnel
+3. Document-id report blueprint
+4. Migration analyst swimlane
+5. Developer workflow loop
+6. Template metadata annotated card
+7. Execution/API sequence
+8. DocumentRenderer system diagram
+9. Reusable component kit
+10. FSCD cancellation example map
+11. Quality gates checkpoint line
+12. Rollout roadmap
+
+Rhythm guardrails:
+- no more than two simple card-grid slides
+- no repeated title-plus-box layout cadence
+- each slide should have one headline and one central proof object
+- keep body copy out of paragraphs; use labels inside diagrams

@@ -1,0 +1,144 @@
+@namespace Outputs.Documents.Components.Payments
+@using Microsoft.Extensions.Options
+
+@inject IOptions<StaticFilePaths> StaticFiles
+
+@if (HasContent)
+{
+    <section class="mb-payment">
+        <div class="mb-payment-title">Pagamento por Multibanco</div>
+
+        <div class="mb-payment-box">
+            <div class="mb-payment-icon">
+                @if (!string.IsNullOrWhiteSpace(Icon))
+                {
+                    <img src="@Icon" alt="Multibanco" />
+                }
+                else
+                {
+                    <div class="mb-payment-icon-fallback">
+                        <strong>MB</strong>
+                        <span>MULTIBANCO</span>
+                    </div>
+                }
+            </div>
+
+            <dl class="mb-payment-details">
+                @if (!string.IsNullOrWhiteSpace(Entity))
+                {
+                    <div>
+                        <dt>Entidade</dt>
+                        <dd>@Entity</dd>
+                    </div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Reference))
+                {
+                    <div>
+                        <dt>Referência</dt>
+                        <dd>@Reference</dd>
+                    </div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Value))
+                {
+                    <div>
+                        <dt>Montante</dt>
+                        <dd>@Value</dd>
+                    </div>
+                }
+            </dl>
+        </div>
+    </section>
+}
+
+@code {
+    [Parameter] public string? Entity { get; set; }
+    [Parameter] public string? Reference { get; set; }
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public string IconName { get; set; } = "multibanco.png";
+
+    private string? Icon { get; set; }
+
+    private bool HasContent =>
+        !string.IsNullOrWhiteSpace(Entity)
+        || !string.IsNullOrWhiteSpace(Reference)
+        || !string.IsNullOrWhiteSpace(Value);
+
+    protected override void OnParametersSet()
+    {
+        Icon = StaticFiles.Value.TryReadPaymentIconDataUri(IconName);
+    }
+}
+
+<style>
+    .mb-payment {
+        width: 78mm;
+        margin: 0;
+    }
+
+    .mb-payment-title {
+        font-size: 10pt;
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 1mm;
+    }
+
+    .mb-payment-box {
+        display: grid;
+        grid-template-columns: 28mm 1fr;
+        align-items: center;
+        min-height: 24mm;
+        border: 0.6mm solid #000;
+        box-sizing: border-box;
+        padding: 3mm 4mm;
+    }
+
+    .mb-payment-icon {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    .mb-payment-icon img {
+        display: block;
+        width: 20mm;
+        height: auto;
+    }
+
+    .mb-payment-icon-fallback {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        line-height: 1;
+    }
+
+    .mb-payment-icon-fallback strong {
+        font-size: 20pt;
+        letter-spacing: -0.02em;
+    }
+
+    .mb-payment-icon-fallback span {
+        margin-top: 1mm;
+        font-size: 5pt;
+    }
+
+    .mb-payment-details {
+        margin: 0;
+        display: grid;
+        row-gap: 1mm;
+        font-size: 10pt;
+        line-height: 1.1;
+    }
+
+    .mb-payment-details div {
+        display: grid;
+        grid-template-columns: 22mm 1fr;
+        column-gap: 4mm;
+    }
+
+    .mb-payment-details dt,
+    .mb-payment-details dd {
+        margin: 0;
+    }
+</style>

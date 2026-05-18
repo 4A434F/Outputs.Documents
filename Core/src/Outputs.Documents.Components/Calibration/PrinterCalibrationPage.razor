@@ -1,0 +1,631 @@
+@namespace Outputs.Documents.Components.Calibration
+@attribute [DocumentTemplate(
+    isDefault: false,
+    Key = "print-calibration-a4",
+    Name = "A4 Print Calibration Page",
+    Group = "Diagnostics",
+    WidthCm = 21.0,
+    HeightCm = 29.7)]
+
+<div class="calibration-page">
+    <div class="page-grid" aria-hidden="true">
+        @for (var column = 0; column < 21; column++)
+        {
+            <i class="page-grid-line page-grid-line-vertical" style="@($"left: {column * 10}mm")"></i>
+        }
+        <i class="page-grid-line page-grid-line-vertical" style="@($"left: 209.75mm")"></i>
+        
+        @for (var row = 0; row < 30; row++)
+        {
+            <i class="page-grid-line page-grid-line-horizontal" style="@($"top: {row * 10}mm")"></i>
+        }
+    </div>
+
+    <header class="calibration-header">
+        <div>
+            <p class="eyebrow">Print Calibration</p>
+            <h1>A4 reference page</h1>
+        </div>
+        <div class="page-size">
+            <strong>A4 page</strong>
+            <span>210 mm x 297 mm</span>
+        </div>
+        <span class="line-size">180 mm</span>
+    </header>
+
+    <section class="calibration-section position-section">
+        <div class="section-label">
+            <span>01</span>
+            <h2>Page position and element placement</h2>
+        </div>
+        <div class="section-spacer"></div>
+    </section>
+
+    <div class="element-anchor">
+        <i class="anchor-edge anchor-edge-top"></i>
+        <i class="anchor-edge anchor-edge-right"></i>
+        <i class="anchor-edge anchor-edge-bottom"></i>
+        <i class="anchor-edge anchor-edge-left"></i>
+        <i class="inner-box from-tl inner-row-0 inner-col-0"></i>
+        <i class="inner-box from-tl inner-row-0 inner-col-1"></i>
+        <i class="inner-box from-tl inner-row-0 inner-col-2"></i>
+        <i class="inner-box from-tl inner-row-0 inner-col-3"></i>
+        <i class="inner-box from-tl inner-row-0 inner-col-4"></i>
+        <i class="inner-box from-tl inner-row-0 inner-col-5"></i>
+        <i class="inner-box from-tl inner-row-0 inner-col-6"></i>
+        <i class="inner-box from-tl inner-row-0 inner-col-7"></i>
+        <i class="inner-box from-tl inner-row-0 inner-col-8"></i>
+        <i class="inner-box from-tl inner-row-0 inner-col-9"></i>
+        <i class="inner-box from-tl inner-row-0 inner-col-10"></i>
+        <i class="inner-box from-tl inner-row-0 inner-col-11"></i>
+        <i class="inner-box from-tl inner-row-1 inner-col-0"></i>
+        <i class="inner-box from-tl inner-row-1 inner-col-1"></i>
+        <i class="inner-box from-tl inner-row-1 inner-col-2"></i>
+        <i class="inner-box from-tl inner-row-1 inner-col-3"></i>
+        <i class="inner-box from-tl inner-row-1 inner-col-4"></i>
+        <i class="inner-box from-tl inner-row-1 inner-col-5"></i>
+        <i class="inner-box from-tl inner-row-1 inner-col-6"></i>
+        <i class="inner-box from-tl inner-row-1 inner-col-7"></i>
+        <i class="inner-box from-tl inner-row-1 inner-col-8"></i>
+        <i class="inner-box from-tl inner-row-1 inner-col-9"></i>
+        <i class="inner-box from-tl inner-row-1 inner-col-10"></i>
+        <i class="inner-box from-tl inner-row-1 inner-col-11"></i>
+        <i class="inner-box from-tl inner-row-2 inner-col-0"></i>
+        <i class="inner-box from-tl inner-row-2 inner-col-1"></i>
+        <i class="inner-box from-tl inner-row-2 inner-col-2"></i>
+        <i class="inner-box from-tl inner-row-2 inner-col-3"></i>
+        <i class="inner-box from-tl inner-row-2 inner-col-4"></i>
+        <i class="inner-box from-tl inner-row-2 inner-col-5"></i>
+        <i class="inner-box from-tl inner-row-2 inner-col-6"></i>
+        <i class="inner-box from-tl inner-row-2 inner-col-7"></i>
+        <i class="inner-box from-tl inner-row-2 inner-col-8"></i>
+        <i class="inner-box from-tl inner-row-2 inner-col-9"></i>
+        <i class="inner-box from-tl inner-row-2 inner-col-10"></i>
+        <i class="inner-box from-tl inner-row-2 inner-col-11"></i>
+        <i class="inner-box from-tl inner-row-3 inner-col-0"></i>
+        <i class="inner-box from-tl inner-row-3 inner-col-1"></i>
+        <i class="inner-box from-tl inner-row-3 inner-col-2"></i>
+        <i class="inner-box from-tl inner-row-3 inner-col-3"></i>
+        <i class="inner-box from-tl inner-row-3 inner-col-4"></i>
+        <i class="inner-box from-tl inner-row-3 inner-col-5"></i>
+        <i class="inner-box from-tl inner-row-3 inner-col-6"></i>
+        <i class="inner-box from-tl inner-row-3 inner-col-7"></i>
+        <i class="inner-box from-tl inner-row-3 inner-col-8"></i>
+        <i class="inner-box from-tl inner-row-3 inner-col-9"></i>
+        <i class="inner-box from-tl inner-row-3 inner-col-10"></i>
+        <i class="inner-box from-tl inner-row-3 inner-col-11"></i>
+        <p>Size : 130 mm x 50 mm <br>Position : top 35 mm / left 60 mm</p>
+    </div>
+
+    <section class="calibration-section">
+        <div class="section-label">
+            <span>02</span>
+            <h2>Absolute CSS dimensions</h2>
+        </div>
+        <div class="dimension-columns">
+            <div class="dimension-column">
+                <h3>Horizontal width</h3>
+                <div class="dimension-row"><span>10 mm</span><i class="bar width-10mm"></i></div>
+                <div class="dimension-row"><span>1 cm</span><i class="bar width-1cm"></i></div>
+                <div class="dimension-row"><span>37.8 px</span><i class="bar width-378px"></i></div>
+                <div class="dimension-row"><span>2 in</span><i class="bar width-2in"></i></div>
+                <div class="dimension-row"><span>192 px</span><i class="bar width-192px"></i></div>
+                <div class="dimension-row"><span>50.8 mm</span><i class="bar width-508mm"></i></div>
+            </div>
+            <div class="dimension-column dimension-column-vertical">
+                <h3>Vertical height</h3>
+                <div class="vertical-bars">
+                    <div class="vertical-measure"><i class="vbar height-96px"></i><span>96 px</span></div>
+                    <div class="vertical-measure"><i class="vbar height-1in"></i><span>1 in</span></div>
+                    <div class="vertical-measure"><i class="vbar height-254mm"></i><span>25.4 mm</span></div>
+                    <div class="vertical-measure"><i class="vbar height-72pt"></i><span>72 pt</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="calibration-section">
+        <div class="section-label">
+            <span>03</span>
+            <h2>Arial font reference</h2>
+        </div>
+        <div class="font-grid">
+            <p class="font-sample font-8pt">8 pt - ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789</p>
+            <p class="font-sample font-12pt">12 pt - ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789</p>
+            <p class="font-sample font-16px">16 px - ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789</p>
+            <p class="font-sample font-4mm">4 mm - ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789</p>
+            <p class="font-sample font-16pt">16 pt - ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789</p>
+        </div>
+    </section>
+
+    <section class="calibration-section baseline-section">
+        <div class="section-label">
+            <span>04</span>
+            <h2>Text baseline grid</h2>
+        </div>
+        <div class="baseline-grid">
+            <div class="baseline-sample baseline-4mm">
+                <strong>line-height: 4 mm</strong>
+                <div class="baseline-block">
+                    @for (var line = 0; line < 6; line++)
+                    {
+                        <i class="baseline-rule" style="@($"top: {4 + (line * 4)}mm")"></i>
+                    }
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                </div>
+            </div>
+            <div class="baseline-sample baseline-6mm">
+                <strong>line-height: 6 mm</strong>
+                <div class="baseline-block">
+                    @for (var line = 0; line < 4; line++)
+                    {
+                        <i class="baseline-rule" style="@($"top: {5 + (line * 6)}mm")"></i>
+                    }
+                    <p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged, and more recently with desktop publishing software.</p>
+                </div>
+            </div>
+            <div class="baseline-sample baseline-5mm">
+                <strong>line-height: 5 mm</strong>
+                <div class="baseline-block">
+                    @for (var line = 0; line < 5; line++)
+                    {
+                        <i class="baseline-rule" style="@($"top: {4.5 + (line * 5)}mm")"></i>
+                    }
+                    <p>The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.</p>
+                </div>
+            </div>
+            <div class="baseline-sample baseline-mixed">
+                <strong>mixed sizes / line-height: 5 mm</strong>
+                <div class="baseline-block">
+                    @for (var line = 0; line < 5; line++)
+                    {
+                        <i class="baseline-rule" style="@($"top: {4.5 + (line * 5)}mm")"></i>
+                    }
+                    <p><span class="mixed-small">Contrary to</span> <span class="mixed-mid">popular belief, Lorem Ipsum is not simply </span> <span class="mixed-large">random text.</span> <span class="mixed-mid">It has roots in a piece of classical Latin literature from 45 BC, </span> <span class="mixed-large">making it over 2000 years old. </span> <span class="mixed-small">Lorem Ipsum comes from The Extremes of Good and Evil by Cicero.</span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="calibration-section compact">
+        <div class="section-label">
+            <span>05</span>
+            <h2>Line weight reference</h2>
+        </div>
+        <div class="line-grid">
+            <div class="line-row"><span>1 px</span><i class="line line-px-1"></i></div>
+            <div class="line-row"><span>0.25 mm</span><i class="line line-mm-025"></i></div>
+            <div class="line-row"><span>0.5 mm</span><i class="line line-mm-05"></i></div>
+            <div class="line-row"><span>1 mm</span><i class="line line-mm-1"></i></div>
+            <div class="line-row"><span>1 pt</span><i class="line line-pt-1"></i></div>
+            <div class="line-row"><span>dashed 0.5 mm</span><i class="line line-dashed"></i></div>
+        </div>
+    </section>
+
+    <section class="grid-fill" aria-label="Remaining page grid fill"></section>
+</div>
+
+<style>
+    @@page {
+        size: A4;
+        margin: 0;
+    }
+
+    .calibration-page {
+        --page-width: 210mm;
+        --page-height: 297mm;
+        --page-padding-x: 15mm;
+        --page-padding-y: 12mm;
+        --position-box: 5mm;
+        --position-step: 10mm;
+        --element-width: 130mm;
+        --element-height: 45mm;
+        --element-border: 0.4mm;
+        --inner-box: 5mm;
+        --inner-start: 5mm;
+        --inner-step: 10mm;
+        position: relative;
+        width: var(--page-width);
+        height: var(--page-height);
+        overflow: hidden;
+        box-sizing: border-box;
+        padding: var(--page-padding-y) var(--page-padding-x);
+        background-color: #fff;
+        color: #111;
+        font-family: Arial, sans-serif;
+        font-size: 9pt;
+        line-height: 1.2;
+    }
+
+    .page-grid {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .page-grid-line {
+        position: absolute;
+        display: block;
+        background: rgba(0, 0, 0, 0.11);
+    }
+
+    .page-grid-line-vertical {
+        top: 0;
+        bottom: 0;
+        width: 0.25mm;
+    }
+
+    .page-grid-line-horizontal {
+        left: 0;
+        right: 0;
+        height: 0.25mm;
+    }
+
+    .calibration-header {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 8mm;
+        padding: 0 0 3mm;
+        border-bottom: 0.35mm solid #111;
+    }
+    
+    .line-size {
+        position: absolute;
+        bottom: -4mm;
+        right: 0;
+    }
+    
+    .section-spacer {
+        height: 53mm;
+    }
+
+    .eyebrow {
+        margin: 0 0 1mm;
+        font-size: 7pt;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+        margin: 0;
+    }
+
+    h1 {
+        font-size: 17pt;
+        line-height: 1;
+    }
+
+    h2 {
+        font-size: 9.5pt;
+        line-height: 1.1;
+    }
+
+    h3 {
+        margin-bottom: 1.5mm;
+        font-size: 7pt;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .page-size {
+        min-width: 37mm;
+        border: 0.3mm solid #111;
+        padding: 1.6mm;
+        text-align: center;
+        font-size: 8pt;
+        line-height: 1.15;
+        background: rgba(255, 255, 255, 0.84);
+    }
+
+    .page-size strong,
+    .page-size span {
+        display: block;
+    }
+
+    .calibration-section {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 34mm 1fr;
+        gap: 4mm;
+        padding-top: 8mm;
+    }
+
+    .calibration-section.compact {
+        border-bottom: 0;
+    }
+
+    .section-label span {
+        display: block;
+        margin-bottom: 1mm;
+        font-size: 32pt;
+        font-weight: 700;
+    }
+
+    .inner-box {
+        position: absolute;
+        width: var(--inner-box);
+        height: var(--inner-box);
+        box-sizing: border-box;
+        border: 0.18mm solid #111;
+        background: rgba(255, 255, 255, 0.76);
+    }
+
+    .from-tl {
+        border-top-width: 0.55mm;
+        border-left-width: 0.55mm;
+    }
+
+    .from-tr {
+        border-top-width: 0.55mm;
+        border-right-width: 0.55mm;
+    }
+
+    .from-bl {
+        border-bottom-width: 0.55mm;
+        border-left-width: 0.55mm;
+    }
+
+    .from-br {
+        border-right-width: 0.55mm;
+        border-bottom-width: 0.55mm;
+    }
+
+    .from-center {
+        border-width: 0.35mm;
+    }
+
+    .element-anchor {
+        position: absolute;
+        top: 35mm;
+        left: 60mm;
+        width: var(--element-width);
+        height: var(--element-height);
+        box-sizing: border-box;
+        border: 0;
+        background: rgba(255, 255, 255, 0.52);
+        z-index: 2;
+    }
+
+    .anchor-edge {
+        position: absolute;
+        display: block;
+        background: #111;
+    }
+
+    .anchor-edge-top,
+    .anchor-edge-bottom {
+        left: 0;
+        width: 100%;
+        height: var(--element-border);
+    }
+
+    .anchor-edge-left,
+    .anchor-edge-right {
+        top: 0;
+        width: var(--element-border);
+        height: 100%;
+    }
+
+    .anchor-edge-top {
+        top: 0;
+        transform: translateY(-50%);
+    }
+
+    .anchor-edge-right {
+        right: 0;
+        transform: translateX(50%);
+    }
+
+    .anchor-edge-bottom {
+        bottom: 0;
+        transform: translateY(50%);
+    }
+
+    .anchor-edge-left {
+        left: 0;
+        transform: translateX(-50%);
+    }
+
+    .element-anchor p {
+        position: absolute;
+        left: 0;
+        top: calc(100% + 1.5mm);
+        font-size: 7pt;
+        font-weight: 700;
+        line-height: 1.1;
+    }
+
+    .inner-row-0 { top: var(--inner-start); }
+    .inner-row-1 { top: calc(var(--inner-start) + var(--inner-step)); }
+    .inner-row-2 { top: calc(var(--inner-start) + (var(--inner-step) * 2)); }
+    .inner-row-3 { top: calc(var(--inner-start) + (var(--inner-step) * 3)); }
+    .inner-col-0 { left: var(--inner-start); }
+    .inner-col-1 { left: calc(var(--inner-start) + var(--inner-step)); }
+    .inner-col-2 { left: calc(var(--inner-start) + (var(--inner-step) * 2)); }
+    .inner-col-3 { left: calc(var(--inner-start) + (var(--inner-step) * 3)); }
+    .inner-col-4 { left: calc(var(--inner-start) + (var(--inner-step) * 4)); }
+    .inner-col-5 { left: calc(var(--inner-start) + (var(--inner-step) * 5)); }
+    .inner-col-6 { left: calc(var(--inner-start) + (var(--inner-step) * 6)); }
+    .inner-col-7 { left: calc(var(--inner-start) + (var(--inner-step) * 7)); }
+    .inner-col-8 { left: calc(var(--inner-start) + (var(--inner-step) * 8)); }
+    .inner-col-9 { left: calc(var(--inner-start) + (var(--inner-step) * 9)); }
+    .inner-col-10 { left: calc(var(--inner-start) + (var(--inner-step) * 10)); }
+    .inner-col-11 { left: calc(var(--inner-start) + (var(--inner-step) * 11)); }
+
+    .dimension-columns {
+        display: grid;
+        grid-template-columns: 1fr 50mm;
+        gap: 8mm;
+        padding-top: 2.5mm;
+    }
+
+    .dimension-row,
+    .line-row {
+        display: grid;
+        grid-template-columns: 21mm 1fr;
+        align-items: center;
+        gap: 3mm;
+        min-height: 4.8mm;
+    }
+
+    .dimension-row span,
+    .line-row span {
+        font-size: 7.5pt;
+        font-weight: 700;
+    }
+
+    .bar {
+        display: block;
+        height: 3mm;
+        border: 0.2mm solid #111;
+        background: #f2f2f2;
+    }
+
+    .width-10mm { width: 10mm; }
+    .width-1cm { width: 1cm; }
+    .width-378px { width: 37.8px; }
+    .width-2in { width: 2in; }
+    .width-192px { width: 192px; }
+    .width-508mm { width: 50.8mm; }
+
+    .vertical-bars {
+        display: flex;
+        align-items: flex-end;
+        gap: 6mm;
+        min-height: 29mm;
+    }
+
+    .vertical-measure {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5mm;
+        font-size: 7pt;
+        font-weight: 700;
+    }
+
+    .vbar {
+        display: block;
+        width: 5mm;
+        border: 0.2mm solid #111;
+        background: #f2f2f2;
+    }
+
+    .height-96px { height: 96px; }
+    .height-1in { height: 1in; }
+    .height-254mm { height: 25.4mm; }
+    .height-72pt { height: 72pt; }
+
+    .font-grid {
+        display: grid;
+        gap: 1.5mm;
+    }
+
+    .font-sample {
+        white-space: nowrap;
+    }
+
+    .font-8pt { font-size: 8pt; }
+    .font-12pt { font-size: 12pt; }
+    .font-16px { font-size: 16px; }
+    .font-4mm { font-size: 4mm; }
+    .font-16pt { font-size: 16pt; }
+
+    .baseline-section {
+        padding-top: 6mm;
+    }
+
+    .baseline-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 4mm 5mm;
+    }
+
+    .baseline-sample {
+        --baseline-step: 4mm;
+    }
+
+    .baseline-sample strong {
+        display: block;
+        margin-bottom: 1mm;
+        font-size: 6.5pt;
+        line-height: 1;
+        text-transform: uppercase;
+    }
+
+    .baseline-block {
+        position: relative;
+        min-height: 27mm;
+        box-sizing: border-box;
+        border: 0.25mm dashed #111;
+        padding: 1mm 2mm;
+        overflow: hidden;
+        background-color: rgba(255, 255, 255, 0.74);
+    }
+
+    .baseline-rule {
+        position: absolute;
+        left: 0;
+        right: 0;
+        z-index: 0;
+        display: block;
+        border-top: 0.25mm solid #000;
+    }
+
+    .baseline-block p {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        font-size: 8pt;
+        line-height: var(--baseline-step);
+    }
+
+    .baseline-5mm,
+    .baseline-mixed {
+        --baseline-step: 5mm;
+    }
+
+    .baseline-6mm {
+        --baseline-step: 6mm;
+    }
+
+    .baseline-mixed p {
+        font-size: 8pt;
+    }
+
+    .mixed-small { font-size: 6pt; }
+    .mixed-mid { font-size: 8pt; }
+    .mixed-large { font-size: 11px; }
+
+    .line-grid {
+        display: grid;
+        gap: 2mm;
+    }
+
+    .line {
+        display: block;
+        width: 100%;
+        border: 0;
+    }
+
+    .line-px-1 { border-top: 1px solid #111; }
+    .line-mm-025 { border-top: 0.25mm solid #111; }
+    .line-mm-05 { border-top: 0.5mm solid #111; }
+    .line-mm-1 { border-top: 1mm solid #111; }
+    .line-pt-1 { border-top: 1pt solid #111; }
+    .line-dashed { border-top: 0.5mm dashed #111; }
+
+    .grid-fill {
+        height: 24mm;
+    }
+</style>

@@ -1,0 +1,47 @@
+@namespace Outputs.Documents.Components.Diagnostics
+@using Outputs.Documents.Domain.Documents
+
+@if (TraceText is not null)
+{
+    <div class="trace-id">
+        <div>@Line1</div>
+        <div>@Line2</div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public DocumentTraceId? TraceText { get; set; }
+
+    private string Line1
+    {
+        get
+        {
+            var date = (TraceText?.Date ?? DateTime.Now).ToString("dd/MM/yyyy HH:mm:ss");
+            return $"Id : {TraceText?.Id} date {date} {TraceText?.Environment}".Trim();
+        }
+    }
+
+    private string Line2 => $"{TraceText?.Program} {TraceText?.User}".Trim();
+}
+
+<style>
+    .trace-id {
+        position: absolute;
+        bottom: 0;
+        left: 10mm;
+        transform: rotate(-90deg);
+        transform-origin: top left;
+        font-size: 10px;
+        font-family: monospace;
+        font-weight: 200;
+        z-index: 1000;
+        white-space: nowrap;
+    }
+
+    .trace-id > div {
+        margin: 0;
+        padding: 0;
+        line-height: 1;
+    }
+</style>

@@ -1,0 +1,41 @@
+@namespace Outputs.Documents.DOCE.Templates
+@attribute [DocumentTemplate(isDefault: true, Key = "doce-courtesy-letter", Name = "Courtesy Letter", Group = "DOCE", HeaderTemplate = typeof(HeaderComponent), FooterTemplate = typeof(FooterComponent), HeaderPropertyName = nameof(DC001CourtesyLetter.Header), FooterPropertyName = nameof(DC001CourtesyLetter.Footer))]
+
+<LetterLayout
+    Address="Model.Address"
+    Subject="Envio de documentação"
+    Date="@Model.Date"
+    ShowDate="true"
+    TraceText="@TraceText">
+    <BodyContent>
+        <p class="greeting">Estimado(s) Senhor(ies),</p>
+
+        <p><strong>Enviamos documentação relativa à sua conta</strong></p>
+
+        <p>
+            <strong>Contacte-nos se precisar de algum esclarecimento</strong><br />
+            Estamos ao seu dispor para o ajudar e esclarecer.
+        </p>
+
+        <SignatureComponent
+            Greeting="Com os nossos cumprimentos,"
+            ImageName="X970384_Sandra_Faro_4web8.png"
+            Name="Sandra Faro"
+            Department="Centro de Formação e Envolvimento Comercial" />
+
+        <TestOverlayComponent></TestOverlayComponent>
+    </BodyContent>
+</LetterLayout>
+
+@code {
+    [Parameter] 
+    public DC001CourtesyLetter Model { get; set; } = default!;
+
+    private static DocumentTraceId TraceText => new()
+    {
+        Id = "DC001",
+        Environment = "Env",
+        Program = "Program",
+        User = "User"
+    };
+}

@@ -1,344 +1,130 @@
 # Outputs.Documents
 
-Outputs.Documents is a .NET 8 Razor document rendering solution.
+Outputs.Documents is a .NET 8 document rendering workspace for transforming typed document contracts into Razor-based HTML and PDF documents.
 
-The solution is organized around one important boundary:
+It separates stable rendering infrastructure, shared document components, origin-specific contracts, and origin-specific templates so each source system can evolve without coupling the core renderer to business document families.
 
-- `src/` contains stable platform libraries.
-- `origins/` contains origin-specific contracts and templates.
+## Status
 
-That split is intentional. Stable projects should not churn every time a copybook, template, or origin-system contract changes. Origin projects are allowed to move faster.
+- Maturity: active development
+- Runtime: .NET 8
+- Main scope: Razor component templates, HTML rendering, PDF generation, document samples, and provider/origin workspaces
+- Important warning: rules and design decisions must be written in this repository, not only remembered from chat
 
-## Top-Level Layout
+## Fast Start
 
-```text
-apps/
-  Outputs.Documents.Dashboard/
-  Outputs.Documents.Domain.VectorStore.McpServer/
+### Requirements
 
-src/
-  Outputs.Documents.Abstractions/
-  Outputs.Documents.Domain/
-  Outputs.Documents.Rendering/
-  Outputs.Documents.Rendering.Iron/
-  Outputs.Documents.SampleFinder/
-  Outputs.Documents.Components/
+- .NET 8 SDK
+- IronPDF license when running IronPDF integration paths
+- Docker only when working with the vector-store MCP server container
 
-origins/
-  Outputs.Documents.DOCE.Contracts/
-  Outputs.Documents.DOCE.Templates/
-  Outputs.Documents.FSCD.Contracts/
-  Outputs.Documents.FSCD.Templates/
+### Build
 
-tools/
-  Outputs.Documents.Domain.VectorStore/
-
-tests/
-  Outputs.Documents.Domain.Tests/
-  Outputs.Documents.Domain.VectorStore.Tests/
-  Outputs.Documents.Rendering.Tests/
-  Outputs.Documents.Rendering.Iron.Tests/
-  Outputs.Documents.DOCE.Templates.Tests/
-
-data/
-  domain-vector-dbs/
-
-archive/
-  migration notes, generated reports, old source material
+```bash
+dotnet build Outputs.Documents.sln
 ```
 
-## Naming Rules
+### Test
 
-Project names follow this pattern:
-
-```text
-Outputs.Documents.<Capability>
-Outputs.Documents.<Origin>.<Capability>
+```bash
+dotnet test Outputs.Documents.sln
 ```
 
-Examples:
+### Run Dashboard
 
-```text
-Outputs.Documents.Rendering
-Outputs.Documents.SampleFinder
-Outputs.Documents.DOCE.Contracts
-Outputs.Documents.FSCD.Templates
+```bash
+dotnet run --project Apps/src/Outputs.Documents.Dashboard/Outputs.Documents.Dashboard.csproj --launch-profile http
 ```
 
-Physical folders do not always appear in namespaces. `origins/` is a repository boundary, not a product namespace.
+Open:
 
-Good:
+```text
+http://localhost:5090
+```
+
+## Repository Map
+
+| Path | Purpose |
+|---|---|
+| `Core/src/` | Stable platform libraries: abstractions, domain concepts, shared components, rendering, PDF providers |
+| `Core/tests/` | Tests for stable platform libraries |
+| `DOCE/src/` | DOCE contracts and Razor templates |
+| `DOCE/tests/` | DOCE template unit and integration tests |
+| `FSCD/src/` | FSCD contracts and Razor templates |
+| `FSCD/tests/` | FSCD template integration tests |
+| `Apps/src/` | Runnable applications such as dashboard and MCP server |
+| `Tools/src/` | Reusable development helper libraries and generators |
+| `Tools/tests/` | Tool tests |
+| `Docs/` | Project documentation, rules, decisions, migration notes, and archived source material |
+| `data/domain-vector-dbs/` | Repository-local SQLite vector-store databases |
+
+## Architecture Summary
+
+The production rendering flow is:
+
+1. A caller provides an `IDocumentModel` and `RenderSource`.
+2. Registered template descriptors are resolved from Razor component metadata.
+3. Selection rules may choose one template for the model and source.
+4. The renderer renders the selected Razor component to HTML.
+5. Optional header/footer components are rendered from descriptor metadata.
+6. A registered `IPdfGenerator` converts the HTML into PDF bytes.
+
+The development preview/test flow can render templates directly through `IRazorComponentRenderer` without the full selector pipeline.
+
+For the complete system explanation, read [Docs/PROJECT.md](/Users/thepotato/Code/Outputs.Documents/Docs/PROJECT.md).
+
+## Usage
+
+Register rendering, templates, samples, and a PDF provider:
 
 ```csharp
-namespace Outputs.Documents.DOCE.Contracts;
-namespace Outputs.Documents.FSCD.Templates;
-```
-
-Avoid:
-
-```csharp
-namespace Outputs.Documents.Origins.DOCE.Contracts;
-```
-
-## Stable Platform Projects
-
-Stable projects live in `src/`.
-
-### Outputs.Documents.Abstractions
-
-Public contracts for rendering and template registration.
-
-See [src/Outputs.Documents.Abstractions/README.md](src/Outputs.Documents.Abstractions/README.md).
-
-Contains:
-
-- `IDocumentModel`
-- `IDocumentRenderer`
-- `IRazorComponentRenderer`
-- `IPdfGenerator`
-- `RenderSource`
-- `DocumentTemplateAttribute`
-- `DocumentTemplateDescriptor`
-- template registry and selector interfaces
-- `RazorDocumentRenderingBuilder`
-
-### Outputs.Documents.Domain
-
-Reusable origin-neutral domain concepts.
-
-See [src/Outputs.Documents.Domain/README.md](src/Outputs.Documents.Domain/README.md).
-
-Contains concepts such as:
-
-- document information
-- headers and footers
-- entities and contact details
-- postal addresses
-- policy references
-- premiums
-- coverages
-- risks
-- payment references
-- `DomainSearchAttribute`
-
-### Outputs.Documents.Rendering
-
-Generic rendering implementation.
-
-See [src/Outputs.Documents.Rendering/README.md](src/Outputs.Documents.Rendering/README.md).
-
-Contains:
-
-- Razor component to HTML rendering
-- template scanning
-- template catalog/registry
-- template selection
-- document rendering orchestration
-
-### Outputs.Documents.Rendering.Iron
-
-IronPDF provider for `IPdfGenerator`.
-
-See [src/Outputs.Documents.Rendering.Iron/README.md](src/Outputs.Documents.Rendering.Iron/README.md).
-
-### Outputs.Documents.SampleFinder
-
-Sample model discovery and catalog infrastructure.
-
-See [tools/Outputs.Documents.SampleFinder/README.md](tools/Outputs.Documents.SampleFinder/README.md).
-
-Important: this project does not contain actual sample data. Actual samples live beside the contract they construct.
-
-### Outputs.Documents.Components
-
-Shared Razor components and layouts.
-
-See [src/Outputs.Documents.Components/README.md](src/Outputs.Documents.Components/README.md).
-
-Concrete origin templates do not live here.
-
-## Origin Projects
-
-Origin projects live in `origins/`.
-
-Origin projects are intentionally separated from `src/` because they are tied to external source systems, copybooks, document layouts, and migration decisions.
-
-### Outputs.Documents.DOCE.Contracts
-
-DOCE-specific document contracts and sample data.
-
-Shape:
-
-```text
-origins/Outputs.Documents.DOCE.Contracts/
-  DC000CoverPage/
-    DC000CoverPage.cs
-    Samples/
-      DefaultCoverPageSample.cs
-```
-
-Contract namespace:
-
-```csharp
-namespace Outputs.Documents.DOCE.Contracts;
-```
-
-Sample namespace:
-
-```csharp
-namespace Outputs.Documents.DOCE.Contracts.Samples.DC000CoverPage;
-```
-
-Samples are stored beside the contract file, but the namespace places `Samples` before the contract name. That avoids a C# namespace/type collision with the contract type itself.
-
-Rules:
-
-- Put DOCE-specific contract models here.
-- Put sample data beside the contract it creates.
-- Do not reference templates, rendering, dashboard, or PDF providers.
-- Reuse stable domain types from `Outputs.Documents.Domain` when a structure is shared.
-
-### Outputs.Documents.DOCE.Templates
-
-DOCE-specific Razor templates.
-
-Rules:
-
-- Put concrete DOCE templates here.
-- Reference `Outputs.Documents.DOCE.Contracts`.
-- Reference shared components from `Outputs.Documents.Components`.
-- Do not put sample data here.
-
-### Outputs.Documents.FSCD.Contracts
-
-FSCD-specific document contracts and sample data.
-
-Shape:
-
-```text
-origins/Outputs.Documents.FSCD.Contracts/
-  BGOW0044Contract/
-    BGOW0044Contract.cs
-    Samples/
-      FS1040PremiumCancellationSample.cs
-```
-
-Rules match DOCE contracts:
-
-- Put FSCD-specific contract models here.
-- Put sample data beside the contract it creates.
-- Do not reference templates, rendering, dashboard, or PDF providers.
-- Reuse stable domain types from `Outputs.Documents.Domain` when a structure is shared.
-
-### Outputs.Documents.FSCD.Templates
-
-FSCD-specific Razor templates.
-
-Rules match DOCE templates:
-
-- Put concrete FSCD templates here.
-- Reference `Outputs.Documents.FSCD.Contracts`.
-- Reference shared components from `Outputs.Documents.Components`.
-- Do not put sample data here.
-
-## Apps
-
-### Outputs.Documents.Dashboard
-
-Development UI host.
-
-Currently used to preview discovered Razor document templates and sample models.
-
-Expected references:
-
-- stable rendering projects
-- stable sample catalog project
-- selected origin contract/template projects
-
-### Outputs.Documents.Domain.VectorStore.McpServer
-
-MCP server host for the domain vector store.
-
-This is an app because it exposes the vector store through an external protocol.
-
-## Tools
-
-### Outputs.Documents.Domain.VectorStore
-
-Developer tool/library for semantic domain search storage and generation helpers.
-
-This lives under `tools/` because it supports development workflows. It is not part of the production document rendering runtime.
-
-## Dependency Direction
-
-Preferred direction:
-
-```text
-Abstractions
-  ↑
-Domain
-  ↑
-Samples
-  ↑
-Origin Contracts
-  ↑
-Origin Templates
-  ↑
-Apps
-```
-
-Rendering references abstractions and domain concepts, but must not reference origin projects:
-
-```text
-Rendering -> Abstractions
-Rendering -> Domain
-Rendering -> Samples only when registration extension requires it? Avoid when possible.
-```
-
-Provider projects depend on abstractions:
-
-```text
-Rendering.Iron -> Abstractions
-```
-
-Avoid:
-
-```text
-src/* -> origins/*
-Abstractions -> Rendering
-Domain -> Templates
-Contracts -> Templates
-Contracts -> Rendering
-Templates -> Dashboard
-```
-
-## Registration Flow
-
-A host composes the stable rendering system with origin assemblies:
-
-```csharp
-builder.Services
+services
     .AddRazorDocumentRendering()
-    .WithDocumentsFromAssembly(typeof(CourtesyLetterTemplate).Assembly)
-    .WithDocumentsFromAssembly(typeof(FS1040CancellationCdc1PremiumTemplate).Assembly)
-    .WithSamplesFromAssembly(typeof(DC000CoverPage).Assembly)
-    .WithSamplesFromAssembly(typeof(BGOW0044Contract).Assembly);
+    .WithDocumentsFromAssembly(typeof(SomeTemplate).Assembly)
+    .WithSamplesFromAssembly(typeof(SomeSample).Assembly)
+    .WithIronPdfGenerator();
 ```
 
-Template discovery scans origin template assemblies.
+Render a document:
 
-Sample discovery scans origin contract assemblies.
-
-## Validation
-
-Use single-node MSBuild in this environment to avoid local named-pipe permission errors:
-
-```bash
-dotnet test Outputs.Documents.sln --no-restore /m:1 /nr:false
+```csharp
+var pdf = await renderer.RenderAsync(
+    model,
+    new RenderSource(IsPreview: true),
+    cancellationToken);
 ```
 
-If project paths changed, restore the affected project first. Static graph restore may report a local macOS `CSSM_ModuleLoad()` message while still generating assets:
+Render a known Razor component directly:
 
-```bash
-dotnet restore tools/Outputs.Documents.SampleFinder/Outputs.Documents.SampleFinder.csproj /p:RestoreUseStaticGraphEvaluation=true
+```csharp
+var html = await razorRenderer.RenderAsync(
+    typeof(SomeTemplate),
+    model,
+    parameterName: "Model",
+    cancellationToken);
 ```
+
+## Project Rules
+
+Important project rules live in:
+
+- [Docs/RULES.md](/Users/thepotato/Code/Outputs.Documents/Docs/RULES.md)
+- [Docs/DECISIONS.md](/Users/thepotato/Code/Outputs.Documents/Docs/DECISIONS.md)
+
+If a rule, decision, or convention is not written in the repository, it should be treated as unstable memory. Agents and developers must not rely on chat history as the source of truth.
+
+## Development Workflow
+
+1. Read the relevant docs before changing behavior.
+2. Keep core projects origin-neutral.
+3. Keep origin contracts and templates inside their origin workspace.
+4. Run the smallest relevant tests first, then broader tests when behavior crosses boundaries.
+5. Update documentation when behavior, rules, folder ownership, or registration conventions change.
+
+## Related Documentation
+
+- [Docs/PROJECT.md](/Users/thepotato/Code/Outputs.Documents/Docs/PROJECT.md)
+- [Docs/RULES.md](/Users/thepotato/Code/Outputs.Documents/Docs/RULES.md)
+- [Docs/DECISIONS.md](/Users/thepotato/Code/Outputs.Documents/Docs/DECISIONS.md)
+- [Docs/provider-layout.md](/Users/thepotato/Code/Outputs.Documents/Docs/provider-layout.md)

@@ -1,0 +1,20 @@
+@namespace Outputs.Documents.Dashboard.Components.ComponentPreview
+
+<div class="component-preview-shell">
+    <div class="@PageClass">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    [Parameter] public string PageSize { get; set; } = "Free";
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private string PageClass => PageSize switch
+    {
+        "A4" => "component-preview-page component-preview-page-a4",
+        "Letter" => "component-preview-page component-preview-page-letter",
+        _ => "component-preview-page component-preview-page-free"
+    };
+}

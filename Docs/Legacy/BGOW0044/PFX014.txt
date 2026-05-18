@@ -1,0 +1,2592 @@
+ /* -------------------------------------------------------------------
+
+                                              Ã
+          AAA   TTTTT  EEEEE  N   N   ÇÇÇÇ   ÃÃÃ    OOO
+         A   A    T    E      NN  N  Ç      Ã   Ã  O   O
+         AAAAA    T    EEEE   N N N  Ç      ÃÃÃÃÃ  O   O
+         A   A    T    E      N  NN  Ç      Ã   Ã  O   O
+         A   A    T    EEEEE  N   N   ÇÇÇÇ  Ã   Ã   OOO
+                                       Ç
+
+ ----------------------------------------------------------------------
+    SEMPRE QUE FOR REALIZADA QUALQUER ALTERAÇÃO NESTE PAGEDEF, DEVERÁ
+    SER FEITA UMA ALTERAÇÃO MASSIVA NO PFXC00, FAZENDO A SUBSTITUIÇÃO
+    DE TODOS OS LAYOUTS, QUE CORRESPONDEM AO(S) DOCUMENTO(S) QUE AQUI
+    SÃO TRATADOS.
+
+    PFX014: IMPRESSÃO DE CARTAS DE CANCELAMENTO
+
+ ------------------------------------------------------------------- */
+ /* 2018.06.04  JADS  CHG692602 NOVA ASSINATURA PEDRO A CORDEIRO.     */
+ /* 2019.08.28  JADS  LIMPEZA DE LAYOUTS C/'APAGAR' (RELAC.ENDERECO)  */
+ /* 2020.06.17  JADS  CHG848805 ALT ASS NUNO FERNANDES > MARIA M MELO */
+ /* 2021.02.24  JADS  TRPR201901-2486 Pedro Cordeiro -> João Casimiro */
+ /* 2021.03.08  NJF   202000036 GESTÃO NÃO COBRANÇA VIDA RISCO (GIS)  */
+ /* 2021.08.16  NJF   202000036 GESTÃO NÃO COBRANÇA VIDA RISCO (GIS)  */
+ /*                   Incluir pagamento por referencia multibanco     */
+ /* 2022.03.30  JADS  TRPR201901-4371 Alteração do nome Direção DOP.  */
+ /* 2023.07.18  JADS  OUT-1523 Alt ass Maria M Melo > Pedro Mortágua. */
+ /* 2025.04.21  JADS  OUT-2924 Alteração na assinatura Pedro Mortágua */
+ /*                   'DCI - Departamento Gestão de Cobranças' passa a*/
+ /*                   'DFN - Departamento Gestão de Cobranças'        */
+ /* 2025.06.11  JADS  TRPR201901-7395 Alter. da assinatura e nome Dir.*/
+ /*         João B Casimiro -> Fernanda Godinho e Direção de Operações*/
+ /*-------------------------------------------------------------------*/
+
+ SETUNITS 1 MM 1 MM
+          LINESP 000.000 MM;
+
+ PAGEDEF PFX014
+         WIDTH 210.000
+         HEIGHT 297.000
+         REPLACE YES;
+
+    FONT CB51;
+    FONT CT49NP;
+    FONT CTT39;
+    FONT GLE1;
+    FONT H21061;
+    FONT H21081;
+    FONT H41001;
+    FONT H41081;
+    FONT HA08BP;
+    FONT HA08NP;
+    FONT HA09BP;
+    FONT HA09NP;
+    FONT IL06NP;
+    FONT IL09BP;
+    FONT LC08XX;
+    FONT RM10NP;
+                                                                        00007400
+    DEFINE TRANSP COLOR RGB 099 099 099;
+
+
+    PAGEFORMAT PFX01401;
+
+    /* ----------------------------------------------------------------
+       MUDANÇA PARA UMA NOVA PÁGINA, NA FRENTE DO DOCUMENTO. FAZ A
+       IMPRESSÃO DO CÓDIGO DE BARRAS PARA ENVELOPAGEM MECÂNICA E DO
+       CÓDIGO DE CONTROLE VISUAL
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'F_P_SELECT' BODY NEWPAGE
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX003 000.000 000.000;
+
+       CONDITION MAIN00 START 073 LENGTH 004
+          WHEN EQ 'X014'
+             COPYGROUP T1FV
+             PAGEFORMAT PFX01401
+          /* CÓDIGO DE DOCUMENTO INVÁLIDO - BIN 1 (SÓ FRENTE) */
+          OTHERWISE
+             COPYGROUP T1SF;
+
+       /* CÓDIGO DE BARRAS PARA ENVELOPAGEM MECÂNICA */
+       FIELD START 0133 LENGTH 0010
+             FONT CT49NP
+             DIRECTION UP
+             POSITION 015.000 144.000;
+
+       /* HRI DO CÓDIGO DE BARRAS PARA ENVELOPAGEM MECÂNICA */
+       FIELD START 0134 LENGTH 0008
+             FONT CB51
+             DIRECTION UP
+             POSITION 008.000 134.000;
+
+       /* CÓDIGO DE CONTROLE DE INSERT NA ENVELOPAGEM */
+       FIELD START 0146 LENGTH 0005
+             FONT CB51
+             DIRECTION UP
+             POSITION 008.000 109.000;
+
+       /* CÓDIGO DE CONTROLE VISUAL DA SEQUÊNCIA DOS DOCUMENTOS */
+       FIELD START 0143 LENGTH 0003
+             FONT CB51
+             ALIGN RIGHT
+             POSITION 203.000 008.000;
+
+       /* CÓDIGO DE CONTROLE COM 210 BYTES - INVISIVEL TOPO PÁGINA */
+       FIELD RECID
+             COLOR TRANSP
+             FONT LC08XX
+             POSITION 209.000 002.000;
+
+       FIELD START 0001 LENGTH 0200
+             COLOR TRANSP
+             FONT LC08XX;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT COM LOGOTIPOS E MENÇÕES OBRIGATÓRIAS PARA A FIDELIDADE
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014LOGOFS' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFFMD1 000.000 000.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT H21061
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT COM LOGOTIPOS E MENÇÕES OBRIGATÓRIAS PARA O EUROBIC
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014LOGOEB' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFEBD1 000.000 000.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT H21061
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT COM LOGOTIPOS E MENÇÕES OBRIGATÓRIAS PARA A MULTICARE
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014LOGOMC' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFXD14 000.000 000.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT H21061
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT COM LOGOTIPOS E MENÇÕES OBRIGATÓRIAS PARA LEVE
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014LOGOLV' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFFLD1 000.000 000.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT H21061
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT COM AREA DE ENDERECO
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'ENDERECO  ' BODY
+           POSITION 000.000 ABSOLUTE 000.000;
+
+       /* COMP-MARC: CODIGO DE COMPANHIA/MARCA */
+       FIELD START 201 LENGTH 002
+             FONT HA08NP
+             POSITION 165.000 042.000;
+
+       /* NOME: INFORMACAO DE ENDERECAMENTO */
+       FIELD START 203 LENGTH 040
+             FONT GLE1
+             POSITION 103.000 054.000;
+
+       /* MORADA1: PRIMEIRA LINHA DO ENDERECO */
+       FIELD START 243 LENGTH 040
+             FONT GLE1
+             POSITION 103.000 058.000;
+
+       /* MORADA2: SEGUNDA LINHA DO ENDERECO */
+       FIELD START 283 LENGTH 040
+             FONT GLE1
+             POSITION 103.000 062.000;
+
+       /* MORADA3: TERCEIRA LINHA DO ENDERECO */
+       FIELD START 323 LENGTH 040
+             FONT GLE1
+             POSITION 103.000 066.000;
+
+       /* MORADA4: QUARTA LINHA DO ENDERECO */
+       FIELD START 363 LENGTH 040
+             FONT GLE1
+             POSITION 103.000 070.000;
+
+       /* CB-CTT: CODIGO BARRAS DE ENDERECO (CTT) */
+       FIELD START 403 LENGTH 022
+             FONT RM10NP
+             POSITION 100.000 048.000;
+
+       /* CB-ADIC: CODIGO BARRAS DE ENDERECO (ADICIONAL) */
+       FIELD START 425 LENGTH 020
+             BARCODE ITF_AD01 TYPE ITL2OF5
+             HRI OFF
+             HEIGHT 6 MM MODWIDTH 10
+             POSITION 103.000 042.000;
+
+       /* ID-DOC-LIN1: IDENTIFICACAO DO DOCUMENTO 1 */
+       FIELD START 519 LENGTH 040
+             FONT IL06NP
+             DIRECTION UP
+             POSITION 013.000 266.000;
+
+       /* ID-DOC-LIN2: IDENTIFICACAO DO DOCUMENTO 2 */
+       FIELD START 559 LENGTH 040
+             FONT IL06NP
+             DIRECTION UP
+             POSITION 015.000 266.000;
+
+       /* JANELA-INF1: LINHA INFORMACAO NA JANELA 1 */
+       FIELD START 599 LENGTH 25
+             FONT HA08NP
+             POSITION 165.000 045.000;
+
+       /* JANELA-INF2: LINHA INFORMACAO NA JANELA 2 */
+       FIELD START 624 LENGTH 25
+             FONT HA08NP
+             POSITION 165.000 048.000;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT COM AREA DE ENDERECO (CARTA REGISTADA)
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'REGISTOCTT' BODY
+           POSITION 000.000 ABSOLUTE 000.000;
+
+       /* COMP-MARC: CODIGO DE COMPANHIA/MARCA */
+       FIELD START 201 LENGTH 002
+             FONT HA08NP
+             POSITION 165.000 042.000;
+
+       /* NOME: INFORMACAO DE ENDERECAMENTO */
+       FIELD START 203 LENGTH 040
+             FONT GLE1
+             POSITION 103.000 054.000;
+
+       /* MORADA1: PRIMEIRA LINHA DO ENDERECO */
+       FIELD START 243 LENGTH 040
+             FONT GLE1
+             POSITION 103.000 058.000;
+
+       /* MORADA2: SEGUNDA LINHA DO ENDERECO */
+       FIELD START 283 LENGTH 040
+             FONT GLE1
+             POSITION 103.000 062.000;
+
+       /* MORADA3: TERCEIRA LINHA DO ENDERECO */
+       FIELD START 323 LENGTH 040
+             FONT GLE1
+             POSITION 103.000 066.000;
+
+       /* MORADA4: QUARTA LINHA DO ENDERECO */
+       FIELD START 363 LENGTH 040
+             FONT GLE1
+             POSITION 103.000 070.000;
+
+       /* REGISTO-CTT */
+       FIELD START 469 LENGTH 016
+             FONT CTT39
+             POSITION 103.000 048.000;
+
+       /* NUMERO-CTT */
+       FIELD START 486 LENGTH 013
+             FONT H21081
+             POSITION 133.000 040.000;
+
+       /* TIPO-REGISTO */
+       FIELD START 499 LENGTH 020
+             FONT H41081
+             POSITION 103.000 040.000;
+
+       /* ID-DOC-LIN1: IDENTIFICACAO DO DOCUMENTO 1 */
+       FIELD START 519 LENGTH 040
+             FONT IL06NP
+             DIRECTION UP
+             POSITION 013.000 266.000;
+
+       /* ID-DOC-LIN2: IDENTIFICACAO DO DOCUMENTO 2 */
+       FIELD START 559 LENGTH 040
+             FONT IL06NP
+             DIRECTION UP
+             POSITION 015.000 266.000;
+
+       /* JANELA-INF1: LINHA INFORMACAO NA JANELA 1 */
+       FIELD START 599 LENGTH 25
+             FONT HA08NP
+             POSITION 165.000 045.000;
+
+       /* JANELA-INF2: LINHA INFORMACAO NA JANELA 2 */
+       FIELD START 624 LENGTH 25
+             FONT HA08NP
+             POSITION 165.000 048.000;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT COM AREA DE CABECALHO
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CAB000' BODY
+           POSITION 000.000 ABSOLUTE 000.000;
+
+       /* TITULO1 - IDENTIFICAÇÃO DO TIPO DE DOCUMENTO */
+       FIELD START 201 LENGTH 040
+             FONT H41001
+             ALIGN RIGHT
+             POSITION 201.000 014.000;
+
+       /* TITULO2 - INFORMAÇÃO ADICIONAL DO TIPO DE DOCUMENTO */
+       FIELD START 241 LENGTH 040
+             FONT H41001
+             ALIGN RIGHT
+             POSITION 201.000 019.000;
+
+       /* DATA - DATA DA CARTA */
+       FIELD START 505 LENGTH 032
+             FONT HA09BP
+             POSITION 103.000 123.000;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA CDC1: PERDA TOTAL
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CDC1T1' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX292 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA CDC1: PERDA TOTAL automovel
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CDC1TA' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX474 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA CDC1: VALOR ZEROS (TODOS RAMOS EXCETO AUTO)
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CDC1T2' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX293 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* DT-CANCEL - DATA DE CANCELAMENTO */
+       FIELD START 921 LENGTH 012
+             FONT IL09BP
+             POSITION 059.500 140.000;
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA CDC1: VALOR ZEROS (SÓ PARA RAMO AUTO)
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CDC1TB' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX469 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* DT-CANCEL - DATA DE CANCELAMENTO */
+       FIELD START 921 LENGTH 012
+             FONT IL09BP
+             POSITION 059.500 140.000;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA CDC1: VALOR NEGATIVO (ESTORNO)
+       (TODOS RAMOS EXCETO AUTO)
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CDC1T3' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX294 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* DT-CANCEL - DATA DE CANCELAMENTO */
+       FIELD START 921 LENGTH 012
+             FONT IL09BP
+             POSITION 059.500 140.000;
+
+       /* VALOR - MONTANTE A RECEBER */
+       FIELD START 933 LENGTH 018
+             FONT HA09BP
+             POSITION 158.000 145.000;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA CDC1: VALOR NEGATIVO (ESTORNO)
+       (SÓ PARA RAMO AUTO)
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CDC1TC' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX470 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* DT-CANCEL - DATA DE CANCELAMENTO */
+       FIELD START 921 LENGTH 012
+             FONT IL09BP
+             POSITION 059.500 140.000;
+
+       /* VALOR - MONTANTE A RECEBER */
+       FIELD START 933 LENGTH 018
+             FONT HA09BP
+             POSITION 158.000 154.000;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA CDC1: VALOR POSITIVO (PREMIO)
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CDC1T4' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX295 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* DT-CANCEL - DATA DE CANCELAMENTO */
+       FIELD START 921 LENGTH 012
+             FONT IL09BP
+             POSITION 059.500 140.000;
+
+       /* VALOR - MONTANTE A PAGAR */
+       FIELD START 933 LENGTH 018
+             FONT HA09BP
+             POSITION 158.500 145.000;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA CDC1: VALOR POSITIVO (PREMIO) automovel
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CDC1TD' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX476 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* DT-CANCEL - DATA DE CANCELAMENTO */
+       FIELD START 921 LENGTH 012
+             FONT IL09BP
+             POSITION 059.500 140.000;
+
+       /* VALOR - MONTANTE A PAGAR */
+       FIELD START 933 LENGTH 018
+             FONT HA09BP
+             POSITION 158.500 154.000;
+
+
+    /* ----------------------------------------------------------------
+       POSICIONA CDC1: PERDA TOTAL
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CDC1P1' BODY
+           POSITION 020.000 152.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       POSICIONA CDC1: VALOR ZEROS
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CDC1P2' BODY
+           POSITION 020.000 148.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       POSICIONA CDC1: VALOR POSITIVO E NEGATIVO
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CDC1P3' BODY
+           POSITION 020.000 160.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       POSICIONA CDC1: VALOR ZEROS para automóvel
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CDC1P4' BODY
+           POSITION 020.000 168.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       POSICIONA CDC1: VALOR POSITIVO E NEGATIVO
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CDC1P5' BODY
+           POSITION 020.000 158.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+    /* ----------------------------------------------------------------
+       POSICIONA CDC1: sinistro
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CDC1P6' BODY
+           POSITION 020.000 162.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA ENTI: RESOLUÇÃO DO CONTRATO
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014ENTIT1' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX296 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* DT-CANCEL - DATA DE CANCELAMENTO */
+       FIELD START 921 LENGTH 012
+             FONT IL09BP
+             POSITION 025.000 149.000;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA ENTI: CANCELAMENTO AVERBAMENTO
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014ENTIT2' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX297 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* DT-CANCEL - DATA DE CANCELAMENTO */
+       FIELD START 921 LENGTH 011
+             FONT IL09BP
+             POSITION 151.500 145.000;
+
+
+    /* ----------------------------------------------------------------
+       POSICIONA ENTI: RESOLUÇÃO CONTRATO / CANCELAMENTO AVERBAMENTO
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014ENTIP1' BODY
+           POSITION 020.000 152.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA CTAD: CESSAÇÃO CONTRATO (EXPECTO ramo automóvel)
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CTADT1' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX298 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* DT-CANCEL - DATA DE CANCELAMENTO */
+       FIELD START 932 LENGTH 012
+             FONT IL09BP
+             POSITION 160.000 136.000;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA CTAD: CESSAÇÃO CONTRATO (só para ramo automóvel)
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CTADTA' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX471 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* DT-CANCEL - DATA DE CANCELAMENTO */
+       FIELD START 932 LENGTH 012
+             FONT IL09BP
+             POSITION 160.000 136.000;
+
+       /* DT-CANCEL - DATA DE CANCELAMENTO */
+       FIELD START 932 LENGTH 012
+             FONT IL09BP
+             POSITION 020.000 153.000;
+
+
+    /* ----------------------------------------------------------------
+       POSICIONA CTAD: CESSAÇÃO CONTRATO
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CTADP1' BODY
+           POSITION 020.000 147.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA CTAD: CESSAÇÃO CONTRATO C/ RECIBOS PENDENTES
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CTADT2' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX299 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* DT-CANCEL - DATA DE CANCELAMENTO */
+       FIELD START 932 LENGTH 012
+             FONT IL09BP
+             POSITION 160.000 136.000;
+
+       /* VALOR - VALOR DOS RECIBOS EM DIVIDA */
+       FIELD START 944 LENGTH 018
+             FONT HA09BP
+             POSITION 118.500 153.000;
+
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA CTAD: CESSAÇÃO CONTRATO C/ RECIBOS PENDENTES
+       automovel
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CTADTB' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX475 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* DT-CANCEL - DATA DE CANCELAMENTO */
+       FIELD START 932 LENGTH 012
+             FONT IL09BP
+             POSITION 160.000 136.000;
+
+       /* DT-CANCEL - DATA DE CANCELAMENTO */
+       FIELD START 932 LENGTH 012
+             FONT IL09BP
+             POSITION 020.000 153.000;
+
+       /* VALOR - VALOR DOS RECIBOS EM DIVIDA */
+       FIELD START 944 LENGTH 018
+             FONT HA09BP
+             POSITION 118.500 166.000;
+
+
+    /* ----------------------------------------------------------------
+       POSICIONA CTAD: CESSAÇÃO CONTRATO C/ RECIBOS PENDENTES
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CTADP2' BODY
+           POSITION 020.000 161.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA CTAD: CESSAÇÃO APÓLICE
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CTADT3' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX300 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* DT-CANCEL - DATA DE CANCELAMENTO */
+       FIELD START 932 LENGTH 012
+             FONT IL09BP
+             POSITION 160.000 136.000;
+
+
+    /* ----------------------------------------------------------------
+       POSICIONA CTAD: CESSAÇÃO APÓLICE
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CTADP3' BODY
+           POSITION 020.000 154.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+    /* ----------------------------------------------------------------
+       POSICIONA CTAD: CESSAÇÃO APÓLICE
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CTADP4' BODY
+           POSITION 020.000 174.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA CHIP: FALTA DE PAGAMENTO DE PREMIO
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CHIPT1' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX301 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* DT-DEVIDO - DATA DEVIDO */
+       FIELD START 921 LENGTH 012
+             FONT IL09BP
+             POSITION 020.000 140.000;
+
+       /* MORE-TEXT - TEXTO ADICIONAL */
+       FIELD START 933 LENGTH 030
+             FONT HA09BP
+             POSITION 125.500 154.000;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA CHIP: FALTA DE PAGAMENTO DE PREMIO (FRAÇÃO INICIAL)
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CHIPT2' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX302 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* DT-DEVIDO - DATA DEVIDO */
+       FIELD START 921 LENGTH 012
+             FONT IL09BP
+             POSITION 082.500 140.000;
+
+       /* MORE-TEXT - TEXTO ADICIONAL */
+       FIELD START 933 LENGTH 030
+             FONT HA09BP
+             POSITION 125.500 154.000;
+
+
+    /* ----------------------------------------------------------------
+       POSICIONA CHIP: FALTA PAGAMENTO (FRAÇÃO INICIAL / RESTANTES)
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014CHIPP1' BODY
+           POSITION 020.000 159.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA FP01: FALTA PAGAMENTO Tomador COM Crédito
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP01T0' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX367 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* SUBJECT9 - LINHA DE ASSUNTO 9 */
+       FIELD START 921 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 120.000;
+
+       /* SUBJECT10 - LINHA DE ASSUNTO 10 */
+       FIELD START 1011 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 123.000;
+
+       /* SUBJECT11 - LINHA DE ASSUNTO 11 */
+       FIELD START 1101 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 123.000;
+
+       /* VA-DT-VENCMNTO - DATA VENCIMENTO */
+       FIELD START 1191 LENGTH 037
+             FONT HA09BP
+             POSITION 020.000 140.000;
+
+       /* VLR-DIVIDA & VA-DT-LIM-PAGTO - VALOR DE PRÉMIOS EM DÍVIDA &
+          DATA LIMITE DE PAGAMENTO */
+       FIELD START 1228 LENGTH 052
+             FONT HA09BP
+             POSITION 071.000 144.500;
+
+
+    /* ----------------------------------------------------------------
+       POSICIONA FP01: FALTA PAGAMENTO Tomador COM Crédito
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP01P0' BODY
+           POSITION 020.000 168.500;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA FP02: FALTA PAGAMENTO Tomador SEM Crédito
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP02T0' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX368 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* SUBJECT9 - LINHA DE ASSUNTO 9 */
+       FIELD START 921 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 120.000;
+
+       /* SUBJECT10 - LINHA DE ASSUNTO 10 */
+       FIELD START 1011 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 123.000;
+
+       /* VA-DT-VENCMNTO - DATA VENCIMENTO */
+       FIELD START 1191 LENGTH 037
+             FONT HA09BP
+             POSITION 020.000 140.000;
+
+       /* VLR-DIVIDA & VA-DT-LIM-PAGTO - VALOR DE PRÉMIOS EM DÍVIDA &
+          DATA LIMITE DE PAGAMENTO */
+       FIELD START 1228 LENGTH 052
+             FONT HA09BP
+             POSITION 071.000 144.500;
+
+
+    /* ----------------------------------------------------------------
+       POSICIONA FP02: FALTA PAGAMENTO Tomador SEM Crédito
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP02P0' BODY
+           POSITION 020.000 159.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA FP03: ANULAÇÃO Tomador COM Crédito
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP03T0' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX373 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* SUBJECT9 - LINHA DE ASSUNTO 9 */
+       FIELD START 921 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 120.000;
+
+       /* SUBJECT10 - LINHA DE ASSUNTO 10 */
+       FIELD START 1011 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 123.000;
+
+       /* DT-ANULACAO - DATA ANULAÇÃO */
+       FIELD START 1280 LENGTH 012
+             FONT HA09BP
+             POSITION 026.000 140.000;
+
+
+    /* ----------------------------------------------------------------
+       POSICIONA FP03: ANULAÇÃO Tomador COM Crédito
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP03P0' BODY
+           POSITION 020.000 137.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA FP04: ANULAÇÃO Tomador SEM Crédito
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP04T0' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX373 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* SUBJECT9 - LINHA DE ASSUNTO 9 */
+       FIELD START 921 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 120.000;
+
+       /* SUBJECT10 - LINHA DE ASSUNTO 10 */
+       FIELD START 1011 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 123.000;
+
+       /* DT-ANULACAO - DATA ANULAÇÃO */
+       FIELD START 1280 LENGTH 012
+             FONT HA09BP
+             POSITION 026.000 140.000;
+
+
+    /* ----------------------------------------------------------------
+       POSICIONA FP04: ANULAÇÃO Tomador SEM Crédito
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP04P0' BODY
+           POSITION 020.000 137.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA FP05: FALTA PAGAMENTO Tomador SEM Crédito
+                          Anulação de Coberturas
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP05T0' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX369 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* SUBJECT9 - LINHA DE ASSUNTO 9 */
+       FIELD START 921 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 120.000;
+
+       /* SUBJECT10 - LINHA DE ASSUNTO 10 */
+       FIELD START 1011 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 123.000;
+
+       /* VA-DT-VENCMNTO - DATA VENCIMENTO */
+       FIELD START 1191 LENGTH 037
+             FONT HA09BP
+             POSITION 020.000 140.000;
+
+       /* VLR-DIVIDA & VA-DT-LIM-PAGTO - VALOR DE PRÉMIOS EM DÍVIDA &
+          DATA LIMITE DE PAGAMENTO */
+       FIELD START 1228 LENGTH 052
+             FONT HA09BP
+             POSITION 071.000 144.500;
+
+
+    /* ----------------------------------------------------------------
+       POSICIONA FP05: FALTA PAGAMENTO Tomador SEM Crédito
+                       Anulação de Coberturas
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP05P0' BODY
+           POSITION 020.000 159.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA FP06: ANULAÇÃO Tomador SEM Crédito
+                          Anulação de Coberturas
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP06T0' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX374 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* SUBJECT9 - LINHA DE ASSUNTO 9 */
+       FIELD START 921 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 120.000;
+
+       /* SUBJECT10 - LINHA DE ASSUNTO 10 */
+       FIELD START 1011 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 123.000;
+
+       /* DT-ANULACAO - DATA ANULAÇÃO */
+       FIELD START 1280 LENGTH 012
+             FONT HA09BP
+             POSITION 073.000 140.000;
+
+
+    /* ----------------------------------------------------------------
+       POSICIONA FP06: ANULAÇÃO Tomador SEM Crédito
+                       Anulação de Coberturas
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP06P0' BODY
+           POSITION 020.000 137.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA FP07: FALTA PAGAMENTO Tomador SEM Crédito e Redução
+                          de Contrato
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP07T0' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX370 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* SUBJECT9 - LINHA DE ASSUNTO 9 */
+       FIELD START 921 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 120.000;
+
+       /* SUBJECT10 - LINHA DE ASSUNTO 10 */
+       FIELD START 1011 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 123.000;
+
+       /* VA-DT-VENCMNTO - DATA VENCIMENTO */
+       FIELD START 1191 LENGTH 037
+             FONT HA09BP
+             POSITION 020.000 140.000;
+
+       /* VLR-DIVIDA & VA-DT-LIM-PAGTO - VALOR DE PRÉMIOS EM DÍVIDA &
+          DATA LIMITE DE PAGAMENTO */
+       FIELD START 1228 LENGTH 052
+             FONT HA09BP
+             POSITION 071.000 144.500;
+
+
+    /* ----------------------------------------------------------------
+       POSICIONA FP07: FALTA PAGAMENTO Tomador SEM Crédito e Redução de
+                       Contrato
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP07P0' BODY
+           POSITION 020.000 163.500;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA FP12: FALTA PAGAMENTO Beneficiário Interventor COM
+                          Crédito NÃO CGD
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP12T0' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX387 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* SUBJECT9 - LINHA DE ASSUNTO 9 */
+       FIELD START 921 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 120.000;
+
+       /* SUBJECT10 - LINHA DE ASSUNTO 10 */
+       FIELD START 1011 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 123.000;
+
+       /* VA-DT-VENCMNTO - DATA VENCIMENTO */
+       FIELD START 1191 LENGTH 037
+             FONT HA09BP
+             POSITION 020.000 140.000;
+
+       /* VLR-DIVIDA & VA-DT-LIM-PAGTO - VALOR DE PRÉMIOS EM DÍVIDA &
+          DATA LIMITE DE PAGAMENTO */
+       FIELD START 1228 LENGTH 052
+             FONT HA09BP
+             POSITION 071.000 144.500;
+
+
+    /* ----------------------------------------------------------------
+       POSICIONA FP12: FALTA PAGAMENTO Beneficiário Interventor COM
+                       Crédito NÃO CGD
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP12P0' BODY
+           POSITION 020.000 150.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA FP21: FALTA PAGAMENTO Pessoa Segura COM Crédito
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP21T0' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX371 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* SUBJECT9 - LINHA DE ASSUNTO 9 */
+       FIELD START 921 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 120.000;
+
+       /* SUBJECT10 - LINHA DE ASSUNTO 10 */
+       FIELD START 1011 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 123.000;
+
+       /* VA-DT-VENCMNTO - DATA VENCIMENTO */
+       FIELD START 1191 LENGTH 037
+             FONT HA09BP
+             POSITION 020.000 140.000;
+
+       /* VLR-DIVIDA & VA-DT-LIM-PAGTO - VALOR DE PRÉMIOS EM DÍVIDA &
+          DATA LIMITE DE PAGAMENTO */
+       FIELD START 1228 LENGTH 052
+             FONT HA09BP
+             POSITION 071.000 144.500;
+
+
+    /* ----------------------------------------------------------------
+       POSICIONA FP21: FALTA PAGAMENTO Pessoa Segura COM Crédito
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP21P0' BODY
+           POSITION 020.000 154.500;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA FP23: ANULAÇÃO Pessoa Segura COM Crédito
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP23T0' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX373 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* SUBJECT9 - LINHA DE ASSUNTO 9 */
+       FIELD START 921 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 120.000;
+
+       /* SUBJECT10 - LINHA DE ASSUNTO 10 */
+       FIELD START 1011 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 123.000;
+
+       /* DT-ANULACAO - DATA ANULAÇÃO */
+       FIELD START 1280 LENGTH 012
+             FONT HA09BP
+             POSITION 026.000 140.000;
+
+
+    /* ----------------------------------------------------------------
+       POSICIONA FP23: ANULAÇÃO Pessoa Segura COM Crédito
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP23P0' BODY
+           POSITION 020.000 137.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       LAYOUT CARTA FP13: ANULAÇÃO Beneficiário Interventor COM Crédito
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP13T0' BODY
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX545 000.000 000.000;
+
+       /* SUBJECT1 - LINHA DE ASSUNTO 1 */
+       FIELD START 201 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 096.000;
+
+       /* SUBJECT2 - LINHA DE ASSUNTO 2 */
+       FIELD START 291 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 099.000;
+
+       /* SUBJECT3 - LINHA DE ASSUNTO 3 */
+       FIELD START 381 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 102.000;
+
+       /* SUBJECT4 - LINHA DE ASSUNTO 4 */
+       FIELD START 471 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 105.000;
+
+       /* SUBJECT5 - LINHA DE ASSUNTO 5 */
+       FIELD START 561 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 108.000;
+
+       /* SUBJECT6 - LINHA DE ASSUNTO 6 */
+       FIELD START 651 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 111.000;
+
+       /* SUBJECT7 - LINHA DE ASSUNTO 7 */
+       FIELD START 741 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 114.000;
+
+       /* SUBJECT8 - LINHA DE ASSUNTO 8 */
+       FIELD START 831 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 117.000;
+
+       /* SUBJECT9 - LINHA DE ASSUNTO 9 */
+       FIELD START 921 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 120.000;
+
+       /* SUBJECT10 - LINHA DE ASSUNTO 10 */
+       FIELD START 1011 LENGTH 090
+             FONT HA09BP
+             POSITION 036.000 123.000;
+
+       /* DT-ANULACAO - DATA ANULAÇÃO */
+       FIELD START 1280 LENGTH 012
+             FONT HA09BP
+             POSITION 145.000 144.500;
+
+
+    /* ----------------------------------------------------------------
+       POSICIONA FP13: ANULAÇÃO Beneficiário Interventor COM Crédito
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP13P0' BODY
+           POSITION 020.000 156.500;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT HA09BP
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       FP01, FP02, FP05, FP07, FP12, FP21: Parágrafo Lista Recibos
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP00LR' BODY
+           XSPACE 15
+           POSITION SAME NEXT
+           OVERLAY OFX372 -005.000  001.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT H21061
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       FP03, FP04, FP06, FP23: Parágrafo Linha de Apoio
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014FP00LA' BODY
+           XSPACE 15
+           POSITION SAME NEXT
+           OVERLAY OFX375 -005.000  001.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT H21061
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       LINHA APOIO - FIDELIDADE
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014LINEFS' BODY
+           XSPACE 9
+           POSITION SAME NEXT
+           OVERLAY OFX303 -005.000 -006.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT H21061
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       LINHA APOIO - MULTICARE
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014LINEMC' BODY
+           XSPACE 9
+           POSITION SAME NEXT
+           OVERLAY OFX304 -005.000 -006.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT H21061
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       CABEÇALHO DA LISTA DE MOVIMENTOS
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT C'X014HDRLST' BODY
+           XSPACE 4
+           POSITION SAME NEXT
+           OVERLAY OFX307 -005.000 -005.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT H21061
+             POSITION * *;
+
+
+    /* ----------------------------------------------------------------
+       LISTA DE MOVIMENTOS
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014LISTA ' BODY
+           XSPACE 3
+           POSITION SAME NEXT;
+
+       /* RECIBO - NÚMERO DE RECIBO */
+       FIELD START 201 LENGTH 016
+             FONT HA08BP
+             ALIGN LEFT
+             POSITION 000.000 NEXT;
+
+       /* PERIODO-R - PERIODO DO RECIBO */
+       FIELD START 217 LENGTH 025
+             FONT HA08BP
+             ALIGN LEFT
+             POSITION 030.000 CURRENT;
+
+       /* PREMIO-R - PREMIO DO RECIBO */
+       FIELD START 242 LENGTH 019
+             FONT HA08BP
+             ALIGN RIGHT
+             POSITION 097.000 CURRENT;
+
+
+    /* ----------------------------------------------------------------
+       PAGINAÇÃO
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014PAG   ' BODY
+           POSITION 000.000 ABSOLUTE 000.000;
+
+       /* PAGINA - NÚMERO DE PÁGINA */
+       FIELD START 201 LENGTH 020
+             FONT HA08NP
+             POSITION 175.000 272.000;
+
+
+    /* ----------------------------------------------------------------
+       Assinatura de 'Fernanda Godinho'
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014ASSJBC' BODY
+           POSITION SAME NEXT
+           SEGMENT ASFG01 020.000 007.000;
+
+       FIELD TEXT C'Com os nossos cumprimentos,'
+             FONT HA09BP
+             POSITION 020.000 004.000;
+
+       FIELD TEXT C'Fernanda Godinho'
+             FONT HA09BP
+             POSITION 020.000 025.000;
+
+       FIELD TEXT C'Direção de Operações'
+             FONT HA09BP
+             POSITION 020.000 028.000;
+
+
+    /* ----------------------------------------------------------------
+       Assinatura
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014ASSMMM' BODY
+           POSITION SAME NEXT
+           SEGMENT ASPM00 020.000 010.000;
+
+       FIELD TEXT C'Com os nossos cumprimentos,'
+             FONT HA09BP
+             POSITION 020.000 004.000;
+
+       FIELD TEXT C'Pedro Mortágua'
+             FONT HA09BP
+             POSITION 020.000 025.000;
+
+       FIELD TEXT C'DFN - Departamento Gestão de Cobranças'
+             FONT HA09BP
+             POSITION 020.000 028.000;
+
+
+    /* ----------------------------------------------------------------
+       Assinatura de 'Ana Filomena Salvado'
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014ASSAFS' BODY
+           POSITION SAME NEXT
+           SEGMENT ASAFS1 020.000 009.000;
+
+       FIELD TEXT C'Com os nossos cumprimentos,'
+             FONT HA09BP
+             POSITION 020.000 004.000;
+
+       FIELD TEXT C'Ana Filomena Salvado'
+             FONT HA09BP
+             POSITION 020.000 025.000;
+
+       FIELD TEXT C'Direção Negócio Empresas'
+             FONT HA09BP
+             POSITION 020.000 028.000;
+
+
+    /* ----------------------------------------------------------------
+       Caixa com dados para pagamento MultiBanco
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 004.000 MM;
+    LAYOUT 'X014REFMB ' BODY
+           POSITION SAME NEXT
+           OVERLAY OFX061 020.000 012.000;
+
+       /* MultiBanco: Entidade */
+       FIELD START 201 LENGTH 005
+             FONT HA09NP
+             POSITION 056.000 046.000;
+
+       /* MultiBanco: Referência */
+       FIELD START 206 LENGTH 011
+             FONT HA09NP
+             POSITION 056.000 NEXT;
+
+       /* MultiBanco: Montante */
+       FIELD START 217 LENGTH 018
+             FONT HA09NP
+             POSITION 056.000 NEXT;
+
+
+    /* ----------------------------------------------------------------
+       Somente para a mudança de página, para o verso do documento
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'B_P_SELECT' BODY NEWPAGE
+           POSITION 000.000 ABSOLUTE 000.000
+           OVERLAY OFX003 000.000 000.000;
+
+       /* CÓDIGO DE CONTROLE COM 210 BYTES - INVISIVEL TOPO PÁGINA */
+       FIELD RECID
+             COLOR TRANSP
+             FONT LC08XX
+             POSITION 209.000 002.000;
+
+       FIELD START 0001 LENGTH 0200
+             COLOR TRANSP
+             FONT LC08XX;
+
+
+    /* ----------------------------------------------------------------
+       Posição de topo de folha
+    ---------------------------------------------------------------- */
+    SETUNITS LINESP 000.000 MM;
+    LAYOUT 'X014POSTOP' BODY
+           POSITION 020.000 035.000;
+
+       /* ESTE 'FIELD' EXISTE APENAS PARA EVITAR IMPRESSÃO DA LINHA */
+       FIELD TEXT C' '
+             FONT H21061
+             POSITION * *;
+
+ /* END OF PPFA PROGRAM PFX014 */
+

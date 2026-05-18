@@ -1,0 +1,48 @@
+@namespace Outputs.Documents.Components.Letters
+
+<section class="letter-subject">
+    <strong class="letter-subject-label">@Label:</strong>
+    <strong class="letter-subject-value">@Subject</strong>
+
+    @if (SubjectDetails is not null)
+    {
+        <div class="letter-subject-details">
+            @SubjectDetails
+        </div>
+    }
+</section>
+
+@code {
+    [Parameter]
+    public string Label { get; set; } = "Assunto";
+
+    [Parameter]
+    public string Subject { get; set; } = string.Empty;
+
+    [Parameter]
+    public RenderFragment? SubjectDetails { get; set; }
+}
+
+<style>
+    .letter-subject {
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        column-gap: 4mm;
+        row-gap: 0;
+        align-items: start;
+        line-height: inherit;
+        margin: 0;
+    }
+
+    .letter-subject-label,
+    .letter-subject-value {
+        font-weight: 700;
+        min-width: 0;
+    }
+
+    .letter-subject-details {
+        grid-column: 2;
+        margin: 0;
+        min-width: 0;
+    }
+</style>

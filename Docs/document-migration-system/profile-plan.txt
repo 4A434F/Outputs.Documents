@@ -1,0 +1,22 @@
+task mode: create
+primary deck-profile: engineering-platform
+secondary profile gates: strategy-leadership, because the deck explains an operating model and migration rollout
+required proof objects:
+- migration user flow from legacy assets to document-id report and samples
+- developer flow from contract choice to template metadata, tests, and selection rule
+- execution/API flow from endpoint/button/batch to DocumentRenderer and PDF output
+- FSCD cancellation example as concrete proof
+- quality gate and scale roadmap
+source/asset requirements:
+- no external assets required; use editable diagram shapes and concise labels
+- use project names and flows from the Outputs.Documents repository context
+brand authenticity constraints:
+- do not invent product branding or customer metrics
+- use a restrained technical platform visual system with red as a small accent, not a full brand claim
+profile-specific QA gates:
+- diagrams must have clear direction and no ambiguous connector crossings
+- labels must stay inside nodes
+- avoid dense code slides and generic feature grids
+known missing inputs:
+- no corporate template supplied
+- no exact migration metrics supplied

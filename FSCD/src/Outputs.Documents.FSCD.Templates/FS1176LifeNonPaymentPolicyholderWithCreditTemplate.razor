@@ -1,0 +1,181 @@
+@namespace Outputs.Documents.FSCD.Templates
+@using Microsoft.AspNetCore.Components
+@using Outputs.Documents.Abstractions
+@using Outputs.Documents.Components.Formatting
+@using Outputs.Documents.Components.Layouts
+@using Outputs.Documents.Components.Payments
+@using Outputs.Documents.Components.Signatures
+@using Outputs.Documents.Domain.Documents
+@using Outputs.Documents.FSCD.Contracts
+
+@attribute [DocumentTemplate(
+                Key = "fs1176-life-non-payment-policyholder-with-credit",
+                Name = "Life Non-Payment Letter FP01 (FSCD) - Policyholder With Credit",
+                Group = "FSCD")
+            ]
+
+<LetterLayout
+    Address="@Model.Client.Address"
+    Subject="Cessação de contrato de seguro por falta de pagamento de prémio"
+    Date="@ToDateTime(Model.IssueDate)"
+    ShowDate="true"
+    TraceText="@TraceText">
+    <SubjectDetails>
+        <div>Tomador do Seguro: @ValueOrDash(PolicyholderName)</div>
+        <div>NIF: @ValueOrDash(Model.Client.TaxIdentificationNumber)</div>
+        <div>
+            Pessoas Seguras:
+            @foreach (var person in Model.InsuredPeople)
+            {
+                <div class="insured-person">
+                    @ValueOrDash(person.Name) / NIF: @ValueOrDash(person.TaxIdentificationNumber)
+                </div>
+            }
+        </div>
+        <div>Beneficiário Interventor: @ValueOrDash(Model.BeneficiaryIntervenorName)</div>
+        <div>Processo Bancário: @ValueOrDash(Model.BankProcess)</div>
+        <div>Apólice / Produto: @PolicyProductText</div>
+    </SubjectDetails>
+
+    <BodyContent>
+        <p class="greeting">Exmo.(s) Senhor(es),</p>
+
+        <p>
+            Apesar das diligências de cobrança que efetuámos, o prémio do seguro identificado em epígrafe não foi pago até
+            @Model.DueDate.ToPortugueseShortDate(), data do seu vencimento.
+        </p>
+
+        <p>
+            O valor de prémio em dívida é de <span class="amount-gap">@Model.DebtAmount.ToPortugueseMoney()</span> Euros e deverá ser pago até
+            @Model.PaymentLimitDate.ToPortugueseShortDate().
+        </p>
+
+        <p>
+            Caso o prémio ou fração não seja pago na data supra mencionada, o contrato cessará automaticamente, deixando de
+            vigorar com efeitos à data início do período do recibo em dívida.
+        </p>
+
+        <p>
+            Este prémio poderá ser pago em qualquer uma das nossas Agências ou no Multibanco, utilizando os elementos que
+            constam abaixo.
+        </p>
+
+        <p>
+            Considerando que se trata de um seguro de vida com Beneficiário Interventor e outras Pessoas Seguras, estes serão
+            informados da anulação da sua adesão.
+        </p>
+
+        <p>A identificação do(s) recibo(s) em dívida encontra-se discriminada abaixo.</p>
+
+        <SignatureComponent
+            Greeting="Com os nossos cumprimentos,"
+            ImageName="Pedro_Mortagua.png"
+            Name="Pedro Mortágua"
+            Department="DFN - Departamento Gestão de Cobranças" />
+
+        @if (Model.AtmPayment is not null)
+        {
+            <div class="fscd-payment compact-payment">
+                <MBPaymentComponent
+                    Entity="@Model.AtmPayment.Entity"
+                    Reference="@Model.AtmPayment.Reference"
+                    Value="@Model.DebtAmount.ToPortugueseMoney()" />
+            </div>
+        }
+    </BodyContent>
+</LetterLayout>
+
+@code {
+    [Parameter]
+    public BGOW0044Contract Model { get; set; } = default!;
+
+    private static DocumentTraceId TraceText => new()
+    {
+        Id = "FS1176",
+        Environment = "Env",
+        Program = "Program",
+        User = "User"
+    };
+
+    private string PolicyholderName => Model.PolicyholderName ?? Model.Client.Name ?? string.Empty;
+
+    private string PolicyProductText =>
+        string.Join(" / ", new[]
+        {
+            Model.Policy.PolicyNumber,
+            Model.Product.BranchProductDescription
+        }.Where(value => !string.IsNullOrWhiteSpace(value)));
+
+    private static DateTime? ToDateTime(DateOnly? date)
+    {
+        return date?.ToDateTime(TimeOnly.MinValue);
+    }
+
+    private static string ValueOrDash(string? value)
+    {
+        return string.IsNullOrWhiteSpace(value) ? "____" : value;
+    }
+}
+
+<style>
+    .insured-person {
+        margin-left: 31mm;
+    }
+
+    .amount-gap {
+        display: inline-block;
+        min-width: 12mm;
+        text-align: right;
+    }
+
+    .receipt-table {
+        width: 98mm;
+        margin: 1mm 0 4mm;
+        border-collapse: collapse;
+        font-size: 7.5pt;
+        line-height: 1.05;
+    }
+
+    .receipt-table th {
+        text-align: left;
+        border-bottom: 0.4mm solid #000;
+        font-weight: 700;
+    }
+
+    .receipt-table th:last-child,
+    .receipt-table td:last-child {
+        text-align: right;
+    }
+
+    .fscd-payment {
+        margin-top: 9mm;
+    }
+
+    .compact-payment .mb-payment {
+        width: 58mm;
+    }
+
+    .compact-payment .mb-payment-title {
+        font-size: 8pt;
+    }
+
+    .compact-payment .mb-payment-box {
+        min-height: 16mm;
+        grid-template-columns: 18mm 1fr;
+        padding: 2mm 3mm;
+    }
+
+    .compact-payment .mb-payment-icon img {
+        width: 14mm;
+    }
+
+    .compact-payment .mb-payment-details {
+        font-size: 7.5pt;
+        row-gap: 0.5mm;
+    }
+
+    .compact-payment .mb-payment-details div {
+        grid-template-columns: 17mm 1fr;
+        column-gap: 3mm;
+    }
+</style>

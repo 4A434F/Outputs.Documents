@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <UserSecretsId>outputs-documents-rendering-iron-tests</UserSecretsId>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>Generated\$(TargetFramework)</CompilerGeneratedFilesOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="$(CompilerGeneratedFilesOutputPath)\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.5.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Outputs.Documents.DOCE.Contracts\Outputs.Documents.DOCE.Contracts.csproj" />
+    <ProjectReference Include="..\..\src\Outputs.Documents.DOCE.Templates\Outputs.Documents.DOCE.Templates.csproj" />
+    <ProjectReference Include="..\..\..\Core\src\Outputs.Documents.Abstractions\Outputs.Documents.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\Core\src\Outputs.Documents.Components\Outputs.Documents.Components.csproj" />
+    <ProjectReference Include="..\..\..\Core\src\Outputs.Documents.Rendering\Outputs.Documents.Rendering.csproj" />
+    <ProjectReference Include="..\..\..\Core\src\Outputs.Documents.Rendering.Iron\Outputs.Documents.Rendering.Iron.csproj" />
+    <ProjectReference Include="..\..\..\Tools\src\Outputs.Documents.TemplateTestGenerator\Outputs.Documents.TemplateTestGenerator.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+</Project>
